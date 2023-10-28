@@ -1,5 +1,5 @@
-#ifndef __CLIENTUPDATE_H__
-#define __CLIENTUPDATE_H__
+#ifndef __SERVERUPDATE_H__
+#define __SERVERUPDATE_H__
 
 #include <string>
 
@@ -16,4 +16,4 @@ public:
     ~ServerUpdate(){}
 };
 
-#endif // !__CLIENTUPDATE_H__
+#endif // !__SERVERUPDATE_H__

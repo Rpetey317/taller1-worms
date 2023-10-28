@@ -1,4 +1,4 @@
-#include "ClientUpdate.h"
+#include "ServerUpdate.h"
 
 ServerUpdate::ServerUpdate(std::string const& _msg): msg(_msg) {}
 
