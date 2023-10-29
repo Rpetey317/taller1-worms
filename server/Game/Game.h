@@ -5,11 +5,10 @@
 #include <mutex>
 #include <string>
 
-#include "../common/common_socket.h"
-#include "../common/queue.h"
-
-#include "PlayerHandler.h"
-#include "PlayerListMonitor.h"
+#include "common/common_socket.h"
+#include "common/queue.h"
+#include "server/PlayerHandler/PlayerHandler.h"
+#include "server/PlayerListMonitor/PlayerListMonitor.h"
 
 
 /*

@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "../common/common_socket.h"
+#include "common/common_socket.h"
 
 #define CLOSED_SKT -1
 #define NO_MSG_RECV ""

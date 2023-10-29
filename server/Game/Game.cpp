@@ -1,8 +1,9 @@
+#include "server/Game/Game.h"
+
 #include <utility>
 
-#include "server_gamehandler.h"
-#include "server_receiver.h"
-#include "server_sender.h"
+#include "server/ReceiverThread/ReceiverThread.h"
+#include "server/SenderThread/SenderThread.h"
 
 GameHandler::GameHandler(ReceiverListMonitor& _recvers): plcount(0), recvers(_recvers) {}
 

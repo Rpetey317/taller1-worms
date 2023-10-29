@@ -4,9 +4,8 @@
 #include <list>
 #include <mutex>
 
-#include "../common/queue.h"
-
-#include "ClientUpdate.h"
+#include "common/queue.h"
+#include "server/ClientUpdate/ClientUpdate.h"
 
 /*
  * Thread-safe list of queues of messages.

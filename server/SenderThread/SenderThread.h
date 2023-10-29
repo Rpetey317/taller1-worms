@@ -4,11 +4,10 @@
 #include <mutex>
 #include <string>
 
-#include "../common/queue.h"
-#include "../common/thread.h"
-
-#include "ClientUpdate.h"
-#include "ServerProtocol.h"
+#include "common/queue.h"
+#include "common/thread.h"
+#include "server/ClientUpdate/ClientUpdate.h"
+#include "server/ServerProtocol/ServerProtocol.h"
 
 /*
  * Waits for new messages to be sent back to client
