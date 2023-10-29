@@ -2,13 +2,14 @@
 #include <list>
 #include <utility>
 
-#include "../common/common_socket.h"
-#include "../common/queue.h"
-
-#include "AccepterThread.h"
-#include "Game.h"
-#include "PlayerListMonitor.h"
-#include "ServerProtocol.h"
+#include "common/common_socket.h"
+#include "common/queue.h"
+#include "server/AccepterThread/AccepterThread.h"
+#include "server/ClientUpdate/ClientUpdate.h"
+#include "server/Game/Game.h"
+#include "server/GameLoopThread/GameLoopThread.h"
+#include "server/PlayerListMonitor/PlayerListMonitor.h"
+#include "server/ServerProtocol/ServerProtocol.h"
 
 #define EXPECTED_ARGC 2
 
@@ -28,12 +29,15 @@ int main(int argc, const char** argv) {
 
     // Initialization
     Socket acc(argv[1]);
-    ReceiverListMonitor recvers;
-    GameHandler clients(recvers);
+    Queue<ClientUpdate> eventq;
+    GameHandler clients(eventq);
+
     ServerAccepterThread acc_th(std::move(acc), clients);
+    GameLoopThread gloop(eventq, clients);
 
     // Execution
     acc_th.start();
+    gloop.start();
 
     char c = 0;
     while (c != 'q') {
@@ -44,6 +48,8 @@ int main(int argc, const char** argv) {
     clients.close();
     acc_th.end();
     acc_th.join();
+    gloop.stop();
+    gloop.join();
 
     return 0;
 }

@@ -5,10 +5,10 @@
 #include "server/ReceiverThread/ReceiverThread.h"
 #include "server/SenderThread/SenderThread.h"
 
-GameHandler::GameHandler(ReceiverListMonitor& _recvers): plcount(0), recvers(_recvers) {}
+GameHandler::GameHandler(Queue<ClientUpdate>& _eventq): plcount(0), eventq(_eventq) {}
 
 void GameHandler::add_player(Socket&& peer) {
-    PlayerHandler* new_player = new PlayerHandler(std::move(peer), this->plcount, this->recvers);
+    PlayerHandler* new_player = new PlayerHandler(std::move(peer), this->plcount, this->eventq);
     this->players.push_back(new_player);
 
     new_player->start();
@@ -25,9 +25,13 @@ void GameHandler::remove_disconnected() {
     }
 }
 
-GameUpdate* GameHandler::execute(ClientUpdate* event) { return new GameUpdate(event->get_msg()); }
+GameUpdate* GameHandler::execute(ClientUpdate event) { return new GameUpdate(event.get_msg()); }
 
-void GameHandler::broadcast(GameUpdate* update) { this->recvers.push_to_all(update); }
+void GameHandler::broadcast(GameUpdate* update) {
+    for (auto pl = this->players.begin(); pl != this->players.end(); pl++) {
+        (*pl)->send(ClientUpdate(update->get_msg()));
+    }
+}
 
 int GameHandler::count() { return plcount; }
 

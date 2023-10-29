@@ -10,6 +10,8 @@ private:
 public:
     explicit ClientUpdate(std::string const& _msg);
 
+    ClientUpdate(): msg("") {}
+
     std::string get_msg() const;
 
     ~ClientUpdate() {}

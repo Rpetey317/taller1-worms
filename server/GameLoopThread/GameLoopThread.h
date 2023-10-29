@@ -7,11 +7,11 @@
 #include "server/Game/Game.h"
 
 class GameLoopThread: public Thread {
-    Queue<ClientUpdate*>& eventq;
+    Queue<ClientUpdate>& eventq;
     GameHandler& game;
 
 public:
-    GameLoopThread(Queue<ClientUpdate*>& _eventq, GameHandler& _game);
+    GameLoopThread(Queue<ClientUpdate>& _eventq, GameHandler& _game);
 
     void run() override;
 

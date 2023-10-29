@@ -1,24 +1,22 @@
+#include "server/ReceiverThread/ReceiverThread.h"
+
 #include <string>
 
-#include "../common_src/common_ext_liberror.h"
+#include "common/common_liberror.h"
 
-#include "server_receiver.h"
-
-ReceiverThread::ReceiverThread(ReceiverListMonitor& _recvers, ServerProtocol& _prot,
+ReceiverThread::ReceiverThread(Queue<ClientUpdate>& _eventq, ServerProtocol& _prot,
                                std::atomic<int>& _plcount):
-        recvers(_recvers), prot(_prot), plcount(_plcount) {}
+        eventq(_eventq), prot(_prot), plcount(_plcount) {}
 
 void ReceiverThread::run() {
     while (_keep_running) {
         try {
             std::string msg = prot.recv_msg();
             if (msg != NO_MSG_RECV) {
-                this->recvers.push_to_all(ServerMessage(msg));
+                this->eventq.push(ClientUpdate(msg));
             } else {
                 // Protocol was closed
-                plcount--;
-                this->recvers.push_to_all(ServerMessage(plcount));
-                _keep_running = false;
+                // To be implemented
             }
         } catch (LibError& e) {
             // This is a "socket was closed" error
