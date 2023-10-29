@@ -25,6 +25,10 @@ void GameHandler::remove_disconnected() {
     }
 }
 
+GameUpdate* GameHandler::execute(ClientUpdate* event) { return new GameUpdate(event->get_msg()); }
+
+void GameHandler::broadcast(GameUpdate* update) { this->recvers.push_to_all(update); }
+
 int GameHandler::count() { return plcount; }
 
 void GameHandler::close() {

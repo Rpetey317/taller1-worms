@@ -7,9 +7,9 @@
 
 #include "common/common_socket.h"
 #include "common/queue.h"
+#include "server/GameUpdate/GameUpdate.h"
 #include "server/PlayerHandler/PlayerHandler.h"
 #include "server/PlayerListMonitor/PlayerListMonitor.h"
-
 
 /*
  * Handles the game lobby and its players
@@ -35,6 +35,10 @@ public:
      * This has no "gameplay" effects
      */
     void remove_disconnected();
+
+    GameUpdate* execute(ClientUpdate* event);
+
+    void broadcast(GameUpdate* update);
 
     /*
      * Closes lobby and frees all resources

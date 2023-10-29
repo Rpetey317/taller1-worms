@@ -5,7 +5,7 @@
 #include <mutex>
 
 #include "common/queue.h"
-#include "server/ClientUpdate/ClientUpdate.h"
+#include "server/GameUpdate/GameUpdate.h"
 
 /*
  * Thread-safe list of queues of messages.
@@ -13,7 +13,7 @@
  */
 class ReceiverListMonitor {
 private:
-    std::list<Queue<ClientUpdate>*> recvers;
+    std::list<Queue<GameUpdate*>*> recvers;
     std::mutex mtx;
 
 public:
@@ -25,13 +25,13 @@ public:
     /*
      * Adds recver queue to the list
      */
-    void add_recver(Queue<ClientUpdate>* recver);
+    void add_recver(Queue<GameUpdate*>* recver);
 
     /*
      * Pushes a message to all reciever queues
      * Also prints message to std::out and removes closed queues
      */
-    void push_to_all(ClientUpdate msg);
+    void push_to_all(GameUpdate* msg);
 
     /*
      * Default destructor for list. Does not call delete for an pointer
