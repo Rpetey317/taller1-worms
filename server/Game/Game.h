@@ -5,7 +5,7 @@
 #include <mutex>
 #include <string>
 
-#include "common/common_socket.h"
+#include "common/Socket/Socket.h"
 #include "common/queue.h"
 #include "server/GameUpdate/GameUpdate.h"
 #include "server/PlayerHandler/PlayerHandler.h"
@@ -18,6 +18,7 @@ class GameHandler {
     std::list<PlayerHandler*> players;
     std::atomic<int> plcount;
     Queue<ClientUpdate>& eventq;
+    std::list<PlayerHandler*>::iterator curr_pl;
 
 public:
     /*
@@ -39,6 +40,8 @@ public:
     GameUpdate* execute(ClientUpdate event);
 
     void broadcast(GameUpdate* update);
+
+    void advance_turn();
 
     /*
      * Closes lobby and frees all resources

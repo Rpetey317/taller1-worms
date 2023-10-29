@@ -5,7 +5,9 @@
 #include "server/ReceiverThread/ReceiverThread.h"
 #include "server/SenderThread/SenderThread.h"
 
-GameHandler::GameHandler(Queue<ClientUpdate>& _eventq): plcount(0), eventq(_eventq) {}
+GameHandler::GameHandler(Queue<ClientUpdate>& _eventq): plcount(0), eventq(_eventq) {
+    curr_pl = this->players.begin();
+}
 
 void GameHandler::add_player(Socket&& peer) {
     PlayerHandler* new_player = new PlayerHandler(std::move(peer), this->plcount, this->eventq);
@@ -24,6 +26,13 @@ void GameHandler::remove_disconnected() {
         pl++;
     }
 }
+
+void GameHandler::advance_turn() {
+    this->curr_pl++;
+    if (this->curr_pl == this->players.end())
+        this->curr_pl = this->players.begin();
+}
+
 
 GameUpdate* GameHandler::execute(ClientUpdate event) { return new GameUpdate(event.get_msg()); }
 

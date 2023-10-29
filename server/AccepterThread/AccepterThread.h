@@ -5,7 +5,7 @@
 #include <mutex>
 #include <string>
 
-#include "common/common_socket.h"
+#include "common/Socket/Socket.h"
 #include "common/queue.h"
 #include "common/thread.h"
 #include "server/ClientUpdate/ClientUpdate.h"

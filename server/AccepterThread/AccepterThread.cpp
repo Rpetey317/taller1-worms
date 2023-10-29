@@ -1,10 +1,8 @@
-#include "AccepterThread.h"
+#include "server/AccepterThread/AccepterThread.h"
 
 #include <utility>
 
-#include "../common/common_liberror.h"
-
-// #include "server_listmonitor.h" //fix this
+#include "common/Socket/LibError.h"
 
 ServerAccepterThread::ServerAccepterThread(Socket&& _acc, GameHandler& _players):
         acc(std::move(_acc)), lobby(_players) {}
