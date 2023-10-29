@@ -1,12 +1,14 @@
-#include "server_sender.h"
+#include "server/SenderThread/SenderThread.h"
 
-SenderThread::SenderThread(Queue<ServerMessage>& _sendq, ServerProtocol& _prot):
+#include "server/GameUpdate/GameUpdate.h"
+
+SenderThread::SenderThread(Queue<GameUpdate>& _sendq, ServerProtocol& _prot):
         sendq(_sendq), prot(_prot) {}
 
 void SenderThread::run() {
     while (_keep_running) {
         try {
-            ServerMessage msg = sendq.pop();
+            GameUpdate msg = sendq.pop();
 
             // done here to avoid sending '0 players left'
             // (won't get received by player but will show up in tiburoncin)
@@ -14,18 +16,7 @@ void SenderThread::run() {
                 _keep_running = false;
                 continue;
             }
-            switch (msg.flag) {
-                case COUNT:
-                    this->prot.send_plcount(msg.count);
-                    break;
-
-                case MSG:
-                    this->prot.send_msg(msg.msg);
-                    break;
-
-                default:
-                    break;
-            }
+            this->prot.send_msg(msg);
         } catch (ClosedQueue& e) {
             _keep_running = false;
             continue;

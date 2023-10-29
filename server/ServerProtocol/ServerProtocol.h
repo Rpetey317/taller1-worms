@@ -26,12 +26,12 @@ public:
     /*
      * Sends given message to client
      */
-    void send_msg(const std::string& msg);
+    void send_msg(const GameUpdate& msg);
 
     /*
      * Reads a message from client. Returns NO_MSG_READ if connection closed
      */
-    std::string recv_msg();
+    ClientUpdate recv_msg();
 
     /*
      * returns true if connection with client is still open
