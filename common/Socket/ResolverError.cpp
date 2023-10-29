@@ -1,8 +1,8 @@
-#include "common_resolvererror.h"
-
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <sys/types.h>
+
+#include "common_resolvererror.h"
 
 ResolverError::ResolverError(int gai_errno): gai_errno(gai_errno) {}
 
