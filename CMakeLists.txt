@@ -36,6 +36,9 @@ add_subdirectory("Server/src")
 # CLIENT
 include_directories(${PROJECT_SOURCE_DIR}/Client/src)
 include_directories(${PROJECT_SOURCE_DIR}/Client/src/ServerUpdate)
+include_directories(${PROJECT_SOURCE_DIR}/Client/src/GameProcessing)
+include_directories(${PROJECT_SOURCE_DIR}/Client/src/ClientReceiverThread)
+include_directories(${PROJECT_SOURCE_DIR}/Client/src/ClientSenderThread)
 
 add_subdirectory("Client/src")
 

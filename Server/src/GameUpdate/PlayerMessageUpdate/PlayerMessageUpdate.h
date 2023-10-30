@@ -7,6 +7,7 @@
 #include "GameUpdate.h"
 
 class PlayerMessageUpdate: public GameUpdate {
+private:
     const std::string message;
 
 public:
