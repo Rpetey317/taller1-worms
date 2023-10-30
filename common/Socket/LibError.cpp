@@ -23,7 +23,7 @@
 
 #include <errno.h>
 
-#include "common_liberror.h"
+#include "LibError.h"
 
 LibError::LibError(int error_code, const char* fmt, ...) noexcept {
     /* Aquí empieza la magia arcana proveniente de C.
