@@ -13,7 +13,7 @@
  * Waits for new messages to be sent back to client
  */
 class SenderThread: public Thread {
-    Queue<GameUpdate>& sendq;
+    Queue<GameUpdate*>& sendq;
     ServerProtocol& prot;
 
 public:
@@ -21,7 +21,7 @@ public:
      * Initializes a new thread for a given client (prot)
      * Messages will be read from sendq
      */
-    SenderThread(Queue<GameUpdate>& sendq, ServerProtocol& prot);
+    SenderThread(Queue<GameUpdate*>& sendq, ServerProtocol& prot);
 
     /*
      * Runs the thread. Attempts to read message from queue. If a message is present,

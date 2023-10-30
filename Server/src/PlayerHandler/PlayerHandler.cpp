@@ -16,7 +16,9 @@ void PlayerHandler::start() {
 
 bool PlayerHandler::is_connected() { return prot.is_connected(); }
 
-void PlayerHandler::send(const ClientUpdate& msg) { sendq.push(msg); }
+void PlayerHandler::send(const ClientUpdate& msg) { 
+    sendq.push((GameUpdate*)(new PlayerMessageUpdate(msg.get_msg()))); 
+    }
 
 PlayerHandler::~PlayerHandler() {
     prot.close();

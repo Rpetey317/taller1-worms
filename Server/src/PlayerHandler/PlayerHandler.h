@@ -12,7 +12,7 @@
  */
 class PlayerHandler {
     ServerProtocol prot;
-    Queue<GameUpdate> sendq;
+    Queue<GameUpdate*> sendq;
     SenderThread send_th;
     ReceiverThread recv_th;
 
