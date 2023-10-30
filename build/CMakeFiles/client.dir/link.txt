@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/client.dir/client/ServerUpdate/ServerUpdate.cpp.o CMakeFiles/client.dir/common/Socket/LibError.cpp.o CMakeFiles/client.dir/common/Socket/Resolver.cpp.o CMakeFiles/client.dir/common/Socket/ResolverError.cpp.o CMakeFiles/client.dir/common/Socket/Socket.cpp.o -o client 
