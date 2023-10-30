@@ -7,9 +7,9 @@
 
 #include "Common/Socket/Socket.h"
 #include "Common/queue.h"
-#include "Server/GameUpdate/GameUpdate.h"
-#include "Server/PlayerHandler/PlayerHandler.h"
-#include "Server/PlayerListMonitor/PlayerListMonitor.h"
+#include "Server/src/GameUpdate/GameUpdate.h"
+#include "Server/src/PlayerHandler/PlayerHandler.h"
+#include "Server/src/PlayerListMonitor/PlayerListMonitor.h"
 
 /*
  * Handles the game lobby and its players

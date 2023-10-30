@@ -2,8 +2,8 @@
 
 #include <utility>
 
-#include "Server/ReceiverThread/ReceiverThread.h"
-#include "Server/SenderThread/SenderThread.h"
+#include "Server/src/ReceiverThread/ReceiverThread.h"
+#include "Server/src/SenderThread/SenderThread.h"
 
 GameHandler::GameHandler(Queue<ClientUpdate>& _eventq): plcount(0), eventq(_eventq) {
     curr_pl = this->players.begin();

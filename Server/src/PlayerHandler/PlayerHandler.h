@@ -3,9 +3,9 @@
 
 #include <list>
 
-#include "Server/PlayerListMonitor/PlayerListMonitor.h"
-#include "Server/ReceiverThread/ReceiverThread.h"
-#include "Server/SenderThread/SenderThread.h"
+#include "Server/src/PlayerListMonitor/PlayerListMonitor.h"
+#include "Server/src/ReceiverThread/ReceiverThread.h"
+#include "Server/src/SenderThread/SenderThread.h"
 
 /*
  * Handles all player resources in a RAII way

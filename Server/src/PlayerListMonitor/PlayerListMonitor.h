@@ -5,7 +5,7 @@
 #include <mutex>
 
 #include "Common/queue.h"
-#include "Server/GameUpdate/GameUpdate.h"
+#include "Server/src/GameUpdate/GameUpdate.h"
 
 /*
  * Thread-safe list of queues of messages.

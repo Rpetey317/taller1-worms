@@ -6,8 +6,8 @@
 
 #include "Common/queue.h"
 #include "Common/thread.h"
-#include "Server/ClientUpdate/ClientUpdate.h"
-#include "Server/ServerProtocol/ServerProtocol.h"
+#include "Server/src/ClientUpdate/ClientUpdate.h"
+#include "Server/src/ServerProtocol/ServerProtocol.h"
 
 /*
  * Waits for new messages to be sent back to client

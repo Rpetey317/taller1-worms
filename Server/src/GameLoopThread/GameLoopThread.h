@@ -3,8 +3,8 @@
 
 #include "Common/queue.h"
 #include "Common/thread.h"
-#include "Server/ClientUpdate/ClientUpdate.h"
-#include "Server/Game/Game.h"
+#include "Server/src/ClientUpdate/ClientUpdate.h"
+#include "Server/src/Game/Game.h"
 
 class GameLoopThread: public Thread {
     Queue<ClientUpdate>& eventq;

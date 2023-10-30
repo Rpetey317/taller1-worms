@@ -3,9 +3,9 @@
 
 #include "Common/queue.h"
 #include "Common/thread.h"
-#include "Server/ClientUpdate/ClientUpdate.h"
-#include "Server/PlayerListMonitor/PlayerListMonitor.h"
-#include "Server/ServerProtocol/ServerProtocol.h"
+#include "Server/src/ClientUpdate/ClientUpdate.h"
+#include "Server/src/PlayerListMonitor/PlayerListMonitor.h"
+#include "Server/src/ServerProtocol/ServerProtocol.h"
 
 /*
  * Constantly listens to client for new messages

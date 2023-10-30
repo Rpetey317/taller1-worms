@@ -8,8 +8,8 @@
 #include "Common/Socket/Socket.h"
 #include "Common/queue.h"
 #include "Common/thread.h"
-#include "Server/ClientUpdate/ClientUpdate.h"
-#include "Server/Game/Game.h"
+#include "Server/src/ClientUpdate/ClientUpdate.h"
+#include "Server/src/Game/Game.h"
 
 /*
  * Thread in charge of listening to connections and adding new players as they connect

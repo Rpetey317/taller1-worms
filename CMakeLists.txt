@@ -19,25 +19,25 @@ include_directories(${PROJECT_SOURCE_DIR}/Common/Socket)
 add_subdirectory("Common") #Para buscar el archivo CMakeLists.txt en el directorio "Common"
 
 # SERVER
-include_directories(${PROJECT_SOURCE_DIR}/Server)
-include_directories(${PROJECT_SOURCE_DIR}/Server/AccepterThread)
-include_directories(${PROJECT_SOURCE_DIR}/Server/ClientUpdate)
-include_directories(${PROJECT_SOURCE_DIR}/Server/Game)
-include_directories(${PROJECT_SOURCE_DIR}/Server/GameLoopThread)
-include_directories(${PROJECT_SOURCE_DIR}/Server/GameUpdate)
-include_directories(${PROJECT_SOURCE_DIR}/Server/PlayerHandler)
-include_directories(${PROJECT_SOURCE_DIR}/Server/PlayerListMonitor)
-include_directories(${PROJECT_SOURCE_DIR}/Server/ReceiverThread)
-include_directories(${PROJECT_SOURCE_DIR}/Server/SenderThread)
-include_directories(${PROJECT_SOURCE_DIR}/Server/ServerProtocol)
+include_directories(${PROJECT_SOURCE_DIR}/Server/src)
+include_directories(${PROJECT_SOURCE_DIR}/Server/src/AccepterThread)
+include_directories(${PROJECT_SOURCE_DIR}/Server/src/ClientUpdate)
+include_directories(${PROJECT_SOURCE_DIR}/Server/src/Game)
+include_directories(${PROJECT_SOURCE_DIR}/Server/src/GameLoopThread)
+include_directories(${PROJECT_SOURCE_DIR}/Server/src/GameUpdate)
+include_directories(${PROJECT_SOURCE_DIR}/Server/src/PlayerHandler)
+include_directories(${PROJECT_SOURCE_DIR}/Server/src/PlayerListMonitor)
+include_directories(${PROJECT_SOURCE_DIR}/Server/src/ReceiverThread)
+include_directories(${PROJECT_SOURCE_DIR}/Server/src/SenderThread)
+include_directories(${PROJECT_SOURCE_DIR}/Server/src/ServerProtocol)
 
-add_subdirectory("Server")
+add_subdirectory("Server/src")
 
 # CLIENT
-include_directories(${PROJECT_SOURCE_DIR}/Client)
-include_directories(${PROJECT_SOURCE_DIR}/Client/ServerUpdate)
+include_directories(${PROJECT_SOURCE_DIR}/Client/src)
+include_directories(${PROJECT_SOURCE_DIR}/Client/src/ServerUpdate)
 
-add_subdirectory("Client")
+add_subdirectory("Client/src")
 
 
 # EJECUTABLES

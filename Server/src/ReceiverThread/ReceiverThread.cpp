@@ -1,4 +1,4 @@
-#include "Server/ReceiverThread/ReceiverThread.h"
+#include "Server/src/ReceiverThread/ReceiverThread.h"
 
 #include <string>
 

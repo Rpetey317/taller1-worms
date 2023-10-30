@@ -1,6 +1,6 @@
-#include "Server/SenderThread/SenderThread.h"
+#include "Server/src/SenderThread/SenderThread.h"
 
-#include "Server/GameUpdate/GameUpdate.h"
+#include "Server/src/GameUpdate/GameUpdate.h"
 
 SenderThread::SenderThread(Queue<GameUpdate>& _sendq, ServerProtocol& _prot):
         sendq(_sendq), prot(_prot) {}
