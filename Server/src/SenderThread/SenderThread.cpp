@@ -16,7 +16,7 @@ void SenderThread::run() {
                 _keep_running = false;
                 continue;
             }
-            this->prot.send_msg(*msg);
+            this->prot.send_update(*msg);
         } catch (ClosedQueue& e) {
             _keep_running = false;
             continue;

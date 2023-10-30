@@ -9,42 +9,16 @@
 #include "GameUpdate.h"
 #include "NetworkProtocol.h"
 
+using NetworkProtocol::msgcode_t;
 using NetworkProtocol::msglen_t;
+
+using NetworkProtocol::MSGCODE_PLAYER_CONNECT;
+using NetworkProtocol::MSGCODE_PLAYER_DISCONNECT;
+using NetworkProtocol::MSGCODE_PLAYER_MESSAGE;
 
 ServerProtocol::ServerProtocol(Socket&& _cli): cli(std::move(_cli)), isclosed(false) {}
 
-void ServerProtocol::send_msg(const GameUpdate& _msg) {
-    if (this->isclosed) {
-        return;
-    }
-
-    char wr_buffer = 0;
-    std::string msg = _msg.get_msg();
-
-    // Send code
-    this->cli.sendall(&wr_buffer, 1, &this->isclosed);
-    if (isclosed) {
-        this->isclosed = true;
-        return;
-    }
-
-    // Send message length
-    msglen_t name_size = htons(msg.length());
-    this->cli.sendall(&name_size, sizeof(msglen_t), &this->isclosed);
-    if (isclosed) {
-        this->isclosed = true;
-        return;
-    }
-
-    // Send message
-    this->cli.sendall(msg.data(), ntohs(name_size), &this->isclosed);
-    if (isclosed) {
-        this->isclosed = true;
-        return;
-    }
-
-    return;
-}
+char ServerProtocol::send_update(GameUpdate* msg) { return msg->get_sent_by(*this); }
 
 ClientUpdate ServerProtocol::recv_msg() {
     char code;
@@ -69,14 +43,21 @@ ClientUpdate ServerProtocol::recv_msg() {
 }
 
 char ServerProtocol::send_PlayerMessageUpdate(const PlayerMessageUpdate& upd) {
+    // send code
+    msgcode_t code = MSGCODE_PLAYER_MESSAGE;
+    this->cli.sendall(&code, sizeof(msgcode_t), &this->isclosed);
+    if (this->isclosed) {
+        return CLOSED_SKT;
+    }
 
+    // send message length
     msglen_t msg_len = htons(upd.get_msg().length());
-
     this->cli.sendall(&msg_len, sizeof(msglen_t), &this->isclosed);
     if (this->isclosed) {
         return CLOSED_SKT;
     }
 
+    // send message
     this->cli.sendall(upd.get_msg().data(), upd.get_msg().length(), &this->isclosed);
     if (this->isclosed) {
         return CLOSED_SKT;

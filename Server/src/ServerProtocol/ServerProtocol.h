@@ -28,7 +28,7 @@ public:
     /*
      * Sends given message to client
      */
-    void send_msg(const GameUpdate& msg);
+    char send_update(GameUpdate* msg);
 
     /*
      * Reads a message from client. Returns NO_MSG_READ if connection closed
