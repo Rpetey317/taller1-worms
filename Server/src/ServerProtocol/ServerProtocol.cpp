@@ -68,6 +68,23 @@ ClientUpdate ServerProtocol::recv_msg() {
     return ClientUpdate(msg);
 }
 
+char ServerProtocol::send_PlayerMessageUpdate(const PlayerMessageUpdate& upd){
+
+    msglen_t msg_len = htons(upd.get_msg().length());
+    
+    this->cli.sendall(&msg_len, sizeof(msglen_t), &this->isclosed);
+    if (this->isclosed) {
+        return CLOSED_SKT;
+    }
+
+    this->cli.sendall(upd.get_msg().data(), upd.get_msg().length(), &this->isclosed);
+    if (this->isclosed) {
+        return CLOSED_SKT;
+    }
+
+    return SUCCESS;
+}
+
 bool ServerProtocol::is_connected() { return !this->isclosed; }
 
 void ServerProtocol::close() {

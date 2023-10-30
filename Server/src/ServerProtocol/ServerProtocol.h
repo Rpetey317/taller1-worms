@@ -4,8 +4,10 @@
 #include <string>
 
 #include "Socket.h"
+#include "GameUpdateHeaders.h"
 
 #define CLOSED_SKT -1
+#define SUCCESS 0
 #define NO_MSG_RECV ""
 
 
@@ -37,6 +39,8 @@ public:
      * returns true if connection with client is still open
      */
     bool is_connected();
+
+    char send_PlayerMessageUpdate(const PlayerMessageUpdate& upd);
 
     /*
      * Closes connection to client. Destructor already closes connection,

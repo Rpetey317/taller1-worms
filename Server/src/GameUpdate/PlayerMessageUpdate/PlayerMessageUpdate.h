@@ -12,9 +12,9 @@ class PlayerMessageUpdate: public GameUpdate {
 public:
     explicit PlayerMessageUpdate(std::string const& _msg);
 
-    char get_code() const override;
+    const std::string& get_msg() const;
 
-    std::vector<char> get_serialized_msg() const override;
+    char get_sent_by(ServerProtocol& prot) const override;
 };
 
 
