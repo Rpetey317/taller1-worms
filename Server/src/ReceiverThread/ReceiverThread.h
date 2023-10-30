@@ -1,11 +1,11 @@
 #ifndef __SERVER_RECEIVER_H__
 #define __SERVER_RECEIVER_H__
 
-#include "Common/queue.h"
-#include "Common/thread.h"
-#include "Server/src/ClientUpdate/ClientUpdate.h"
-#include "Server/src/PlayerListMonitor/PlayerListMonitor.h"
-#include "Server/src/ServerProtocol/ServerProtocol.h"
+#include "queue.h"
+#include "thread.h"
+#include "ClientUpdate.h"
+#include "PlayerListMonitor.h"
+#include "ServerProtocol.h"
 
 /*
  * Constantly listens to client for new messages

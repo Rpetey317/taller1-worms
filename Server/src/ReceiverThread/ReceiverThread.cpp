@@ -1,8 +1,8 @@
-#include "Server/src/ReceiverThread/ReceiverThread.h"
+#include "ReceiverThread.h"
 
 #include <string>
 
-#include "common/Socket/LibError.h"
+#include "LibError.h"
 
 ReceiverThread::ReceiverThread(Queue<ClientUpdate>& _eventq, ServerProtocol& _prot,
                                std::atomic<int>& _plcount):

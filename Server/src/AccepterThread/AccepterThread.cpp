@@ -2,7 +2,7 @@
 
 #include <utility>
 
-#include "Common/Socket/LibError.h"
+#include "LibError.h"
 
 ServerAccepterThread::ServerAccepterThread(Socket&& _acc, GameHandler& _players):
         acc(std::move(_acc)), lobby(_players) {}

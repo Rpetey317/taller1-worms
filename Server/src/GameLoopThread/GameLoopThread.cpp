@@ -1,4 +1,4 @@
-#include "Server/src/GameLoopThread/GameLoopThread.h"
+#include "GameLoopThread.h"
 
 #include <chrono>
 

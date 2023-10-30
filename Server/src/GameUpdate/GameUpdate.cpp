@@ -1,4 +1,4 @@
-#include "Server/src/GameUpdate/GameUpdate.h"
+#include "GameUpdate.h"
 
 GameUpdate::GameUpdate(std::string const& _msg): msg(_msg) {}
 

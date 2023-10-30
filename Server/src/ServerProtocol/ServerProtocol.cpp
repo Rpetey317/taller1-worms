@@ -5,9 +5,9 @@
 
 #include <arpa/inet.h>
 
-#include "Common/NetworkProtocol.h"
-#include "Server/src/ClientUpdate/ClientUpdate.h"
-#include "Server/src/GameUpdate/GameUpdate.h"
+#include "NetworkProtocol.h"
+#include "ClientUpdate.h"
+#include "GameUpdate.h"
 
 using NetworkProtocol::msglen_t;
 

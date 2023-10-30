@@ -2,7 +2,7 @@
 
 #include <arpa/inet.h>
 
-#include "Common/NetworkProtocol.h"
+#include "NetworkProtocol.h"
 
 using NetworkProtocol::MSGCODE_PLAYER_MESSAGE;
 using NetworkProtocol::msglen_t;

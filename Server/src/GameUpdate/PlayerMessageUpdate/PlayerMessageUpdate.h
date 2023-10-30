@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "../GameUpdate.h"
+#include "GameUpdate.h"
 
 class PlayerMessageUpdate: public GameUpdate {
     const std::string message;

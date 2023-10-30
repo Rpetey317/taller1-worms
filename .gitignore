@@ -34,3 +34,6 @@
 # VSCode setting files
 .vscode/c_cpp_properties.json
 .vscode/settings.json
+
+# CMake build folder
+build/

@@ -2,14 +2,14 @@
 #include <list>
 #include <utility>
 
-#include "Common/Socket/Socket.h"
-#include "Common/queue.h"
-#include "Server/src/AccepterThread/AccepterThread.h"
-#include "Server/src/ClientUpdate/ClientUpdate.h"
-#include "Server/src/Game/Game.h"
-#include "Server/src/GameLoopThread/GameLoopThread.h"
-#include "Server/src/PlayerListMonitor/PlayerListMonitor.h"
-#include "Server/src/ServerProtocol/ServerProtocol.h"
+#include "Socket.h"
+#include "queue.h"
+#include "AccepterThread.h"
+#include "ClientUpdate.h"
+#include "Game.h"
+#include "GameLoopThread.h"
+#include "PlayerListMonitor.h"
+#include "ServerProtocol.h"
 
 #define EXPECTED_ARGC 2
 
