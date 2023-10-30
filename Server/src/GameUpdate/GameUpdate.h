@@ -8,14 +8,14 @@
 
 class GameUpdate {
 private:
-    const std::string msg; // to be removed
+    const std::string msg;  // to be removed
 
 public:
     GameUpdate() {}
 
     explicit GameUpdate(std::string const& _msg);
 
-    std::string get_msg() const; // to be removed
+    std::string get_msg() const;  // to be removed
 
     virtual char get_sent_by(ServerProtocol& prot) const = 0;
 

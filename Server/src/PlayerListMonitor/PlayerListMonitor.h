@@ -4,8 +4,8 @@
 #include <list>
 #include <mutex>
 
-#include "queue.h"
 #include "GameUpdate.h"
+#include "queue.h"
 
 /*
  * Thread-safe list of queues of messages.

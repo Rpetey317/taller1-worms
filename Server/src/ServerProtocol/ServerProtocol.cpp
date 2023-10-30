@@ -5,9 +5,9 @@
 
 #include <arpa/inet.h>
 
-#include "NetworkProtocol.h"
 #include "ClientUpdate.h"
 #include "GameUpdate.h"
+#include "NetworkProtocol.h"
 
 using NetworkProtocol::msglen_t;
 
@@ -68,10 +68,10 @@ ClientUpdate ServerProtocol::recv_msg() {
     return ClientUpdate(msg);
 }
 
-char ServerProtocol::send_PlayerMessageUpdate(const PlayerMessageUpdate& upd){
+char ServerProtocol::send_PlayerMessageUpdate(const PlayerMessageUpdate& upd) {
 
     msglen_t msg_len = htons(upd.get_msg().length());
-    
+
     this->cli.sendall(&msg_len, sizeof(msglen_t), &this->isclosed);
     if (this->isclosed) {
         return CLOSED_SKT;

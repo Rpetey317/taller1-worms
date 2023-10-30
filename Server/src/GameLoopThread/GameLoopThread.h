@@ -1,10 +1,10 @@
 #ifndef GAME_LOOP_THREAD_H
 #define GAME_LOOP_THREAD_H
 
-#include "queue.h"
-#include "thread.h"
 #include "ClientUpdate.h"
 #include "Game.h"
+#include "queue.h"
+#include "thread.h"
 
 class GameLoopThread: public Thread {
     Queue<ClientUpdate>& eventq;

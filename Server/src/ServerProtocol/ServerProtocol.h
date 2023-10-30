@@ -3,8 +3,8 @@
 
 #include <string>
 
-#include "Socket.h"
 #include "GameUpdateHeaders.h"
+#include "Socket.h"
 
 #define CLOSED_SKT -1
 #define SUCCESS 0

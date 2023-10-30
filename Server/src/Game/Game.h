@@ -5,11 +5,11 @@
 #include <mutex>
 #include <string>
 
-#include "Socket.h"
-#include "queue.h"
 #include "GameUpdate.h"
 #include "PlayerHandler.h"
 #include "PlayerListMonitor.h"
+#include "Socket.h"
+#include "queue.h"
 
 /*
  * Handles the game lobby and its players

@@ -5,11 +5,11 @@
 #include <mutex>
 #include <string>
 
+#include "ClientUpdate.h"
+#include "Game.h"
 #include "Socket.h"
 #include "queue.h"
 #include "thread.h"
-#include "ClientUpdate.h"
-#include "Game.h"
 
 /*
  * Thread in charge of listening to connections and adding new players as they connect

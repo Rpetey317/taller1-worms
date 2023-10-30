@@ -28,7 +28,7 @@ void GameHandler::remove_disconnected() {
 }
 
 void GameHandler::advance_turn() {
-    this->curr_pl++;
+    ++this->curr_pl;
     if (this->curr_pl == this->players.end())
         this->curr_pl = this->players.begin();
 }

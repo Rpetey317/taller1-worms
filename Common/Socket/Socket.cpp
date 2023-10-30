@@ -1,3 +1,5 @@
+#include "Socket.h"
+
 #include <stdexcept>
 
 #include <arpa/inet.h>
@@ -12,7 +14,6 @@
 
 #include "LibError.h"
 #include "Resolver.h"
-#include "Socket.h"
 
 Socket::Socket(const char* hostname, const char* servname) {
     Resolver resolver(hostname, servname, false);

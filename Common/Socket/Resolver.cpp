@@ -1,3 +1,5 @@
+#include "Resolver.h"
+
 #include <stdexcept>
 
 #include <arpa/inet.h>
@@ -10,7 +12,6 @@
 #include <unistd.h>
 
 #include "LibError.h"
-#include "Resolver.h"
 #include "ResolverError.h"
 
 Resolver::Resolver(const char* hostname, const char* servname, bool is_passive) {

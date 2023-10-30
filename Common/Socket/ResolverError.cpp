@@ -1,8 +1,8 @@
+#include "ResolverError.h"
+
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <sys/types.h>
-
-#include "ResolverError.h"
 
 ResolverError::ResolverError(int gai_errno): gai_errno(gai_errno) {}
 
