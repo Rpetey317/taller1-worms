@@ -1,4 +1,0 @@
-/home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/build/CMakeFiles/server.dir
-/home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/build/CMakeFiles/client.dir
-/home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/build/CMakeFiles/edit_cache.dir
-/home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/build/CMakeFiles/rebuild_cache.dir
