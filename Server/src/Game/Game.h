@@ -37,7 +37,7 @@ public:
      */
     void remove_disconnected();
 
-    GameUpdate* execute(ClientUpdate event);
+    GameUpdate* execute(ClientUpdate& event);
 
     void broadcast(GameUpdate* update);
 

@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include "ClientUpdate.h"
 #include "GameUpdateHeaders.h"
 #include "Socket.h"
 

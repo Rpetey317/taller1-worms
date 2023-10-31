@@ -2,6 +2,7 @@
 
 #include <string>
 
+#include "ClientUpdate.h"
 #include "LibError.h"
 
 ReceiverThread::ReceiverThread(Queue<ClientUpdate>& _eventq, ServerProtocol& _prot,
@@ -11,9 +12,9 @@ ReceiverThread::ReceiverThread(Queue<ClientUpdate>& _eventq, ServerProtocol& _pr
 void ReceiverThread::run() {
     while (_keep_running) {
         try {
-            std::string msg = prot.recv_msg();
-            if (msg != NO_MSG_RECV) {
-                this->eventq.push(ClientUpdate(msg));
+            ClientUpdate msg = prot.recv_msg();
+            if (true /*msg.is_valid()*/) {
+                this->eventq.push(msg);
             } else {
                 // Protocol was closed
                 // To be implemented

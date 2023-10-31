@@ -2,8 +2,6 @@
 
 #include <iostream>
 
-void print_msg(const GameUpdate* upd) { std::cout << upd->get_msg() << std::endl; }
-
 ReceiverListMonitor::ReceiverListMonitor() {}
 
 void ReceiverListMonitor::add_recver(Queue<GameUpdate*>* recver) {
@@ -12,7 +10,6 @@ void ReceiverListMonitor::add_recver(Queue<GameUpdate*>* recver) {
 }
 
 void ReceiverListMonitor::push_to_all(GameUpdate* msg) {
-    print_msg(msg);
     std::lock_guard<std::mutex> lck(mtx);
     for (auto q = this->recvers.begin(); q != this->recvers.end(); q++) {
         try {

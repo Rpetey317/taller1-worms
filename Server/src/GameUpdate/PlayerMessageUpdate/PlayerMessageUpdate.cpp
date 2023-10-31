@@ -1,9 +1,10 @@
 #include "PlayerMessageUpdate.h"
 
+#include "ServerProtocol.h"
 
 PlayerMessageUpdate::PlayerMessageUpdate(std::string const& _msg): message(_msg) {}
 
-char PlayerMessageUpdate::get_sent_by(ServerProtocol& prot) const {
+char PlayerMessageUpdate::get_sent_by(ServerProtocol& prot) {
     return prot.send_PlayerMessageUpdate(*this);
 }
 

@@ -4,7 +4,8 @@
 #include <string>
 #include <vector>
 
-#include "ServerProtocol.h"
+//#include "../ServerProtocol/ServerProtocol.h"
+class ServerProtocol;
 
 class GameUpdate {
 private:
@@ -13,9 +14,7 @@ private:
 public:
     GameUpdate() = default;
 
-    std::string get_msg() const;  // to be removed
-
-    virtual char get_sent_by(ServerProtocol& prot) const = 0;
+    virtual char get_sent_by(ServerProtocol& prot) = 0;
 
     virtual ~GameUpdate() = default;
 };

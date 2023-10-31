@@ -38,7 +38,7 @@ public:
     /*
      * Sends a message back to client
      */
-    void send(const ClientUpdate& msg);
+    void send(GameUpdate* msg);
 
     /*
      * Stops associated threads and frees all resources

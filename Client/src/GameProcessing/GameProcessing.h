@@ -1,21 +1,23 @@
 #ifndef GAMEPROCESSING_H
 #define GAMEPROCESSING_H
 
-#include "ClientProtocol.h"
-#include "Socket.h"
-#include <utility>
+#include <atomic>
 #include <iostream>
 #include <string>
-#include <atomic>
+#include <utility>
+
+#include "../ClientProtocol/ClientProtocol.h"
+
+#include "Socket.h"
 
 class GameProcessing {
 private:
     Socket skt;
-    ClientProtocol protocol; // El thread receiver y sender deberian tener el clientProtocol?
+    ClientProtocol protocol;  // El thread receiver y sender deberian tener el clientProtocol?
     std::atomic<bool> keep_talking;
 
 public:
-    explicit GameProcessing(const char *hostname, const char *port);
+    explicit GameProcessing(const char* hostname, const char* port);
     void run();
     ~GameProcessing();
 };

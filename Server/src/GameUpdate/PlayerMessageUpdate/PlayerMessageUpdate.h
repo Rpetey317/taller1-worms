@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "GameUpdate.h"
+#include "../GameUpdate.h"
 
 class PlayerMessageUpdate: public GameUpdate {
 private:
@@ -15,7 +15,7 @@ public:
 
     const std::string& get_msg() const;
 
-    char get_sent_by(ServerProtocol& prot) const override;
+    char get_sent_by(ServerProtocol& prot) override;
 };
 
 

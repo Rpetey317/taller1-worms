@@ -4,19 +4,21 @@
 #include <mutex>
 #include <string>
 
+#include "../ClientProtocol/ClientProtocol.h"
+
 #include "queue.h"
 #include "thread.h"
 
-#include "ClientProtocol.h"
-
 class SenderThread: public Thread {
-    Queue<std::string>& outgoingq; // Por ahora queue de strings
+    Queue<std::string>& outgoingq;  // Por ahora queue de strings
     ClientProtocol& prot;
 
 public:
     SenderThread(Queue<std::string>& outgoingq, ClientProtocol& prot);
     void run() override;
     void end();
+
+    ~SenderThread();
 };
 
 

@@ -34,13 +34,13 @@ void GameHandler::advance_turn() {
 }
 
 
-GameUpdate* GameHandler::execute(ClientUpdate event) {
+GameUpdate* GameHandler::execute(ClientUpdate& event) {
     return new PlayerMessageUpdate(event.get_msg());
 }
 
 void GameHandler::broadcast(GameUpdate* update) {
     for (auto pl = this->players.begin(); pl != this->players.end(); pl++) {
-        (*pl)->send(ClientUpdate(update->get_msg()));
+        (*pl)->send(update);
     }
 }
 

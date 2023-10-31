@@ -1,8 +1,9 @@
 #ifndef CLIENTPROTOCOL_H
 #define CLIENTPROTOCOL_H
 
-#include "Socket.h"
 #include <string>
+
+#include "Socket.h"
 
 class ClientProtocol {
 private:
@@ -15,4 +16,4 @@ public:
 };
 
 
-#endif //THREADS_2023C1_MDAVIC0_CLIENT_H
+#endif  // THREADS_2023C1_MDAVIC0_CLIENT_H
