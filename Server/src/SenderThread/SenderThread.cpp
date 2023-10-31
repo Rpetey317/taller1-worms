@@ -18,6 +18,7 @@ void SenderThread::run() {
             }
             this->prot.send_update(msg);
         } catch (ClosedQueue& e) {
+            std::cout << "Sender queue closed" << std::endl;
             _keep_running = false;
             continue;
         } catch (...) {

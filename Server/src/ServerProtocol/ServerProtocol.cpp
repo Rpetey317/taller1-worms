@@ -22,21 +22,22 @@ char ServerProtocol::send_update(GameUpdate* msg) { return msg->get_sent_by(*thi
 
 ClientUpdate ServerProtocol::recv_msg() {
     char code;
+    ClientUpdate upd;
     this->cli.recvall(&code, sizeof(char), &this->isclosed);
     if (this->isclosed) {
-        return ClientUpdate(NO_MSG_RECV);
+        return upd;
     }
 
     msglen_t msg_len;
     this->cli.recvall(&msg_len, sizeof(msglen_t), &this->isclosed);
     if (this->isclosed) {
-        return ClientUpdate(NO_MSG_RECV);
+        return upd;
     }
     msg_len = ntohs(msg_len);
     std::vector<char> vmsg(msg_len);
     this->cli.recvall(&vmsg[0], msg_len, &this->isclosed);
     if (this->isclosed) {
-        return ClientUpdate(NO_MSG_RECV);
+        return upd;
     }
     std::string msg(vmsg.begin(), vmsg.end());
     return ClientUpdate(msg);

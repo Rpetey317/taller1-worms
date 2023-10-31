@@ -3,7 +3,7 @@
 #include <utility>
 
 PlayerHandler::PlayerHandler(Socket&& _peer, std::atomic<int>& _plcount,
-                             Queue<ClientUpdate>& _eventq):
+                             Queue<ClientUpdate*>& _eventq):
         prot(std::move(_peer)),
         sendq(10000),
         send_th(sendq, prot),

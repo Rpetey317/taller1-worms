@@ -11,7 +11,7 @@
  * Constantly listens to client for new messages
  */
 class ReceiverThread: public Thread {
-    Queue<ClientUpdate>& eventq;
+    Queue<ClientUpdate*>& eventq;
     ServerProtocol& prot;
     std::atomic<int>& plcount;
 
@@ -22,7 +22,7 @@ public:
      * Incoming messages will be forvarded to recvers
      * When client disconnects, plcount is decremented
      */
-    ReceiverThread(Queue<ClientUpdate>& eventq, ServerProtocol& prot, std::atomic<int>& plcount);
+    ReceiverThread(Queue<ClientUpdate*>& eventq, ServerProtocol& prot, std::atomic<int>& plcount);
 
     /*
      * Runs thread. Listens for messages, and when one is received,

@@ -17,14 +17,14 @@
 class GameHandler {
     std::list<PlayerHandler*> players;
     std::atomic<int> plcount;
-    Queue<ClientUpdate>& eventq;
+    Queue<ClientUpdate*>& eventq;
     std::list<PlayerHandler*>::iterator curr_pl;
 
 public:
     /*
      * Creates new handler, adding players (recievers) to given list
      */
-    explicit GameHandler(Queue<ClientUpdate>& _eventq);
+    explicit GameHandler(Queue<ClientUpdate*>& _eventq);
 
     /*
      * Adds a new player, connected to given socket
@@ -37,7 +37,7 @@ public:
      */
     void remove_disconnected();
 
-    GameUpdate* execute(ClientUpdate& event);
+    GameUpdate* execute(ClientUpdate* event);
 
     void broadcast(GameUpdate* update);
 

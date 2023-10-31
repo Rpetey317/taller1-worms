@@ -29,7 +29,7 @@ int main(int argc, const char** argv) {
 
     // Initialization
     Socket acc(argv[1]);
-    Queue<ClientUpdate> eventq;
+    Queue<ClientUpdate*> eventq(10000);
     GameHandler clients(eventq);
 
     ServerAccepterThread acc_th(std::move(acc), clients);

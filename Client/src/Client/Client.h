@@ -6,6 +6,7 @@
 
 #include "../ClientParser/ClientParser.h"
 #include "../ClientProtocol/ClientProtocol.h"
+
 #include "Socket.h"
 
 class Client {
