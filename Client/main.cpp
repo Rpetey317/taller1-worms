@@ -1,8 +1,6 @@
 #include <iostream>
 
-#include "Client/Client.h"
-
-#include "GameProcessing.h"
+#include "GameProcessing/GameProcessing.h"
 
 int main(int argc, char* argv[]) {
     try {
@@ -16,10 +14,10 @@ int main(int argc, char* argv[]) {
         const char* hostname = argv[1];
         const char* port = argv[2];
 
-        Client client(hostname, port);
-        // GameProcessing client(hostname, port);  // Seria el GameProcessing
-        client.play();
-
+        // Client client(hostname, port);
+        GameProcessing client(hostname, port);  // Seria el GameProcessing
+        // client.play();
+        client.run();
         ret = 0;
         return ret;
     } catch (const std::exception& err) {

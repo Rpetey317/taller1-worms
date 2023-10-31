@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "../ClientProtocol/ClientProtocol.h"
 
@@ -13,11 +14,12 @@
 class GameProcessing {
 private:
     Socket skt;
+    ClientParser parser;
     ClientProtocol protocol;  // El thread receiver y sender deberian tener el clientProtocol?
-    std::atomic<bool> keep_talking;
 
 public:
     explicit GameProcessing(const char* hostname, const char* port);
+    std::string ask_for_command();
     void run();
     ~GameProcessing();
 };
