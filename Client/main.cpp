@@ -15,8 +15,8 @@ int main(int argc, char* argv[]) {
         const char* port = argv[2];
 
 
-        // Client client(hostname, port); // Seria el GameProcessing
-        // client.play();
+        GameProcessing client(hostname, port); // Seria el GameProcessing
+        // client.run();
 
         ret = 0;
         return ret;

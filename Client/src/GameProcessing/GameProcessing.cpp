@@ -1,11 +1,12 @@
 #include "GameProcessing.h"
 
-Client::Client(const char *hostname, const char *port):
+GameProcessing::GameProcessing(const char *hostname, const char *port):
                         skt(Socket(hostname, port)),
                         protocol(std::move(this->skt)),
                         keep_talking(true) {}
 
-void Client::run() {
+void GameProcessing::run() {
+    // Creo los threads sender y receiver pasandoles el protocolo y los corro
 }
 
-Client::~Client() {}
+GameProcessing::~GameProcessing() {}

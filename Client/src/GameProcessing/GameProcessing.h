@@ -8,16 +8,16 @@
 #include <string>
 #include <atomic>
 
-class Client {
+class GameProcessing {
 private:
     Socket skt;
-    ClientProtocol protocol;
+    ClientProtocol protocol; // El thread receiver y sender deberian tener el clientProtocol?
     std::atomic<bool> keep_talking;
 
 public:
-    explicit Client(const char *hostname, const char *port);
+    explicit GameProcessing(const char *hostname, const char *port);
     void run();
-    ~Client();
+    ~GameProcessing();
 };
 
 
