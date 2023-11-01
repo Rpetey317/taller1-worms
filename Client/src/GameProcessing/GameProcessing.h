@@ -3,6 +3,7 @@
 
 #include <atomic>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <utility>
 #include <vector>
@@ -14,7 +15,6 @@
 class GameProcessing {
 private:
     Socket skt;
-    ClientParser parser;
     ClientProtocol protocol;  // El thread receiver y sender deberian tener el clientProtocol?
 
 public:

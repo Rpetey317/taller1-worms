@@ -1,7 +1,7 @@
 #include "GameProcessing.h"
 
 GameProcessing::GameProcessing(const char* hostname, const char* port):
-        skt(Socket(hostname, port)), parser(), protocol(std::move(this->skt)) {}
+        skt(Socket(hostname, port)), protocol(std::move(this->skt)) {}
 
 std::string GameProcessing::ask_for_command() {
     std::string command;
@@ -38,8 +38,8 @@ void GameProcessing::run() {
             int lenght;
             lenght = chatmsg.size();
             int position = 0;
-            while (isblank(
-                    chatmsg[position])) {  // Quiero empezar a leer cuando se encuentre la primera letra
+            while (isblank(chatmsg[position])) {  // Quiero empezar a leer cuando se encuentre la
+                                                  // primera letra
                 position++;
                 lenght--;  // Quito el espacio blanco
             }

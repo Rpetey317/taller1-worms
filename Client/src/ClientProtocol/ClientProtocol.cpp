@@ -14,17 +14,17 @@ std::string ClientProtocol::create_players_msg(int amount_players) {
 
 ClientProtocol::ClientProtocol(Socket skt): skt(std::move(skt)) {}
 
-void ClientProtocol::client_send_msg(const std::string &chat_msg) {
+void ClientProtocol::client_send_msg(const std::string& chat_msg) {
     bool was_closed = false;
-    
-    //Send action
+
+    // Send action
     uint8_t action = 5;
     int sz = skt.sendall(&action, sizeof(uint8_t), &was_closed);
     if (sz == 0) {
         return;
     }
 
-    //Send lenght
+    // Send lenght
     uint16_t lenght = chat_msg.size();
     uint16_t converted_lenght = htons(lenght);
     sz = skt.sendall(&converted_lenght, sizeof(uint16_t), &was_closed);
@@ -32,7 +32,7 @@ void ClientProtocol::client_send_msg(const std::string &chat_msg) {
         return;
     }
 
-    //Send msg
+    // Send msg
     sz = skt.sendall(chat_msg.c_str(), lenght, &was_closed);
     if (sz == 0) {
         return;
