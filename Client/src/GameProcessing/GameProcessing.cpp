@@ -12,7 +12,12 @@
 
 
 GameProcessing::GameProcessing(const char* hostname, const char* port):
-        skt(Socket(hostname, port)), protocol(std::move(this->skt)) {}
+        skt(Socket(hostname, port)),
+        protocol(std::move(this->skt)),
+        incomingq(),
+        outgoingq(),
+        receiverTh(incomingq, protocol),
+        senderTh(outgoingq, protocol) {}
 
 std::string GameProcessing::ask_for_command() {
     std::string command;
