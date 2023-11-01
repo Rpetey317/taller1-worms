@@ -1,5 +1,16 @@
 #include "GameProcessing.h"
 
+#define CHAT_STR "Chat"
+#define READ_STR "Read"
+#define EXIT_STR "Exit"
+#define NOCMD_STR ""
+
+#define CHAT 0
+#define READ 1
+#define EXIT 2
+#define NOCMD 3
+
+
 GameProcessing::GameProcessing(const char* hostname, const char* port):
         skt(Socket(hostname, port)), protocol(std::move(this->skt)) {}
 
@@ -20,6 +31,14 @@ std::string GameProcessing::ask_for_command() {
 
 void GameProcessing::run() {
     // Creo los threads sender y receiver pasandoles el protocolo y los corro
+
+    const std::map<std::string, int> lut{
+            {CHAT_STR, CHAT},
+            {READ_STR, READ},
+            {EXIT_STR, EXIT},
+            {NOCMD_STR, NOCMD},
+    };
+
     bool playing = true;
     std::string command;
     while (playing) {
@@ -28,11 +47,11 @@ void GameProcessing::run() {
         std::istringstream ss(command);
         std::string action;
         ss >> action;
-
-        if (action == "Exit") {
+        int cmd_id = lut.at(action);
+        if (cmd_id == EXIT) {
             playing = false;
             // break;
-        } else if (action == "Chat") {
+        } else if (cmd_id == CHAT) {
             std::string chatmsg;
             std::getline(ss, chatmsg);
             int lenght;
@@ -45,7 +64,7 @@ void GameProcessing::run() {
             }
             std::string new_chatmsg = chatmsg.substr(position);
             protocol.client_send_msg(new_chatmsg);
-        } else if (action == "Read") {
+        } else if (cmd_id == READ) {
             int amount_msgs;
             ss >> amount_msgs;
 
