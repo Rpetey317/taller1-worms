@@ -20,6 +20,15 @@ class ServerProtocol {
     Socket cli;
     bool isclosed;
 
+    /*
+     * Primitive type send methods, to simplify update-specific send methods
+     * On successful send returns true, false if socket closed
+     */
+    bool send_short(const uint16_t& num);
+    bool send_long(const uint32_t& num);
+    bool send_char(const uint8_t& num);
+    bool send_str(const std::string& str);
+
 public:
     /*
      * Constructs a new protocol from socket with move semantics
@@ -42,6 +51,8 @@ public:
     bool is_connected();
 
     char send_PlayerMessageUpdate(const PlayerMessageUpdate& upd);
+
+    char send_TurnChangeUpdate(const TurnChangeUpdate& upd);
 
     /*
      * Closes connection to client. Destructor already closes connection,

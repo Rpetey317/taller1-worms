@@ -9,12 +9,47 @@
 #include "GameUpdate.h"
 #include "NetworkProtocol.h"
 
-using NetworkProtocol::msgcode_t;
-using NetworkProtocol::msglen_t;
+using namespace NetworkProtocol;
 
-using NetworkProtocol::MSGCODE_PLAYER_CONNECT;
-using NetworkProtocol::MSGCODE_PLAYER_DISCONNECT;
-using NetworkProtocol::MSGCODE_PLAYER_MESSAGE;
+bool ServerProtocol::send_short(const uint16_t& num){
+    uint16_t nnum = htons(num);
+    this->cli.sendall(&nnum, sizeof(uint16_t), &this->isclosed);
+    if (this->isclosed) {
+        return false;
+    }
+    return true;
+}
+
+bool ServerProtocol::send_long(const uint32_t& num){
+    uint32_t nnum = htonl(num);
+    this->cli.sendall(&nnum, sizeof(uint32_t), &this->isclosed);
+    if (this->isclosed) {
+        return false;
+    }
+    return true;
+}
+
+bool ServerProtocol::send_char(const uint8_t& num){
+    this->cli.sendall(&num, 1, &this->isclosed);
+    if (this->isclosed) {
+        return false;
+    }
+    return true;
+}
+
+bool ServerProtocol::send_str(const std::string& str){
+    msglen_t len = htonl(str.length());
+    this->cli.sendall(&len, sizeof(msglen_t), &this->isclosed);
+    if (this->isclosed) {
+        return false;
+    }
+    this->cli.sendall(str.data(), str.length(), &this->isclosed);
+    if (this->isclosed) {
+        return false;
+    }
+    return true;
+}
+
 
 ServerProtocol::ServerProtocol(Socket&& _cli): cli(std::move(_cli)), isclosed(false) {}
 
@@ -45,21 +80,29 @@ ClientUpdate ServerProtocol::recv_msg() {
 
 char ServerProtocol::send_PlayerMessageUpdate(const PlayerMessageUpdate& upd) {
     // send code
-    msgcode_t code = MSGCODE_PLAYER_MESSAGE;
+    if (!this->send_char(MSGCODE_PLAYER_MESSAGE)) {
+        return CLOSED_SKT;
+    }
+
+    // send message
+    if (!this->send_str(upd.get_msg())) {
+        return CLOSED_SKT;
+    }
+
+    return SUCCESS;
+}
+
+char ServerProtocol::send_TurnChangeUpdate(const TurnChangeUpdate& upd){
+    // send code
+    msgcode_t code = MSGCODE_TURN_UPDATE;
     this->cli.sendall(&code, sizeof(msgcode_t), &this->isclosed);
     if (this->isclosed) {
         return CLOSED_SKT;
     }
 
-    // send message length
-    msglen_t msg_len = htons(upd.get_msg().length());
-    this->cli.sendall(&msg_len, sizeof(msglen_t), &this->isclosed);
-    if (this->isclosed) {
-        return CLOSED_SKT;
-    }
-
-    // send message
-    this->cli.sendall(upd.get_msg().data(), upd.get_msg().length(), &this->isclosed);
+    // send new current player id
+    int new_player = htonl(upd.get_new_curr_player());
+    this->cli.sendall(&new_player, sizeof(int), &this->isclosed);
     if (this->isclosed) {
         return CLOSED_SKT;
     }
