@@ -38,8 +38,8 @@ bool ServerProtocol::send_char(const uint8_t& num){
 }
 
 bool ServerProtocol::send_str(const std::string& str){
-    msglen_t len = htonl(str.length());
-    this->cli.sendall(&len, sizeof(msglen_t), &this->isclosed);
+    strlen_t len = htonl(str.length());
+    this->cli.sendall(&len, sizeof(strlen_t), &this->isclosed);
     if (this->isclosed) {
         return false;
     }
@@ -63,8 +63,8 @@ ClientUpdate ServerProtocol::recv_msg() {
         return upd;
     }
 
-    msglen_t msg_len;
-    this->cli.recvall(&msg_len, sizeof(msglen_t), &this->isclosed);
+    strlen_t msg_len;
+    this->cli.recvall(&msg_len, sizeof(strlen_t), &this->isclosed);
     if (this->isclosed) {
         return upd;
     }
@@ -94,16 +94,12 @@ char ServerProtocol::send_PlayerMessageUpdate(const PlayerMessageUpdate& upd) {
 
 char ServerProtocol::send_TurnChangeUpdate(const TurnChangeUpdate& upd){
     // send code
-    msgcode_t code = MSGCODE_TURN_UPDATE;
-    this->cli.sendall(&code, sizeof(msgcode_t), &this->isclosed);
-    if (this->isclosed) {
+    if (!this->send_char(MSGCODE_TURN_UPDATE)) {
         return CLOSED_SKT;
     }
 
     // send new current player id
-    int new_player = htonl(upd.get_new_curr_player());
-    this->cli.sendall(&new_player, sizeof(int), &this->isclosed);
-    if (this->isclosed) {
+    if (!this->send_long(upd.get_new_curr_player())) {
         return CLOSED_SKT;
     }
 
