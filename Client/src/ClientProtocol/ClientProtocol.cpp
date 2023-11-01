@@ -49,7 +49,6 @@ std::string ClientProtocol::recv_msg() {
         return msg;
     }
     if (action[0] == 9) {  // La accion es Chat
-        char letter[1];
         uint16_t name_size = 0;
         sz = this->skt.recvall(&name_size, sizeof(uint16_t), &was_closed);
         if (sz == 0) {
@@ -57,15 +56,15 @@ std::string ClientProtocol::recv_msg() {
             return msg;
         }
         name_size = ntohs(name_size);
-        size_t converted_size = static_cast<size_t>(name_size);
-        for (size_t i = 0; i < converted_size; i++) {
-            sz = this->skt.recvall(letter, 1, &was_closed);
-            if (sz == 0) {
-                std::cout << "Falla lectura de letra palabra" << std::endl;
-                return msg;
-            }
-            msg.append(letter);
+        std::vector<char> vname(name_size);
+        this->skt.recvall(&vname[0], name_size, &was_closed);
+        if (sz == 0) {
+            return msg;
         }
+        std::string chatmsg(vname.begin(), vname.end());
+        msg = chatmsg;
+        return msg;
+
     } else if (action[0] == 6) {  // La accion es Cantidad de jugadores
         uint8_t amount_players = 0;
         sz = this->skt.recvall(&amount_players, sizeof(uint8_t), &was_closed);
