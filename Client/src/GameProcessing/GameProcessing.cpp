@@ -33,9 +33,18 @@ void GameProcessing::run() {
             playing = false;
             // break;
         } else if (action == "Chat") {
-            std::vector<std::variant<uint8_t, uint16_t>> parsed_msg =
-                    this->parser.parse_send_msg(command);
-            protocol.client_send_msg(parsed_msg);
+            std::string chatmsg;
+            std::getline(ss, chatmsg);
+            int lenght;
+            lenght = chatmsg.size();
+            int position = 0;
+            while (isblank(
+                    chatmsg[position])) {  // Quiero empezar a leer cuando se encuentre la primera letra
+                position++;
+                lenght--;  // Quito el espacio blanco
+            }
+            std::string new_chatmsg = chatmsg.substr(position);
+            protocol.client_send_msg(new_chatmsg);
         } else if (action == "Read") {
             int amount_msgs;
             ss >> amount_msgs;

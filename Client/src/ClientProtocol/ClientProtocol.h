@@ -4,8 +4,6 @@
 #include <variant>
 #include <vector>
 
-#include "../ClientParser/ClientParser.h"
-
 #include "Socket.h"
 #include "string"
 
@@ -16,7 +14,7 @@ private:
 
 public:
     explicit ClientProtocol(Socket skt);
-    void client_send_msg(std::vector<std::variant<uint8_t, uint16_t>> parsed_command);
+    void client_send_msg(const std::string& chat_msg);
     std::string recv_msg();
     uint8_t receive_gameupdate();
     ~ClientProtocol();

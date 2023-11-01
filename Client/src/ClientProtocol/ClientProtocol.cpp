@@ -14,22 +14,28 @@ std::string ClientProtocol::create_players_msg(int amount_players) {
 
 ClientProtocol::ClientProtocol(Socket skt): skt(std::move(skt)) {}
 
-void ClientProtocol::client_send_msg(std::vector<std::variant<uint8_t, uint16_t>> parsed_command) {
+void ClientProtocol::client_send_msg(const std::string &chat_msg) {
     bool was_closed = false;
-    for (const auto& value: parsed_command) {
-        if (std::holds_alternative<uint8_t>(value)) {
-            uint8_t byte_value = std::get<uint8_t>(value);
-            int sz = skt.sendall(&byte_value, sizeof(uint8_t), &was_closed);
-            if (sz == 0) {
-                return;
-            }
-        } else if (std::holds_alternative<uint16_t>(value)) {
-            uint16_t two_byte_value = std::get<uint16_t>(value);
-            int sz = skt.sendall(&two_byte_value, sizeof(uint16_t), &was_closed);
-            if (sz == 0) {
-                return;
-            }
-        }
+    
+    //Send action
+    uint8_t action = 5;
+    int sz = skt.sendall(&action, sizeof(uint8_t), &was_closed);
+    if (sz == 0) {
+        return;
+    }
+
+    //Send lenght
+    uint16_t lenght = chat_msg.size();
+    uint16_t converted_lenght = htons(lenght);
+    sz = skt.sendall(&converted_lenght, sizeof(uint16_t), &was_closed);
+    if (sz == 0) {
+        return;
+    }
+
+    //Send msg
+    sz = skt.sendall(chat_msg.c_str(), lenght, &was_closed);
+    if (sz == 0) {
+        return;
     }
 }
 
