@@ -3,11 +3,12 @@
 #include <utility>
 
 PlayerHandler::PlayerHandler(Socket&& _peer, std::atomic<int>& _plcount,
-                             Queue<ClientUpdate*>& _eventq):
+                             Queue<ClientUpdate*>& _eventq, uint16_t& _id):
         prot(std::move(_peer)),
         sendq(10000),
         send_th(sendq, prot),
-        recv_th(_eventq, prot, _plcount) {
+        recv_th(_eventq, prot, _plcount),
+        id(_id) {
     _plcount++;
     // recvers.push_to_all(ServerMessage(_plcount));
 }

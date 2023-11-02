@@ -19,6 +19,7 @@ class GameHandler {
     std::atomic<int> plcount;
     Queue<ClientUpdate*>& eventq;
     std::list<PlayerHandler*>::iterator curr_pl;
+    u_int16_t next_free_id;
 
 public:
     /*

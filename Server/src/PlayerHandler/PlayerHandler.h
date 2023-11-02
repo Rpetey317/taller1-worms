@@ -2,6 +2,7 @@
 #define __SERVER_PLWRAPPER_H__
 
 #include <list>
+#include <string>
 
 #include "PlayerListMonitor.h"
 #include "ReceiverThread.h"
@@ -15,6 +16,7 @@ class PlayerHandler {
     Queue<GameUpdate*> sendq;
     SenderThread send_th;
     ReceiverThread recv_th;
+    const uint16_t id;
 
 public:
     /*
@@ -23,7 +25,8 @@ public:
      * New player will be added to recvers, and a message notifying this will be sent
      * plcount is incremented, and when player disconnects, will be decremented
      */
-    PlayerHandler(Socket&& peer, std::atomic<int>& plcount, Queue<ClientUpdate*>& eventq);
+    PlayerHandler(Socket&& peer, std::atomic<int>& plcount, Queue<ClientUpdate*>& eventq,
+                  uint16_t& id);
 
     /*
      * Starts to run associated threads
