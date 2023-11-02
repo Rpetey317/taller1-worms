@@ -1,9 +1,11 @@
 #include "ClientProtocol.h"
 
+
 #include <iostream>
 #include <sstream>
 
 #include <arpa/inet.h>
+
 
 std::string ClientProtocol::create_players_msg(int amount_players) {
     std::string amount_players_str = std::to_string(amount_players);
@@ -12,82 +14,77 @@ std::string ClientProtocol::create_players_msg(int amount_players) {
     return amount_players_msg;
 }
 
-ClientProtocol::ClientProtocol(Socket skt): skt(std::move(skt)) {}
+ClientProtocol::ClientProtocol(Socket skt): skt(std::move(skt)), was_closed(false) {}
 
 void ClientProtocol::client_send_msg(const std::string& chat_msg) {
-    bool was_closed = false;
-
     // Send action
-    uint8_t action = 5;
-    skt.sendall(&action, sizeof(uint8_t), &was_closed);
-    if (was_closed) {
+    msgcode_t action = MSGCODE_PLAYER_MESSAGE;
+    skt.sendall(&action, sizeof(msgcode_t), &this->was_closed);
+    if (this->was_closed) {
         return;
     }
 
     // Send lenght
-    uint16_t lenght = chat_msg.size();
-    uint16_t converted_lenght = htons(lenght);
-    skt.sendall(&converted_lenght, sizeof(uint16_t), &was_closed);
-    if (was_closed) {
+    msglen_t msg_lenght = htons(chat_msg.size());
+    skt.sendall(&msg_lenght, sizeof(msglen_t), &this->was_closed);
+    if (this->was_closed) {
         return;
     }
 
     // Send msg
-    skt.sendall(chat_msg.c_str(), lenght, &was_closed);
-    if (was_closed) {
+    skt.sendall(chat_msg.c_str(), ntohs(msg_lenght), &this->was_closed);
+    if (this->was_closed) {
         return;
     }
 }
 
+msgcode_t ClientProtocol::recv_code() {
+    msgcode_t code;
+    skt.recvall(&code, 1, &this->was_closed);
+    if (this->was_closed) {
+        return ERROR;
+    }
+    return code;
+}
+
 std::string ClientProtocol::recv_msg() {
-    bool was_closed = false;
     std::string msg = "";
-    char action[1];
-    this->skt.recvall((int8_t*)action, 1, &was_closed);
+    msglen_t name_size;
+    this->skt.recvall(&name_size, sizeof(msglen_t), &was_closed);
     if (was_closed) {
-        std::cout << "No hay ningun nuevo mensaje para leer" << std::endl;
+        std::cout << "Falla lectura de tamanio de palabra" << std::endl;
         return msg;
     }
-    if (action[0] == 9) {  // La accion es Chat
-        uint16_t name_size = 0;
-        this->skt.recvall(&name_size, sizeof(uint16_t), &was_closed);
-        if (was_closed) {
-            std::cout << "Falla lectura de tamanio de palabra" << std::endl;
-            return msg;
-        }
-        name_size = ntohs(name_size);
-        std::vector<char> vname(name_size);
-        this->skt.recvall(&vname[0], name_size, &was_closed);
-        if (was_closed) {
-            return msg;
-        }
-        std::string chatmsg(vname.begin(), vname.end());
-        msg = chatmsg;
+    name_size = ntohs(name_size);
+    std::vector<char> vname(name_size);
+    this->skt.recvall(&vname[0], name_size, &was_closed);
+    if (was_closed) {
         return msg;
-
-    } else if (action[0] == 6) {  // La accion es Cantidad de jugadores
-        uint8_t amount_players = 0;
-        this->skt.recvall(&amount_players, sizeof(uint8_t), &was_closed);
-        if (was_closed) {
-            std::cout << "Falla lectura de tamanio de palabra" << std::endl;
-            return msg;
-        }
-        msg = create_players_msg((int)amount_players);
     }
-
+    std::string chatmsg(vname.begin(), vname.end());
+    msg = chatmsg;
     return msg;
 }
 
-
-uint8_t ClientProtocol::receive_gameupdate() {
-    bool was_closed = false;
-    uint8_t response;
-    int sz = this->skt.recvall(&response, sizeof(uint8_t), &was_closed);
-    if (sz == 0) {
-        throw std::runtime_error("Fallo. No se puede leer retorno de server");
+int ClientProtocol::recv_amount_players() {
+    amount_players_t playercount;
+    skt.recvall(&playercount, sizeof(amount_players_t), &this->was_closed);
+    if (this->was_closed) {
+        return ERROR;
     }
-
-    return response;
+    return (int)playercount;
 }
+
+
+// uint8_t ClientProtocol::receive_gameupdate() {
+//     bool was_closed = false;
+//     uint8_t response;
+//     int sz = this->skt.recvall(&response, sizeof(uint8_t), &was_closed);
+//     if (sz == 0) {
+//         throw std::runtime_error("Fallo. No se puede leer retorno de server");
+//     }
+
+//     return response;
+// }
 
 ClientProtocol::~ClientProtocol() {}

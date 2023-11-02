@@ -9,7 +9,7 @@
 #include <utility>
 #include <vector>
 
-#include "../ClientProtocol/ClientProtocol.h"
+// #include "../ClientProtocol/ClientProtocol.h"
 #include "../ClientReceiverThread/ClientReceiverThread.h"
 #include "../ClientSenderThread/ClientSenderThread.h"
 

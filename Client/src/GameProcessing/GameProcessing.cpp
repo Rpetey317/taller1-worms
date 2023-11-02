@@ -1,5 +1,7 @@
 #include "GameProcessing.h"
 
+#include "NetworkProtocol.h"
+
 #define CHAT_STR "Chat"
 #define READ_STR "Read"
 #define EXIT_STR "Exit"
@@ -10,6 +12,8 @@
 #define EXIT 2
 #define NOCMD 3
 
+using NetworkProtocol::msgcode_t;
+using NetworkProtocol::MSGCODE_PLAYER_MESSAGE;
 
 GameProcessing::GameProcessing(const char* hostname, const char* port):
         skt(Socket(hostname, port)),
@@ -74,16 +78,16 @@ void GameProcessing::run() {
             ss >> amount_msgs;
 
             while (amount_msgs > 0) {
-                std::string msg = this->protocol.recv_msg();
-                if (msg.length() == 0) {
-                    // Cuando no hay mas mensajes, nunca entra aca. DESP CHEQUEAR
-                    std::cout << "No hay mas mensajes para leer" << std::endl;
-                    // playing = false;
-                    break;
+                msgcode_t code = this->protocol.recv_code();
+                if (code == MSGCODE_PLAYER_MESSAGE) {
+                    std::string rd_msg = this->protocol.recv_msg();
+                    std::cout << rd_msg << std::endl;
                 } else {
-                    std::cout << msg << std::endl;
-                    amount_msgs--;
+                    int amount_players = this->protocol.recv_amount_players();
+                    std::cout << "Jugadores " << amount_players << ", esperando al resto de tus amigos..."
+                              << std::endl;
                 }
+                amount_msgs --;
             }
         }
     }
