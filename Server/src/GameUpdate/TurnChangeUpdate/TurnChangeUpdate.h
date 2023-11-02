@@ -3,12 +3,12 @@
 
 #include "../GameUpdate.h"
 
-class TurnChangeUpdate : public GameUpdate {
+class TurnChangeUpdate: public GameUpdate {
 private:
     const int new_curr_player;
 
 public:
-    TurnChangeUpdate(int& new_curr_player);
+    explicit TurnChangeUpdate(int& new_curr_player);
 
     char get_sent_by(ServerProtocol& prot) override;
 
@@ -17,4 +17,4 @@ public:
     ~TurnChangeUpdate() override = default;
 };
 
-#endif // !__TURNCHANGEUPDATE_H__
+#endif  // !__TURNCHANGEUPDATE_H__

@@ -9,9 +9,11 @@
 #include "GameUpdate.h"
 #include "NetworkProtocol.h"
 
-using namespace NetworkProtocol;
+// I thoroughly refuse to manually write the using directive
+// for every. single. constant. in the NetworkProtocol namespace.
+using namespace NetworkProtocol;  // NOLINT
 
-bool ServerProtocol::send_short(const uint16_t& num){
+bool ServerProtocol::send_short(const uint16_t& num) {
     uint16_t nnum = htons(num);
     this->cli.sendall(&nnum, sizeof(uint16_t), &this->isclosed);
     if (this->isclosed) {
@@ -20,7 +22,7 @@ bool ServerProtocol::send_short(const uint16_t& num){
     return true;
 }
 
-bool ServerProtocol::send_long(const uint32_t& num){
+bool ServerProtocol::send_long(const uint32_t& num) {
     uint32_t nnum = htonl(num);
     this->cli.sendall(&nnum, sizeof(uint32_t), &this->isclosed);
     if (this->isclosed) {
@@ -29,7 +31,7 @@ bool ServerProtocol::send_long(const uint32_t& num){
     return true;
 }
 
-bool ServerProtocol::send_char(const uint8_t& num){
+bool ServerProtocol::send_char(const uint8_t& num) {
     this->cli.sendall(&num, 1, &this->isclosed);
     if (this->isclosed) {
         return false;
@@ -37,7 +39,7 @@ bool ServerProtocol::send_char(const uint8_t& num){
     return true;
 }
 
-bool ServerProtocol::send_str(const std::string& str){
+bool ServerProtocol::send_str(const std::string& str) {
     strlen_t len = htonl(str.length());
     this->cli.sendall(&len, sizeof(strlen_t), &this->isclosed);
     if (this->isclosed) {
@@ -92,7 +94,7 @@ char ServerProtocol::send_PlayerMessageUpdate(const PlayerMessageUpdate& upd) {
     return SUCCESS;
 }
 
-char ServerProtocol::send_TurnChangeUpdate(const TurnChangeUpdate& upd){
+char ServerProtocol::send_TurnChangeUpdate(const TurnChangeUpdate& upd) {
     // send code
     if (!this->send_char(MSGCODE_TURN_UPDATE)) {
         return CLOSED_SKT;
