@@ -87,4 +87,14 @@ int ClientProtocol::recv_amount_players() {
 //     return response;
 // }
 
+void ClientProtocol::close() {
+    if (this->was_closed)
+        return;
+
+    this->skt.shutdown(2);
+    this->skt.close();
+    this->was_closed = true;
+}
+
+
 ClientProtocol::~ClientProtocol() {}

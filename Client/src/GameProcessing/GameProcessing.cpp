@@ -14,6 +14,7 @@
 
 using NetworkProtocol::msgcode_t;
 using NetworkProtocol::MSGCODE_PLAYER_MESSAGE;
+using NetworkProtocol::MSGCODE_PLAYER_AMOUNT;
 
 GameProcessing::GameProcessing(const char* hostname, const char* port):
         skt(Socket(hostname, port)),
@@ -48,7 +49,7 @@ void GameProcessing::run() {
             {NOCMD_STR, NOCMD},
     };
 
-    // this->receiverTh.start();
+    this->receiverTh.start();
     this->senderTh.start();
 
     bool playing = true;
@@ -81,22 +82,26 @@ void GameProcessing::run() {
             ss >> amount_msgs;
 
             while (amount_msgs > 0) {
-                msgcode_t code = this->protocol.recv_code();
-                if (code == MSGCODE_PLAYER_MESSAGE) {
-                    std::string rd_msg = this->protocol.recv_msg();
-                    std::cout << rd_msg << std::endl;
-                } else {
-                    int amount_players = this->protocol.recv_amount_players();
-                    std::cout << "Jugadores " << amount_players << ", esperando al resto de tus amigos..."
-                              << std::endl;
+                        // std::string msg = "";
+                        // msgcode_t code = this->protocol.recv_code();
+                        // if (code == MSGCODE_PLAYER_MESSAGE) {
+                        //         msg = this->protocol.recv_msg();
+                        // } else if (code == MSGCODE_PLAYER_AMOUNT) {
+                        //         int amount_players = this->protocol.recv_amount_players();
+                        //         msg =  "Jugadores " + std::to_string(amount_players) + ", esperando al resto de tus amigos...";
+                        // }
+
+                std::string msg = this->incomingq.pop();
+                if (msg != "") {
+                    std::cout << msg << std::endl;
                 }
                 amount_msgs --;
             }
         } // Puede haber distintos comandos.
     }
-    // this->receiverTh.stop();
+    this->receiverTh.end();
+    this->receiverTh.join();
     this->senderTh.end();
-    // this->receiverTh.join();
     this->senderTh.join();
 }
 

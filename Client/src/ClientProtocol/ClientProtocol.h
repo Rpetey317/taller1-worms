@@ -29,6 +29,7 @@ public:
     std::string recv_msg();
     int recv_amount_players();
     // uint8_t receive_gameupdate();
+    void close();
     ~ClientProtocol();
 };
 
