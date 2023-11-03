@@ -48,6 +48,9 @@ void GameProcessing::run() {
             {NOCMD_STR, NOCMD},
     };
 
+    // this->receiverTh.start();
+    this->senderTh.start();
+
     bool playing = true;
     std::string command;
     while (playing) {
@@ -72,7 +75,7 @@ void GameProcessing::run() {
                 lenght--;  // Quito el espacio blanco
             }
             std::string new_chatmsg = chatmsg.substr(position);
-            protocol.client_send_msg(new_chatmsg);
+            this->outgoingq.push(new_chatmsg);
         } else if (cmd_id == READ) {
             int amount_msgs;
             ss >> amount_msgs;
@@ -89,8 +92,12 @@ void GameProcessing::run() {
                 }
                 amount_msgs --;
             }
-        }
+        } // Puede haber distintos comandos.
     }
+    // this->receiverTh.stop();
+    this->senderTh.end();
+    // this->receiverTh.join();
+    this->senderTh.join();
 }
 
 GameProcessing::~GameProcessing() {}
