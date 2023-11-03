@@ -53,6 +53,8 @@ public:
     char send_PlayerMessageUpdate(const PlayerMessageUpdate& upd);
 
     char send_TurnChangeUpdate(const TurnChangeUpdate& upd);
+    
+    char send_ConnectionAcknowledgeUpdate(const ConnectionAcknowledgeUpdate& upd);
 
     /*
      * Closes connection to client. Destructor already closes connection,
