@@ -17,12 +17,12 @@ using NetworkProtocol::MSGCODE_PLAYER_MESSAGE;
 using NetworkProtocol::MSGCODE_PLAYER_AMOUNT;
 
 GameProcessing::GameProcessing(const char* hostname, const char* port):
-        skt(Socket(hostname, port)),
-        protocol(std::move(this->skt)),
-        incomingq(),
-        outgoingq(),
-        receiverTh(incomingq, protocol),
-        senderTh(outgoingq, protocol) {}
+    skt(Socket(hostname, port)),
+    protocol(std::move(this->skt)),
+    incomingq(10000),
+    outgoingq(10000),
+    receiverTh(incomingq, protocol), // pass the expected arguments to the constructor
+    senderTh(outgoingq, protocol) {}
 
 std::string GameProcessing::ask_for_command() {
     std::string command;
@@ -76,24 +76,16 @@ void GameProcessing::run() {
                 lenght--;  // Quito el espacio blanco
             }
             std::string new_chatmsg = chatmsg.substr(position);
-            this->outgoingq.push(new_chatmsg);
+            Action new_action(new_chatmsg);
+            this->outgoingq.push(new_action);
         } else if (cmd_id == READ) {
             int amount_msgs;
             ss >> amount_msgs;
 
             while (amount_msgs > 0) {
-                        // std::string msg = "";
-                        // msgcode_t code = this->protocol.recv_code();
-                        // if (code == MSGCODE_PLAYER_MESSAGE) {
-                        //         msg = this->protocol.recv_msg();
-                        // } else if (code == MSGCODE_PLAYER_AMOUNT) {
-                        //         int amount_players = this->protocol.recv_amount_players();
-                        //         msg =  "Jugadores " + std::to_string(amount_players) + ", esperando al resto de tus amigos...";
-                        // }
-
-                std::string msg = this->incomingq.pop();
-                if (msg != "") {
-                    std::cout << msg << std::endl;
+                Action action = this->incomingq.pop();
+                if (action.msg != "") {
+                    std::cout << action.msg << std::endl;
                 }
                 amount_msgs --;
             }

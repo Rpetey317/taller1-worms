@@ -8,6 +8,7 @@
 #include "string"
 #include "NetworkProtocol.h"
 
+
 using NetworkProtocol::msgcode_t;
 using NetworkProtocol::msglen_t;
 using NetworkProtocol::amount_players_t;

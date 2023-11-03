@@ -7,21 +7,21 @@ using NetworkProtocol::msgcode_t;
 using NetworkProtocol::MSGCODE_PLAYER_MESSAGE;
 using NetworkProtocol::MSGCODE_PLAYER_AMOUNT;
 
-ReceiverThread::ReceiverThread(Queue<std::string>& incomingq, ClientProtocol& prot):
+ReceiverThread::ReceiverThread(Queue<Action>& incomingq, ClientProtocol& prot):
         incomingq(incomingq), prot(prot) {}
 
 void ReceiverThread::run() {
         while (_keep_running) {
                 try {
-                        std::string msg = "";
+                        Action action;
                         msgcode_t code = this->prot.recv_code();
                         if (code == MSGCODE_PLAYER_MESSAGE) {
-                                msg = this->prot.recv_msg();
+                                action.msg = this->prot.recv_msg();
                         } else if (code == MSGCODE_PLAYER_AMOUNT) {
                                 int amount_players = this->prot.recv_amount_players();
-                                msg =  "Jugadores " + std::to_string(amount_players) + ", esperando al resto de tus amigos...";
+                                action.msg =  "Jugadores " + std::to_string(amount_players) + ", esperando al resto de tus amigos...";
                         }
-                        this->incomingq.push(msg);
+                        this->incomingq.push(action);
                 } catch (LibError& e) {
                         // This is a "socket was closed" error
                         // i.e.: not an error, just someone closing connection from another thread

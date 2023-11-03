@@ -1,13 +1,14 @@
 #include "ClientSenderThread.h"
 
-SenderThread::SenderThread(Queue<std::string>& outgoingq, ClientProtocol& prot):
+SenderThread::SenderThread(Queue<Action>& outgoingq, ClientProtocol& prot):
         outgoingq(outgoingq), prot(prot) {}
 
 void SenderThread::run() {
     while (_keep_running) {
         try {
-            std::string msg = this->outgoingq.pop();
-            this->prot.client_send_msg(msg);
+            Action action;
+            action = this->outgoingq.pop();
+            this->prot.client_send_msg(action.msg);
         } catch (ClosedQueue& e) {
             _keep_running = false;
             continue;
