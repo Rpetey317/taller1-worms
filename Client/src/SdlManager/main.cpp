@@ -5,7 +5,6 @@
 
 #include "SdlManager.h"
 
-
 using namespace SDL2pp;  // NOLINT
 
 SdlManager::SdlManager(Queue<int>& commands, Queue<std::vector<float>>& positions):
@@ -21,7 +20,7 @@ bool SdlManager::event_handler() {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
-            return;
+            return false;
         } else if (event.type == SDL_KEYDOWN) {
 
             switch (event.key.keysym.sym) {
@@ -54,97 +53,64 @@ bool SdlManager::event_handler() {
     return true;
 }
 
-bool SdlManager::main_loop() {
-    keep_playing = true;
-    keep_playing = event_handler();  // si me tiro un escape el player, keep_playing sera false,
-                                     // para el resto siempre true
+bool SdlManager::main_loop(Renderer& renderer, Texture& sprites) {
+
+    bool keep_playing = event_handler();  // si me tiro un escape el player, keep_playing sera
+                                          // false, para el resto siempre true
     // esto por si quiero cerrar de una forma un poco mas "linda"
-    update_screen();
+    update_screen(renderer, sprites);
 
     return keep_playing;
 }
 
 void SdlManager::run() {
-    is_running = true;
-    while (is_running) {
-        // cosas para manejar el delta time...
-        is_running = main_loop();
-    }
-}
 
-void SdlManager::update_screen() {
-    // aca tendria la queue que me patean los datos y tendria que actualizar la pantalla
-    std::vector<float> val;
-    while (positions.try_pop(&val)) {}
-}
+    bool is_running = true;
+    Window window("PoC", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480,
+                  SDL_WINDOW_RESIZABLE);
 
-int main() {
-
-    SdlManager manager;
-
-    manager.run();
-}
-/*
-
-
-// Create main window: 640x480 dimensions, resizable, "SDL2pp demo" title
-    Window window("SDL2pp demo",
-            SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-            640, 480,
-            SDL_WINDOW_RESIZABLE);
-
-    // Create accelerated video renderer with default driver
     Renderer renderer(window, -1, SDL_RENDERER_SOFTWARE);
 
     Surface image("../../../Images/Worms/wblink1.png");
-    image.SetColorKey(true, SDL_MapRGB(image.Get()->format, 128,128,192));//los numeros magicos son
-el rgb del fondo Texture sprites(renderer, image);
 
-    // Enable alpha blending for the sprites
-    //sprites.SetBlendMode(SDL_BLENDMODE_BLEND);
+    image.SetColorKey(true, SDL_MapRGB(image.Get()->format, 128, 128,
+                                       192));  // los numeros magicos son el rgb del fondo Texture
+                                               // sprites(renderer, image);
 
-    // Game state
-    bool is_running = false; // whether the character is currently running
-    int run_phase = -1;      // run animation phase
-    float position = 0.0;    // player position
-
+    Texture sprites(renderer, image);
     unsigned int prev_ticks = SDL_GetTicks();
-    // Main loop
-    while (1) {
+    while (is_running) {
         unsigned int frame_ticks = SDL_GetTicks();
         unsigned int frame_delta = frame_ticks - prev_ticks;
         prev_ticks = frame_ticks;
+        is_running = main_loop(renderer, sprites);
 
 
-        if (is_running) {
-            position += frame_delta * 0.2;
-            run_phase = (frame_ticks / 100) % 6;
-        } else {
-            run_phase = 0;
-        }
-        if (position > renderer.GetOutputWidth())
-            position = -50;
-
-        int vcenter = renderer.GetOutputHeight() / 2;
-
-        renderer.Clear();
-
-        int src_x = 0, src_y = 0;
-        if (is_running) {
-            src_x = 0;
-            src_y = 60 * run_phase;
-        }
-
-        renderer.Copy(
-                sprites,
-                Rect(src_x, src_y, 50, 50),
-                Rect((int)position, vcenter - 50, 50, 50)
-            );
-
-        renderer.Present();
         SDL_Delay(1);
     }
+}
 
+void SdlManager::update_screen(Renderer& renderer, Texture& sprites) {
+    std::vector<float> val;
+    positions.try_pop(val);
+    renderer.Clear();
+    int src_x = 0, src_y = 0;
 
+    src_x = 0;
+    src_y = 60;
+    if (!val.empty()) {
+        renderer.Copy(sprites, Rect(src_x, src_y, 50, 50), Rect((int)val[0], val[1], 50, 50));
+    }
 
-*/
+    renderer.Copy(sprites, Rect(src_x, src_y, 50, 50), Rect(50, 50, 50, 50));
+
+    renderer.Present();
+}
+
+int main() {
+    Queue<int> commands;
+    Queue<std::vector<float>> positions;
+    SdlManager manager(commands, positions);
+
+    manager.run();
+}
