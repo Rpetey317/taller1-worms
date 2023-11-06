@@ -8,7 +8,7 @@
 
 using namespace SDL2pp;  // NOLINT
 
-SdlManager::SdlManager(Queue<int>& commands, Queue<float>& positions):
+SdlManager::SdlManager(Queue<int>& commands, Queue<std::vector<float>>& positions):
         commands(commands), positions(positions) {
     // Initialize SDL library
     SDL sdl(SDL_INIT_VIDEO);
@@ -74,6 +74,8 @@ void SdlManager::run() {
 
 void SdlManager::update_screen() {
     // aca tendria la queue que me patean los datos y tendria que actualizar la pantalla
+    std::vector<float> val;
+    while (positions.try_pop(&val)) {}
 }
 
 int main() {
