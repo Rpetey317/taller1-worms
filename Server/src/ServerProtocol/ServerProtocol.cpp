@@ -45,6 +45,15 @@ msgcode_t ServerProtocol::recv_request() {
     return request;
 }
 
+size_t ServerProtocol::recv_join() { 
+    size_t game_code;
+    this->cli.recvall(&game_code, sizeof(game_code), &this->isclosed);
+    if (this->isclosed) {
+        return -1;
+    }
+    return game_code;
+}
+
 char ServerProtocol::send_PlayerMessageUpdate(const PlayerMessageUpdate& upd) {
     // send code
     msgcode_t code = MSGCODE_PLAYER_MESSAGE;

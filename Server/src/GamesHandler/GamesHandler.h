@@ -7,13 +7,16 @@
 
 class GamesHandler {
 private:
-    int code;
+    size_t code;
     std::vector<GameHandler*> games;
     std::mutex m;
+    ServerProtocol prot;
 public:
     GamesHandler();
-    GameHandler* create_GamesHandler(Queue<ClientUpdate*>& client_queue);
-    GameHandler* join_GamesHandler(int code, Queue<ClientUpdate*>& client_queue);
+    GameHandler* create_GamesHandler();
+    // GameHandler* join_GamesHandler(size_t code);
+    void add_player(Socket&& player);
+    void remove_disconnected();
     ~GamesHandler();
 };
 

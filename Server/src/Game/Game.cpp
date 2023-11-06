@@ -5,12 +5,13 @@
 #include "ReceiverThread.h"
 #include "SenderThread.h"
 
-GameHandler::GameHandler(Queue<ClientUpdate*>& _eventq): plcount(0), eventq(_eventq) {
-    curr_pl = this->players.begin();
-}
-// GameHandler::GameHandler(Queue<ClientUpdate*>& _eventq, int code): plcount(0), eventq(_eventq), game_code(code) {
+// GameHandler::GameHandler(Queue<ClientUpdate*>& _eventq): plcount(0), eventq(_eventq) {
 //     curr_pl = this->players.begin();
 // }
+GameHandler::GameHandler(Queue<ClientUpdate*>& _eventq, size_t code): plcount(0), eventq(_eventq), game_code(code) {
+    curr_pl = this->players.begin();
+
+}
 
 void GameHandler::add_player(Socket&& peer) {
     PlayerHandler* new_player = new PlayerHandler(std::move(peer), this->plcount, this->eventq);

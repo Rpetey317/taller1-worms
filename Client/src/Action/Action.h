@@ -10,6 +10,7 @@ class ServerProtocol;
 class Action {
 
 public:
+    msgcode_t type_action;
     std::string msg;  // to be removed
     Action();
     Action(std::string msg);

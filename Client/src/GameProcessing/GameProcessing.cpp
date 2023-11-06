@@ -2,15 +2,19 @@
 
 #include "NetworkProtocol.h"
 
+#define CREATE_STR "Create"
+#define JOIN_STR "Join"
 #define CHAT_STR "Chat"
 #define READ_STR "Read"
 #define EXIT_STR "Exit"
 #define NOCMD_STR ""
 
-#define CHAT 0
-#define READ 1
-#define EXIT 2
-#define NOCMD 3
+#define CREATE 0
+#define JOIN 1 
+#define CHAT 2
+#define READ 3
+#define EXIT 4
+#define NOCMD 5
 
 using NetworkProtocol::msgcode_t;
 using NetworkProtocol::MSGCODE_PLAYER_MESSAGE;
@@ -30,7 +34,7 @@ std::string GameProcessing::ask_for_command() {
     std::istringstream s(command);
     std::string action;
     s >> action;
-    while (action != "Chat" && action != "Read" && action != "Exit") {
+    while (action != "Chat" && action != "Read" && action != "Exit" && action != "Create" && action != "Join") {
         std::cout << "Ingrese un comando posible" << std::endl;
         std::getline(std::cin, command);
         std::istringstream s_new(command);
@@ -43,6 +47,8 @@ void GameProcessing::run() {
     // Creo los threads sender y receiver pasandoles el protocolo y los corro
 
     const std::map<std::string, int> lut{
+            {CREATE_STR, CREATE},
+            {JOIN_STR, JOIN},
             {CHAT_STR, CHAT},
             {READ_STR, READ},
             {EXIT_STR, EXIT},
@@ -64,6 +70,10 @@ void GameProcessing::run() {
         if (cmd_id == EXIT) {
             playing = false;
             // break;
+        } else if (cmd_id == CREATE) {
+            /* code */
+        } else if (cmd_id == JOIN) {
+            /* code */
         } else if (cmd_id == CHAT) {
             std::string chatmsg;
             std::getline(ss, chatmsg);

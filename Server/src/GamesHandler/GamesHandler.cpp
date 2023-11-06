@@ -1,18 +1,22 @@
 #include "GamesHandler.h"
 
+using NetworkProtocol::msgcode_t;
+using NetworkProtocol::MSGCODE_CREATE_GAME;
+using NetworkProtocol::MSGCODE_PLAYER_CONNECT_TO_GAME;
 // Comentar create_GamesHandler y join GamesHandler para que compile
 
 GamesHandler::GamesHandler(): code(0) {}
 
-// GameHandler* GamesHandler::create_GamesHandler(Queue<ClientUpdate*>& client_queue) {
-//     std::lock_guard< std::mutex> lock(m);
-//     GameHandler* new_game = new GameHandler(client_queue, this->code);
-//     this->code++;
-//     this->games.push_back(new_game);
-//     return new_game;
-// }
+GameHandler* GamesHandler::create_GamesHandler() {
+    std::lock_guard< std::mutex> lock(m);
+    Queue<ClientUpdate*> eventq(10000);
+    GameHandler* new_game = new GameHandler(eventq, this->code);
+    this->code++;
+    this->games.push_back(new_game);
+    return new_game;
+}
 
-// GameHandler* GamesHandler::join_GamesHandler(int code, Queue<ClientUpdate*>& client_queue) {
+// GameHandler* GamesHandler::join_GamesHandler(size_t code) {
 //     std::lock_guard< std::mutex> lock(m);
 //     if ((int)code >= (int)this->games.size()) {
 //         throw std::runtime_error("El codigo ingresado no pertenece a ninguna partida!");
@@ -21,9 +25,32 @@ GamesHandler::GamesHandler(): code(0) {}
 //     return this->games[code];
 // }
 
+
+void GamesHandler::add_player(Socket&& player) {
+    
+    msgcode_t request = this->prot.recv_request();
+    if (request == MSGCODE_CREATE_GAME) {
+        // Create game. Esto deberia ir en el constructor de GameHandler (?)
+
+        GameHandler* new_game = create_GamesHandler();
+        new_game->add_player(std::move(player));
+        std::cout << "Created match: " << std::to_string(this->code) << std::endl;
+    } else if (request == MSGCODE_PLAYER_CONNECT_TO_GAME) {
+        int code = this->prot.recv_join();
+
+            // Agregar al jugador a la partida. Tmb en el GameHandler (?)
+        GameHandler* game = this->games[code];
+        game->add_player(std::move(player));
+        std::cout << "Joined to match: " << std::to_string(code) << std::endl;        
+        } else {
+            throw std::runtime_error("Codigo de mensaje invalido!");
+        }
+}
+
+void GamesHandler::remove_disconnected() {}
+
 GamesHandler::~GamesHandler() {
     for (auto i : this->games) {
         delete i;
     }
-
 }

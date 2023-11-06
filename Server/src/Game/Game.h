@@ -19,14 +19,14 @@ class GameHandler {
     std::atomic<int> plcount;
     Queue<ClientUpdate*>& eventq;
     std::list<PlayerHandler*>::iterator curr_pl;
-    int game_code;
+    size_t game_code;
 
 public:
     /*
      * Creates new handler, adding players (recievers) to given list
      */
-    explicit GameHandler(Queue<ClientUpdate*>& _eventq);
-    // explicit GameHandler(Queue<ClientUpdate*>& _eventq, int code);
+    // explicit GameHandler(Queue<ClientUpdate*>& _eventq);
+    explicit GameHandler(Queue<ClientUpdate*>& _eventq, size_t code);
 
     /*
      * Adds a new player, connected to given socket
