@@ -8,7 +8,7 @@ void SenderThread::run() {
         try {
             Action action;
             action = this->outgoingq.pop();
-            this->prot.client_send_msg(action.msg);
+            this->prot.client_send_msg(action.type_action, action.msg);
         } catch (ClosedQueue& e) {
             _keep_running = false;
             continue;

@@ -16,9 +16,8 @@ std::string ClientProtocol::create_players_msg(int amount_players) {
 
 ClientProtocol::ClientProtocol(Socket skt): skt(std::move(skt)), was_closed(false) {}
 
-void ClientProtocol::client_send_msg(const std::string& chat_msg) {
+void ClientProtocol::client_send_msg(msgcode_t action, const std::string& chat_msg) {
     // Send action
-    msgcode_t action = MSGCODE_PLAYER_MESSAGE;
     skt.sendall(&action, sizeof(msgcode_t), &this->was_closed);
     if (this->was_closed) {
         return;

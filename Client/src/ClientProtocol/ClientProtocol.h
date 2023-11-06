@@ -25,7 +25,7 @@ private:
 
 public:
     explicit ClientProtocol(Socket skt);
-    void client_send_msg(const std::string& chat_msg);
+    void client_send_msg(msgcode_t action,const std::string& chat_msg);
     msgcode_t recv_code();
     std::string recv_msg();
     int recv_amount_players();
