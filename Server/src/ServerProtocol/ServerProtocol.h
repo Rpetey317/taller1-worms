@@ -7,6 +7,14 @@
 #include "GameUpdateHeaders.h"
 #include "Socket.h"
 
+#include "NetworkProtocol.h"
+
+using NetworkProtocol::msgcode_t;
+using NetworkProtocol::msglen_t;
+
+using NetworkProtocol::MSGCODE_PLAYER_DISCONNECT;
+using NetworkProtocol::MSGCODE_PLAYER_MESSAGE;
+
 #define CLOSED_SKT -1
 #define SUCCESS 0
 #define NO_MSG_RECV ""
@@ -35,6 +43,11 @@ public:
      * Reads a message from client. Returns NO_MSG_READ if connection closed
      */
     ClientUpdate recv_msg();
+
+    /*
+    * Reads the first request the client sends. Can be CREATE_GAME or JOIN_GAME
+    */
+    msgcode_t recv_request();
 
     /*
      * returns true if connection with client is still open

@@ -7,14 +7,7 @@
 
 #include "ClientUpdate.h"
 #include "GameUpdate.h"
-#include "NetworkProtocol.h"
 
-using NetworkProtocol::msgcode_t;
-using NetworkProtocol::msglen_t;
-
-using NetworkProtocol::MSGCODE_PLAYER_CONNECT;
-using NetworkProtocol::MSGCODE_PLAYER_DISCONNECT;
-using NetworkProtocol::MSGCODE_PLAYER_MESSAGE;
 
 ServerProtocol::ServerProtocol(Socket&& _cli): cli(std::move(_cli)), isclosed(false) {}
 
@@ -41,6 +34,15 @@ ClientUpdate ServerProtocol::recv_msg() {
     }
     std::string msg(vmsg.begin(), vmsg.end());
     return ClientUpdate(msg);
+}
+
+msgcode_t ServerProtocol::recv_request() { 
+    msgcode_t request;
+    this->cli.recvall(&request, sizeof(msgcode_t), &this->isclosed);
+    if (this->isclosed) {
+        return -1;
+    }
+    return request;
 }
 
 char ServerProtocol::send_PlayerMessageUpdate(const PlayerMessageUpdate& upd) {
