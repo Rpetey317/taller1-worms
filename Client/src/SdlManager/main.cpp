@@ -80,7 +80,7 @@ void SdlWorm::next_animation() {
     }
 }
 
-SdlManager::SdlManager(Queue<int>& commands, Queue<std::vector<float>>& positions):
+SdlManager::SdlManager(Queue<int>& commands, Queue<std::vector<int>>& positions):
         commands(commands), positions(positions) {
     // Initialize SDL library
     SDL sdl(SDL_INIT_VIDEO);

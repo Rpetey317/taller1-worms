@@ -10,7 +10,7 @@ using namespace SDL2pp;  // NOLINT
 class SdlManager {
 
 public:
-    SdlManager(Queue<int>& commands, Queue<std::vector<float>>& positions);
+    SdlManager(Queue<int>& commands, Queue<std::vector<int>>& positions);
     void run();
 
 private:

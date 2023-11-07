@@ -13,13 +13,13 @@
 
 class BoxSimulator: public Thread {
     Queue<int>& ingoing;  
-    Queue<std::vector<float>>& outgoing;
+    Queue<std::vector<int>>& outgoing;
     b2World* world;
     b2Body* worm;
     void initialize_world();
 
 public:
-    BoxSimulator(Queue<int>& commands, Queue<std::vector<float>>& positions);
+    BoxSimulator(Queue<int>& commands, Queue<std::vector<int>>& positions);
     void run();
     void kill();
 };
