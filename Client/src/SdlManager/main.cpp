@@ -8,6 +8,62 @@
 
 using namespace SDL2pp;  // NOLINT
 
+SdlMap::SdlMap(Renderer& renderer, Surface& image_floor1, Surface& image_floor2,
+               Surface& image_floor3, Surface& image_water, Surface& image_background):
+        floor1(renderer, image_floor1),
+        floor2(renderer, image_floor2),
+        floor3(renderer, image_floor3),
+        background(renderer, image_background),
+        water(renderer, image_water),
+        renderer(renderer) {
+    src.x = src.y = 0;
+    src.w = dest.w = 64;
+    src.h = dest.h = 19;
+    dest.x = dest.y = 0;
+    map[0][0] = 0;
+}
+
+void SdlMap::draw_map() {
+    int type;
+    for (int row = 0; row < 10; row++) {
+        for (int column = 0; column < 10; column++) {
+            type = map[row][column];
+
+            dest.x = column * 64;
+            dest.y = row * 19;
+
+            switch (type) {
+                case 0:
+
+                    renderer.Copy(floor1, src, dest);
+                    // renderer.Present();
+                    break;
+                case 1:
+                    renderer.Copy(floor2, src, dest);
+                    // renderer.Present();
+                    break;
+                case 2:
+                    renderer.Copy(floor3, src, dest);
+                    // renderer.Present();
+                    break;
+                case 3:
+                    renderer.Copy(background, src, dest);
+                    // renderer.Present();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+}
+void SdlMap::load_map(int arr[10][10]) {
+    for (int row = 0; row < 10; row++) {
+        for (int column = 0; column < 10; column++) {
+            map[row][column] = arr[row][column];
+        }
+    }
+}
+
 SdlWorm::SdlWorm(Texture& sprite): sprite(sprite) {
     x_pos = 0;
     y_pos = 0;
@@ -67,12 +123,12 @@ bool SdlManager::event_handler() {
     return true;
 }
 
-bool SdlManager::main_loop(Renderer& renderer, SdlWorm& worm) {
+bool SdlManager::main_loop(Renderer& renderer, SdlWorm& worm, SdlMap& map) {
 
     bool keep_playing = event_handler();  // si me tiro un escape el player, keep_playing sera
                                           // false, para el resto siempre true
     // esto por si quiero cerrar de una forma un poco mas "linda"
-    update_screen(renderer, worm);
+    update_screen(renderer, worm, map);
 
     return keep_playing;
 }
@@ -85,6 +141,31 @@ void SdlManager::run() {
 
     Renderer renderer(window, -1, SDL_RENDERER_SOFTWARE);
 
+    Surface image_floor1("../../../Images/Terrain/Construction/bridge.png");
+
+    // image_floor1.SetColorKey(true, SDL_MapRGB(image.Get()->format, 128, 128,
+    //                                    192));
+
+    Surface image_floor2("../../../Images/Terrain/Construction/bridge-l.png");
+
+    image_floor2.SetColorKey(true, 0);
+
+    Surface image_floor3("../../../Images/Terrain/Construction/bridge-r.png");
+
+    image_floor3.SetColorKey(true, 0);
+
+    Surface image_water("../../../Images/Worms/wblink1.png");
+
+    Surface image_background("../../../Images/Terrain/Hospital/soil.png");
+    SdlMap map(renderer, image_floor1, image_floor2, image_floor3, image_water, image_background);
+    int sarasa[10][10] = {
+            {3, 3, 3, 3, 3, 3, 3, 3, 3, 3}, {3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+            {3, 3, 3, 3, 3, 0, 0, 3, 3, 3}, {3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+            {3, 3, 3, 3, 3, 3, 3, 3, 3, 3}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {3, 3, 3, 3, 3, 3, 3, 3, 3, 3}, {3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+            {3, 3, 3, 3, 3, 3, 3, 3, 3, 3}, {3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+    };
+    map.load_map(sarasa);
     Surface image("../../../Images/Worms/wblink1.png");
 
     image.SetColorKey(true, SDL_MapRGB(image.Get()->format, 128, 128,
@@ -101,17 +182,18 @@ void SdlManager::run() {
         unsigned int frame_ticks = SDL_GetTicks();
         unsigned int frame_delta = frame_ticks - prev_ticks;
         prev_ticks = frame_ticks;
-        is_running = main_loop(renderer, worm);
+        is_running = main_loop(renderer, worm, map);
 
 
         SDL_Delay(1);
     }
 }
 
-void SdlManager::update_screen(Renderer& renderer, SdlWorm& worm) {
+void SdlManager::update_screen(Renderer& renderer, SdlWorm& worm, SdlMap& map) {
     std::vector<float> val;
     positions.try_pop(val);
     int src_x = 0, src_y = 0;
+
     if (!val.empty()) {
         renderer.Clear();
         src_x = 0;
@@ -120,6 +202,8 @@ void SdlManager::update_screen(Renderer& renderer, SdlWorm& worm) {
 
     } else {
         renderer.Clear();
+
+        map.draw_map();
 
         src_x = 0;
         src_y = 60 * worm.animation_phase;
