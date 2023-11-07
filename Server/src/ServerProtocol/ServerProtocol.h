@@ -19,6 +19,7 @@
 class ServerProtocol {
     Socket cli;
     bool isclosed;
+    const int plid;
 
     /*
      * Primitive type send methods, to simplify update-specific send methods
@@ -33,7 +34,7 @@ public:
     /*
      * Constructs a new protocol from socket with move semantics
      */
-    explicit ServerProtocol(Socket&& cli);
+    ServerProtocol(Socket&& cli, const int& plid);
 
     /*
      * Sends given message to client
@@ -43,7 +44,7 @@ public:
     /*
      * Reads a message from client. Returns NO_MSG_READ if connection closed
      */
-    ClientUpdate recv_msg(const int& plid);
+    ClientUpdate recv_msg();
 
     /*
      * returns true if connection with client is still open
@@ -53,7 +54,7 @@ public:
     char send_PlayerMessageUpdate(const PlayerMessageUpdate& upd);
 
     char send_TurnChangeUpdate(const TurnChangeUpdate& upd);
-    
+
     char send_ConnectionAcknowledgeUpdate(const ConnectionAcknowledgeUpdate& upd);
 
     char send_PlayerDisconnectedUpdate(const PlayerDisconnectedUpdate& upd);

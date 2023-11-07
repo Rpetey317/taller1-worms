@@ -53,11 +53,12 @@ bool ServerProtocol::send_str(const std::string& str) {
 }
 
 
-ServerProtocol::ServerProtocol(Socket&& _cli): cli(std::move(_cli)), isclosed(false) {}
+ServerProtocol::ServerProtocol(Socket&& _cli, const int& _plid):
+        cli(std::move(_cli)), isclosed(false), plid(_plid) {}
 
 char ServerProtocol::send_update(GameUpdate* msg) { return msg->get_sent_by(*this); }
 
-ClientUpdate ServerProtocol::recv_msg(const int& plid) {
+ClientUpdate ServerProtocol::recv_msg() {
     char code;
     ClientUpdate upd;
     this->cli.recvall(&code, sizeof(char), &this->isclosed);

@@ -13,7 +13,6 @@ public:
     int get_player_id() const;
 
     char get_sent_by(ServerProtocol& prot) override;
-
 };
 
-#endif // !__PLAYERDISCONNECTEDUPDATE_H__
+#endif  // !__PLAYERDISCONNECTEDUPDATE_H__

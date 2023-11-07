@@ -7,11 +7,11 @@
 class ClientUpdate {
 private:
     std::string msg;
-    uint16_t id;
+    int id;
     bool valid;
 
 public:
-    explicit ClientUpdate(std::string const& _msg, uint16_t& id);
+    explicit ClientUpdate(std::string const& _msg, const int& id);
 
     ClientUpdate(): msg(""), valid(false) {}
 
