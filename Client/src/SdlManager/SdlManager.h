@@ -18,7 +18,9 @@ private:
     Queue<int>& commands;                  // alguien me deberia patear esto
     Queue<std::vector<float>>& positions;  // posiciones para ir actualizando
 
-    bool event_handler(SdlWorm& worm);
-    bool main_loop(Renderer& renderer, SdlWorm& worm, SdlMap& map);
+    bool event_handler(SdlWorm& worm, SDL_AudioDeviceID device, uint8_t* waveStart,
+                       uint32_t waveLength);
+    bool main_loop(Renderer& renderer, SdlWorm& worm, SdlMap& map, SDL_AudioDeviceID device,
+                   uint8_t* waveStart, uint32_t waveLength);
     void update_screen(Renderer& renderer, SdlWorm& worm, SdlMap& map);
 };

@@ -15,6 +15,7 @@ project(SDL2pp-tutorial LANGUAGES CXX)
 # set up SDL2pp library
 set(SDL2PP_WITH_IMAGE YES)
 set(SDL2PP_WITH_TTF YES)
+set(SDL2PP_WITH_MIXER YES)
 add_subdirectory(SDL2pp)
 
 # add compilation flags

@@ -71,9 +71,14 @@ SdlWorm::SdlWorm(Texture& sprite): sprite(sprite), flip(SDL_FLIP_NONE) {
     x_pos = 0;
     y_pos = 0;
     animation_phase = 0;
+    worm_state = 0;
 }
 
 void SdlWorm::next_animation() {
+    if (worm_state == 0) {
+        animation_phase = 0;
+        return;
+    }
     animation_phase = animation_phase + 1;
     if (animation_phase == 6) {
         animation_phase = 0;
@@ -83,12 +88,14 @@ void SdlWorm::next_animation() {
 SdlManager::SdlManager(Queue<int>& commands, Queue<std::vector<int>>& positions):
         commands(commands), positions(positions) {
     // Initialize SDL library
-    SDL sdl(SDL_INIT_VIDEO);
+    // SDL sdl(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
+    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
     // Initialize SDL_ttf library
     SDLTTF ttf;
 }
 
-bool SdlManager::event_handler(SdlWorm& worm) {
+bool SdlManager::event_handler(SdlWorm& worm, SDL_AudioDeviceID device, uint8_t* waveStart,
+                               uint32_t waveLength) {
 
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
@@ -102,11 +109,17 @@ bool SdlManager::event_handler(SdlWorm& worm) {
                     return false;
                 }
                 case SDLK_RIGHT: {
+                    worm.worm_state = 1;
+                    SDL_QueueAudio(device, waveStart, waveLength);
+                    SDL_PauseAudioDevice(device, 0);
                     worm.flip = SDL_FLIP_HORIZONTAL;
                     commands.push(1);
                     break;
                 }
                 case SDLK_LEFT: {
+                    worm.worm_state = 1;
+                    SDL_QueueAudio(device, waveStart, waveLength);
+                    SDL_PauseAudioDevice(device, 0);
                     worm.flip = SDL_FLIP_NONE;
                     commands.push(2);
                     break;
@@ -116,9 +129,13 @@ bool SdlManager::event_handler(SdlWorm& worm) {
         } else if (event.type == SDL_KEYUP) {
             switch (event.key.keysym.sym) {
                 case SDLK_RIGHT: {
+                    worm.worm_state = 0;
+                    SDL_PauseAudioDevice(device, 1);
                     commands.push(3);
                 }
                 case SDLK_LEFT: {
+                    worm.worm_state = 0;
+                    SDL_PauseAudioDevice(device, 1);
                     commands.push(3);
                 }
 
@@ -130,10 +147,12 @@ bool SdlManager::event_handler(SdlWorm& worm) {
     return true;
 }
 
-bool SdlManager::main_loop(Renderer& renderer, SdlWorm& worm, SdlMap& map) {
+bool SdlManager::main_loop(Renderer& renderer, SdlWorm& worm, SdlMap& map, SDL_AudioDeviceID device,
+                           uint8_t* waveStart, uint32_t waveLength) {
 
-    bool keep_playing = event_handler(worm);  // si me tiro un escape el player, keep_playing sera
-                                              // false, para el resto siempre true
+    bool keep_playing = event_handler(worm, device, waveStart,
+                                      waveLength);  // si me tiro un escape el player, keep_playing
+                                                    // sera false, para el resto siempre true
     // esto por si quiero cerrar de una forma un poco mas "linda"
     update_screen(renderer, worm, map);
 
@@ -141,6 +160,26 @@ bool SdlManager::main_loop(Renderer& renderer, SdlWorm& worm, SdlMap& map) {
 }
 
 void SdlManager::run() {
+
+    SDL_AudioDeviceID device;
+    SDL_AudioSpec audioSpec;
+    Uint8* waveStart;
+    Uint32 waveLength;
+
+    if (SDL_LoadWAV("../../../Images/tuki.wav", &audioSpec, &waveStart, &waveLength) == NULL)
+        std::cout << "triste" << std::endl;
+
+    device = SDL_OpenAudioDevice(nullptr, 0, &audioSpec, nullptr, SDL_AUDIO_ALLOW_ANY_CHANGE);
+
+    if (device == 0) {
+        std::cout << SDL_GetError() << std::endl;
+        std::cout << "re triste" << std::endl;
+    }
+    Mixer mixer(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+
+    Music background_music("../../../Images/background.wav");
+    Chunk sound_effect("../../../Images/tuki.wav");
+
     const int frame_delay = 1000 / FPS;
     bool is_running = true;
     Window window("PoC", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480,
@@ -175,15 +214,14 @@ void SdlManager::run() {
     worm.x_pos = 50;
     worm.y_pos = 50;
     worm.animation_phase = 0;
-
+    mixer.PlayMusic(background_music, -1);
     while (is_running) {
         uint32_t frame_start;
         uint32_t frame_time;
         frame_start = SDL_GetTicks();
-        is_running = main_loop(renderer, worm, map);
+        is_running = main_loop(renderer, worm, map, device, waveStart, waveLength);
         // sleep(1); conexion super lagueada
         frame_time = SDL_GetTicks() - frame_start;
-
         if (frame_delay > frame_time)
             SDL_Delay(frame_delay - frame_time);
     }
@@ -198,10 +236,8 @@ void SdlManager::update_screen(Renderer& renderer, SdlWorm& worm, SdlMap& map) {
         renderer.Clear();
         src_x = 0;
         src_y = 60;
-        Point center;
-        // no se porque me pide center :(
         renderer.Copy(worm.sprite, Rect(src_x, src_y, 50, 50),
-                      Rect((int)val[0], (int)val[1], 50, 50), 0, center, worm.flip);
+                      Rect((int)val[0], (int)val[1], 50, 50), 0, NullOpt, worm.flip);
 
     } else {
         renderer.Clear();
@@ -210,9 +246,8 @@ void SdlManager::update_screen(Renderer& renderer, SdlWorm& worm, SdlMap& map) {
 
         src_x = 0;
         src_y = 60 * worm.animation_phase;
-        Point center;
         renderer.Copy(worm.sprite, Rect(src_x, src_y, 50, 50), Rect(worm.x_pos, worm.y_pos, 50, 50),
-                      0, worm.flip);  // VERSION MODIFICADA DE COPY
+                      0, NullOpt, worm.flip);
         worm.next_animation();
     }
 
