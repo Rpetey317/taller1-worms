@@ -5,8 +5,8 @@
 #include <mutex>
 #include <string>
 
-#include "GameUpdate.h"
 #include "ClientUpdateHeaders.h"
+#include "GameUpdate.h"
 #include "PlayerHandler.h"
 #include "PlayerListMonitor.h"
 #include "Socket.h"

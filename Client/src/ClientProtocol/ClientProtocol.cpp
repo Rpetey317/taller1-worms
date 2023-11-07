@@ -1,6 +1,5 @@
 #include "ClientProtocol.h"
 
-
 #include <iostream>
 #include <sstream>
 
@@ -16,7 +15,7 @@ std::string ClientProtocol::create_players_msg(int amount_players) {
 
 ClientProtocol::ClientProtocol(Socket skt): skt(std::move(skt)), was_closed(false) {}
 
-int ClientProtocol::recv_player_id() { 
+int ClientProtocol::recv_player_id() {
     int id;
     this->skt.recvall(&id, sizeof(int), &this->was_closed);
     if (this->was_closed) {

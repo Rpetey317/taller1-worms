@@ -1,7 +1,7 @@
 #include "Game.h"
 
-#include <utility>
 #include <memory>
+#include <utility>
 
 #include "ReceiverThread.h"
 #include "SenderThread.h"
@@ -10,7 +10,8 @@ GameHandler::GameHandler(Queue<ClientUpdate*>& _eventq): plcount(0), eventq(_eve
     curr_pl = this->players.begin();
     next_free_id = 0;
 }
-// GameHandler::GameHandler(Queue<ClientUpdate*>& _eventq, int code): plcount(0), eventq(_eventq), game_code(code) {
+// GameHandler::GameHandler(Queue<ClientUpdate*>& _eventq, int code): plcount(0), eventq(_eventq),
+// game_code(code) {
 //     curr_pl = this->players.begin();
 // }
 
@@ -37,23 +38,21 @@ void GameHandler::remove_disconnected() {
 
 void GameHandler::advance_turn() {
     ++this->curr_pl;
-    if (this->curr_pl == this->players.end()){
+    if (this->curr_pl == this->players.end()) {
         this->curr_pl = this->players.begin();
         // if (this->curr_pl == this->players.end()) {
         //     std::cout << "No players connected" << std::endl;
         //     return;
         // }
-        
+
         // PlayerHandler* player = *curr_pl;
-        // GameUpdate* update = new PlayerMessageUpdate("Your turn!"); // Es necesario el new? Despues hay que hacer delete
-        // player->send(update);
+        // GameUpdate* update = new PlayerMessageUpdate("Your turn!"); // Es necesario el new?
+        // Despues hay que hacer delete player->send(update);
     }
 }
 
 
-GameUpdate* GameHandler::execute(ClientUpdate* event) {
-    return event->get_processed_by(*this);
-}
+GameUpdate* GameHandler::execute(ClientUpdate* event) { return event->get_processed_by(*this); }
 
 GameUpdate* GameHandler::process_disconnect(ClientDisconnectedUpdate& event) {
     return new PlayerDisconnectedUpdate(event.get_id());

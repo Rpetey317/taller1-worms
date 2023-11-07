@@ -10,11 +10,11 @@ void SenderThread::run() {
             action = this->outgoingq.pop();
             // Todo este if deberia ir en un parser o no?
             this->prot.send_code(action.type_action);
-            if (action.type_action == 0x01) { // Create
+            if (action.type_action == 0x01) {  // Create
                 /* code */
-            } else if (action.type_action == 0x02) { // Join
+            } else if (action.type_action == 0x02) {  // Join
                 this->prot.send_code_game(action.code_game);
-            } else if (action.type_action == 0x09) { // Chat
+            } else if (action.type_action == 0x09) {  // Chat
                 this->prot.send_msg(action.msg);
             }
             // this->prot.client_send_msg(action.type_action, action.msg);
@@ -22,7 +22,7 @@ void SenderThread::run() {
             _keep_running = false;
             continue;
         } catch (...) {
-            std::cerr << "Unexpected error in sender thread" << std::endl;    
+            std::cerr << "Unexpected error in sender thread" << std::endl;
         }
     }
 }

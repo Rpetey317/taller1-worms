@@ -1,11 +1,12 @@
 #include "PlayerHandler.h"
 
 #include <utility>
+
 #include "NetworkProtocol.h"
 
+using NetworkProtocol::MSGCODE_ACK;             // MGSCODE_CREATE_GAME
+using NetworkProtocol::MSGCODE_PLAYER_CONNECT;  // MSGCODE_PLAYER_CONNECT_TO_GAME
 using NetworkProtocol::msgcode_t;
-using NetworkProtocol::MSGCODE_ACK; // MGSCODE_CREATE_GAME
-using NetworkProtocol::MSGCODE_PLAYER_CONNECT; // MSGCODE_PLAYER_CONNECT_TO_GAME
 
 PlayerHandler::PlayerHandler(Socket&& _peer, std::atomic<int>& _plcount,
                              Queue<ClientUpdate*>& _eventq, int& _id):
@@ -33,7 +34,8 @@ void PlayerHandler::start() {
     //     try {
     //         // Agregar al jugador a la partida. Tmb en el GameHandler (?)
     //     } catch (const std::exception& err) {
-    //         if (std::string(err.what()) == "El codigo ingresado no pertenece a ninguna partida!") {
+    //         if (std::string(err.what()) == "El codigo ingresado no pertenece a ninguna partida!")
+    //         {
     //             join_result = FAILURE;
     //         }
     //     }

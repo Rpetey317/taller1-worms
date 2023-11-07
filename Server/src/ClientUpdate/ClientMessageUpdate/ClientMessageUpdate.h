@@ -1,9 +1,9 @@
 #ifndef __CLIENTMESSAGEUPDATE_H__
 #define __CLIENTMESSAGEUPDATE_H__
 
-#include "../ClientUpdate.h"
-
 #include <string>
+
+#include "../ClientUpdate.h"
 
 class ClientMessageUpdate: public ClientUpdate {
     std::string msg;
@@ -18,4 +18,4 @@ public:
     ~ClientMessageUpdate() override = default;
 };
 
-#endif // !__CLIENTMESSAGEUPDATE_H__
+#endif  // !__CLIENTMESSAGEUPDATE_H__

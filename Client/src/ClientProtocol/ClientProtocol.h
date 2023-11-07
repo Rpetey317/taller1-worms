@@ -4,15 +4,15 @@
 #include <variant>
 #include <vector>
 
+#include "NetworkProtocol.h"
 #include "Socket.h"
 #include "string"
-#include "NetworkProtocol.h"
 
 
-using NetworkProtocol::msgcode_t;
-using NetworkProtocol::strlen_t;
 using NetworkProtocol::amount_players_t;
 using NetworkProtocol::MSGCODE_PLAYER_MESSAGE;
+using NetworkProtocol::msgcode_t;
+using NetworkProtocol::strlen_t;
 // using NetworkProtocol::MSGCODE_PLAYER_CONNECT;
 // using NetworkProtocol::MSGCODE_PLAYER_DISCONNECT;
 using NetworkProtocol::ERROR;

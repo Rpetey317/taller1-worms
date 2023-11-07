@@ -12,10 +12,9 @@ protected:
     int id;
     bool valid;
 
-    ClientUpdate(const int& _id): id(_id), valid(true) {}
+    explicit ClientUpdate(const int& _id): id(_id), valid(true) {}
 
 public:
-
     int get_id() { return this->id; }
 
     virtual GameUpdate* get_processed_by(GameHandler& game) = 0;
