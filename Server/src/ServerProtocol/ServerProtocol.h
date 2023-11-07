@@ -5,9 +5,8 @@
 
 #include "ClientUpdate.h"
 #include "GameUpdateHeaders.h"
-#include "Socket.h"
-
 #include "NetworkProtocol.h"
+#include "Socket.h"
 
 using NetworkProtocol::msgcode_t;
 using NetworkProtocol::strlen_t;
@@ -56,8 +55,8 @@ public:
     ClientUpdate recv_msg();
 
     /*
-    * Reads the first request the client sends. Can be CREATE_GAME or JOIN_GAME
-    */
+     * Reads the first request the client sends. Can be CREATE_GAME or JOIN_GAME
+     */
     msgcode_t recv_request();
 
     /*

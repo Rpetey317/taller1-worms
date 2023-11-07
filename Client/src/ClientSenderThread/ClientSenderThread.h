@@ -4,8 +4,8 @@
 #include <mutex>
 #include <string>
 
-#include "../ClientProtocol/ClientProtocol.h"
 #include "../Action/Action.h"
+#include "../ClientProtocol/ClientProtocol.h"
 
 #include "queue.h"
 #include "thread.h"

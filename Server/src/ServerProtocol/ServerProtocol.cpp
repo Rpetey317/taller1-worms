@@ -56,8 +56,10 @@ ServerProtocol::ServerProtocol(Socket&& _cli, const int& _plid):
         cli(std::move(_cli)), isclosed(false), plid(_plid) {}
 
 bool ServerProtocol::send_player_id(const int& id) {
-    this->cli.sendall(&id, sizeof(int), &this->isclosed);
-    if (this->isclosed) {
+    if (!this->send_char(MSGCODE_ACK)) {
+        return false;
+    }
+    if (!this->send_char((playerid_t)id)) {
         return false;
     }
     return true;
@@ -88,7 +90,7 @@ ClientUpdate ServerProtocol::recv_msg() {
     return ClientUpdate(msg, plid);
 }
 
-msgcode_t ServerProtocol::recv_request() { 
+msgcode_t ServerProtocol::recv_request() {
     msgcode_t request;
     this->cli.recvall(&request, sizeof(msgcode_t), &this->isclosed);
     if (this->isclosed) {
@@ -107,7 +109,7 @@ char ServerProtocol::send_PlayerMessageUpdate(const PlayerMessageUpdate& upd) {
     if (!this->send_str(upd.get_msg())) {
         return CLOSED_SKT;
     }
-    
+
     return SUCCESS;
 }
 

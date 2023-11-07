@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+
 #include "NetworkProtocol.h"
 
 using NetworkProtocol::msgcode_t;

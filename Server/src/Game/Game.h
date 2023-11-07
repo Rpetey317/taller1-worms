@@ -5,6 +5,7 @@
 #include <mutex>
 #include <string>
 
+#include "ClientUpdateHeaders.h"
 #include "GameUpdate.h"
 #include "PlayerHandler.h"
 #include "PlayerListMonitor.h"
@@ -41,6 +42,10 @@ public:
     void remove_disconnected();
 
     GameUpdate* execute(ClientUpdate* event);
+
+    GameUpdate* process_disconnect(ClientDisconnectedUpdate& event);
+
+    GameUpdate* process_message(ClientMessageUpdate& event);
 
     void broadcast(GameUpdate* update);
 
