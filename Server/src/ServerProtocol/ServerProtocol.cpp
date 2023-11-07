@@ -39,7 +39,7 @@ bool ServerProtocol::send_char(const uint8_t& num) {
 }
 
 bool ServerProtocol::send_str(const std::string& str) {
-    strlen_t len = htonl(str.length());
+    strlen_t len = htons(str.length());
     this->cli.sendall(&len, sizeof(strlen_t), &this->isclosed);
     if (this->isclosed) {
         return false;
@@ -99,7 +99,7 @@ char ServerProtocol::send_PlayerMessageUpdate(const PlayerMessageUpdate& upd) {
     if (!this->send_str(upd.get_msg())) {
         return CLOSED_SKT;
     }
-
+    
     return SUCCESS;
 }
 
