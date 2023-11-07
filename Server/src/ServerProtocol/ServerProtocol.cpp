@@ -55,6 +55,14 @@ bool ServerProtocol::send_str(const std::string& str) {
 ServerProtocol::ServerProtocol(Socket&& _cli, const int& _plid):
         cli(std::move(_cli)), isclosed(false), plid(_plid) {}
 
+bool ServerProtocol::send_player_id(const int& id) {
+    this->cli.sendall(&id, sizeof(int), &this->isclosed);
+    if (this->isclosed) {
+        return false;
+    }
+    return true;
+}
+
 char ServerProtocol::send_update(GameUpdate* msg) { return msg->get_sent_by(*this); }
 
 ClientUpdate ServerProtocol::recv_msg() {

@@ -25,12 +25,10 @@ void ReceiverThread::run() {
                 } catch (LibError& e) {
                         // This is a "socket was closed" error
                         // i.e.: not an error, just someone closing connection from another thread
-                        std::cout << "Socket was closed" << std::endl;
                         _keep_running = false;
                         this->incomingq.close();
                         continue;
                 }catch (ClosedQueue& e) {
-                        std::cout << "Queue was closed" << std::endl;
                         _keep_running = false;
                         continue;
                 } 
@@ -40,12 +38,10 @@ void ReceiverThread::run() {
         }
 }
 
-void ReceiverThread::end() { 
-        std::cout << "Destroying receiver thread" << std::endl;
+void ReceiverThread::end() {
         _keep_running = false;
         this->incomingq.close();
         this->prot.close();
-        std::cout << "Receiver thread destroyed" << std::endl;
 }
 
 ReceiverThread::~ReceiverThread() {}

@@ -15,6 +15,7 @@ PlayerHandler::PlayerHandler(Socket&& _peer, std::atomic<int>& _plcount,
         recv_th(_eventq, prot, _plcount),
         id(_id) {
     _plcount++;
+    this->prot.send_player_id(_id);
     // recvers.push_to_all(ServerMessage(_plcount));
 }
 

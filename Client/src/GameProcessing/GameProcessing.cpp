@@ -26,7 +26,7 @@ GameProcessing::GameProcessing(const char* hostname, const char* port):
     incomingq(10000),
     outgoingq(10000),
     receiverTh(incomingq, protocol), // pass the expected arguments to the constructor
-    senderTh(outgoingq, protocol) {}
+    senderTh(outgoingq, protocol), id(0) {}
 
 std::string GameProcessing::ask_for_command() {
     std::string command;
@@ -54,6 +54,12 @@ void GameProcessing::run() {
             {EXIT_STR, EXIT},
             {NOCMD_STR, NOCMD},
     };
+
+    this->id = this->protocol.recv_player_id();
+    if (id < 0) {
+        throw std::runtime_error("Error al recibir el id del jugador");
+    }
+    std::cout << "Player id: " << this->id << std::endl;
 
     this->receiverTh.start();
     this->senderTh.start();

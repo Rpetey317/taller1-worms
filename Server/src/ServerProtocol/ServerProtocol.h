@@ -44,6 +44,7 @@ public:
      */
     ServerProtocol(Socket&& cli, const int& plid);
 
+    bool send_player_id(const int& id);
     /*
      * Sends given message to client
      */

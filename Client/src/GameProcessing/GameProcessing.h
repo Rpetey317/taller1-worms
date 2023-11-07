@@ -24,6 +24,7 @@ private:
     Queue<Action> outgoingq;
     ReceiverThread receiverTh;
     SenderThread senderTh;
+    int id;
 
 public:
     explicit GameProcessing(const char* hostname, const char* port);
