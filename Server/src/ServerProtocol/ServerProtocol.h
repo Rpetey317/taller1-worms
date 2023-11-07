@@ -10,7 +10,7 @@
 #include "NetworkProtocol.h"
 
 using NetworkProtocol::msgcode_t;
-using NetworkProtocol::msglen_t;
+using NetworkProtocol::strlen_t;
 
 using NetworkProtocol::MSGCODE_PLAYER_DISCONNECT;
 using NetworkProtocol::MSGCODE_PLAYER_MESSAGE;
@@ -27,12 +27,22 @@ using NetworkProtocol::MSGCODE_PLAYER_MESSAGE;
 class ServerProtocol {
     Socket cli;
     bool isclosed;
+    const int plid;
+
+    /*
+     * Primitive type send methods, to simplify update-specific send methods
+     * On successful send returns true, false if socket closed
+     */
+    bool send_short(const uint16_t& num);
+    bool send_long(const uint32_t& num);
+    bool send_char(const uint8_t& num);
+    bool send_str(const std::string& str);
 
 public:
     /*
      * Constructs a new protocol from socket with move semantics
      */
-    explicit ServerProtocol(Socket&& cli);
+    ServerProtocol(Socket&& cli, const int& plid);
 
     /*
      * Sends given message to client
@@ -55,6 +65,12 @@ public:
     bool is_connected();
 
     char send_PlayerMessageUpdate(const PlayerMessageUpdate& upd);
+
+    char send_TurnChangeUpdate(const TurnChangeUpdate& upd);
+
+    char send_ConnectionAcknowledgeUpdate(const ConnectionAcknowledgeUpdate& upd);
+
+    char send_PlayerDisconnectedUpdate(const PlayerDisconnectedUpdate& upd);
 
     /*
      * Closes connection to client. Destructor already closes connection,

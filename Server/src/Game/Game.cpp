@@ -7,13 +7,15 @@
 
 GameHandler::GameHandler(Queue<ClientUpdate*>& _eventq): plcount(0), eventq(_eventq) {
     curr_pl = this->players.begin();
+    next_free_id = 0;
 }
 // GameHandler::GameHandler(Queue<ClientUpdate*>& _eventq, int code): plcount(0), eventq(_eventq), game_code(code) {
 //     curr_pl = this->players.begin();
 // }
 
 void GameHandler::add_player(Socket&& peer) {
-    PlayerHandler* new_player = new PlayerHandler(std::move(peer), this->plcount, this->eventq);
+    PlayerHandler* new_player =
+            new PlayerHandler(std::move(peer), this->plcount, this->eventq, ++next_free_id);
     this->players.push_back(new_player);
 
     new_player->start();

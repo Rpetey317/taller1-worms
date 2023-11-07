@@ -20,6 +20,7 @@ class GameHandler {
     Queue<ClientUpdate*>& eventq;
     std::list<PlayerHandler*>::iterator curr_pl;
     int game_code;
+    int next_free_id;
 
 public:
     /*

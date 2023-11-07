@@ -3,13 +3,15 @@
 
 #include <string>
 
+// TODO: make this polymorphic
 class ClientUpdate {
 private:
     std::string msg;
+    int id;
     bool valid;
 
 public:
-    explicit ClientUpdate(std::string const& _msg);
+    explicit ClientUpdate(std::string const& _msg, const int& id);
 
     ClientUpdate(): msg(""), valid(false) {}
 

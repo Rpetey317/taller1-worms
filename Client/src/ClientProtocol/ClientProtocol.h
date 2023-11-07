@@ -10,7 +10,7 @@
 
 
 using NetworkProtocol::msgcode_t;
-using NetworkProtocol::msglen_t;
+using NetworkProtocol::strlen_t;
 using NetworkProtocol::amount_players_t;
 using NetworkProtocol::MSGCODE_PLAYER_MESSAGE;
 // using NetworkProtocol::MSGCODE_PLAYER_CONNECT;

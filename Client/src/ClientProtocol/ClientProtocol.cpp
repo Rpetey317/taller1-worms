@@ -18,8 +18,8 @@ ClientProtocol::ClientProtocol(Socket skt): skt(std::move(skt)), was_closed(fals
 
 void ClientProtocol::send_msg(const std::string& chat_msg) {
     // Send lenght
-    msglen_t msg_lenght = htons(chat_msg.size());
-    skt.sendall(&msg_lenght, sizeof(msglen_t), &this->was_closed);
+    strlen_t msg_lenght = htons(chat_msg.size());
+    skt.sendall(&msg_lenght, sizeof(strlen_t), &this->was_closed);
     if (this->was_closed) {
         return;
     }
@@ -58,8 +58,8 @@ msgcode_t ClientProtocol::recv_code() {
 
 std::string ClientProtocol::recv_msg() {
     std::string msg = "";
-    msglen_t name_size;
-    this->skt.recvall(&name_size, sizeof(msglen_t), &was_closed);
+    strlen_t name_size;
+    this->skt.recvall(&name_size, sizeof(strlen_t), &was_closed);
     if (was_closed) {
         std::cout << "Falla lectura de tamanio de palabra" << std::endl;
         return msg;

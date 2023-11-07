@@ -4,15 +4,16 @@
 #include "NetworkProtocol.h"
 
 using NetworkProtocol::msgcode_t;
-using NetworkProtocol::MSGCODE_CREATE_GAME;
-using NetworkProtocol::MSGCODE_PLAYER_CONNECT_TO_GAME;
+using NetworkProtocol::MSGCODE_ACK; // MGSCODE_CREATE_GAME
+using NetworkProtocol::MSGCODE_PLAYER_CONNECT; // MSGCODE_PLAYER_CONNECT_TO_GAME
 
 PlayerHandler::PlayerHandler(Socket&& _peer, std::atomic<int>& _plcount,
-                             Queue<ClientUpdate*>& _eventq):
-        prot(std::move(_peer)),
+                             Queue<ClientUpdate*>& _eventq, int& _id):
+        prot(std::move(_peer), _id),
         sendq(10000),
         send_th(sendq, prot),
-        recv_th(_eventq, prot, _plcount) {
+        recv_th(_eventq, prot, _plcount),
+        id(_id) {
     _plcount++;
     // recvers.push_to_all(ServerMessage(_plcount));
 }
