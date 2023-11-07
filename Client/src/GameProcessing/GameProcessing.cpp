@@ -71,10 +71,16 @@ void GameProcessing::run() {
             playing = false;
             // break;
         } else if (cmd_id == CREATE) {
-            /* code */
+            std::cout << "Entro aca 0 " << std::endl;
+            Action create_game(CREATE, "");
+            this->outgoingq.push(create_game);
         } else if (cmd_id == JOIN) {
+
+            std::cout << "Entro aca 1 " << std::endl;
             /* code */
         } else if (cmd_id == CHAT) {
+
+            std::cout << "Entro aca 2 " << std::endl;
             std::string chatmsg;
             std::getline(ss, chatmsg);
             int lenght;
@@ -89,6 +95,8 @@ void GameProcessing::run() {
             Action new_action(MSGCODE_PLAYER_MESSAGE, new_chatmsg);
             this->outgoingq.push(new_action);
         } else if (cmd_id == READ) {
+
+            std::cout << "Entro aca 3 " << std::endl;
             int amount_msgs;
             ss >> amount_msgs;
 

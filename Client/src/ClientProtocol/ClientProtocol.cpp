@@ -16,13 +16,7 @@ std::string ClientProtocol::create_players_msg(int amount_players) {
 
 ClientProtocol::ClientProtocol(Socket skt): skt(std::move(skt)), was_closed(false) {}
 
-void ClientProtocol::client_send_msg(msgcode_t action, const std::string& chat_msg) {
-    // Send action
-    skt.sendall(&action, sizeof(msgcode_t), &this->was_closed);
-    if (this->was_closed) {
-        return;
-    }
-
+void ClientProtocol::send_msg(const std::string& chat_msg) {
     // Send lenght
     msglen_t msg_lenght = htons(chat_msg.size());
     skt.sendall(&msg_lenght, sizeof(msglen_t), &this->was_closed);
@@ -32,6 +26,22 @@ void ClientProtocol::client_send_msg(msgcode_t action, const std::string& chat_m
 
     // Send msg
     skt.sendall(chat_msg.c_str(), ntohs(msg_lenght), &this->was_closed);
+    if (this->was_closed) {
+        return;
+    }
+}
+
+void ClientProtocol::send_code(msgcode_t action) {
+    // Send action
+    skt.sendall(&action, sizeof(msgcode_t), &this->was_closed);
+    if (this->was_closed) {
+        return;
+    }
+}
+
+void ClientProtocol::send_code_game(size_t code) {
+    // Send code game to join
+    skt.sendall(&code, sizeof(msgcode_t), &this->was_closed);
     if (this->was_closed) {
         return;
     }

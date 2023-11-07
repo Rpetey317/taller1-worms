@@ -11,6 +11,7 @@ class Action {
 
 public:
     msgcode_t type_action;
+    size_t code_game;
     std::string msg;  // to be removed
     Action();
     Action(msgcode_t type_action, std::string msg);
