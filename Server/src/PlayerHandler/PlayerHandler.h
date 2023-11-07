@@ -16,7 +16,7 @@ class PlayerHandler {
     Queue<GameUpdate*> sendq;
     SenderThread send_th;
     ReceiverThread recv_th;
-    const uint16_t id;
+    const int id;
 
 public:
     /*
@@ -25,8 +25,7 @@ public:
      * New player will be added to recvers, and a message notifying this will be sent
      * plcount is incremented, and when player disconnects, will be decremented
      */
-    PlayerHandler(Socket&& peer, std::atomic<int>& plcount, Queue<ClientUpdate*>& eventq,
-                  uint16_t& id);
+    PlayerHandler(Socket&& peer, std::atomic<int>& plcount, Queue<ClientUpdate*>& eventq, int& id);
 
     /*
      * Starts to run associated threads
