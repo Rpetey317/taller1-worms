@@ -228,7 +228,7 @@ void SdlManager::run() {
 }
 
 void SdlManager::update_screen(Renderer& renderer, SdlWorm& worm, SdlMap& map) {
-    std::vector<float> val;
+    std::vector<int> val;
     positions.try_pop(val);
     int src_x = 0, src_y = 0;
 
@@ -256,7 +256,7 @@ void SdlManager::update_screen(Renderer& renderer, SdlWorm& worm, SdlMap& map) {
 
 int main() {
     Queue<int> commands;
-    Queue<std::vector<float>> positions;
+    Queue<std::vector<int>> positions;
 
     SdlManager manager(commands, positions);
 
