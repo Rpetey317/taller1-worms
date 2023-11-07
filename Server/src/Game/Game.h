@@ -6,6 +6,7 @@
 #include <string>
 
 #include "GameUpdate.h"
+#include "ClientUpdateHeaders.h"
 #include "PlayerHandler.h"
 #include "PlayerListMonitor.h"
 #include "Socket.h"
@@ -41,6 +42,10 @@ public:
     void remove_disconnected();
 
     GameUpdate* execute(ClientUpdate* event);
+
+    GameUpdate* process_disconnect(ClientDisconnectedUpdate& event);
+
+    GameUpdate* process_message(ClientMessageUpdate& event);
 
     void broadcast(GameUpdate* update);
 

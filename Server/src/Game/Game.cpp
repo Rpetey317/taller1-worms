@@ -1,6 +1,7 @@
 #include "Game.h"
 
 #include <utility>
+#include <memory>
 
 #include "ReceiverThread.h"
 #include "SenderThread.h"
@@ -51,11 +52,15 @@ void GameHandler::advance_turn() {
 
 
 GameUpdate* GameHandler::execute(ClientUpdate* event) {
-    std::cout << "Executing event" << std::endl;
-    PlayerMessageUpdate* ret = new PlayerMessageUpdate(event->get_msg());
-    delete event;
-    std::cout << "Update created" << std::endl;
-    return ret;
+    return event->get_processed_by(*this);
+}
+
+GameUpdate* GameHandler::process_disconnect(ClientDisconnectedUpdate& event) {
+    return new PlayerDisconnectedUpdate(event.get_id());
+}
+
+GameUpdate* GameHandler::process_message(ClientMessageUpdate& event) {
+    return new PlayerMessageUpdate(event.get_id(), event.get_msg());
 }
 
 void GameHandler::broadcast(GameUpdate* update) {

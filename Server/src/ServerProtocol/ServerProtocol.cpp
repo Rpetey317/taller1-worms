@@ -56,8 +56,10 @@ ServerProtocol::ServerProtocol(Socket&& _cli, const int& _plid):
         cli(std::move(_cli)), isclosed(false), plid(_plid) {}
 
 bool ServerProtocol::send_player_id(const int& id) {
-    this->cli.sendall(&id, sizeof(int), &this->isclosed);
-    if (this->isclosed) {
+    if (!this->send_char(MSGCODE_ACK)) {
+        return false;
+    }
+    if (!this->send_char((playerid_t) id)) {
         return false;
     }
     return true;

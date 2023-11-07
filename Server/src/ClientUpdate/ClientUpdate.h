@@ -3,29 +3,26 @@
 
 #include <string>
 
+class GameHandler;
+class GameUpdate;
+
 // TODO: make this polymorphic
 class ClientUpdate {
-private:
-    std::string msg;
+protected:
     int id;
     bool valid;
 
+    ClientUpdate(const int& _id): id(_id), valid(true) {}
+
 public:
-    explicit ClientUpdate(std::string const& _msg, const int& id);
 
-    ClientUpdate(): msg(""), valid(false) {}
+    int get_id() { return this->id; }
 
-    ClientUpdate& operator=(const ClientUpdate& other) {
-        this->msg = other.msg;
-        this->valid = other.valid;
-        return *this;
-    }
-
-    std::string get_msg() const;
+    virtual GameUpdate* get_processed_by(GameHandler& game) = 0;
 
     bool is_valid() { return this->valid; }
 
-    ~ClientUpdate() {}
+    virtual ~ClientUpdate() = default;
 };
 
 #endif  // !__CLIENTUPDATE_H__
