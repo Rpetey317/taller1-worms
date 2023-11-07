@@ -57,7 +57,7 @@ ServerProtocol::ServerProtocol(Socket&& _cli): cli(std::move(_cli)), isclosed(fa
 
 char ServerProtocol::send_update(GameUpdate* msg) { return msg->get_sent_by(*this); }
 
-ClientUpdate ServerProtocol::recv_msg() {
+ClientUpdate ServerProtocol::recv_msg(const int& plid) {
     char code;
     ClientUpdate upd;
     this->cli.recvall(&code, sizeof(char), &this->isclosed);
@@ -77,7 +77,7 @@ ClientUpdate ServerProtocol::recv_msg() {
         return upd;
     }
     std::string msg(vmsg.begin(), vmsg.end());
-    return ClientUpdate(msg);
+    return ClientUpdate(msg, plid);
 }
 
 char ServerProtocol::send_PlayerMessageUpdate(const PlayerMessageUpdate& upd) {
@@ -102,6 +102,34 @@ char ServerProtocol::send_TurnChangeUpdate(const TurnChangeUpdate& upd) {
 
     // send new current player id
     if (!this->send_long(upd.get_new_curr_player())) {
+        return CLOSED_SKT;
+    }
+
+    return SUCCESS;
+}
+
+char ServerProtocol::send_ConnectionAcknowledgeUpdate(const ConnectionAcknowledgeUpdate& upd) {
+    // send code
+    if (!this->send_char(MSGCODE_ACK)) {
+        return CLOSED_SKT;
+    }
+
+    // send player id
+    if (!this->send_long(upd.get_plid())) {
+        return CLOSED_SKT;
+    }
+
+    return SUCCESS;
+}
+
+char ServerProtocol::send_PlayerDisconnectedUpdate(const PlayerDisconnectedUpdate& upd) {
+    // send code
+    if (!this->send_char(MSGCODE_PLAYER_DISCONNECT)) {
+        return CLOSED_SKT;
+    }
+
+    // send player id
+    if (!this->send_long(upd.get_player_id())) {
         return CLOSED_SKT;
     }
 

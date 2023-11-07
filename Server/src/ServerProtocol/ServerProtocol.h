@@ -43,7 +43,7 @@ public:
     /*
      * Reads a message from client. Returns NO_MSG_READ if connection closed
      */
-    ClientUpdate recv_msg();
+    ClientUpdate recv_msg(const int& plid);
 
     /*
      * returns true if connection with client is still open
@@ -55,6 +55,8 @@ public:
     char send_TurnChangeUpdate(const TurnChangeUpdate& upd);
     
     char send_ConnectionAcknowledgeUpdate(const ConnectionAcknowledgeUpdate& upd);
+
+    char send_PlayerDisconnectedUpdate(const PlayerDisconnectedUpdate& upd);
 
     /*
      * Closes connection to client. Destructor already closes connection,
