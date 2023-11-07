@@ -18,7 +18,7 @@ private:
     Queue<int>& commands;                  // alguien me deberia patear esto
     Queue<std::vector<float>>& positions;  // posiciones para ir actualizando
 
-    bool event_handler();
+    bool event_handler(SdlWorm& worm);
     bool main_loop(Renderer& renderer, SdlWorm& worm, SdlMap& map);
     void update_screen(Renderer& renderer, SdlWorm& worm, SdlMap& map);
 };

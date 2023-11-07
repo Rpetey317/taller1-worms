@@ -3,7 +3,10 @@
 #include <iostream>
 #include <string>
 
+#include <unistd.h>
+
 #include "SdlManager.h"
+#define FPS 15
 
 
 using namespace SDL2pp;  // NOLINT
@@ -64,7 +67,7 @@ void SdlMap::load_map(int arr[10][10]) {
     }
 }
 
-SdlWorm::SdlWorm(Texture& sprite): sprite(sprite) {
+SdlWorm::SdlWorm(Texture& sprite): sprite(sprite), flip(SDL_FLIP_NONE) {
     x_pos = 0;
     y_pos = 0;
     animation_phase = 0;
@@ -85,7 +88,7 @@ SdlManager::SdlManager(Queue<int>& commands, Queue<std::vector<float>>& position
     SDLTTF ttf;
 }
 
-bool SdlManager::event_handler() {
+bool SdlManager::event_handler(SdlWorm& worm) {
 
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
@@ -99,10 +102,14 @@ bool SdlManager::event_handler() {
                     return false;
                 }
                 case SDLK_RIGHT: {
+                    worm.flip = SDL_FLIP_HORIZONTAL;
                     commands.push(1);
+                    break;
                 }
                 case SDLK_LEFT: {
+                    worm.flip = SDL_FLIP_NONE;
                     commands.push(2);
+                    break;
                 } break;
             }
 
@@ -125,8 +132,8 @@ bool SdlManager::event_handler() {
 
 bool SdlManager::main_loop(Renderer& renderer, SdlWorm& worm, SdlMap& map) {
 
-    bool keep_playing = event_handler();  // si me tiro un escape el player, keep_playing sera
-                                          // false, para el resto siempre true
+    bool keep_playing = event_handler(worm);  // si me tiro un escape el player, keep_playing sera
+                                              // false, para el resto siempre true
     // esto por si quiero cerrar de una forma un poco mas "linda"
     update_screen(renderer, worm, map);
 
@@ -134,7 +141,7 @@ bool SdlManager::main_loop(Renderer& renderer, SdlWorm& worm, SdlMap& map) {
 }
 
 void SdlManager::run() {
-
+    const int frame_delay = 1000 / FPS;
     bool is_running = true;
     Window window("PoC", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480,
                   SDL_WINDOW_RESIZABLE);
@@ -142,20 +149,12 @@ void SdlManager::run() {
     Renderer renderer(window, -1, SDL_RENDERER_SOFTWARE);
 
     Surface image_floor1("../../../Images/Terrain/Construction/bridge.png");
-
-    // image_floor1.SetColorKey(true, SDL_MapRGB(image.Get()->format, 128, 128,
-    //                                    192));
-
+    image_floor1.SetColorKey(true, 0);
     Surface image_floor2("../../../Images/Terrain/Construction/bridge-l.png");
-
     image_floor2.SetColorKey(true, 0);
-
     Surface image_floor3("../../../Images/Terrain/Construction/bridge-r.png");
-
     image_floor3.SetColorKey(true, 0);
-
     Surface image_water("../../../Images/Worms/wblink1.png");
-
     Surface image_background("../../../Images/Terrain/Hospital/soil.png");
     SdlMap map(renderer, image_floor1, image_floor2, image_floor3, image_water, image_background);
     int sarasa[10][10] = {
@@ -170,22 +169,23 @@ void SdlManager::run() {
 
     image.SetColorKey(true, SDL_MapRGB(image.Get()->format, 128, 128,
                                        192));  // los numeros magicos son el rgb del fondo Texture
-                                               // sprites(renderer, image);
 
     Texture sprites(renderer, image);
     SdlWorm worm(sprites);
     worm.x_pos = 50;
     worm.y_pos = 50;
     worm.animation_phase = 0;
-    unsigned int prev_ticks = SDL_GetTicks();
+
     while (is_running) {
-        unsigned int frame_ticks = SDL_GetTicks();
-        unsigned int frame_delta = frame_ticks - prev_ticks;
-        prev_ticks = frame_ticks;
+        uint32_t frame_start;
+        uint32_t frame_time;
+        frame_start = SDL_GetTicks();
         is_running = main_loop(renderer, worm, map);
+        // sleep(1); conexion super lagueada
+        frame_time = SDL_GetTicks() - frame_start;
 
-
-        SDL_Delay(1);
+        if (frame_delay > frame_time)
+            SDL_Delay(frame_delay - frame_time);
     }
 }
 
@@ -198,7 +198,10 @@ void SdlManager::update_screen(Renderer& renderer, SdlWorm& worm, SdlMap& map) {
         renderer.Clear();
         src_x = 0;
         src_y = 60;
-        renderer.Copy(worm.sprite, Rect(src_x, src_y, 50, 50), Rect((int)val[0], val[1], 50, 50));
+        Point center;
+        // no se porque me pide center :(
+        renderer.Copy(worm.sprite, Rect(src_x, src_y, 50, 50),
+                      Rect((int)val[0], (int)val[1], 50, 50), 0, center, worm.flip);
 
     } else {
         renderer.Clear();
@@ -207,8 +210,9 @@ void SdlManager::update_screen(Renderer& renderer, SdlWorm& worm, SdlMap& map) {
 
         src_x = 0;
         src_y = 60 * worm.animation_phase;
-        renderer.Copy(worm.sprite, Rect(src_x, src_y, 50, 50),
-                      Rect(worm.x_pos, worm.y_pos, 50, 50));
+        Point center;
+        renderer.Copy(worm.sprite, Rect(src_x, src_y, 50, 50), Rect(worm.x_pos, worm.y_pos, 50, 50),
+                      0, worm.flip);  // VERSION MODIFICADA DE COPY
         worm.next_animation();
     }
 
@@ -218,6 +222,7 @@ void SdlManager::update_screen(Renderer& renderer, SdlWorm& worm, SdlMap& map) {
 int main() {
     Queue<int> commands;
     Queue<std::vector<float>> positions;
+
     SdlManager manager(commands, positions);
 
     manager.run();
