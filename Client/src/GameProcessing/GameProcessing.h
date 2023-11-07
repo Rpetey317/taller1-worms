@@ -3,19 +3,28 @@
 
 #include <atomic>
 #include <iostream>
+#include <map>
 #include <sstream>
 #include <string>
 #include <utility>
 #include <vector>
 
-#include "../ClientProtocol/ClientProtocol.h"
+// #include "../ClientProtocol/ClientProtocol.h"
+#include "../ClientReceiverThread/ClientReceiverThread.h"
+#include "../ClientSenderThread/ClientSenderThread.h"
 
 #include "Socket.h"
+#include "queue.h"
 
 class GameProcessing {
 private:
     Socket skt;
     ClientProtocol protocol;  // El thread receiver y sender deberian tener el clientProtocol?
+    Queue<Action> incomingq;
+    Queue<Action> outgoingq;
+    ReceiverThread receiverTh;
+    SenderThread senderTh;
+    int id;
 
 public:
     explicit GameProcessing(const char* hostname, const char* port);

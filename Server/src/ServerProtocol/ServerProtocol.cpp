@@ -7,7 +7,6 @@
 
 #include "ClientUpdate.h"
 #include "GameUpdate.h"
-#include "NetworkProtocol.h"
 
 // I thoroughly refuse to manually write the using directive
 // for every. single. constant. in the NetworkProtocol namespace.
@@ -40,7 +39,7 @@ bool ServerProtocol::send_char(const uint8_t& num) {
 }
 
 bool ServerProtocol::send_str(const std::string& str) {
-    strlen_t len = htonl(str.length());
+    strlen_t len = htons(str.length());
     this->cli.sendall(&len, sizeof(strlen_t), &this->isclosed);
     if (this->isclosed) {
         return false;
@@ -55,6 +54,14 @@ bool ServerProtocol::send_str(const std::string& str) {
 
 ServerProtocol::ServerProtocol(Socket&& _cli, const int& _plid):
         cli(std::move(_cli)), isclosed(false), plid(_plid) {}
+
+bool ServerProtocol::send_player_id(const int& id) {
+    this->cli.sendall(&id, sizeof(int), &this->isclosed);
+    if (this->isclosed) {
+        return false;
+    }
+    return true;
+}
 
 char ServerProtocol::send_update(GameUpdate* msg) { return msg->get_sent_by(*this); }
 
@@ -81,6 +88,15 @@ ClientUpdate ServerProtocol::recv_msg() {
     return ClientUpdate(msg, plid);
 }
 
+msgcode_t ServerProtocol::recv_request() { 
+    msgcode_t request;
+    this->cli.recvall(&request, sizeof(msgcode_t), &this->isclosed);
+    if (this->isclosed) {
+        return -1;
+    }
+    return request;
+}
+
 char ServerProtocol::send_PlayerMessageUpdate(const PlayerMessageUpdate& upd) {
     // send code
     if (!this->send_char(MSGCODE_PLAYER_MESSAGE)) {
@@ -91,7 +107,7 @@ char ServerProtocol::send_PlayerMessageUpdate(const PlayerMessageUpdate& upd) {
     if (!this->send_str(upd.get_msg())) {
         return CLOSED_SKT;
     }
-
+    
     return SUCCESS;
 }
 
