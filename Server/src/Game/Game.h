@@ -23,6 +23,25 @@ class GameHandler {
     int game_code;
     int next_free_id;
 
+    // ============ DD ============= //
+
+    /*
+     * Increments player count
+     * Returns corresponding PlayerConnectedUpdate
+     */
+    GameUpdate* process_new_connect(ClientConnectedUpdate& event);
+
+    /*
+     * Decrements player count
+     * Returns corresponding PlayerDisconnectedUpdate
+     */
+    GameUpdate* process_disconnect(ClientDisconnectedUpdate& event);
+
+    /*
+     * Returns PlayerMessageUpdate with same message
+     */
+    GameUpdate* process_message(ClientMessageUpdate& event);
+
 public:
     /*
      * Creates new handler, adding players (recievers) to given list
@@ -41,13 +60,12 @@ public:
      */
     void remove_disconnected();
 
+    /*
+     * Executes given event, returns update to be sent back to players
+     * Implemented via DD, a process_eventType method must be implemented for each event type
+     */
     GameUpdate* execute(ClientUpdate* event);
 
-    GameUpdate* process_disconnect(ClientDisconnectedUpdate& event);
-
-    GameUpdate* process_new_connect(ClientConnectedUpdate& event);
-
-    GameUpdate* process_message(ClientMessageUpdate& event);
 
     void broadcast(GameUpdate* update);
 

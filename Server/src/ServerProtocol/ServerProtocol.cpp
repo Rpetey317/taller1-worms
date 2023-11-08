@@ -54,16 +54,6 @@ bool ServerProtocol::send_str(const std::string& str) {
 ServerProtocol::ServerProtocol(Socket&& _cli, const int& _plid):
         cli(std::move(_cli)), isclosed(false), plid(_plid) {}
 
-bool ServerProtocol::send_player_id(const int& id) {
-    if (!this->send_char(MSGCODE_ACK)) {
-        return false;
-    }
-    if (!this->send_char((playerid_t)id)) {
-        return false;
-    }
-    return true;
-}
-
 // DD methods for each update type implemented in ServerProtocol_sendUpdate.cpp
 char ServerProtocol::send_update(GameUpdate* msg) { return msg->get_sent_by(*this); }
 

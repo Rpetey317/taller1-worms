@@ -14,7 +14,8 @@ PlayerHandler::PlayerHandler(Socket&& _peer, Queue<ClientUpdate*>& _eventq, int&
         send_th(sendq, prot),
         recv_th(_eventq, prot, _id),
         id(_id) {
-    this->prot.send_player_id(_id);
+    ConnectionAcknowledgeUpdate ack(_id);
+    this->prot.send_update((GameUpdate*)&ack);
     _eventq.push((ClientUpdate*)new PlayerConnectedUpdate(_id));
 }
 
