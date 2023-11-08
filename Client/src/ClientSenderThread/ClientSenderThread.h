@@ -11,11 +11,11 @@
 #include "thread.h"
 
 class SenderThread: public Thread {
-    Queue<Action>& outgoingq;
+    Queue<Action*>& outgoingq;
     ClientProtocol& prot;
 
 public:
-    SenderThread(Queue<Action>& outgoingq, ClientProtocol& prot);
+    SenderThread(Queue<Action*>& outgoingq, ClientProtocol& prot);
     void run() override;
     void end();
 

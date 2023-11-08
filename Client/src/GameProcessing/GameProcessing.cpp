@@ -2,6 +2,8 @@
 
 #include "NetworkProtocol.h"
 
+#include "../Event/EventHeaders.h" // Esto desp lo borro. El evento lo deberia procesar el EventProcessor
+
 #define CREATE_STR "Create"
 #define JOIN_STR "Join"
 #define CHAT_STR "Chat"
@@ -75,16 +77,11 @@ void GameProcessing::run() {
             playing = false;
             // break;
         } else if (cmd_id == CREATE) {
-            std::cout << "Entro aca 0 " << std::endl;
-            Action create_game(CREATE, "");
-            this->outgoingq.push(create_game);
+            // Action create_game(CREATE, "");
+            // this->outgoingq.push(create_game);
         } else if (cmd_id == JOIN) {
-
-            std::cout << "Entro aca 1 " << std::endl;
             /* code */
         } else if (cmd_id == CHAT) {
-
-            std::cout << "Entro aca 2 " << std::endl;
             std::string chatmsg;
             std::getline(ss, chatmsg);
             int lenght;
@@ -95,20 +92,20 @@ void GameProcessing::run() {
                 position++;
                 lenght--;  // Quito el espacio blanco
             }
+            // Action new_action(MSGCODE_PLAYER_MESSAGE, new_chatmsg);
             std::string new_chatmsg = chatmsg.substr(position);
-            Action new_action(MSGCODE_PLAYER_MESSAGE, new_chatmsg);
-            this->outgoingq.push(new_action);
+            Message *action = new Message(new_chatmsg);
+            this->outgoingq.push(action);
         } else if (cmd_id == READ) {
-
-            std::cout << "Entro aca 3 " << std::endl;
             int amount_msgs;
             ss >> amount_msgs;
 
             while (amount_msgs > 0) {
-                Action action = this->incomingq.pop();
-                if (action.msg != "") {
-                    std::cout << action.msg << std::endl;
-                }
+                Event *update = this->incomingq.pop();
+                PlayerMessage *msg = dynamic_cast<PlayerMessage*>(update); // TODO: ver si esto esta bien. Por ahora se que es un PlayerMessage action
+                if (msg != nullptr && msg->get_msg() != "")
+                    std::cout << msg->get_msg() << std::endl;
+
                 amount_msgs--;
             }
         }  // Puede haber distintos comandos.

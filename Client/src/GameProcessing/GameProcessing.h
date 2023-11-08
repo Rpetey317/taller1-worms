@@ -20,8 +20,8 @@ class GameProcessing {
 private:
     Socket skt;
     ClientProtocol protocol;  // El thread receiver y sender deberian tener el clientProtocol?
-    Queue<Action> incomingq;
-    Queue<Action> outgoingq;
+    Queue<Event*> incomingq;
+    Queue<Action*> outgoingq;
     ReceiverThread receiverTh;
     SenderThread senderTh;
     int id;

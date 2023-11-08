@@ -8,27 +8,45 @@
 #include "Socket.h"
 #include "string"
 
+#include "../Action/ActionHeaders.h"
+#include "../Event/EventHeaders.h"
 
-using NetworkProtocol::amount_players_t;
-using NetworkProtocol::MSGCODE_PLAYER_MESSAGE;
-using NetworkProtocol::msgcode_t;
-using NetworkProtocol::strlen_t;
-// using NetworkProtocol::MSGCODE_PLAYER_CONNECT;
-// using NetworkProtocol::MSGCODE_PLAYER_DISCONNECT;
-using NetworkProtocol::ERROR;
+#include "../Action/Message/Message.h"
+
+using namespace NetworkProtocol;
+
+#define CLOSED_SKT -1
+#define SUCCESS 0
+
+class Message; // Hardcodeo. Arreglar tema de includes
 
 class ClientProtocol {
 private:
     Socket skt;
-    std::string create_players_msg(int amount_players);
-    bool was_closed;
+    bool isclosed;
+    /*
+     * Primitive type send methods, to simplify update-specific send methods
+     * On successful send returns true, false if socket closed
+     */
+    bool send_short(const uint16_t& num);
+    bool send_long(const uint32_t& num);
+    bool send_char(const uint8_t& num);
+    bool send_str(const std::string& str);
 
 public:
     explicit ClientProtocol(Socket skt);
     int recv_player_id();
-    void send_msg(const std::string& chat_msg);
-    void send_code(msgcode_t action);
+
+    /*
+    * Send methods for each type of action.
+    */
+    char send_Message(Message action);
+
+    // Sends code game
     void send_code_game(size_t code);
+
+    Event* recv_update();
+    
     msgcode_t recv_code();
     std::string recv_msg();
     int recv_amount_players();
