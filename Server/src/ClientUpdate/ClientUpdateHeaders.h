@@ -1,4 +1,5 @@
-#include "ClientConnectedUpdate.h"
-#include "ClientDisconnectedUpdate.h"
-#include "ClientMessageUpdate.h"
+#include "ClientConnectedUpdate/ClientConnectedUpdate.h"
+#include "ClientDisconnectedUpdate/ClientDisconnectedUpdate.h"
+#include "ClientMessageUpdate/ClientMessageUpdate.h"
+
 #include "ClientUpdate.h"

@@ -63,20 +63,6 @@ char ServerProtocol::send_PlayerDisconnectedUpdate(const PlayerDisconnectedUpdat
     return SUCCESS;
 }
 
-char ServerProtocol::send_PlayerDisconnectedUpdate(const PlayerDisconnectedUpdate& upd) {
-    // send code
-    if (!this->send_char(MSGCODE_PLAYER_DISCONNECT)) {
-        return CLOSED_SKT;
-    }
-
-    // send player id
-    if (!this->send_char(upd.get_player_id())) {
-        return CLOSED_SKT;
-    }
-
-    return SUCCESS;
-}
-
 char ServerProtocol::send_PlayerConnectedUpdate(const PlayerConnectedUpdate& upd) {
     // send code
     if (!this->send_char(MSGCODE_PLAYER_CONNECT)) {

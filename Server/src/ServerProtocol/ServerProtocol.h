@@ -37,8 +37,10 @@ class ServerProtocol {
     bool send_char(const uint8_t& num);
     bool send_str(const std::string& str);
 
-    // ========== DD ============ //
 
+public:
+    // ========== DD ============ //
+    // This methods need to be public, because they are called from GameHandler::process_new_connect
     /*
      * Send methods for each type of update.
      * Refer to protocol documentation for details
@@ -49,7 +51,9 @@ class ServerProtocol {
     char send_TurnChangeUpdate(const TurnChangeUpdate& upd);
     char send_PlayerMessageUpdate(const PlayerMessageUpdate& upd);
 
-public:
+
+
+
     /*
      * Constructs a new protocol from socket with move semantics
      */

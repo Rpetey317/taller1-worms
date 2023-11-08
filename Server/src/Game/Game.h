@@ -23,8 +23,10 @@ class GameHandler {
     int game_code;
     int next_free_id;
 
-    // ============ DD ============= //
 
+public:
+    // ============ DD ============= //
+    // This three methods cannot be private. They are called from ClientUpdate::get_processed_by
     /*
      * Increments player count
      * Returns corresponding PlayerConnectedUpdate
@@ -42,7 +44,9 @@ class GameHandler {
      */
     GameUpdate* process_message(ClientMessageUpdate& event);
 
-public:
+
+
+
     /*
      * Creates new handler, adding players (recievers) to given list
      */
