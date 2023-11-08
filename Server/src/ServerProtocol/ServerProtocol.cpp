@@ -5,7 +5,6 @@
 
 #include <arpa/inet.h>
 
-#include "ClientUpdate.h"
 #include "GameUpdate.h"
 
 // I thoroughly refuse to manually write the using directive
@@ -67,27 +66,28 @@ bool ServerProtocol::send_player_id(const int& id) {
 
 char ServerProtocol::send_update(GameUpdate* msg) { return msg->get_sent_by(*this); }
 
-ClientUpdate ServerProtocol::recv_msg() {
+ClientMessageUpdate ServerProtocol::recv_msg() {
     char code;
-    ClientUpdate upd;
     this->cli.recvall(&code, sizeof(char), &this->isclosed);
     if (this->isclosed) {
-        return upd;
+        return ClientMessageUpdate(this->plid, "");
     }
 
     strlen_t msg_len;
     this->cli.recvall(&msg_len, sizeof(strlen_t), &this->isclosed);
     if (this->isclosed) {
-        return upd;
+        return ClientMessageUpdate(this->plid, "");
     }
+
     msg_len = ntohs(msg_len);
     std::vector<char> vmsg(msg_len);
     this->cli.recvall(&vmsg[0], msg_len, &this->isclosed);
     if (this->isclosed) {
-        return upd;
+        return ClientMessageUpdate(this->plid, "");
     }
+
     std::string msg(vmsg.begin(), vmsg.end());
-    return ClientUpdate(msg, plid);
+    return ClientMessageUpdate(plid, msg);
 }
 
 msgcode_t ServerProtocol::recv_request() {
@@ -154,6 +154,35 @@ char ServerProtocol::send_PlayerDisconnectedUpdate(const PlayerDisconnectedUpdat
 
     return SUCCESS;
 }
+
+char ServerProtocol::send_PlayerDisconnectedUpdate(const PlayerDisconnectedUpdate& upd) {
+    // send code
+    if (!this->send_char(MSGCODE_PLAYER_DISCONNECT)) {
+        return CLOSED_SKT;
+    }
+
+    // send player id
+    if (!this->send_long(upd.get_player_id())) {
+        return CLOSED_SKT;
+    }
+
+    return SUCCESS;
+}
+
+char ServerProtocol::send_PlayerConnectedUpdate(const PlayerConnectedUpdate& upd) {
+    // send code
+    if (!this->send_char(MSGCODE_PLAYER_CONNECT)) {
+        return CLOSED_SKT;
+    }
+
+    // send player id
+    if (!this->send_long(upd.get_player_id())) {
+        return CLOSED_SKT;
+    }
+
+    return SUCCESS;
+}
+
 
 bool ServerProtocol::is_connected() { return !this->isclosed; }
 

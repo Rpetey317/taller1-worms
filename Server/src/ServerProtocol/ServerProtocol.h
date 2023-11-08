@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "ClientUpdate.h"
+#include "ClientUpdateHeaders.h"
 #include "GameUpdateHeaders.h"
 #include "NetworkProtocol.h"
 #include "Socket.h"
@@ -52,7 +52,7 @@ public:
     /*
      * Reads a message from client. Returns NO_MSG_READ if connection closed
      */
-    ClientUpdate recv_msg();
+    ClientMessageUpdate recv_msg();
 
     /*
      * Reads the first request the client sends. Can be CREATE_GAME or JOIN_GAME
@@ -71,6 +71,8 @@ public:
     char send_ConnectionAcknowledgeUpdate(const ConnectionAcknowledgeUpdate& upd);
 
     char send_PlayerDisconnectedUpdate(const PlayerDisconnectedUpdate& upd);
+
+    char send_PlayerConnectedUpdate(const PlayerConnectedUpdate& upd);
 
     /*
      * Closes connection to client. Destructor already closes connection,

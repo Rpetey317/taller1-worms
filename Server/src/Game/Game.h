@@ -45,6 +45,8 @@ public:
 
     GameUpdate* process_disconnect(ClientDisconnectedUpdate& event);
 
+    GameUpdate* process_new_connect(ClientConnectedUpdate& event);
+
     GameUpdate* process_message(ClientMessageUpdate& event);
 
     void broadcast(GameUpdate* update);

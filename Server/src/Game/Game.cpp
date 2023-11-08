@@ -40,15 +40,8 @@ void GameHandler::advance_turn() {
     ++this->curr_pl;
     if (this->curr_pl == this->players.end()) {
         this->curr_pl = this->players.begin();
-        // if (this->curr_pl == this->players.end()) {
-        //     std::cout << "No players connected" << std::endl;
-        //     return;
-        // }
-
-        // PlayerHandler* player = *curr_pl;
-        // GameUpdate* update = new PlayerMessageUpdate("Your turn!"); // Es necesario el new?
-        // Despues hay que hacer delete player->send(update);
     }
+    // todo: send turn change update
 }
 
 
@@ -56,6 +49,10 @@ GameUpdate* GameHandler::execute(ClientUpdate* event) { return event->get_proces
 
 GameUpdate* GameHandler::process_disconnect(ClientDisconnectedUpdate& event) {
     return new PlayerDisconnectedUpdate(event.get_id());
+}
+
+GameUpdate* GameHandler::process_new_connect(ClientConnectedUpdate& event) {
+    return new PlayerConnectedUpdate(event.get_id());
 }
 
 GameUpdate* GameHandler::process_message(ClientMessageUpdate& event) {
