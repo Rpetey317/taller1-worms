@@ -16,8 +16,7 @@ GameHandler::GameHandler(Queue<ClientUpdate*>& _eventq): plcount(0), eventq(_eve
 // }
 
 void GameHandler::add_player(Socket&& peer) {
-    PlayerHandler* new_player =
-            new PlayerHandler(std::move(peer), this->plcount, this->eventq, ++next_free_id);
+    PlayerHandler* new_player = new PlayerHandler(std::move(peer), this->eventq, ++next_free_id);
     this->players.push_back(new_player);
 
     new_player->start();
@@ -48,10 +47,12 @@ void GameHandler::advance_turn() {
 GameUpdate* GameHandler::execute(ClientUpdate* event) { return event->get_processed_by(*this); }
 
 GameUpdate* GameHandler::process_disconnect(ClientDisconnectedUpdate& event) {
+    this->plcount--;
     return new PlayerDisconnectedUpdate(event.get_id());
 }
 
 GameUpdate* GameHandler::process_new_connect(ClientConnectedUpdate& event) {
+    this->plcount++;
     return new PlayerConnectedUpdate(event.get_id());
 }
 

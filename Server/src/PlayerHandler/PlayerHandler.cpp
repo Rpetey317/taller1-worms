@@ -8,16 +8,14 @@ using NetworkProtocol::MSGCODE_ACK;             // MGSCODE_CREATE_GAME
 using NetworkProtocol::MSGCODE_PLAYER_CONNECT;  // MSGCODE_PLAYER_CONNECT_TO_GAME
 using NetworkProtocol::msgcode_t;
 
-PlayerHandler::PlayerHandler(Socket&& _peer, std::atomic<int>& _plcount,
-                             Queue<ClientUpdate*>& _eventq, int& _id):
+PlayerHandler::PlayerHandler(Socket&& _peer, Queue<ClientUpdate*>& _eventq, int& _id):
         prot(std::move(_peer), _id),
         sendq(10000),
         send_th(sendq, prot),
-        recv_th(_eventq, prot, _plcount),
+        recv_th(_eventq, prot, _id),
         id(_id) {
-    _plcount++;
     this->prot.send_player_id(_id);
-    // recvers.push_to_all(ServerMessage(_plcount));
+    _eventq.push((ClientUpdate*)new PlayerConnectedUpdate(_id));
 }
 
 void PlayerHandler::start() {
