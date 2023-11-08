@@ -5,7 +5,6 @@
 
 #include <arpa/inet.h>
 
-#include "ClientUpdate.h"
 #include "GameUpdate.h"
 
 // I thoroughly refuse to manually write the using directive
@@ -55,39 +54,31 @@ bool ServerProtocol::send_str(const std::string& str) {
 ServerProtocol::ServerProtocol(Socket&& _cli, const int& _plid):
         cli(std::move(_cli)), isclosed(false), plid(_plid) {}
 
-bool ServerProtocol::send_player_id(const int& id) {
-    if (!this->send_char(MSGCODE_ACK)) {
-        return false;
-    }
-    if (!this->send_char((playerid_t)id)) {
-        return false;
-    }
-    return true;
-}
-
+// DD methods for each update type implemented in ServerProtocol_sendUpdate.cpp
 char ServerProtocol::send_update(GameUpdate* msg) { return msg->get_sent_by(*this); }
 
-ClientUpdate ServerProtocol::recv_msg() {
+ClientMessageUpdate ServerProtocol::recv_msg() {
     char code;
-    ClientUpdate upd;
     this->cli.recvall(&code, sizeof(char), &this->isclosed);
     if (this->isclosed) {
-        return upd;
+        return ClientMessageUpdate(this->plid, "");
     }
 
     strlen_t msg_len;
     this->cli.recvall(&msg_len, sizeof(strlen_t), &this->isclosed);
     if (this->isclosed) {
-        return upd;
+        return ClientMessageUpdate(this->plid, "");
     }
+
     msg_len = ntohs(msg_len);
     std::vector<char> vmsg(msg_len);
     this->cli.recvall(&vmsg[0], msg_len, &this->isclosed);
     if (this->isclosed) {
-        return upd;
+        return ClientMessageUpdate(this->plid, "");
     }
+
     std::string msg(vmsg.begin(), vmsg.end());
-    return ClientUpdate(msg, plid);
+    return ClientMessageUpdate(plid, msg);
 }
 
 msgcode_t ServerProtocol::recv_request() {
@@ -97,62 +88,6 @@ msgcode_t ServerProtocol::recv_request() {
         return -1;
     }
     return request;
-}
-
-char ServerProtocol::send_PlayerMessageUpdate(const PlayerMessageUpdate& upd) {
-    // send code
-    if (!this->send_char(MSGCODE_PLAYER_MESSAGE)) {
-        return CLOSED_SKT;
-    }
-
-    // send message
-    if (!this->send_str(upd.get_msg())) {
-        return CLOSED_SKT;
-    }
-
-    return SUCCESS;
-}
-
-char ServerProtocol::send_TurnChangeUpdate(const TurnChangeUpdate& upd) {
-    // send code
-    if (!this->send_char(MSGCODE_TURN_UPDATE)) {
-        return CLOSED_SKT;
-    }
-
-    // send new current player id
-    if (!this->send_long(upd.get_new_curr_player())) {
-        return CLOSED_SKT;
-    }
-
-    return SUCCESS;
-}
-
-char ServerProtocol::send_ConnectionAcknowledgeUpdate(const ConnectionAcknowledgeUpdate& upd) {
-    // send code
-    if (!this->send_char(MSGCODE_ACK)) {
-        return CLOSED_SKT;
-    }
-
-    // send player id
-    if (!this->send_long(upd.get_plid())) {
-        return CLOSED_SKT;
-    }
-
-    return SUCCESS;
-}
-
-char ServerProtocol::send_PlayerDisconnectedUpdate(const PlayerDisconnectedUpdate& upd) {
-    // send code
-    if (!this->send_char(MSGCODE_PLAYER_DISCONNECT)) {
-        return CLOSED_SKT;
-    }
-
-    // send player id
-    if (!this->send_long(upd.get_player_id())) {
-        return CLOSED_SKT;
-    }
-
-    return SUCCESS;
 }
 
 bool ServerProtocol::is_connected() { return !this->isclosed; }

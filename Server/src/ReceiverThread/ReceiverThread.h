@@ -13,16 +13,15 @@
 class ReceiverThread: public Thread {
     Queue<ClientUpdate*>& eventq;
     ServerProtocol& prot;
-    std::atomic<int>& plcount;
+    const int plid;
 
 
 public:
     /*
      * Initializes a new thread for a given client (prot)
      * Incoming messages will be forvarded to recvers
-     * When client disconnects, plcount is decremented
      */
-    ReceiverThread(Queue<ClientUpdate*>& eventq, ServerProtocol& prot, std::atomic<int>& plcount);
+    ReceiverThread(Queue<ClientUpdate*>& eventq, ServerProtocol& prot, const int& plid);
 
     /*
      * Runs thread. Listens for messages, and when one is received,

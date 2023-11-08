@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "ClientUpdate.h"
+#include "ClientUpdateHeaders.h"
 #include "GameUpdateHeaders.h"
 #include "NetworkProtocol.h"
 #include "Socket.h"
@@ -37,13 +37,24 @@ class ServerProtocol {
     bool send_char(const uint8_t& num);
     bool send_str(const std::string& str);
 
+    // ========== DD ============ //
+
+    /*
+     * Send methods for each type of update.
+     * Refer to protocol documentation for details
+     */
+    char send_ConnectionAcknowledgeUpdate(const ConnectionAcknowledgeUpdate& upd);
+    char send_PlayerConnectedUpdate(const PlayerConnectedUpdate& upd);
+    char send_PlayerDisconnectedUpdate(const PlayerDisconnectedUpdate& upd);
+    char send_TurnChangeUpdate(const TurnChangeUpdate& upd);
+    char send_PlayerMessageUpdate(const PlayerMessageUpdate& upd);
+
 public:
     /*
      * Constructs a new protocol from socket with move semantics
      */
     ServerProtocol(Socket&& cli, const int& plid);
 
-    bool send_player_id(const int& id);
     /*
      * Sends given message to client
      */
@@ -52,7 +63,7 @@ public:
     /*
      * Reads a message from client. Returns NO_MSG_READ if connection closed
      */
-    ClientUpdate recv_msg();
+    ClientMessageUpdate recv_msg();
 
     /*
      * Reads the first request the client sends. Can be CREATE_GAME or JOIN_GAME
@@ -63,14 +74,6 @@ public:
      * returns true if connection with client is still open
      */
     bool is_connected();
-
-    char send_PlayerMessageUpdate(const PlayerMessageUpdate& upd);
-
-    char send_TurnChangeUpdate(const TurnChangeUpdate& upd);
-
-    char send_ConnectionAcknowledgeUpdate(const ConnectionAcknowledgeUpdate& upd);
-
-    char send_PlayerDisconnectedUpdate(const PlayerDisconnectedUpdate& upd);
 
     /*
      * Closes connection to client. Destructor already closes connection,

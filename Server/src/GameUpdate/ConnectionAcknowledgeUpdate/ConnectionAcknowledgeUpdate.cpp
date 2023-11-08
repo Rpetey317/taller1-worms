@@ -2,7 +2,7 @@
 
 #include "ServerProtocol.h"
 
-ConnectionAcknowledgeUpdate::ConnectionAcknowledgeUpdate(int& _plid): plid(_plid) {}
+ConnectionAcknowledgeUpdate::ConnectionAcknowledgeUpdate(const int& _plid): plid(_plid) {}
 
 char ConnectionAcknowledgeUpdate::get_sent_by(ServerProtocol& prot) {
     return prot.send_ConnectionAcknowledgeUpdate(*this);

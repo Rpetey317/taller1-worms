@@ -8,7 +8,7 @@ private:
     const int plid;
 
 public:
-    explicit ConnectionAcknowledgeUpdate(int& plid);
+    explicit ConnectionAcknowledgeUpdate(const int& plid);
 
     char get_sent_by(ServerProtocol& prot) override;
 
