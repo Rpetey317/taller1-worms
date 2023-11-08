@@ -10,3 +10,5 @@ char PlayerMessageUpdate::get_sent_by(ServerProtocol& prot) {
 }
 
 const std::string& PlayerMessageUpdate::get_msg() const { return this->message; }
+
+const int& PlayerMessageUpdate::get_plid() const { return this->plid; }

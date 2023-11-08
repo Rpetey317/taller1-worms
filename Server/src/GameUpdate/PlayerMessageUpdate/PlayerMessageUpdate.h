@@ -16,6 +16,8 @@ public:
 
     const std::string& get_msg() const;
 
+    const int& get_plid() const;
+
     char get_sent_by(ServerProtocol& prot) override;
 };
 

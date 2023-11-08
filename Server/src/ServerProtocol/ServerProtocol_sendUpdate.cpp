@@ -8,6 +8,11 @@ char ServerProtocol::send_PlayerMessageUpdate(const PlayerMessageUpdate& upd) {
         return CLOSED_SKT;
     }
 
+    // send player id
+    if (!this->send_long(upd.get_plid())) {
+        return CLOSED_SKT;
+    }
+
     // send message
     if (!this->send_str(upd.get_msg())) {
         return CLOSED_SKT;
