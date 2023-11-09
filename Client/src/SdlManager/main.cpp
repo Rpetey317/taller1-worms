@@ -67,7 +67,7 @@ void SdlMap::load_map(int arr[10][10]) {
     }
 }
 
-SdlWorm::SdlWorm(Texture& sprite): sprite(sprite), flip(SDL_FLIP_NONE) {
+SdlWorm::SdlWorm(Texture& sprite): flip(SDL_FLIP_NONE), sprite(sprite) {
     x_pos = 0;
     y_pos = 0;
     animation_phase = 0;
@@ -166,7 +166,7 @@ void SdlManager::run() {
     Uint8* waveStart;
     Uint32 waveLength;
 
-    if (SDL_LoadWAV("../../../Images/tuki.wav", &audioSpec, &waveStart, &waveLength) == NULL)
+    if (SDL_LoadWAV("../Images/tuki.wav", &audioSpec, &waveStart, &waveLength) == NULL)
         std::cout << "triste" << std::endl;
 
     device = SDL_OpenAudioDevice(nullptr, 0, &audioSpec, nullptr, SDL_AUDIO_ALLOW_ANY_CHANGE);
@@ -177,8 +177,8 @@ void SdlManager::run() {
     }
     Mixer mixer(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 
-    Music background_music("../../../Images/background.wav");
-    Chunk sound_effect("../../../Images/tuki.wav");
+    Music background_music("../Images/background.wav");
+    Chunk sound_effect("../Images/tuki.wav");
 
     const int frame_delay = 1000 / FPS;
     bool is_running = true;
@@ -187,14 +187,14 @@ void SdlManager::run() {
 
     Renderer renderer(window, -1, SDL_RENDERER_SOFTWARE);
 
-    Surface image_floor1("../../../Images/Terrain/Construction/bridge.png");
+    Surface image_floor1("../Images/Terrain/Construction/bridge.png");
     image_floor1.SetColorKey(true, 0);
-    Surface image_floor2("../../../Images/Terrain/Construction/bridge-l.png");
+    Surface image_floor2("../Images/Terrain/Construction/bridge-l.png");
     image_floor2.SetColorKey(true, 0);
-    Surface image_floor3("../../../Images/Terrain/Construction/bridge-r.png");
+    Surface image_floor3("../Images/Terrain/Construction/bridge-r.png");
     image_floor3.SetColorKey(true, 0);
-    Surface image_water("../../../Images/Worms/wblink1.png");
-    Surface image_background("../../../Images/Terrain/Hospital/soil.png");
+    Surface image_water("../Images/Worms/wblink1.png");
+    Surface image_background("../Images/Terrain/Hospital/soil.png");
     SdlMap map(renderer, image_floor1, image_floor2, image_floor3, image_water, image_background);
     int sarasa[10][10] = {
             {3, 3, 3, 3, 3, 3, 3, 3, 3, 3}, {3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
@@ -204,7 +204,7 @@ void SdlManager::run() {
             {3, 3, 3, 3, 3, 3, 3, 3, 3, 3}, {3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
     };
     map.load_map(sarasa);
-    Surface image("../../../Images/Worms/wblink1.png");
+    Surface image("../Images/Worms/wblink1.png");
 
     image.SetColorKey(true, SDL_MapRGB(image.Get()->format, 128, 128,
                                        192));  // los numeros magicos son el rgb del fondo Texture
@@ -254,11 +254,11 @@ void SdlManager::update_screen(Renderer& renderer, SdlWorm& worm, SdlMap& map) {
     renderer.Present();
 }
 
-int main() {
+/*int main() {
     Queue<int> commands;
     Queue<std::vector<int>> positions;
 
     SdlManager manager(commands, positions);
 
     manager.run();
-}
+}*/
