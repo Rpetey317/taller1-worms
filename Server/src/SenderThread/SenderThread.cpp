@@ -17,7 +17,11 @@ void SenderThread::run() {
                 continue;
             }
             std::cout << "trying to send smth" << std::endl;
-            this->prot.send_update(msg);
+            if (this->prot.send_update(msg) == CLOSED_SKT){
+                std::cout << "Sender socket closed" << std::endl;
+                _keep_running = false;
+                continue;
+            }
         } catch (ClosedQueue& e) {
             std::cout << "Sender queue closed" << std::endl;
             _keep_running = false;

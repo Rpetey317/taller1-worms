@@ -36,7 +36,7 @@ void ReceiverThread::run() {
     }
 
     // Player disconnected
-    this->eventq.push((ClientUpdate*)new PlayerDisconnectedUpdate(this->plid));
+    this->eventq.push((ClientUpdate*)new ClientDisconnectedUpdate(this->plid));
 }
 
 void ReceiverThread::end() { _keep_running = false; }
