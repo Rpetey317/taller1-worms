@@ -13,6 +13,8 @@ private:
 public:
     PlayerConnected(const int& player_id);
 
+    void get_processed_by(EventProcessor& eventProcessor) override;
+
     // std::string get_player_name();
 };
 

@@ -5,6 +5,8 @@
 #include <vector>
 
 class ClientProtocol;
+class EventProcessor;
+// #include "../EventProcessor/EventProcessor.h"
 
 class Event {
 protected:
@@ -15,6 +17,8 @@ protected:
 
 public:
     int get_id() { return this->id; }
+
+    virtual void get_processed_by(EventProcessor& eventProcessor) = 0;
 
     bool is_valid() { return this->valid; }
 

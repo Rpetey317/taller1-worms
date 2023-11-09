@@ -12,6 +12,7 @@
 // #include "../ClientProtocol/ClientProtocol.h"
 #include "../ClientReceiverThread/ClientReceiverThread.h"
 #include "../ClientSenderThread/ClientSenderThread.h"
+#include "../EventProcessor/EventProcessor.h"
 
 #include "Socket.h"
 #include "queue.h"
@@ -24,6 +25,7 @@ private:
     Queue<Action*> outgoingq;
     ReceiverThread receiverTh;
     SenderThread senderTh;
+    EventProcessor eventProcessor;
     int id;
 
 public:
