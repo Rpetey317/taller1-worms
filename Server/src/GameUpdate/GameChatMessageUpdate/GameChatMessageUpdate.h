@@ -19,6 +19,8 @@ public:
     const int& get_plid() const;
 
     char get_sent_by(ServerProtocol& prot) override;
+
+    ~GameChatMessageUpdate() override;
 };
 
 

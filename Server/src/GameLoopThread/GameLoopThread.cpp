@@ -18,7 +18,6 @@ void GameLoopThread::run() {
         // Execute said action if needed
         if (popped) {
             GameUpdate* update = this->game.execute(event);
-            std::cout << "Update received. Broadcasting update" << std::endl;
             game.broadcast(update);
             // delete update;
         }

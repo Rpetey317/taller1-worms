@@ -2,7 +2,7 @@
 
 using namespace NetworkProtocol;  // NOLINT
 
-char ServerProtocol::send_PlayerMessageUpdate(const PlayerMessageUpdate& upd) {
+char ServerProtocol::send_PlayerMessageUpdate(const GameChatMessageUpdate& upd) {
     // send code
     if (!this->send_char(MSGCODE_PLAYER_MESSAGE)) {
         return CLOSED_SKT;
@@ -21,7 +21,7 @@ char ServerProtocol::send_PlayerMessageUpdate(const PlayerMessageUpdate& upd) {
     return SUCCESS;
 }
 
-char ServerProtocol::send_TurnChangeUpdate(const TurnChangeUpdate& upd) {
+char ServerProtocol::send_TurnChangeUpdate(const GameTurnChangeUpdate& upd) {
     // send code
     if (!this->send_char(MSGCODE_TURN_UPDATE)) {
         return CLOSED_SKT;
@@ -35,7 +35,7 @@ char ServerProtocol::send_TurnChangeUpdate(const TurnChangeUpdate& upd) {
     return SUCCESS;
 }
 
-char ServerProtocol::send_ConnectionAcknowledgeUpdate(const ConnectionAcknowledgeUpdate& upd) {
+char ServerProtocol::send_ConnectionAcknowledgeUpdate(const GameAcknowledgeUpdate& upd) {
     // send code
     if (!this->send_char(MSGCODE_ACK)) {
         return CLOSED_SKT;
@@ -49,7 +49,7 @@ char ServerProtocol::send_ConnectionAcknowledgeUpdate(const ConnectionAcknowledg
     return SUCCESS;
 }
 
-char ServerProtocol::send_PlayerDisconnectedUpdate(const PlayerDisconnectedUpdate& upd) {
+char ServerProtocol::send_PlayerDisconnectedUpdate(const GamePlayerDisconnectedUpdate& upd) {
     // send code
     if (!this->send_char(MSGCODE_PLAYER_DISCONNECT)) {
         return CLOSED_SKT;
@@ -63,7 +63,7 @@ char ServerProtocol::send_PlayerDisconnectedUpdate(const PlayerDisconnectedUpdat
     return SUCCESS;
 }
 
-char ServerProtocol::send_PlayerConnectedUpdate(const PlayerConnectedUpdate& upd) {
+char ServerProtocol::send_PlayerConnectedUpdate(const GamePlayerConnectedUpdate& upd) {
     // send code
     if (!this->send_char(MSGCODE_PLAYER_CONNECT)) {
         return CLOSED_SKT;

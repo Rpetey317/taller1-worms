@@ -17,9 +17,7 @@ void ReceiverThread::run() {
             ClientUpdate* msg = prot.recv_msg();
 
             if (msg->is_valid()) {
-                std::cout << "Received message" << std::endl;
                 this->eventq.push(msg);
-                std::cout << "Pushed message" << std::endl;
             } else {
                 _keep_running = false;
                 continue;
@@ -27,7 +25,6 @@ void ReceiverThread::run() {
         } catch (LibError& e) {
             // This is a "socket was closed" error
             // i.e.: not an error, just someone closing connection from another thread
-            std::cout << "Socket closed, player " << this->plid << std::endl;
             _keep_running = false;
             continue;
         } catch (...) {

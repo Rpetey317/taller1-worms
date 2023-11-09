@@ -10,10 +10,6 @@ GameHandler::GameHandler(Queue<ClientUpdate*>& _eventq): plcount(0), eventq(_eve
     curr_pl = this->players.begin();
     next_free_id = 0;
 }
-// GameHandler::GameHandler(Queue<ClientUpdate*>& _eventq, int code): plcount(0), eventq(_eventq),
-// game_code(code) {
-//     curr_pl = this->players.begin();
-// }
 
 void GameHandler::add_player(Socket&& peer) {
     PlayerHandler* new_player = new PlayerHandler(std::move(peer), this->eventq, ++next_free_id);
@@ -23,7 +19,6 @@ void GameHandler::add_player(Socket&& peer) {
 }
 
 void GameHandler::remove_disconnected() {
-    std::cout << "Removing disconnected players" << std::endl;
     auto pl = this->players.begin();
     while (pl != this->players.end()) {
         if (!(*pl)->is_connected()) {
@@ -33,7 +28,6 @@ void GameHandler::remove_disconnected() {
         }
         pl++;
     }
-    std::cout << "Removed disconnected players!" << std::endl;
 }
 
 void GameHandler::advance_turn() {
@@ -48,11 +42,8 @@ void GameHandler::advance_turn() {
 GameUpdate* GameHandler::execute(ClientUpdate* event) { return event->get_processed_by(*this); }
 
 void GameHandler::broadcast(GameUpdate* update) {
-    std::cout << "Broadcasting update" << std::endl;
     for (auto pl = this->players.begin(); pl != this->players.end(); pl++) {
-        std::cout << "Sending update to player" << std::endl;
         (*pl)->send(update);
-        std::cout << "Update sent" << std::endl;
     }
 }
 

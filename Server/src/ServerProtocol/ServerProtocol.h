@@ -45,11 +45,11 @@ public:
      * Send methods for each type of update.
      * Refer to protocol documentation for details
      */
-    char send_ConnectionAcknowledgeUpdate(const ConnectionAcknowledgeUpdate& upd);
-    char send_PlayerConnectedUpdate(const PlayerConnectedUpdate& upd);
-    char send_PlayerDisconnectedUpdate(const PlayerDisconnectedUpdate& upd);
-    char send_TurnChangeUpdate(const TurnChangeUpdate& upd);
-    char send_PlayerMessageUpdate(const PlayerMessageUpdate& upd);
+    char send_ConnectionAcknowledgeUpdate(const GameAcknowledgeUpdate& upd);
+    char send_PlayerConnectedUpdate(const GamePlayerConnectedUpdate& upd);
+    char send_PlayerDisconnectedUpdate(const GamePlayerDisconnectedUpdate& upd);
+    char send_TurnChangeUpdate(const GameTurnChangeUpdate& upd);
+    char send_PlayerMessageUpdate(const GameChatMessageUpdate& upd);
     char send_NullUpdate(const GameNullUpdate& upd);
 
 

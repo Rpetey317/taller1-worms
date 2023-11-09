@@ -2,7 +2,7 @@
 
 #include "ServerProtocol.h"
 
-GameAcknowledgeUpdate::ConnectionAcknowledgeUpdate(const int& _plid): plid(_plid) {}
+GameAcknowledgeUpdate::GameAcknowledgeUpdate(const int& _plid): plid(_plid) {}
 
 char GameAcknowledgeUpdate::get_sent_by(ServerProtocol& prot) {
     return prot.send_ConnectionAcknowledgeUpdate(*this);
