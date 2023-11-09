@@ -36,14 +36,14 @@ private:
      */
     std::string recv_msg();
 
-    PlayerConnected* recv_player_connected(const int& player_id);
-    PlayerMessage* recv_player_message(const int& player_id);
-    PlayerDisconnected* recv_player_disconnected(const int& player_id);
+    PlayerConnected* recv_player_connected(const playerid_t& player_id);
+    PlayerMessage* recv_player_message(const playerid_t& player_id);
+    PlayerDisconnected* recv_player_disconnected(const playerid_t& player_id);
 
 
 public:
     explicit ClientProtocol(Socket skt);
-    int recv_player_id();
+    playerid_t recv_player_id();
 
     /*
      * Send methods for each type of action.

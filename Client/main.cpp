@@ -1,17 +1,18 @@
 #include <iostream>
 
 #include "GameProcessing/GameProcessing.h"
-#include "SdlManager/SdlManager.h"
+#include "src/SdlManager/SdlManager.h"
+
 int main(int argc, char* argv[]) {
 
-    Queue<int> commands;
-    Queue<std::vector<int>> positions;
+    // Queue<int> commands;
+    // Queue<std::vector<int>> positions;
 
-    SdlManager manager(commands, positions);
+    // SdlManager manager(commands, positions);
 
-    manager.run();
+    // manager.run();
 
-    /*try {
+    try {
         int ret = -1;
 
         if (argc != 3) {
@@ -32,5 +33,5 @@ int main(int argc, char* argv[]) {
     } catch (...) {
         std::cerr << "Something went wrong and an unknown exception was caught.\n";
         return -1;
-    }*/
+    }
 }

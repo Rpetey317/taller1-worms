@@ -63,7 +63,7 @@ add_executable(server "Server/main.cpp") #Define objeto ejecutable llamado serve
 target_link_libraries(server server_classes common_classes) #Establece las bibliotecas necesarias para el ejecutable server
 
 add_executable(client "Client/main.cpp")
-target_link_libraries(client client_classes common_classes mycpps)
+target_link_libraries(client client_classes common_classes)
 
 
 # # Add server executable

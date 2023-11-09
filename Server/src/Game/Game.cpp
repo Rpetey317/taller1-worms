@@ -18,7 +18,7 @@ GameHandler::GameHandler(Queue<ClientUpdate*>& _eventq): plcount(0), eventq(_eve
 void GameHandler::add_player(Socket&& peer) {
     PlayerHandler* new_player = new PlayerHandler(std::move(peer), this->eventq, ++next_free_id);
     this->players.push_back(new_player);
-
+    this->plcount ++;
     new_player->start();
 }
 
@@ -29,6 +29,7 @@ void GameHandler::remove_disconnected() {
         if (!(*pl)->is_connected()) {
             delete (*pl);
             pl = this->players.erase(pl);
+            this->plcount --;
         }
         pl++;
     }

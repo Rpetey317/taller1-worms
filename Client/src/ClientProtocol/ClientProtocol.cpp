@@ -64,27 +64,27 @@ std::string ClientProtocol::recv_msg() {
     return msg;
 }
 
-PlayerConnected* ClientProtocol::recv_player_connected(const int& player_id) {
-    return new PlayerConnected(player_id);
+PlayerConnected* ClientProtocol::recv_player_connected(const playerid_t& player_id) {
+    return new PlayerConnected((int)player_id);
 }
 
-PlayerMessage* ClientProtocol::recv_player_message(const int& player_id) {
+PlayerMessage* ClientProtocol::recv_player_message(const playerid_t& player_id) {
     std::string msg = this->recv_msg();
     if (msg == "") {
         return nullptr;
     }
-    return new PlayerMessage(player_id, msg);
+    return new PlayerMessage((int)player_id, msg);
 }
 
-PlayerDisconnected* ClientProtocol::recv_player_disconnected(const int& player_id) {
-    return new PlayerDisconnected(player_id);
+PlayerDisconnected* ClientProtocol::recv_player_disconnected(const playerid_t& player_id) {
+    return new PlayerDisconnected((int)player_id);
 }
 
 ClientProtocol::ClientProtocol(Socket skt): skt(std::move(skt)), isclosed(false) {}
 
-int ClientProtocol::recv_player_id() {
-    int id;
-    this->skt.recvall(&id, sizeof(int), &this->isclosed);
+playerid_t ClientProtocol::recv_player_id() {
+    playerid_t id;
+    this->skt.recvall(&id, sizeof(playerid_t), &this->isclosed);
     if (this->isclosed) {
         return -1;
     }
@@ -114,9 +114,10 @@ void ClientProtocol::send_code_game(size_t code) {
 
 Event* ClientProtocol::recv_update() { 
     msgcode_t code_update = this->recv_code();
-    int player_id = this->recv_player_id();
-
-    if (code_update == MSGCODE_PLAYER_CONNECT) {
+    playerid_t player_id = this->recv_player_id();
+    if (code_update == MSGCODE_ACK) {
+        return this->recv_player_connected(player_id);
+    } else if (code_update == MSGCODE_PLAYER_CONNECT) {
         return this->recv_player_connected(player_id);
     } else if (code_update == MSGCODE_PLAYER_MESSAGE) {
         return this->recv_player_message(player_id);
