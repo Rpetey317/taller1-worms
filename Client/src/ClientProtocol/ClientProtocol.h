@@ -5,7 +5,6 @@
 #include <vector>
 
 #include "../Action/ActionHeaders.h"
-#include "../Action/Message/Message.h"
 #include "../Event/EventHeaders.h"
 
 #include "NetworkProtocol.h"
@@ -17,7 +16,7 @@ using namespace NetworkProtocol;
 #define CLOSED_SKT -1
 #define SUCCESS 0
 
-class Message;  // Hardcodeo. Arreglar tema de includes
+// class Message;  // Hardcodeo. Arreglar tema de includes
 
 class ClientProtocol {
 private:
@@ -31,6 +30,16 @@ private:
     bool send_long(const uint32_t& num);
     bool send_char(const uint8_t& num);
     bool send_str(const std::string& str);
+
+    /*
+     * Receive methods of the diferent type of Events
+     */
+    std::string recv_msg();
+    
+    // PlayerConnect* recv_player_connect(const int& player_id);
+    PlayerMessage* recv_player_message(const int& player_id);
+    // PlayerDisconnect* recv_player_disconnect(const int& player_id);
+
 
 public:
     explicit ClientProtocol(Socket skt);
@@ -47,7 +56,6 @@ public:
     Event* recv_update();
 
     msgcode_t recv_code();
-    std::string recv_msg();
     int recv_amount_players();
     // uint8_t receive_gameupdate();
     void close();

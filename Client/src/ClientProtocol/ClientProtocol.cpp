@@ -45,6 +45,33 @@ bool ClientProtocol::send_str(const std::string& str) {
     return true;
 }
 
+std::string ClientProtocol::recv_msg() {
+    std::string msg = "";
+    strlen_t name_size;
+    this->skt.recvall(&name_size, sizeof(strlen_t), &isclosed);
+    if (isclosed) {
+        std::cout << "Falla lectura de tamanio de palabra" << std::endl;
+        return msg;
+    }
+    name_size = ntohs(name_size);
+    std::vector<char> vname(name_size);
+    this->skt.recvall(&vname[0], name_size, &isclosed);
+    if (isclosed) {
+        return msg;
+    }
+    std::string chatmsg(vname.begin(), vname.end());
+    msg = chatmsg;
+    return msg;
+}
+
+PlayerMessage* ClientProtocol::recv_player_message(const int& player_id) { return nullptr; 
+    std::string msg = this->recv_msg();
+    if (msg == "") {
+        return nullptr;
+    }
+    return new PlayerMessage(player_id, msg);
+}
+
 ClientProtocol::ClientProtocol(Socket skt): skt(std::move(skt)), isclosed(false) {}
 
 int ClientProtocol::recv_player_id() {
@@ -77,7 +104,17 @@ void ClientProtocol::send_code_game(size_t code) {
     }
 }
 
-Event* ClientProtocol::recv_update() { return nullptr; }
+Event* ClientProtocol::recv_update() { 
+    msgcode_t code_update = this->recv_code();
+    int player_id = this->recv_player_id();
+
+    if (code_update == MSGCODE_PLAYER_MESSAGE) {
+        return this->recv_player_message(player_id);
+    }
+    // Los diferentes tipos de eventos se reciben aca
+    return nullptr;
+    
+}
 
 msgcode_t ClientProtocol::recv_code() {
     msgcode_t code;
@@ -88,24 +125,6 @@ msgcode_t ClientProtocol::recv_code() {
     return code;
 }
 
-std::string ClientProtocol::recv_msg() {
-    std::string msg = "";
-    strlen_t name_size;
-    this->skt.recvall(&name_size, sizeof(strlen_t), &isclosed);
-    if (isclosed) {
-        std::cout << "Falla lectura de tamanio de palabra" << std::endl;
-        return msg;
-    }
-    name_size = ntohs(name_size);
-    std::vector<char> vname(name_size);
-    this->skt.recvall(&vname[0], name_size, &isclosed);
-    if (isclosed) {
-        return msg;
-    }
-    std::string chatmsg(vname.begin(), vname.end());
-    msg = chatmsg;
-    return msg;
-}
 
 int ClientProtocol::recv_amount_players() {
     amount_players_t playercount;
