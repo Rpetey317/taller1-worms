@@ -1,8 +1,8 @@
-#include "ConnectionAcknowledgeUpdate/ConnectionAcknowledgeUpdate.h"
-#include "PlayerConnectedUpdate/PlayerConnectedUpdate.h"
-#include "PlayerDisconnectedUpdate/PlayerDisconnectedUpdate.h"
-#include "PlayerMessageUpdate/PlayerMessageUpdate.h"
-#include "TurnChangeUpdate/TurnChangeUpdate.h"
+#include "GameAcknowledgeUpdate/GameAcknowledgeUpdate.h"
+#include "GamePlayerConnectedUpdate/GamePlayerConnectedUpdate.h"
+#include "GamePlayerDisconnectedUpdate/GamePlayerDisconnectedUpdate.h"
+#include "GameChatMessageUpdate/GameChatMessageUpdate.h"
+#include "GameTurnChangeUpdate/GameTurnChangeUpdate.h"
 #include "GameNullUpdate/GameNullUpdate.h"
 
 #include "GameUpdate.h"
