@@ -69,11 +69,13 @@ void GameProcessing::run() {
     bool playing = true;
     std::string command;
     while (playing) {
-        Event *update;
+        Event* update;
         bool popped = this->incomingq.try_pop(update);
         if (popped) {
             std::cout << "Popped an event" << std::endl;
-            PlayerMessage* msg = dynamic_cast<PlayerMessage*>(update);  // TODO: ver si esto esta bien. Por ahora se que es un PlayerMessage action
+            PlayerMessage* msg =
+                    dynamic_cast<PlayerMessage*>(update);  // TODO: ver si esto esta bien. Por ahora
+                                                           // se que es un PlayerMessage action
             if (msg != nullptr && msg->get_msg() != "")
                 std::cout << msg->get_msg() << std::endl;
         }
