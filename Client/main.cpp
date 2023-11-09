@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "GameProcessing/GameProcessing.h"
-#include "src/SdlManager/SdlManager.h"
+//#include "src/SdlManager/SdlManager.h"
 
 int main(int argc, char* argv[]) {
 
