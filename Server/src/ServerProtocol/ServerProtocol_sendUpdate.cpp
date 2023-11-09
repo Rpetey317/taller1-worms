@@ -76,3 +76,7 @@ char ServerProtocol::send_PlayerConnectedUpdate(const PlayerConnectedUpdate& upd
 
     return SUCCESS;
 }
+
+char ServerProtocol::send_NullUpdate(const GameNullUpdate& upd){
+    return SUCCESS;
+}

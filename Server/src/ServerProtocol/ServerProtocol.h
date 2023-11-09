@@ -50,6 +50,7 @@ public:
     char send_PlayerDisconnectedUpdate(const PlayerDisconnectedUpdate& upd);
     char send_TurnChangeUpdate(const TurnChangeUpdate& upd);
     char send_PlayerMessageUpdate(const PlayerMessageUpdate& upd);
+    char send_NullUpdate(const GameNullUpdate& upd);
 
 
     /*
@@ -63,9 +64,9 @@ public:
     char send_update(GameUpdate* msg);
 
     /*
-     * Reads a message from client. Returns NO_MSG_READ if connection closed
+     * Reads a message from client. Returns NullMsg if connection closed
      */
-    ClientMessageUpdate recv_msg();
+    ClientUpdate* recv_msg();
 
     /*
      * Reads the first request the client sends. Can be CREATE_GAME or JOIN_GAME

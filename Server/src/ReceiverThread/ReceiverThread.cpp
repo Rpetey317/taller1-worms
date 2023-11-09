@@ -14,12 +14,11 @@ void ReceiverThread::run() {
     while (_keep_running) {
         try {
 
-            std::unique_ptr<ClientMessageUpdate> msg =
-                    std::make_unique<ClientMessageUpdate>(prot.recv_msg());
+            ClientUpdate* msg = prot.recv_msg();
 
             if (msg->is_valid()) {
-                std::cout << "Received message: " << msg->get_msg() << std::endl;
-                this->eventq.push((ClientUpdate*)msg.release());
+                std::cout << "Received message" << std::endl;
+                this->eventq.push(msg);
                 std::cout << "Pushed message" << std::endl;
             } else {
                 _keep_running = false;

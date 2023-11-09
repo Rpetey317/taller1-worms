@@ -13,3 +13,7 @@ GameUpdate* GameHandler::process_new_connect(ClientConnectedUpdate& event) {
 GameUpdate* GameHandler::process_message(ClientMessageUpdate& event) {
     return new PlayerMessageUpdate(event.get_id(), event.get_msg());
 }
+
+GameUpdate* GameHandler::process_NullUpdate(ClientNullUpdate& event) {
+    return new GameNullUpdate();
+}

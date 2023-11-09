@@ -57,28 +57,28 @@ ServerProtocol::ServerProtocol(Socket&& _cli, const int& _plid):
 // DD methods for each update type implemented in ServerProtocol_sendUpdate.cpp
 char ServerProtocol::send_update(GameUpdate* msg) { return msg->get_sent_by(*this); }
 
-ClientMessageUpdate ServerProtocol::recv_msg() {
+ClientUpdate* ServerProtocol::recv_msg() {
     char code;
     this->cli.recvall(&code, sizeof(char), &this->isclosed);
     if (this->isclosed) {
-        return ClientMessageUpdate(this->plid, "");
+        return new ClientNullUpdate();
     }
 
     strlen_t msg_len;
     this->cli.recvall(&msg_len, sizeof(strlen_t), &this->isclosed);
     if (this->isclosed) {
-        return ClientMessageUpdate(this->plid, "");
+        return new ClientNullUpdate();
     }
 
     msg_len = ntohs(msg_len);
     std::vector<char> vmsg(msg_len);
     this->cli.recvall(&vmsg[0], msg_len, &this->isclosed);
     if (this->isclosed) {
-        return ClientMessageUpdate(this->plid, "");
+        return new ClientNullUpdate();
     }
 
     std::string msg(vmsg.begin(), vmsg.end());
-    return ClientMessageUpdate(plid, msg);
+    return new ClientMessageUpdate(plid, msg);
 }
 
 msgcode_t ServerProtocol::recv_request() {

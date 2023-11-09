@@ -10,16 +10,15 @@ class GameUpdate;
 class ClientUpdate {
 protected:
     int id;
-    bool valid;
 
-    explicit ClientUpdate(const int& _id): id(_id), valid(true) {}
+    explicit ClientUpdate(const int& _id): id(_id) {}
 
 public:
     int get_id() { return this->id; }
 
     virtual GameUpdate* get_processed_by(GameHandler& game) = 0;
 
-    bool is_valid() { return this->valid; }
+    virtual bool is_valid() { return true; }
 
     virtual ~ClientUpdate() = default;
 };
