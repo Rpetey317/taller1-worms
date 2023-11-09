@@ -5,7 +5,7 @@ project(Worms)
 set(CMAKE_CXX_STANDARD 17)
 
 # Flags
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -pedantic -pedantic-errors")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -pedantic -pedantic-errors -I/usr/include/SDL2 -D_REENTRANT -lSDL2")
 # debugging flags
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ggdb -DDEBUG -fno-inline ")
 # threads
@@ -43,12 +43,27 @@ include_directories(${PROJECT_SOURCE_DIR}/Client/src/ClientSenderThread)
 add_subdirectory("Client/src")
 
 
+
+
+set(SDL2PP_WITH_IMAGE YES)
+set(SDL2PP_WITH_TTF YES)
+set(SDL2PP_WITH_MIXER YES)
+add_subdirectory("Client/src/SdlManager/SDL2pp")
+include_directories(${PROJECT_SOURCE_DIR}/Client/src/SdlManager/SDL2pp)
+
+# define targets
+add_library(mycpps STATIC "Client/src/SdlManager/main.cpp")
+#target_include_directories(mycpps PUBLIC "Client/src/SdlManager/SDL2pp")
+target_link_libraries(mycpps PUBLIC SDL2pp)
+
+
+
 # EJECUTABLES
 add_executable(server "Server/main.cpp") #Define objeto ejecutable llamado server que se compila a partir de "Server/server_main.cpp"
 target_link_libraries(server server_classes common_classes) #Establece las bibliotecas necesarias para el ejecutable server
 
 add_executable(client "Client/main.cpp")
-target_link_libraries(client client_classes common_classes)
+target_link_libraries(client client_classes common_classes mycpps)
 
 
 # # Add server executable
