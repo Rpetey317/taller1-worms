@@ -16,7 +16,7 @@ void SenderThread::run() {
                 _keep_running = false;
                 continue;
             }
-            std::cout << "Sending update" << std::endl;
+            std::cout << "trying to send smth" << std::endl;
             this->prot.send_update(msg);
         } catch (ClosedQueue& e) {
             std::cout << "Sender queue closed" << std::endl;

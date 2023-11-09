@@ -16,6 +16,7 @@ PlayerHandler::PlayerHandler(Socket&& _peer, Queue<ClientUpdate*>& _eventq, int&
         id(_id) {
     ConnectionAcknowledgeUpdate ack(_id);
     this->prot.send_update((GameUpdate*)&ack);
+    std::cout << "Sent ack" << std::endl;
     _eventq.push((ClientUpdate*)new PlayerConnectedUpdate(_id));
 }
 
@@ -58,6 +59,7 @@ void PlayerHandler::send(GameUpdate* msg) { sendq.push(msg); }
 
 PlayerHandler::~PlayerHandler() {
     prot.close();
+    std::cout << "PlayerHandler destructor closed socket" << std::endl;
 
     send_th.end();
     send_th.join();
