@@ -3,18 +3,18 @@
 
 #include "../GameUpdate.h"
 
-class ConnectionAcknowledgeUpdate: public GameUpdate {
+class GameAcknowledgeUpdate: public GameUpdate {
 private:
     const int plid;
 
 public:
-    explicit ConnectionAcknowledgeUpdate(const int& plid);
+    explicit GameAcknowledgeUpdate(const int& plid);
 
     char get_sent_by(ServerProtocol& prot) override;
 
     const int& get_plid() const;
 
-    ~ConnectionAcknowledgeUpdate() override = default;
+    ~GameAcknowledgeUpdate() override = default;
 };
 
 #endif  // !__CONNECTIONACKUPDATE_H__

@@ -34,5 +34,9 @@
 .vscode/c_cpp_properties.json
 .vscode/settings.json
 
+#CLion setting files
+.idea/
+
 # CMake build folder
 build/
+cmake-build-debug/

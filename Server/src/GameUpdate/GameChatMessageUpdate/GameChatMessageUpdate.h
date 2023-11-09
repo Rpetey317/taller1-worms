@@ -6,13 +6,13 @@
 
 #include "../GameUpdate.h"
 
-class PlayerMessageUpdate: public GameUpdate {
+class GameChatMessageUpdate: public GameUpdate {
 private:
     const std::string message;
     const int plid;
 
 public:
-    explicit PlayerMessageUpdate(const int& plid, std::string const& _msg);
+    explicit GameChatMessageUpdate(const int& plid, std::string const& _msg);
 
     const std::string& get_msg() const;
 

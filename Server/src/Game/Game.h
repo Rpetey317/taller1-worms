@@ -29,18 +29,18 @@ public:
     // This three methods cannot be private. They are called from ClientUpdate::get_processed_by
     /*
      * Increments player count
-     * Returns corresponding PlayerConnectedUpdate
+     * Returns corresponding GamePlayerConnectedUpdate
      */
     GameUpdate* process_new_connect(ClientConnectedUpdate& event);
 
     /*
      * Decrements player count
-     * Returns corresponding PlayerDisconnectedUpdate
+     * Returns corresponding GamePlayerDisconnectedUpdate
      */
     GameUpdate* process_disconnect(ClientDisconnectedUpdate& event);
 
     /*
-     * Returns PlayerMessageUpdate with same message
+     * Returns GameChatMessageUpdate with same message
      */
     GameUpdate* process_message(ClientMessageUpdate& event);
 
