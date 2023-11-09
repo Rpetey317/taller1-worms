@@ -16,7 +16,7 @@ using namespace NetworkProtocol;
 #define CLOSED_SKT -1
 #define SUCCESS 0
 
-// class Message;  // Hardcodeo. Arreglar tema de includes
+class Message;  // Hardcodeo. Arreglar tema de includes HAY QUE BORRAR ESTO DESP
 
 class ClientProtocol {
 private:

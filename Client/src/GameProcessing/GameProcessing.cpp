@@ -55,7 +55,10 @@ void GameProcessing::run() {
             {READ_STR, READ},     {EXIT_STR, EXIT}, {NOCMD_STR, NOCMD},
     };
 
-    this->id = this->protocol.recv_player_id();
+    Event* update = this->protocol.recv_update(); // Va a ser player connected. Me devuelve mi id
+    PlayerConnected* connected = dynamic_cast<PlayerConnected*>(
+                        update); 
+    this->id = connected->get_id();
     if (id < 0) {
         throw std::runtime_error("Error al recibir el id del jugador");
     }

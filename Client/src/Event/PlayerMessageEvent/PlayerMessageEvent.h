@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "../Event/Event.h"
+#include "../Event.h"
 
 class PlayerMessage: public Event {
     // private:
