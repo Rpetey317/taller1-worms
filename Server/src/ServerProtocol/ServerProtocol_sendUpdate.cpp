@@ -9,7 +9,7 @@ char ServerProtocol::send_PlayerMessageUpdate(const GameChatMessageUpdate& upd) 
     }
 
     // send player id
-    if (!this->send_char((playerid_t) upd.get_plid())) {
+    if (!this->send_char((playerid_t)upd.get_plid())) {
         return CLOSED_SKT;
     }
 
@@ -28,7 +28,7 @@ char ServerProtocol::send_TurnChangeUpdate(const GameTurnChangeUpdate& upd) {
     }
 
     // send new current player id
-    if (!this->send_char((playerid_t) upd.get_new_curr_player())) {
+    if (!this->send_char((playerid_t)upd.get_new_curr_player())) {
         return CLOSED_SKT;
     }
 
@@ -42,7 +42,7 @@ char ServerProtocol::send_ConnectionAcknowledgeUpdate(const GameAcknowledgeUpdat
     }
 
     // send player id
-    if (!this->send_char((playerid_t) upd.get_plid())) {
+    if (!this->send_char((playerid_t)upd.get_plid())) {
         return CLOSED_SKT;
     }
 
@@ -56,7 +56,7 @@ char ServerProtocol::send_PlayerDisconnectedUpdate(const GamePlayerDisconnectedU
     }
 
     // send player id
-    if (!this->send_char((playerid_t) upd.get_player_id())) {
+    if (!this->send_char((playerid_t)upd.get_player_id())) {
         return CLOSED_SKT;
     }
 
@@ -70,13 +70,11 @@ char ServerProtocol::send_PlayerConnectedUpdate(const GamePlayerConnectedUpdate&
     }
 
     // send player id
-    if (!this->send_char((playerid_t) upd.get_player_id())) {
+    if (!this->send_char((playerid_t)upd.get_player_id())) {
         return CLOSED_SKT;
     }
 
     return SUCCESS;
 }
 
-char ServerProtocol::send_NullUpdate(const GameNullUpdate& upd){
-    return SUCCESS;
-}
+char ServerProtocol::send_NullUpdate(const GameNullUpdate& upd) { return SUCCESS; }

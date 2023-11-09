@@ -16,7 +16,7 @@ void SenderThread::run() {
                 _keep_running = false;
                 continue;
             }
-            if (this->prot.send_update(msg) == CLOSED_SKT){
+            if (this->prot.send_update(msg) == CLOSED_SKT) {
                 _keep_running = false;
                 continue;
             }

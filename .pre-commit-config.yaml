@@ -5,14 +5,14 @@ repos:
           hooks:
                   - id: clang-format
                     files: ^(.*[.]cpp|.*[.]h)$
-                    exclude: ^(Box2D/.*|SdlManager/.*)$
+                    exclude: ^(Client/src/Box2D/.*|Client/src/SdlManager/.*)$
                     args: ["--style=file", "-i"]
         - repo: https://github.com/cpplint/cpplint
           rev: 1.6.0
           hooks:
                   - id: cpplint
                     files: ^(.*[.]cpp|.*[.]h)$
-                    exclude: ^(Box2D/.*|SdlManager/.*)$
+                    exclude: ^(Client/src/Box2D/.*|Client/src/SdlManager/.*)$
         - repo: https://github.com/pocc/pre-commit-hooks
           rev: 9a9bbc00895bbdb7670231c2565d4f1309c42905 # SHA of v1.3.5
           hooks:
