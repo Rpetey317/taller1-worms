@@ -64,12 +64,20 @@ std::string ClientProtocol::recv_msg() {
     return msg;
 }
 
-PlayerMessage* ClientProtocol::recv_player_message(const int& player_id) { return nullptr; 
+PlayerConnected* ClientProtocol::recv_player_connected(const int& player_id) {
+    return new PlayerConnected(player_id);
+}
+
+PlayerMessage* ClientProtocol::recv_player_message(const int& player_id) {
     std::string msg = this->recv_msg();
     if (msg == "") {
         return nullptr;
     }
     return new PlayerMessage(player_id, msg);
+}
+
+PlayerDisconnected* ClientProtocol::recv_player_disconnected(const int& player_id) {
+    return new PlayerDisconnected(player_id);
 }
 
 ClientProtocol::ClientProtocol(Socket skt): skt(std::move(skt)), isclosed(false) {}
@@ -108,9 +116,14 @@ Event* ClientProtocol::recv_update() {
     msgcode_t code_update = this->recv_code();
     int player_id = this->recv_player_id();
 
-    if (code_update == MSGCODE_PLAYER_MESSAGE) {
+    if (code_update == MSGCODE_PLAYER_CONNECT) {
+        return this->recv_player_connected(player_id);
+    } else if (code_update == MSGCODE_PLAYER_MESSAGE) {
         return this->recv_player_message(player_id);
+    } else if (code_update == MSGCODE_PLAYER_DISCONNECT) {
+        return this->recv_player_disconnected(player_id);
     }
+    
     // Los diferentes tipos de eventos se reciben aca
     return nullptr;
     

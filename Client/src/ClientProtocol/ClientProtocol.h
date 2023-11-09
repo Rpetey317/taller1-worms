@@ -35,10 +35,10 @@ private:
      * Receive methods of the diferent type of Events
      */
     std::string recv_msg();
-    
-    // PlayerConnect* recv_player_connect(const int& player_id);
+
+    PlayerConnected* recv_player_connected(const int& player_id);
     PlayerMessage* recv_player_message(const int& player_id);
-    // PlayerDisconnect* recv_player_disconnect(const int& player_id);
+    PlayerDisconnected* recv_player_disconnected(const int& player_id);
 
 
 public:
