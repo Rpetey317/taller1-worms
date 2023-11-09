@@ -112,7 +112,7 @@ void ClientProtocol::send_code_game(size_t code) {
     }
 }
 
-Event* ClientProtocol::recv_update() { 
+Event* ClientProtocol::recv_update() {
     msgcode_t code_update = this->recv_code();
     playerid_t player_id = this->recv_player_id();
     if (code_update == MSGCODE_ACK) {
@@ -124,10 +124,9 @@ Event* ClientProtocol::recv_update() {
     } else if (code_update == MSGCODE_PLAYER_DISCONNECT) {
         return this->recv_player_disconnected(player_id);
     }
-    
+
     // Los diferentes tipos de eventos se reciben aca
     return nullptr;
-    
 }
 
 msgcode_t ClientProtocol::recv_code() {

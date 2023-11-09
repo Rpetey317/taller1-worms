@@ -3,7 +3,7 @@
 
 #include "../ClientUpdate.h"
 
-class ClientNullUpdate : public ClientUpdate {
+class ClientNullUpdate: public ClientUpdate {
 public:
     ClientNullUpdate();
     ~ClientNullUpdate();
@@ -13,4 +13,4 @@ public:
     GameUpdate* get_processed_by(GameHandler& game);
 };
 
-#endif // !__CLIENT_NULL_UPDATE_H__
+#endif  // !__CLIENT_NULL_UPDATE_H__
