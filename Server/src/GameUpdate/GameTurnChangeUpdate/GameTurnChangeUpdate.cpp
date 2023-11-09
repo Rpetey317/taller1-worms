@@ -2,7 +2,7 @@
 
 #include "ServerProtocol.h"
 
-GameTurnChangeUpdate::GameTurnChangeUpdate(int& _new_curr_player):
+GameTurnChangeUpdate::GameTurnChangeUpdate(const int& _new_curr_player):
         new_curr_player(_new_curr_player) {}
 
 char GameTurnChangeUpdate::get_sent_by(ServerProtocol& prot) {

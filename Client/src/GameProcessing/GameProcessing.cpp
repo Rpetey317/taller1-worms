@@ -38,7 +38,7 @@ std::string GameProcessing::ask_for_command() {
     std::string action;
     s >> action;
     if (action != "Chat" && action != "Read" && action != "Exit" && action != "Create" &&
-           action != "Join") {
+        action != "Join") {
         std::cout << "Ingrese un comando posible" << std::endl;
         std::getline(std::cin, command);
         std::istringstream s_new(command);
@@ -55,8 +55,9 @@ void GameProcessing::run() {
             {READ_STR, READ},     {EXIT_STR, EXIT}, {NOCMD_STR, NOCMD},
     };
 
-    Event* update = this->protocol.recv_update();  // Va a ser player connected. Me devuelve mi id
-    PlayerConnected* connected = dynamic_cast<PlayerConnected*>(update);
+    Event* ack_update =
+            this->protocol.recv_update();  // Va a ser player connected. Me devuelve mi id
+    PlayerConnected* connected = dynamic_cast<PlayerConnected*>(ack_update);
     this->id = connected->get_id();
     if (id < 0) {
         throw std::runtime_error("Error al recibir el id del jugador");
@@ -69,7 +70,7 @@ void GameProcessing::run() {
     bool playing = true;
     std::string command;
     while (playing) {
-        Event *update;
+        Event* update;
         bool popped = this->incomingq.try_pop(update);
         if (popped) {
             std::cout << "Popped an event" << std::endl;
@@ -78,9 +79,9 @@ void GameProcessing::run() {
 
         command = ask_for_command();
         std::istringstream ss(command);
-        std::string action;
-        ss >> action;
-        int cmd_id = lut.at(action);
+        std::string action_str;
+        ss >> action_str;
+        int cmd_id = lut.at(action_str);
         if (cmd_id == EXIT) {
             playing = false;
             // break;
@@ -109,10 +110,10 @@ void GameProcessing::run() {
             ss >> amount_msgs;
 
             while (amount_msgs > 0) {
-                Event* update = this->incomingq.pop();
+                Event* popped_update = this->incomingq.pop();
                 PlayerMessage* msg = dynamic_cast<PlayerMessage*>(
-                        update);  // TODO: ver si esto esta bien. Por ahora se que es un
-                                  // PlayerMessage action
+                        popped_update);  // TODO: ver si esto esta bien. Por ahora se que es un
+                                         // PlayerMessage action
                 if (msg != nullptr && msg->get_msg() != "")
                     std::cout << msg->get_msg() << std::endl;
 

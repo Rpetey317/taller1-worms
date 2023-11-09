@@ -1,10 +1,10 @@
 #ifndef __SERVER_PLMONITOR_H__
 #define __SERVER_PLMONITOR_H__
 
+#include <map>
 #include <memory>
 #include <mutex>
 #include <string>
-#include <map>
 
 #include "ClientUpdateHeaders.h"
 #include "GameUpdate.h"

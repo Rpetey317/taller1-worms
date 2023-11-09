@@ -9,14 +9,14 @@ void EventProcessor::process_connection(PlayerConnected& event) {
 }
 
 void EventProcessor::process_msg(PlayerMessage& event) {
-    std::cout << "Soy de tipo Message" << std::endl;    
+    std::cout << "Soy de tipo Message" << std::endl;
     std::cout << event.get_msg() << std::endl;
 }
 
 void EventProcessor::process_disconnection(PlayerDisconnected& event) {
-        std::cout << "Soy de tipo PlayerDisconnected" << std::endl;
+    std::cout << "Soy de tipo PlayerDisconnected" << std::endl;
 }
 
-void EventProcessor::proccess_event(Event* event) { event->get_processed_by(*this);}
+void EventProcessor::proccess_event(Event* event) { event->get_processed_by(*this); }
 
 EventProcessor::~EventProcessor() {}

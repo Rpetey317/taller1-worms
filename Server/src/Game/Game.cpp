@@ -19,9 +19,8 @@ void GameHandler::add_player(Socket&& peer) {
 
 void GameHandler::advance_turn() {
     ++this->curr_pl;
-    if (this->curr_pl == this->players.end()) 
+    if (this->curr_pl == this->players.end())
         this->curr_pl = this->players.begin();
-    
 }
 
 // DD methods implemented in Game_processUpdate.cpp
@@ -36,5 +35,6 @@ void GameHandler::broadcast(GameUpdate* update) {
 int GameHandler::count() { return plcount; }
 
 void GameHandler::close() {
-    for (auto pl = this->players.begin(); pl != this->players.end(); pl++) delete (*pl).second.release();
+    for (auto pl = this->players.begin(); pl != this->players.end(); pl++)
+        delete (*pl).second.release();
 }

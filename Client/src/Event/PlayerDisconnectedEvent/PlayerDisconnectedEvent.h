@@ -11,7 +11,7 @@ private:
     // std::string player_name;
 
 public:
-    PlayerDisconnected(const int& player_id);
+    explicit PlayerDisconnected(const int& player_id);
 
     void get_processed_by(EventProcessor& eventProcessor) override;
 

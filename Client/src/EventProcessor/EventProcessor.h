@@ -6,7 +6,7 @@
 #include "../Event/EventHeaders.h"
 
 class EventProcessor {
-   public:
+public:
     EventProcessor();
 
     void process_connection(PlayerConnected& event);
@@ -17,7 +17,7 @@ class EventProcessor {
 
     void proccess_event(Event* event);
 
-   ~EventProcessor();
+    ~EventProcessor();
 };
 
-#endif // EVENTPROCESSOR_H
+#endif  // EVENTPROCESSOR_H

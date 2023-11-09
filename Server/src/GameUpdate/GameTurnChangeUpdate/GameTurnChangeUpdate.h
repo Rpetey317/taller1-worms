@@ -8,7 +8,7 @@ private:
     const int new_curr_player;
 
 public:
-    explicit GameTurnChangeUpdate(int& new_curr_player);
+    explicit GameTurnChangeUpdate(const int& new_curr_player);
 
     char get_sent_by(ServerProtocol& prot) override;
 

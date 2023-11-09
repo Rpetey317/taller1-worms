@@ -11,7 +11,7 @@
 #include "Socket.h"
 #include "string"
 
-using namespace NetworkProtocol;
+using namespace NetworkProtocol;  // NOLINT
 
 #define CLOSED_SKT -1
 #define SUCCESS 0
@@ -26,6 +26,7 @@ private:
      * Primitive type send methods, to simplify update-specific send methods
      * On successful send returns true, false if socket closed
      */
+
     bool send_short(const uint16_t& num);
     bool send_long(const uint32_t& num);
     bool send_char(const uint8_t& num);

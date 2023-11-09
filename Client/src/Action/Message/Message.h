@@ -12,7 +12,7 @@ private:
     std::string msg;
 
 public:
-    Message(const std::string& msg);
+    explicit Message(const std::string& msg);
 
     char get_send_by(ClientProtocol& prot) override;
 
