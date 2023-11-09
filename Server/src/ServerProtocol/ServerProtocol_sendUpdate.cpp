@@ -9,7 +9,7 @@ char ServerProtocol::send_PlayerMessageUpdate(const PlayerMessageUpdate& upd) {
     }
 
     // send player id
-    if (!this->send_char(upd.get_plid())) {
+    if (!this->send_char((playerid_t) upd.get_plid())) {
         return CLOSED_SKT;
     }
 
@@ -28,7 +28,7 @@ char ServerProtocol::send_TurnChangeUpdate(const TurnChangeUpdate& upd) {
     }
 
     // send new current player id
-    if (!this->send_char(upd.get_new_curr_player())) {
+    if (!this->send_char((playerid_t) upd.get_new_curr_player())) {
         return CLOSED_SKT;
     }
 
@@ -42,7 +42,7 @@ char ServerProtocol::send_ConnectionAcknowledgeUpdate(const ConnectionAcknowledg
     }
 
     // send player id
-    if (!this->send_char(upd.get_plid())) {
+    if (!this->send_char((playerid_t) upd.get_plid())) {
         return CLOSED_SKT;
     }
 
@@ -56,7 +56,7 @@ char ServerProtocol::send_PlayerDisconnectedUpdate(const PlayerDisconnectedUpdat
     }
 
     // send player id
-    if (!this->send_char(upd.get_player_id())) {
+    if (!this->send_char((playerid_t) upd.get_player_id())) {
         return CLOSED_SKT;
     }
 
@@ -70,7 +70,7 @@ char ServerProtocol::send_PlayerConnectedUpdate(const PlayerConnectedUpdate& upd
     }
 
     // send player id
-    if (!this->send_char(upd.get_player_id())) {
+    if (!this->send_char((playerid_t) upd.get_player_id())) {
         return CLOSED_SKT;
     }
 
