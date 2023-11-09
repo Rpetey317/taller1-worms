@@ -59,7 +59,6 @@ void PlayerHandler::send(GameUpdate* msg) { sendq.push(msg); }
 
 PlayerHandler::~PlayerHandler() {
     prot.close();
-    std::cout << "PlayerHandler destructor closed socket" << std::endl;
 
     send_th.end();
     send_th.join();
