@@ -4,8 +4,8 @@
 #include <string>
 #include <vector>
 
-#include "../Action.h"
 #include "../../ClientProtocol/ClientProtocol.h"
+#include "../Action.h"
 
 class Message: public Action {
 private:
@@ -15,8 +15,8 @@ public:
     Message(const std::string& msg);
 
     char get_send_by(ClientProtocol& prot) override;
-    
+
     std::string get_msg();
 };
 
-#endif  // ACTION_H_
+#endif  // MESSAGE_H_

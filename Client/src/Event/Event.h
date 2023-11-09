@@ -14,7 +14,6 @@ protected:
     explicit Event(const int& _id): id(_id), valid(true) {}
 
 public:
-
     int get_id() { return this->id; }
 
     bool is_valid() { return this->valid; }

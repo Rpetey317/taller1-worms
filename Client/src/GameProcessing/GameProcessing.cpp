@@ -1,8 +1,8 @@
 #include "GameProcessing.h"
 
-#include "NetworkProtocol.h"
+#include "../Event/EventHeaders.h"  // Esto desp lo borro. El evento lo deberia procesar el EventProcessor
 
-#include "../Event/EventHeaders.h" // Esto desp lo borro. El evento lo deberia procesar el EventProcessor
+#include "NetworkProtocol.h"
 
 #define CREATE_STR "Create"
 #define JOIN_STR "Join"
@@ -94,15 +94,17 @@ void GameProcessing::run() {
             }
             // Action new_action(MSGCODE_PLAYER_MESSAGE, new_chatmsg);
             std::string new_chatmsg = chatmsg.substr(position);
-            Message *action = new Message(new_chatmsg);
+            Message* action = new Message(new_chatmsg);
             this->outgoingq.push(action);
         } else if (cmd_id == READ) {
             int amount_msgs;
             ss >> amount_msgs;
 
             while (amount_msgs > 0) {
-                Event *update = this->incomingq.pop();
-                PlayerMessage *msg = dynamic_cast<PlayerMessage*>(update); // TODO: ver si esto esta bien. Por ahora se que es un PlayerMessage action
+                Event* update = this->incomingq.pop();
+                PlayerMessage* msg = dynamic_cast<PlayerMessage*>(
+                        update);  // TODO: ver si esto esta bien. Por ahora se que es un
+                                  // PlayerMessage action
                 if (msg != nullptr && msg->get_msg() != "")
                     std::cout << msg->get_msg() << std::endl;
 

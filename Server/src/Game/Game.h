@@ -45,8 +45,6 @@ public:
     GameUpdate* process_message(ClientMessageUpdate& event);
 
 
-
-
     /*
      * Creates new handler, adding players (recievers) to given list
      */

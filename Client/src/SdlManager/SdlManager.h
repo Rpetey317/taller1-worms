@@ -15,7 +15,7 @@ public:
 
 private:
     // WIP, deberia ser alguna clase comando
-    Queue<int>& commands;                  // alguien me deberia patear esto
+    Queue<int>& commands;                // alguien me deberia patear esto
     Queue<std::vector<int>>& positions;  // posiciones para ir actualizando
 
     bool event_handler(SdlWorm& worm, SDL_AudioDeviceID device, uint8_t* waveStart,

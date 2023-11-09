@@ -6,7 +6,6 @@
 #include <arpa/inet.h>
 
 
-
 bool ClientProtocol::send_short(const uint16_t& num) {
     uint16_t nnum = htons(num);
     this->skt.sendall(&nnum, sizeof(uint16_t), &this->isclosed);
@@ -59,12 +58,12 @@ int ClientProtocol::recv_player_id() {
 
 char ClientProtocol::send_Message(Message action) {
     // Send code
-    
-    if(!this->send_char(MSGCODE_PLAYER_MESSAGE))
+
+    if (!this->send_char(MSGCODE_PLAYER_MESSAGE))
         return CLOSED_SKT;
 
     // Send msg
-    if(!this->send_str(action.get_msg()))
+    if (!this->send_str(action.get_msg()))
         return CLOSED_SKT;
 
     return SUCCESS;
@@ -78,9 +77,7 @@ void ClientProtocol::send_code_game(size_t code) {
     }
 }
 
-Event* ClientProtocol::recv_update() { 
-    return nullptr;
-}
+Event* ClientProtocol::recv_update() { return nullptr; }
 
 msgcode_t ClientProtocol::recv_code() {
     msgcode_t code;

@@ -11,9 +11,9 @@ private:
     /* data */
 public:
     Action() = default;
-    
+
     virtual char get_send_by(ClientProtocol& prot) = 0;
-    
+
     virtual ~Action() = default;
 };
 

@@ -20,54 +20,51 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "box2d/box2d.h"
-#include "doctest.h"
 #include <stdio.h>
+
+#include "box2d/box2d.h"
+
+#include "doctest.h"
 
 static bool begin_contact = false;
 
-class MyContactListener : public b2ContactListener
-{
+class MyContactListener: public b2ContactListener {
 public:
-	void BeginContact(b2Contact* contact)
-	{
-		begin_contact = true;
-	}
+    void BeginContact(b2Contact* contact) { begin_contact = true; }
 };
 
-DOCTEST_TEST_CASE("begin contact")
-{
-	b2World world({ 0.0f, -10.0f });
-	MyContactListener listener;
-	world.SetContactListener(&listener);
+DOCTEST_TEST_CASE("begin contact") {
+    b2World world({0.0f, -10.0f});
+    MyContactListener listener;
+    world.SetContactListener(&listener);
 
-	b2CircleShape circle;
-	circle.m_radius = 5.f;
+    b2CircleShape circle;
+    circle.m_radius = 5.f;
 
-	b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
+    b2BodyDef bodyDef;
+    bodyDef.type = b2_dynamicBody;
 
-	b2Body* bodyA = world.CreateBody(&bodyDef);
-	b2Body* bodyB = world.CreateBody(&bodyDef);
-	bodyA->CreateFixture(&circle, 0.0f);
-	bodyB->CreateFixture(&circle, 0.0f);
+    b2Body* bodyA = world.CreateBody(&bodyDef);
+    b2Body* bodyB = world.CreateBody(&bodyDef);
+    bodyA->CreateFixture(&circle, 0.0f);
+    bodyB->CreateFixture(&circle, 0.0f);
 
-	bodyA->SetTransform(b2Vec2(0.f, 0.f), 0.f);
-	bodyB->SetTransform(b2Vec2(100.f, 0.f), 0.f);
+    bodyA->SetTransform(b2Vec2(0.f, 0.f), 0.f);
+    bodyB->SetTransform(b2Vec2(100.f, 0.f), 0.f);
 
-	const float timeStep = 1.f / 60.f;
-	const int32 velocityIterations = 6;
-	const int32 positionIterations = 2;
+    const float timeStep = 1.f / 60.f;
+    const int32 velocityIterations = 6;
+    const int32 positionIterations = 2;
 
-	world.Step(timeStep, velocityIterations, positionIterations);
+    world.Step(timeStep, velocityIterations, positionIterations);
 
-	CHECK(world.GetContactList() == nullptr);
-	CHECK(begin_contact == false);
-	
-	bodyB->SetTransform(b2Vec2(1.f, 0.f), 0.f);
+    CHECK(world.GetContactList() == nullptr);
+    CHECK(begin_contact == false);
 
-	world.Step(timeStep, velocityIterations, positionIterations);
+    bodyB->SetTransform(b2Vec2(1.f, 0.f), 0.f);
 
-	CHECK(world.GetContactList() != nullptr);
-	CHECK(begin_contact == true);
+    world.Step(timeStep, velocityIterations, positionIterations);
+
+    CHECK(world.GetContactList() != nullptr);
+    CHECK(begin_contact == true);
 }

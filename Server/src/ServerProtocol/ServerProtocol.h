@@ -52,8 +52,6 @@ public:
     char send_PlayerMessageUpdate(const PlayerMessageUpdate& upd);
 
 
-
-
     /*
      * Constructs a new protocol from socket with move semantics
      */

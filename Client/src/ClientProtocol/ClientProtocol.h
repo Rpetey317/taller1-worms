@@ -4,21 +4,20 @@
 #include <variant>
 #include <vector>
 
+#include "../Action/ActionHeaders.h"
+#include "../Action/Message/Message.h"
+#include "../Event/EventHeaders.h"
+
 #include "NetworkProtocol.h"
 #include "Socket.h"
 #include "string"
-
-#include "../Action/ActionHeaders.h"
-#include "../Event/EventHeaders.h"
-
-#include "../Action/Message/Message.h"
 
 using namespace NetworkProtocol;
 
 #define CLOSED_SKT -1
 #define SUCCESS 0
 
-class Message; // Hardcodeo. Arreglar tema de includes
+class Message;  // Hardcodeo. Arreglar tema de includes
 
 class ClientProtocol {
 private:
@@ -38,15 +37,15 @@ public:
     int recv_player_id();
 
     /*
-    * Send methods for each type of action.
-    */
+     * Send methods for each type of action.
+     */
     char send_Message(Message action);
 
     // Sends code game
     void send_code_game(size_t code);
 
     Event* recv_update();
-    
+
     msgcode_t recv_code();
     std::string recv_msg();
     int recv_amount_players();

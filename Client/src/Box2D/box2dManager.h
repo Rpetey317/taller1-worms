@@ -7,12 +7,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "queue.h"
-#include "thread.h"
 #include "include/box2d/box2d.h"
 
+#include "queue.h"
+#include "thread.h"
+
 class BoxSimulator: public Thread {
-    Queue<int>& ingoing;  
+    Queue<int>& ingoing;
     Queue<std::vector<float>>& outgoing;
     b2World* world;
     b2Body* worm;

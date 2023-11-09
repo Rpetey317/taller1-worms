@@ -36,10 +36,10 @@
 
 // MODIFIED_ERIN
 #ifdef _WIN32
-	#define _GLFW_WIN32
-	#define _CRT_SECURE_NO_WARNINGS
+#define _GLFW_WIN32
+#define _CRT_SECURE_NO_WARNINGS
 #elif __APPLE__
-	#define _GLFW_COCOA
+#define _GLFW_COCOA
 #else
-	#define _GLFW_X11
+#define _GLFW_X11
 #endif

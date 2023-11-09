@@ -7,7 +7,7 @@
 #include "../Event/Event.h"
 
 class PlayerMessage: public Event {
-// private:
+    // private:
     std::string msg;
 
 public:

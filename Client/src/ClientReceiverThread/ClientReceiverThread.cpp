@@ -13,7 +13,7 @@ ReceiverThread::ReceiverThread(Queue<Event*>& incomingq, ClientProtocol& prot):
 void ReceiverThread::run() {
     while (_keep_running) {
         try {
-            Event *event = prot.recv_update();
+            Event* event = prot.recv_update();
             this->incomingq.push(event);
             // Action action;
             // msgcode_t code = this->prot.recv_code();
