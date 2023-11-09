@@ -1,9 +1,10 @@
 #ifndef __SERVER_PLMONITOR_H__
 #define __SERVER_PLMONITOR_H__
 
-#include <list>
+#include <memory>
 #include <mutex>
 #include <string>
+#include <map>
 
 #include "ClientUpdateHeaders.h"
 #include "GameUpdate.h"
@@ -16,10 +17,10 @@
  * Handles the game lobby and its players
  */
 class GameHandler {
-    std::list<PlayerHandler*> players;
+    std::map<int, std::unique_ptr<PlayerHandler>> players;
     std::atomic<int> plcount;
     Queue<ClientUpdate*>& eventq;
-    std::list<PlayerHandler*>::iterator curr_pl;
+    std::map<int, std::unique_ptr<PlayerHandler>>::iterator curr_pl;
     int game_code;
     int next_free_id;
 

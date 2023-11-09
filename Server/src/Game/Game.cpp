@@ -13,29 +13,15 @@ GameHandler::GameHandler(Queue<ClientUpdate*>& _eventq): plcount(0), eventq(_eve
 
 void GameHandler::add_player(Socket&& peer) {
     PlayerHandler* new_player = new PlayerHandler(std::move(peer), this->eventq, ++next_free_id);
-    this->players.push_back(new_player);
-    this->plcount++;
+    this->players.insert(std::make_pair(next_free_id, std::unique_ptr<PlayerHandler>(new_player)));
     new_player->start();
-}
-
-void GameHandler::remove_disconnected() {
-    auto pl = this->players.begin();
-    while (pl != this->players.end()) {
-        if (!(*pl)->is_connected()) {
-            delete (*pl);
-            pl = this->players.erase(pl);
-            this->plcount--;
-        }
-        pl++;
-    }
 }
 
 void GameHandler::advance_turn() {
     ++this->curr_pl;
-    if (this->curr_pl == this->players.end()) {
+    if (this->curr_pl == this->players.end()) 
         this->curr_pl = this->players.begin();
-    }
-    // todo: send turn change update
+    
 }
 
 // DD methods implemented in Game_processUpdate.cpp
@@ -43,12 +29,12 @@ GameUpdate* GameHandler::execute(ClientUpdate* event) { return event->get_proces
 
 void GameHandler::broadcast(GameUpdate* update) {
     for (auto pl = this->players.begin(); pl != this->players.end(); pl++) {
-        (*pl)->send(update);
+        (*pl).second->send(update);
     }
 }
 
 int GameHandler::count() { return plcount; }
 
 void GameHandler::close() {
-    for (auto pl = this->players.begin(); pl != this->players.end(); pl++) delete (*pl);
+    for (auto pl = this->players.begin(); pl != this->players.end(); pl++) delete (*pl).second.release();
 }
