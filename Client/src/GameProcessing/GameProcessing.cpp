@@ -37,7 +37,7 @@ std::string GameProcessing::ask_for_command() {
     std::istringstream s(command);
     std::string action;
     s >> action;
-    while (action != "Chat" && action != "Read" && action != "Exit" && action != "Create" &&
+    if (action != "Chat" && action != "Read" && action != "Exit" && action != "Create" &&
            action != "Join") {
         std::cout << "Ingrese un comando posible" << std::endl;
         std::getline(std::cin, command);
@@ -69,15 +69,11 @@ void GameProcessing::run() {
     bool playing = true;
     std::string command;
     while (playing) {
-        Event* update;
+        Event *update;
         bool popped = this->incomingq.try_pop(update);
         if (popped) {
             std::cout << "Popped an event" << std::endl;
-            PlayerMessage* msg =
-                    dynamic_cast<PlayerMessage*>(update);  // TODO: ver si esto esta bien. Por ahora
-                                                           // se que es un PlayerMessage action
-            if (msg != nullptr && msg->get_msg() != "")
-                std::cout << msg->get_msg() << std::endl;
+            this->eventProcessor.proccess_event(update);
         }
 
         command = ask_for_command();
