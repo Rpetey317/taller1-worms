@@ -47,6 +47,8 @@ public:
 
     GameUpdate* process_NullUpdate(ClientNullUpdate& event);
 
+    GameUpdate* process_TurnAdvance(ClientPTurnAdvanceUpdate& event);
+
 
     /*
      * Creates new handler, adding players (recievers) to given list
@@ -60,12 +62,6 @@ public:
     void add_player(Socket&& player);
 
     /*
-     * Removes all disconected players from lobby, freeing related resources
-     * This has no "gameplay" effects
-     */
-    void remove_disconnected();
-
-    /*
      * Executes given event, returns update to be sent back to players
      * Implemented via DD, a process_eventType method must be implemented for each event type
      */
@@ -73,8 +69,6 @@ public:
 
 
     void broadcast(GameUpdate* update);
-
-    void advance_turn();
 
     /*
      * Closes lobby and frees all resources

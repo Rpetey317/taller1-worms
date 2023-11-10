@@ -35,8 +35,6 @@ void GameLoopThread::run() {
                     std::chrono::steady_clock::now() + time_to_sleep;
             std::this_thread::sleep_until(end);
         }
-        // Advance turn and loop
-        game.advance_turn();
 
         // std::cout << "Tick" << std::endl;
     }
