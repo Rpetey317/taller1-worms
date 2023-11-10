@@ -11,16 +11,14 @@ class EventProcessor;
 class Event {
 protected:
     int id;
-    bool valid;
 
-    explicit Event(const int& _id): id(_id), valid(true) {}
+    explicit Event(const int& _id): id(_id) {}
 
 public:
     int get_id() { return this->id; }
 
     virtual void get_processed_by(EventProcessor& eventProcessor) = 0;
 
-    bool is_valid() { return this->valid; }
 
     virtual ~Event() = default;
 };

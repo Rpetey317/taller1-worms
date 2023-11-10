@@ -37,9 +37,9 @@ private:
      */
     std::string recv_msg();
 
-    PlayerConnected* recv_player_connected(const playerid_t& player_id);
-    PlayerMessage* recv_player_message(const playerid_t& player_id);
-    PlayerDisconnected* recv_player_disconnected(const playerid_t& player_id);
+    Event* recv_player_connected(const playerid_t& player_id);
+    Event* recv_player_message(const playerid_t& player_id);
+    Event* recv_player_disconnected(const playerid_t& player_id);
 
 
 public:

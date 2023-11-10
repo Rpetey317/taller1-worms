@@ -44,11 +44,11 @@ GameUpdate* GameHandler::process_NullUpdate(ClientNullUpdate& event) {
 
 GameUpdate* GameHandler::process_TurnAdvance(ClientPTurnAdvanceUpdate& event) {
     auto new_curr_pl = event.get_new_pl();
-    
+
     if (new_curr_pl == this->players.end()) {
         return new GameNullUpdate();
     }
     this->curr_pl = new_curr_pl;
-    
+
     return new GameTurnChangeUpdate(new_curr_pl->first);
 }

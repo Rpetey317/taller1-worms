@@ -1,5 +1,7 @@
 #include "GameProcessing.h"
 
+#include <list>
+
 #include "../Event/EventHeaders.h"  // Esto desp lo borro. El evento lo deberia procesar el EventProcessor
 
 #include "NetworkProtocol.h"
@@ -70,11 +72,19 @@ void GameProcessing::run() {
     bool playing = true;
     std::string command;
     while (playing) {
-        Event* update;
-        bool popped = this->incomingq.try_pop(update);
-        if (popped) {
+        std::list<Event*> update_list;
+
+        bool popped = false;
+        do {
+            Event* upd;
+            popped = this->incomingq.try_pop(upd);
+            if (popped)
+                update_list.push_back(upd);
+        } while (popped);
+
+        for (auto upd: update_list) {
             std::cout << "Popped an event" << std::endl;
-            this->eventProcessor.proccess_event(update);
+            this->eventProcessor.proccess_event(upd);
         }
 
         command = ask_for_command();

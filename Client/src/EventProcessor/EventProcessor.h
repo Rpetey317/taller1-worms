@@ -15,6 +15,8 @@ public:
 
     void process_disconnection(PlayerDisconnected& event);
 
+    void process_null(NullEvent& event);
+
     void proccess_event(Event* event);
 
     ~EventProcessor();
