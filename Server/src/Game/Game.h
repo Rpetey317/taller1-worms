@@ -13,6 +13,8 @@
 #include "Socket.h"
 #include "queue.h"
 
+#define SERVER_ID 0
+
 /*
  * Handles the game lobby and its players
  */
@@ -45,8 +47,14 @@ public:
      */
     GameUpdate* process_message(ClientMessageUpdate& event);
 
+    /*
+     * Processess NullUpdate (i.e. does nothing)
+     */
     GameUpdate* process_NullUpdate(ClientNullUpdate& event);
 
+    /*
+     * Advances turn to next player and notifies relevant players of the change
+     */
     GameUpdate* process_TurnAdvance(ClientPTurnAdvanceUpdate& event);
 
 
@@ -67,7 +75,9 @@ public:
      */
     GameUpdate* execute(ClientUpdate* event);
 
-
+    /*
+     * broadcasts given update to all players
+     */
     void broadcast(GameUpdate* update);
 
     /*
