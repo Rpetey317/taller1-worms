@@ -113,20 +113,22 @@ void ClientProtocol::send_code_game(size_t code) {
 }
 
 Event* ClientProtocol::recv_update() {
+    // TODO: change this to a dynamic switch
     msgcode_t code_update = this->recv_code();
     playerid_t player_id = this->recv_player_id();
-    if (code_update == MSGCODE_ACK) {
-        return this->recv_player_connected(player_id);
-    } else if (code_update == MSGCODE_PLAYER_CONNECT) {
-        return this->recv_player_connected(player_id);
-    } else if (code_update == MSGCODE_PLAYER_MESSAGE) {
-        return this->recv_player_message(player_id);
-    } else if (code_update == MSGCODE_PLAYER_DISCONNECT) {
-        return this->recv_player_disconnected(player_id);
+    switch (code_update) {
+        case MSGCODE_ACK:
+            return this->recv_player_connected(player_id);
+        case MSGCODE_PLAYER_CONNECT:
+            return this->recv_player_connected(player_id);
+        case MSGCODE_PLAYER_MESSAGE:
+            return this->recv_player_message(player_id);
+        case MSGCODE_PLAYER_DISCONNECT:
+            return this->recv_player_disconnected(player_id);
+        default:
+            return new NullEvent(player_id);
     }
 
-    // Los diferentes tipos de eventos se reciben aca
-    return new NullEvent(player_id);
 }
 
 msgcode_t ClientProtocol::recv_code() {

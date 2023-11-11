@@ -41,7 +41,6 @@ std::string GameProcessing::ask_for_command() {
     s >> action;
     if (action != "Chat" && action != "Read" && action != "Exit" && action != "Create" &&
         action != "Join") {
-        std::cout << "Ingrese un comando posible" << std::endl;
         std::getline(std::cin, command);
         std::istringstream s_new(command);
         s_new >> action;
