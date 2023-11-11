@@ -80,6 +80,10 @@ Event* ClientProtocol::recv_player_disconnected(const playerid_t& player_id) {
     return new PlayerDisconnected((int)player_id);
 }
 
+Event* ClientProtocol::recv_turn_update(const playerid_t& player_id) {
+    return new TurnUpdate((int)player_id);
+}
+
 ClientProtocol::ClientProtocol(Socket skt): skt(std::move(skt)), isclosed(false) {}
 
 playerid_t ClientProtocol::recv_player_id() {
@@ -125,10 +129,11 @@ Event* ClientProtocol::recv_update() {
             return this->recv_player_message(player_id);
         case MSGCODE_PLAYER_DISCONNECT:
             return this->recv_player_disconnected(player_id);
+        case MSGCODE_TURN_UPDATE:
+            return this->recv_turn_update(player_id);
         default:
             return new NullEvent(player_id);
     }
-
 }
 
 msgcode_t ClientProtocol::recv_code() {

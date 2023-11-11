@@ -17,6 +17,8 @@ public:
 
     void process_null(NullEvent& event);
 
+    void process_turn_update(TurnUpdate& event);
+
     void proccess_event(Event* event);
 
     ~EventProcessor();
