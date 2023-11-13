@@ -69,7 +69,7 @@ void BoxSimulator::initialize_world() {
 }
 
 
-BoxSimulator::BoxSimulator(Queue<int>& commands, Queue<std::vector<float>>& positions):
+BoxSimulator::BoxSimulator(Queue<int>& commands, Queue<std::vector<int>>& positions):
         ingoing(commands), outgoing(positions) {
     initialize_world();
 }
