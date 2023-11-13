@@ -20,8 +20,8 @@ const msgcode_t MSGCODE_PLAYER_AMOUNT = 0x06;
 const msgcode_t MSGCODE_PLAYER_MOVE_RIGHT = 0x07;
 const msgcode_t MSGCODE_PLAYER_MOVE_LEFT = 0x08;
 const msgcode_t MSGCODE_PLAYER_MESSAGE = 0x09;
-const msgcode_t MSGCODE_PLAYER_JUMP_RIGHT = 0x10;
-const msgcode_t MSGCODE_PLAYER_JUMP_LEFT = 0x11;
+const msgcode_t MSGCODE_PLAYER_JUMP_FORWARD = 0x10;
+const msgcode_t MSGCODE_PLAYER_JUMP_BACKWARDS = 0x11;
 
 const int ERROR = -1;
 }  // namespace NetworkProtocol

@@ -12,6 +12,20 @@ int main(int argc, char* argv[]) {
 
     // manager.run();
 
+
+    // // Algo asi deberia ir:
+
+    // Queue<Action> commands;
+    // Queue<std::vector<int>> positions;
+
+    // GameProssesing client(hostname, port, commands);
+    // client.run();
+
+    // SdlManager manager(commands, positions);
+
+    // manager.run();
+
+
     try {
         int ret = -1;
 

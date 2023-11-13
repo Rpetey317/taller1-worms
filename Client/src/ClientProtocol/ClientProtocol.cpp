@@ -122,11 +122,11 @@ char ClientProtocol::send_Movement(Move action) {
 
 char ClientProtocol::send_Jump(Jump action) {
     // Send code
-    if (action.is_right()) {
-        if (!this->send_char(MSGCODE_PLAYER_JUMP_RIGHT))
+    if (action.is_forward()) {
+        if (!this->send_char(MSGCODE_PLAYER_JUMP_FORWARD))
             return CLOSED_SKT;
     } else {
-        if (!this->send_char(MSGCODE_PLAYER_JUMP_LEFT))
+        if (!this->send_char(MSGCODE_PLAYER_JUMP_BACKWARDS))
             return CLOSED_SKT;
     }
     return SUCCESS;

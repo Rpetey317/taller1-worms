@@ -2,8 +2,8 @@
 
 #include "../../ClientProtocol/ClientProtocol.h"
 
-Jump::Jump(bool is_right): jump_right(is_right) {}
+Jump::Jump(bool is_forward): jump_forward(is_forward) {}
 
 char Jump::get_send_by(ClientProtocol& prot) { return prot.send_Jump(*this); }
 
-bool Jump::is_right() { return this->jump_right; }
+bool Jump::is_forward() { return this->jump_forward; }

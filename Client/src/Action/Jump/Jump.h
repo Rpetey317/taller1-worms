@@ -8,14 +8,14 @@
 
 class Jump: public Action {
 private:
-    bool jump_right;
+    bool jump_forward;
 
 public:
-    explicit Jump(bool is_right);
+    explicit Jump(bool is_forward);
 
     char get_send_by(ClientProtocol& prot) override;
 
-    bool is_right();
+    bool is_forward();
 };
 
 #endif  // JUMP_H_

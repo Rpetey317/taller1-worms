@@ -18,7 +18,7 @@ public:
     void process_null(NullEvent& event);
 
     void process_turn_update(TurnUpdate& event);
-    
+
     void process_player_position(PlayerPosition& event);
 
     void proccess_event(Event* event);
