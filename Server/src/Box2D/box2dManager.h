@@ -9,7 +9,7 @@
 
 #include "Common/queue.h"
 #include "Common/thread.h"
-#include "include/box2d/box2d.h"
+#include "libs/box2d/include/box2d/box2d.h"
 
 class BoxSimulator: public Thread {
     Queue<int>& ingoing;  
