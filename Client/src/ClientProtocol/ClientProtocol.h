@@ -16,8 +16,6 @@ using namespace NetworkProtocol;  // NOLINT
 #define CLOSED_SKT -1
 #define SUCCESS 0
 
-class Message;  // Hardcodeo. Arreglar tema de includes HAY QUE BORRAR ESTO DESP
-
 class ClientProtocol {
 private:
     Socket skt;
@@ -50,6 +48,10 @@ public:
      * Send methods for each type of action.
      */
     char send_Message(Message action);
+
+    char send_Movement(Move action);
+
+    char send_Jump(Jump action);
 
     // Sends code game
     void send_code_game(size_t code);

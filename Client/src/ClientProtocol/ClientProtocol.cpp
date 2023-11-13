@@ -108,6 +108,31 @@ char ClientProtocol::send_Message(Message action) {
     return SUCCESS;
 }
 
+char ClientProtocol::send_Movement(Move action) {
+    // Send code
+    if (action.is_right()) {
+        if (!this->send_char(MSGCODE_PLAYER_MOVE_RIGHT))
+            return CLOSED_SKT;
+    } else {
+        if (!this->send_char(MSGCODE_PLAYER_MOVE_LEFT))
+            return CLOSED_SKT;
+    }
+    return SUCCESS;
+}
+
+char ClientProtocol::send_Jump(Jump action) {
+    // Send code
+    if (action.is_right()) {
+        if (!this->send_char(MSGCODE_PLAYER_JUMP_RIGHT))
+            return CLOSED_SKT;
+    } else {
+        if (!this->send_char(MSGCODE_PLAYER_JUMP_LEFT))
+            return CLOSED_SKT;
+    }
+    return SUCCESS;
+}
+
+
 void ClientProtocol::send_code_game(size_t code) {
     // Send code game to join
     skt.sendall(&code, sizeof(msgcode_t), &this->isclosed);

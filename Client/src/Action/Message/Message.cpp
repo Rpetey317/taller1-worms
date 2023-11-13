@@ -1,5 +1,6 @@
 #include "Message.h"
 
+#include "../../ClientProtocol/ClientProtocol.h"
 
 Message::Message(const std::string& msg): msg(msg) {}
 

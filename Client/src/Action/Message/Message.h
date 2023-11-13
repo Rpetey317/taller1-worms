@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 
-#include "../../ClientProtocol/ClientProtocol.h"
 #include "../Action.h"
 
 class Message: public Action {

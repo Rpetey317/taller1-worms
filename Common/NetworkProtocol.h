@@ -17,7 +17,11 @@ const msgcode_t MSGCODE_PLAYER_CONNECT = 0x02;
 const msgcode_t MSGCODE_PLAYER_DISCONNECT = 0x03;
 const msgcode_t MSGCODE_TURN_UPDATE = 0x04;
 const msgcode_t MSGCODE_PLAYER_AMOUNT = 0x06;
+const msgcode_t MSGCODE_PLAYER_MOVE_RIGHT = 0x07;
+const msgcode_t MSGCODE_PLAYER_MOVE_LEFT = 0x08;
 const msgcode_t MSGCODE_PLAYER_MESSAGE = 0x09;
+const msgcode_t MSGCODE_PLAYER_JUMP_RIGHT = 0x10;
+const msgcode_t MSGCODE_PLAYER_JUMP_LEFT = 0x11;
 
 const int ERROR = -1;
 }  // namespace NetworkProtocol
