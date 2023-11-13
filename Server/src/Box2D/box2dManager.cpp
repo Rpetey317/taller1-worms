@@ -6,6 +6,7 @@
 #define COMMAND_LEFT 2
 #define COMMAND_JUMP 3
 
+// todo lo de compilar -o Nombre -lbox2d
 
 void BoxSimulator::initialize_world() {
     // creo el mundo
