@@ -2,6 +2,7 @@
 
 #include <chrono>
 #include <list>
+#include <memory>
 
 const std::chrono::milliseconds tickrate(1000 / 60);
 
