@@ -66,7 +66,7 @@ public:
     /*
      * Reads a message from client. Returns NullMsg if connection closed
      */
-    ClientUpdate* recv_msg();
+    ClientUpdate* recv_update();
 
     /*
      * Reads the first request the client sends. Can be CREATE_GAME or JOIN_GAME

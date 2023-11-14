@@ -6,6 +6,7 @@
 namespace NetworkProtocol {
 // Message sending types
 typedef uint16_t strlen_t;
+typedef uint8_t input_t;
 typedef uint8_t msgcode_t;
 typedef uint8_t playerid_t;
 typedef uint8_t amount_players_t;
@@ -22,6 +23,9 @@ const msgcode_t MSGCODE_PLAYER_MOVE_LEFT = 0x08;
 const msgcode_t MSGCODE_PLAYER_MESSAGE = 0x09;
 const msgcode_t MSGCODE_PLAYER_JUMP_FORWARD = 0x10;
 const msgcode_t MSGCODE_PLAYER_JUMP_BACKWARDS = 0x11;
+
+// TODO: delete
+const msgcode_t MSGCODE_BOX2D = 0xFF;
 
 const int ERROR = -1;
 }  // namespace NetworkProtocol

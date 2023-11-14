@@ -14,7 +14,7 @@ void ReceiverThread::run() {
     while (_keep_running) {
         try {
 
-            ClientUpdate* msg = prot.recv_msg();
+            ClientUpdate* msg = prot.recv_update();
 
             if (msg->is_valid()) {
                 this->eventq.push(msg);

@@ -57,28 +57,41 @@ ServerProtocol::ServerProtocol(Socket&& _cli, const int& _plid):
 // DD methods for each update type implemented in ServerProtocol_sendUpdate.cpp
 char ServerProtocol::send_update(GameUpdate* msg) { return msg->get_sent_by(*this); }
 
-ClientUpdate* ServerProtocol::recv_msg() {
+ClientUpdate* ServerProtocol::recv_update() {
     char code;
     this->cli.recvall(&code, sizeof(char), &this->isclosed);
     if (this->isclosed) {
         return new ClientNullUpdate();
     }
 
-    strlen_t msg_len;
-    this->cli.recvall(&msg_len, sizeof(strlen_t), &this->isclosed);
-    if (this->isclosed) {
+    // TODO: fix this
+    if(code == MSGCODE_PLAYER_MESSAGE){
+
+        strlen_t msg_len;
+        this->cli.recvall(&msg_len, sizeof(strlen_t), &this->isclosed);
+        if (this->isclosed) {
+            return new ClientNullUpdate();
+        }
+
+        msg_len = ntohs(msg_len);
+        std::vector<char> vmsg(msg_len);
+        this->cli.recvall(&vmsg[0], msg_len, &this->isclosed);
+        if (this->isclosed) {
+            return new ClientNullUpdate();
+        }
+        std::string msg(vmsg.begin(), vmsg.end());
+        return new ClientMessageUpdate(plid, msg); 
+    } else if (code == MSGCODE_BOX2D) {
+        input_t input;
+        this->cli.recvall(&input, sizeof(input_t), &this->isclosed);
+        if (this->isclosed) {
+            return new ClientNullUpdate();
+        }
+        return new ClientBox2DUpdate(plid, input);
+    } else {
         return new ClientNullUpdate();
     }
 
-    msg_len = ntohs(msg_len);
-    std::vector<char> vmsg(msg_len);
-    this->cli.recvall(&vmsg[0], msg_len, &this->isclosed);
-    if (this->isclosed) {
-        return new ClientNullUpdate();
-    }
-
-    std::string msg(vmsg.begin(), vmsg.end());
-    return new ClientMessageUpdate(plid, msg);
 }
 
 msgcode_t ServerProtocol::recv_request() {
