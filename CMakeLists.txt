@@ -45,16 +45,16 @@ add_subdirectory("Client/src")
 
 
 
-set(SDL2PP_WITH_IMAGE YES)
-set(SDL2PP_WITH_TTF YES)
-set(SDL2PP_WITH_MIXER YES)
-add_subdirectory("Client/src/SdlManager/SDL2pp")
-include_directories(${PROJECT_SOURCE_DIR}/Client/src/SdlManager/SDL2pp)
+#set(SDL2PP_WITH_IMAGE YES)
+#set(SDL2PP_WITH_TTF YES)
+#set(SDL2PP_WITH_MIXER YES)
+#add_subdirectory("Client/src/SdlManager/SDL2pp")
+#include_directories(${PROJECT_SOURCE_DIR}/Client/src/SdlManager/SDL2pp)
 
 # define targets
-add_library(mycpps STATIC "Client/src/SdlManager/main.cpp")
+#add_library(mycpps STATIC "Client/src/SdlManager/main.cpp")
 #target_include_directories(mycpps PUBLIC "Client/src/SdlManager/SDL2pp")
-target_link_libraries(mycpps PUBLIC SDL2pp)
+#target_link_libraries(mycpps PUBLIC SDL2pp)
 
 
 
@@ -63,7 +63,7 @@ add_executable(server "Server/main.cpp") #Define objeto ejecutable llamado serve
 target_link_libraries(server server_classes common_classes) #Establece las bibliotecas necesarias para el ejecutable server
 
 add_executable(client "Client/main.cpp")
-target_link_libraries(client client_classes common_classes mycpps)
+target_link_libraries(client client_classes common_classes)
 
 
 # # Add server executable

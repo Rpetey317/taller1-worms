@@ -22,79 +22,72 @@
 
 #include "test.h"
 
-class Boxes : public Test
-{
+class Boxes: public Test {
 public:
-	Boxes()
-	{
-		float groundSize = 25.0f;
+    Boxes() {
+        float groundSize = 25.0f;
 
-		{
-			b2BodyDef bd;
-			b2Body* ground = m_world->CreateBody(&bd);
+        {
+            b2BodyDef bd;
+            b2Body* ground = m_world->CreateBody(&bd);
 
-			b2PolygonShape box;
-			box.SetAsBox(groundSize, 1.2f);
-			b2FixtureDef sd;
-			sd.shape = &box;
-			ground->CreateFixture(&sd);
+            b2PolygonShape box;
+            box.SetAsBox(groundSize, 1.2f);
+            b2FixtureDef sd;
+            sd.shape = &box;
+            ground->CreateFixture(&sd);
 
-			bd.angle = 0.5f * b2_pi;
-			bd.position = { groundSize, 2.0f * groundSize };
-			ground = m_world->CreateBody(&bd);
+            bd.angle = 0.5f * b2_pi;
+            bd.position = {groundSize, 2.0f * groundSize};
+            ground = m_world->CreateBody(&bd);
 
-			box.SetAsBox(2.0f * groundSize, 1.2f);
-			ground->CreateFixture(&sd);
+            box.SetAsBox(2.0f * groundSize, 1.2f);
+            ground->CreateFixture(&sd);
 
-			bd.position = { -groundSize, 2.0f * groundSize };
-			ground = m_world->CreateBody(&bd);
-			ground->CreateFixture(&sd);
-		}
+            bd.position = {-groundSize, 2.0f * groundSize};
+            ground = m_world->CreateBody(&bd);
+            ground->CreateFixture(&sd);
+        }
 
-		int32_t num = 26;
-		float rad = 0.5f;
+        int32_t num = 26;
+        float rad = 0.5f;
 
-		float shift = rad * 2.0f;
-		float centerx = shift * num / 2.0f;
-		float centery = shift / 2.0f;
+        float shift = rad * 2.0f;
+        float centerx = shift * num / 2.0f;
+        float centery = shift / 2.0f;
 
-		b2BodyDef bd;
-		bd.type = b2_dynamicBody;
+        b2BodyDef bd;
+        bd.type = b2_dynamicBody;
 
-		b2FixtureDef sd;
-		sd.density = 1.0f;
-		sd.friction = 0.5f;
+        b2FixtureDef sd;
+        sd.density = 1.0f;
+        sd.friction = 0.5f;
 
-		b2PolygonShape cuboid;
-		cuboid.SetAsBox(0.5f, 0.5f);
-		sd.shape = &cuboid;
+        b2PolygonShape cuboid;
+        cuboid.SetAsBox(0.5f, 0.5f);
+        sd.shape = &cuboid;
 
 #ifdef _DEBUG
-		int32_t numj = 5;
+        int32_t numj = 5;
 #else
-		int32_t numj = 5 * num;
+        int32_t numj = 5 * num;
 #endif
 
-		for (int32_t i = 0; i < num; ++i)
-		{
-			float x = i * shift - centerx;
+        for (int32_t i = 0; i < num; ++i) {
+            float x = i * shift - centerx;
 
-			for (int32_t j = 0; j < numj; ++j)
-			{
-				float y = j * shift + centery + 2.0f;
+            for (int32_t j = 0; j < numj; ++j) {
+                float y = j * shift + centery + 2.0f;
 
-				bd.position = { x, y };
+                bd.position = {x, y};
 
-				b2Body* rigidBody = m_world->CreateBody(&bd);
-				rigidBody->CreateFixture(&sd);
-			}
-		}
-	}
+                b2Body* rigidBody = m_world->CreateBody(&bd);
+                rigidBody->CreateFixture(&sd);
+            }
+        }
+    }
 
-	static Test* Create()
-	{
-		return new Boxes;
-	}
+    static Test* Create() { return new Boxes; }
 };
 
 static int testIndex = RegisterTest("Benchmark", "Boxes", Boxes::Create);

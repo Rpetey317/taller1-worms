@@ -20,87 +20,89 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "box2d/box2d.h"
-#include "doctest.h"
 #include <stdio.h>
 
-DOCTEST_TEST_CASE("joint reactions")
-{
-	b2Vec2 gravity(0, -10.0f);
-	b2World world(gravity);
+#include "box2d/box2d.h"
 
-	b2BodyDef bodyDef;
-	b2Body* ground = world.CreateBody(&bodyDef);
+#include "doctest.h"
 
-	b2CircleShape circle;
-	circle.m_radius = 1.0f;
+DOCTEST_TEST_CASE("joint reactions") {
+    b2Vec2 gravity(0, -10.0f);
+    b2World world(gravity);
 
-	b2FixtureDef fixtureDef;
+    b2BodyDef bodyDef;
+    b2Body* ground = world.CreateBody(&bodyDef);
 
-	// Disable collision
-	fixtureDef.filter.maskBits = 0;
-	fixtureDef.density = 1.0f;
-	fixtureDef.shape = &circle;
+    b2CircleShape circle;
+    circle.m_radius = 1.0f;
 
-	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(-2.0f, 3.0f);
+    b2FixtureDef fixtureDef;
 
-	b2Body* bodyA = world.CreateBody(&bodyDef);
-	b2Body* bodyB = world.CreateBody(&bodyDef);
-	b2Body* bodyC = world.CreateBody(&bodyDef);
+    // Disable collision
+    fixtureDef.filter.maskBits = 0;
+    fixtureDef.density = 1.0f;
+    fixtureDef.shape = &circle;
 
-	b2MassData massData;
-	circle.ComputeMass(&massData, fixtureDef.density);
-	const float mg = massData.mass * gravity.y;
+    bodyDef.type = b2_dynamicBody;
+    bodyDef.position.Set(-2.0f, 3.0f);
 
-	bodyA->CreateFixture(&fixtureDef);
-	bodyB->CreateFixture(&fixtureDef);
-	bodyC->CreateFixture(&fixtureDef);
+    b2Body* bodyA = world.CreateBody(&bodyDef);
+    b2Body* bodyB = world.CreateBody(&bodyDef);
+    b2Body* bodyC = world.CreateBody(&bodyDef);
 
-	b2DistanceJointDef distanceJointDef;
-	distanceJointDef.Initialize(ground, bodyA, bodyDef.position + b2Vec2(0.0f, 4.0f), bodyDef.position);
-	distanceJointDef.minLength = distanceJointDef.length;
-	distanceJointDef.maxLength = distanceJointDef.length;
+    b2MassData massData;
+    circle.ComputeMass(&massData, fixtureDef.density);
+    const float mg = massData.mass * gravity.y;
 
-	b2PrismaticJointDef prismaticJointDef;
-	prismaticJointDef.Initialize(ground, bodyB, bodyDef.position, b2Vec2(1.0f, 0.0f));
+    bodyA->CreateFixture(&fixtureDef);
+    bodyB->CreateFixture(&fixtureDef);
+    bodyC->CreateFixture(&fixtureDef);
 
-	b2RevoluteJointDef revoluteJointDef;
-	revoluteJointDef.Initialize(ground, bodyC, bodyDef.position);
+    b2DistanceJointDef distanceJointDef;
+    distanceJointDef.Initialize(ground, bodyA, bodyDef.position + b2Vec2(0.0f, 4.0f),
+                                bodyDef.position);
+    distanceJointDef.minLength = distanceJointDef.length;
+    distanceJointDef.maxLength = distanceJointDef.length;
 
-	b2DistanceJoint* distanceJoint = (b2DistanceJoint*)world.CreateJoint(&distanceJointDef);
-	b2PrismaticJoint* prismaticJoint = (b2PrismaticJoint*)world.CreateJoint(&prismaticJointDef);
-	b2RevoluteJoint* revoluteJoint = (b2RevoluteJoint*)world.CreateJoint(&revoluteJointDef);
+    b2PrismaticJointDef prismaticJointDef;
+    prismaticJointDef.Initialize(ground, bodyB, bodyDef.position, b2Vec2(1.0f, 0.0f));
 
-	const float timeStep = 1.f / 60.f;
-	const float invTimeStep = 60.0f;
-	const int32 velocityIterations = 6;
-	const int32 positionIterations = 2;
+    b2RevoluteJointDef revoluteJointDef;
+    revoluteJointDef.Initialize(ground, bodyC, bodyDef.position);
 
-	world.Step(timeStep, velocityIterations, positionIterations);
+    b2DistanceJoint* distanceJoint = (b2DistanceJoint*)world.CreateJoint(&distanceJointDef);
+    b2PrismaticJoint* prismaticJoint = (b2PrismaticJoint*)world.CreateJoint(&prismaticJointDef);
+    b2RevoluteJoint* revoluteJoint = (b2RevoluteJoint*)world.CreateJoint(&revoluteJointDef);
 
-	const float tol = 1e-5f;
-	{
-		b2Vec2 F = distanceJoint->GetReactionForce(invTimeStep);
-		float T = distanceJoint->GetReactionTorque(invTimeStep);
-		CHECK(F.x == 0.0f);
-		CHECK(b2Abs(F.y + mg) < tol);
-		CHECK(T == 0.0f);
-	}
+    const float timeStep = 1.f / 60.f;
+    const float invTimeStep = 60.0f;
+    const int32 velocityIterations = 6;
+    const int32 positionIterations = 2;
 
-	{
-		b2Vec2 F = prismaticJoint->GetReactionForce(invTimeStep);
-		float T = prismaticJoint->GetReactionTorque(invTimeStep);
-		CHECK(F.x == 0.0f);
-		CHECK(b2Abs(F.y + mg) < tol);
-		CHECK(T == 0.0f);
-	}
+    world.Step(timeStep, velocityIterations, positionIterations);
 
-	{
-		b2Vec2 F = revoluteJoint->GetReactionForce(invTimeStep);
-		float T = revoluteJoint->GetReactionTorque(invTimeStep);
-		CHECK(F.x == 0.0f);
-		CHECK(b2Abs(F.y + mg) < tol);
-		CHECK(T == 0.0f);
-	}
+    const float tol = 1e-5f;
+    {
+        b2Vec2 F = distanceJoint->GetReactionForce(invTimeStep);
+        float T = distanceJoint->GetReactionTorque(invTimeStep);
+        CHECK(F.x == 0.0f);
+        CHECK(b2Abs(F.y + mg) < tol);
+        CHECK(T == 0.0f);
+    }
+
+    {
+        b2Vec2 F = prismaticJoint->GetReactionForce(invTimeStep);
+        float T = prismaticJoint->GetReactionTorque(invTimeStep);
+        CHECK(F.x == 0.0f);
+        CHECK(b2Abs(F.y + mg) < tol);
+        CHECK(T == 0.0f);
+    }
+
+    {
+        b2Vec2 F = revoluteJoint->GetReactionForce(invTimeStep);
+        float T = revoluteJoint->GetReactionTorque(invTimeStep);
+        CHECK(F.x == 0.0f);
+        CHECK(b2Abs(F.y + mg) < tol);
+        CHECK(T == 0.0f);
+    }
 }

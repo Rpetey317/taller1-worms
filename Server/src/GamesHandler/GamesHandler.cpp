@@ -22,8 +22,7 @@ GamesHandler::GamesHandler(): code(0) {}
 // }
 
 GamesHandler::~GamesHandler() {
-    for (auto i : this->games) {
+    for (auto i: this->games) {
         delete i;
     }
-
 }

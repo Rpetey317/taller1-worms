@@ -4,12 +4,11 @@
 #include <string>
 #include <vector>
 
-//#include "../ServerProtocol/ServerProtocol.h"
 class ServerProtocol;
 
 class GameUpdate {
 private:
-    const std::string msg;  // to be removed
+    /* data */
 
 public:
     GameUpdate() = default;

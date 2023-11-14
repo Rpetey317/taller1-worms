@@ -22,12 +22,9 @@
 
 #include "test.h"
 
-class ChainProblem : public Test
-{
+class ChainProblem: public Test {
 public:
-
-    ChainProblem()
-    {
+    ChainProblem() {
         {
             b2Vec2 g(0.0f, -10.0f);
             m_world->SetGravity(g);
@@ -56,7 +53,7 @@ public:
             {
                 b2BodyDef bd;
                 bd.type = b2BodyType(2);
-                //bd.position.Set(6.033980250358582e-01f, 3.028350114822388e+00f);
+                // bd.position.Set(6.033980250358582e-01f, 3.028350114822388e+00f);
                 bd.position.Set(1.0f, 3.0f);
                 bodies[1] = m_world->CreateBody(&bd);
 
@@ -84,11 +81,7 @@ public:
         }
     }
 
-    static Test* Create()
-    {
-        return new ChainProblem;
-    }
-
+    static Test* Create() { return new ChainProblem; }
 };
 
 static int testIndex = RegisterTest("Bugs", "Chain Problem", ChainProblem::Create);

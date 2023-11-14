@@ -16,9 +16,11 @@ void SenderThread::run() {
                 _keep_running = false;
                 continue;
             }
-            this->prot.send_update(msg);
+            if (this->prot.send_update(msg) == CLOSED_SKT) {
+                _keep_running = false;
+                continue;
+            }
         } catch (ClosedQueue& e) {
-            std::cout << "Sender queue closed" << std::endl;
             _keep_running = false;
             continue;
         } catch (...) {

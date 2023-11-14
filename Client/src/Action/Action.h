@@ -3,20 +3,18 @@
 
 #include <string>
 #include <vector>
-#include "NetworkProtocol.h"
 
-using NetworkProtocol::msgcode_t;
+class ClientProtocol;
 
 class Action {
-
+private:
+    /* data */
 public:
-    msgcode_t type_action;
-    size_t code_game;
-    std::string msg;  // to be removed
-    Action();
-    Action(msgcode_t type_action, std::string msg);
-    std::string get_msg();
-    ~Action();
+    Action() = default;
+
+    virtual char get_send_by(ClientProtocol& prot) = 0;
+
+    virtual ~Action() = default;
 };
 
 #endif  // ACTION_H_

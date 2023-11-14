@@ -1,15 +1,17 @@
 
 #ifndef GAMESHANDLER_H
 #define GAMESHANDLER_H
-#include "Game.h"
-#include <vector>
 #include <string>
+#include <vector>
+
+#include "Game.h"
 
 class GamesHandler {
 private:
     int code;
     std::vector<GameHandler*> games;
     std::mutex m;
+
 public:
     GamesHandler();
     GameHandler* create_GamesHandler(Queue<ClientUpdate*>& client_queue);
@@ -18,4 +20,4 @@ public:
 };
 
 
-#endif //GAMESHANDLER_H
+#endif  // GAMESHANDLER_H
