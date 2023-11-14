@@ -4,7 +4,7 @@
 #include "../ClientUpdate.h"
 
 class ClientBox2DUpdate : public ClientUpdate {
-  
+    
     int command;
     
 public:
