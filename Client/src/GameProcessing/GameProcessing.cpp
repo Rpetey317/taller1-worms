@@ -71,6 +71,8 @@ void GameProcessing::run() {
     bool playing = true;
     std::string command;
     while (playing) {
+        // pop.commands()
+        // 
         std::list<Event*> update_list;
 
         bool popped = false;

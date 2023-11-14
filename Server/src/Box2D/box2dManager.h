@@ -26,6 +26,8 @@ class BoxSimulator: public Thread {
 
 public:
     BoxSimulator(Queue<int>& commands, Queue<std::vector<int>>& positions);
+    // add_player
+    // 
     void run();
     void kill();
 };
