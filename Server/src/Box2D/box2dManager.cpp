@@ -77,6 +77,8 @@ BoxSimulator::BoxSimulator(Queue<int>& commands, Queue<std::vector<int>>& positi
 
 void BoxSimulator::run() {
 
+    float timeStep = 1.0f / 60.0f; // Paso de tiempo para la simulación (60 FPS)
+    int32 velocityIterations = 6; 
     int32 positionIterations = 2;
 
     int current_command = COMMAND_STOP;
@@ -103,7 +105,6 @@ void BoxSimulator::run() {
                 break;
         }
         worm->SetLinearVelocity(vel);  // seteo la nueva velocidad
-
         world->Step(timeStep, velocityIterations, positionIterations); //simulo un paso con la info actual
         b2Vec2 pos = worm->GetPosition(); //consigo la pos
         std::vector<int> positions = {int(pos.x*100.0f), int(pos.y*100.0f)};
