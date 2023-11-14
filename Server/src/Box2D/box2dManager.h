@@ -18,6 +18,7 @@
 
 class BoxSimulator: public Thread {
     Queue<int>& ingoing;
+
     Queue<std::vector<int>>& outgoing;
     b2World* world;
     b2Body* worm;
