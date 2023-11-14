@@ -16,7 +16,10 @@
 #include "../../../Common/queue.h"
 #include "../../../Common/thread.h"
 
-class BoxSimulator: public Thread {
+#include "ClientUpdateHeaders.h"
+#include "GameUpdateHeaders.h"
+
+class BoxSimulator {
     Queue<int>& ingoing;
 
     Queue<std::vector<int>>& outgoing;
@@ -28,7 +31,7 @@ public:
     BoxSimulator(Queue<int>& commands, Queue<std::vector<int>>& positions);
     // add_player
     //
-    void run();
+    GameWorldUpdate* process(ClientBox2DUpdate& update);
     void kill();
 };
 

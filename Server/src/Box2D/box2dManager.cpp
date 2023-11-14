@@ -75,42 +75,41 @@ BoxSimulator::BoxSimulator(Queue<int>& commands, Queue<std::vector<int>>& positi
 }
 
 
-void BoxSimulator::run() {
+GameWorldUpdate* BoxSimulator::process(ClientBox2DUpdate& update) {
 
     float timeStep = 1.0f / 60.0f;  // Paso de tiempo para la simulación (60 FPS)
     int32 velocityIterations = 6;
     int32 positionIterations = 2;
 
-    int current_command = COMMAND_STOP;
-    while (current_command != COMMAND_EXIT) {
-        current_command = ingoing.pop();
-        b2Vec2 vel = worm->GetLinearVelocity();  // vector vel del gusano
-        switch (current_command) {
-            case COMMAND_LEFT:
-                vel.x = -1.0f;  // modifico componente en x
-                break;
-            case COMMAND_RIGHT:
-                vel.x = 1.0f;
-                break;
-            case COMMAND_STOP:
-                vel.x = 0.0f;
-                break;
-            case COMMAND_JUMP:
-                if (worm->GetLinearVelocity().y == 0) {
-                    worm->ApplyLinearImpulse(b2Vec2(0.0f, 1.0f), worm->GetWorldCenter(), true);
-                }
-                break;
-            default:
-                vel.x = 0.0f;
-                break;
-        }
-        worm->SetLinearVelocity(vel);  // seteo la nueva velocidad
-        world->Step(timeStep, velocityIterations,
-                    positionIterations);   // simulo un paso con la info actual
-        b2Vec2 pos = worm->GetPosition();  // consigo la pos
-        std::vector<int> positions = {int(pos.x * 100.0f), int(pos.y * 100.0f)};
-        outgoing.push(positions);  // paso la pos
+    int current_command = update.get_cmd();
+    b2Vec2 vel = worm->GetLinearVelocity();  // vector vel del gusano
+    switch (current_command) {
+        case COMMAND_LEFT:
+            vel.x = -1.0f;  // modifico componente en x
+            break;
+        case COMMAND_RIGHT:
+            vel.x = 1.0f;
+            break;
+        case COMMAND_STOP:
+            vel.x = 0.0f;
+            break;
+        case COMMAND_JUMP:
+            if (worm->GetLinearVelocity().y == 0) {
+                worm->ApplyLinearImpulse(b2Vec2(0.0f, 1.0f), worm->GetWorldCenter(), true);
+            }
+            break;
+        default:
+            vel.x = 0.0f;
+            break;
     }
+    worm->SetLinearVelocity(vel);  // seteo la nueva velocidad
+    world->Step(timeStep, velocityIterations,
+                positionIterations);   // simulo un paso con la info actual
+    b2Vec2 pos = worm->GetPosition();  // consigo la pos
+    std::vector<int> positions = {int(pos.x * 100.0f), int(pos.y * 100.0f)};
+    outgoing.push(positions);  // paso la pos
+    
+    // falta return
 }
 
 void BoxSimulator::kill() { delete world; }
