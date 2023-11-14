@@ -2,18 +2,18 @@
 #define __SERVER_PLMONITOR_H__
 
 #include <map>
-#include <vector>
 #include <memory>
 #include <mutex>
 #include <string>
+#include <vector>
 
 #include "ClientUpdateHeaders.h"
 #include "GameUpdate.h"
 #include "PlayerHandler.h"
 #include "PlayerListMonitor.h"
 #include "Socket.h"
-#include "queue.h"
 #include "box2dManager.h"
+#include "queue.h"
 
 #define SERVER_ID 0
 

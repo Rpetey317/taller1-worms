@@ -65,7 +65,7 @@ ClientUpdate* ServerProtocol::recv_update() {
     }
 
     // TODO: fix this
-    if(code == MSGCODE_PLAYER_MESSAGE){
+    if (code == MSGCODE_PLAYER_MESSAGE) {
 
         strlen_t msg_len;
         this->cli.recvall(&msg_len, sizeof(strlen_t), &this->isclosed);
@@ -80,7 +80,7 @@ ClientUpdate* ServerProtocol::recv_update() {
             return new ClientNullUpdate();
         }
         std::string msg(vmsg.begin(), vmsg.end());
-        return new ClientMessageUpdate(plid, msg); 
+        return new ClientMessageUpdate(plid, msg);
     } else if (code == MSGCODE_BOX2D) {
         input_t input;
         this->cli.recvall(&input, sizeof(input_t), &this->isclosed);
@@ -91,7 +91,6 @@ ClientUpdate* ServerProtocol::recv_update() {
     } else {
         return new ClientNullUpdate();
     }
-
 }
 
 msgcode_t ServerProtocol::recv_request() {
