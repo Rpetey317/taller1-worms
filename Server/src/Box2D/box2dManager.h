@@ -9,10 +9,12 @@
 
 // #include "libs/box2d/include/box2d/box2d.h"
 
-#include "../../libs/box2d/include/box2d/box2d.h"
+#include "../../../libs/box2d/include/box2d/box2d.h"
 
-#include "queue.h"
-#include "thread.h"
+// #include "queue.h"
+// #include "thread.h"
+#include "../../../Common/queue.h"
+#include "../../../Common/thread.h"
 
 class BoxSimulator: public Thread {
     Queue<int>& ingoing;
