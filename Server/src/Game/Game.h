@@ -61,6 +61,8 @@ public:
      */
     GameUpdate* process_TurnAdvance(ClientPTurnAdvanceUpdate& event);
 
+    GameUpdate* process_box2d(ClientBox2DUpdate& event);
+
 
     /*
      * Creates new handler, adding players (recievers) to given list

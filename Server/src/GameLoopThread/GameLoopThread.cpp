@@ -24,9 +24,8 @@ void GameLoopThread::run() {
 
         // Execute actions if needed
         for (auto event: event_list) {
-            GameUpdate* update = this->game.execute(event);
-            game.broadcast(update);
-            // delete update;
+            std::unique_ptr<GameUpdate> update = std::make_unique<GameUpdate>(this->game.execute(event));
+            game.broadcast(update.get());
         }
 
         // Take time elapsed
