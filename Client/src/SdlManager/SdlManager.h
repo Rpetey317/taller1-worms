@@ -6,6 +6,8 @@
 
 #include "SdlMap.h"
 #include "SdlWorm.h"
+#include "SdlTexturesManager.h"
+#include "SdlSoundManager.h"
 using namespace SDL2pp;  // NOLINT
 class SdlManager {
 

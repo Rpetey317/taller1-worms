@@ -4,67 +4,87 @@
 #include <string>
 
 #include <unistd.h>
-
 #include "SdlManager.h"
 #define FPS 15
 
 
 using namespace SDL2pp;  // NOLINT
 
-SdlMap::SdlMap(Renderer& renderer, Surface& image_floor1, Surface& image_floor2,
-               Surface& image_floor3, Surface& image_water, Surface& image_background):
-        floor1(renderer, image_floor1),
-        floor2(renderer, image_floor2),
-        floor3(renderer, image_floor3),
-        background(renderer, image_background),
-        water(renderer, image_water),
-        renderer(renderer) {
+
+CommonMapParser::CommonMapParser() {}
+
+std::vector<Tile> CommonMapParser::get_map(std::string file_name) {
+
+        std::fstream archivo(file_name);
+        std::vector<Tile> map;
+        char scape;
+        char type = ' ';
+        char angle[4];
+        char pos_x[5];
+        char pos_y[5];
+        while(!archivo.eof()) {
+            archivo.get(type);
+            archivo.get(scape);
+            archivo.get(angle[0]);
+            archivo.get(angle[1]);
+            archivo.get(angle[2]);
+            angle[3] = 0;
+            archivo.get(scape);
+            archivo.get(pos_x[0]);
+            archivo.get(pos_x[1]);
+            archivo.get(pos_x[2]);
+            archivo.get(pos_x[3]);
+            pos_x[4] = 0;
+            archivo.get(scape);
+            archivo.get(pos_y[0]);
+            archivo.get(pos_y[1]);
+            archivo.get(pos_y[2]);
+            archivo.get(pos_y[3]);
+            pos_y[4] = 0;
+            archivo.get(scape);
+            Tile tile = {type, atoi(angle), atoi(pos_x), atoi(pos_y)};
+            map.emplace_back(tile);
+        }
+
+    return map;
+}
+
+
+
+
+SdlMap::SdlMap(std::vector<Tile> map, SdlTexturesManager& textures_manager) : map(map), textures_manager(textures_manager) {}
+
+
+SdlTexturesManager::SdlTexturesManager(Renderer& renderer, Surface& small_bridge, Surface& large_bridge, Surface& water, Surface& background) :
+ renderer(renderer), small_bridge(renderer, small_bridge), large_bridge(renderer, large_bridge), water(renderer, water), background(renderer, background) {
     src.x = src.y = 0;
-    src.w = dest.w = 64;
     src.h = dest.h = 19;
-    dest.x = dest.y = 0;
-    map[0][0] = 0;
+}
+
+void SdlTexturesManager::draw(Tile& tile) {
+
+    switch (tile.type) {
+        case '0':
+            src.w = dest.w = 64;
+            dest.x = tile.pos_x;
+            dest.y = tile.pos_y;
+            renderer.Copy(small_bridge, src, dest, tile.angle, NullOpt, 0);
+            break;
+        case '1':
+            src.w = dest.w = 128;
+            dest.x = tile.pos_x;
+            dest.y = tile.pos_y;
+            renderer.Copy(large_bridge, src, dest, tile.angle, NullOpt, 0);
+            break;
+        default:
+            break;
+    }
+    
 }
 
 void SdlMap::draw_map() {
-    int type;
-    for (int row = 0; row < 10; row++) {
-        for (int column = 0; column < 10; column++) {
-            type = map[row][column];
-
-            dest.x = column * 64;
-            dest.y = row * 19;
-
-            switch (type) {
-                case 0:
-
-                    renderer.Copy(floor1, src, dest);
-                    // renderer.Present();
-                    break;
-                case 1:
-                    renderer.Copy(floor2, src, dest);
-                    // renderer.Present();
-                    break;
-                case 2:
-                    renderer.Copy(floor3, src, dest);
-                    // renderer.Present();
-                    break;
-                case 3:
-                    renderer.Copy(background, src, dest);
-                    // renderer.Present();
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-}
-void SdlMap::load_map(int arr[10][10]) {
-    for (int row = 0; row < 10; row++) {
-        for (int column = 0; column < 10; column++) {
-            map[row][column] = arr[row][column];
-        }
-    }
+    for (auto& tile : map) 
+        textures_manager.draw(tile);
 }
 
 SdlWorm::SdlWorm(Texture& sprite): flip(SDL_FLIP_NONE), sprite(sprite) {
@@ -166,7 +186,7 @@ void SdlManager::run() {
     Uint8* waveStart;
     Uint32 waveLength;
 
-    if (SDL_LoadWAV("../Images/tuki.wav", &audioSpec, &waveStart, &waveLength) == NULL)
+    if (SDL_LoadWAV("../../../Images/tuki.wav", &audioSpec, &waveStart, &waveLength) == NULL)
         std::cout << "triste" << std::endl;
 
     device = SDL_OpenAudioDevice(nullptr, 0, &audioSpec, nullptr, SDL_AUDIO_ALLOW_ANY_CHANGE);
@@ -177,8 +197,8 @@ void SdlManager::run() {
     }
     Mixer mixer(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 
-    Music background_music("../Images/background.wav");
-    Chunk sound_effect("../Images/tuki.wav");
+    Music background_music("../../../Images/background.wav");
+    Chunk sound_effect("../../../Images/tuki.wav");
 
     const int frame_delay = 1000 / FPS;
     bool is_running = true;
@@ -186,25 +206,19 @@ void SdlManager::run() {
                   SDL_WINDOW_RESIZABLE);
 
     Renderer renderer(window, -1, SDL_RENDERER_SOFTWARE);
-
-    Surface image_floor1("../Images/Terrain/Construction/bridge.png");
+    Surface image_floor1("../../../Images/TerrainSprites/bridge.png");
     image_floor1.SetColorKey(true, 0);
-    Surface image_floor2("../Images/Terrain/Construction/bridge-l.png");
+    Surface image_floor2("../../../Images/TerrainSprites/large-bridge.png");
     image_floor2.SetColorKey(true, 0);
-    Surface image_floor3("../Images/Terrain/Construction/bridge-r.png");
-    image_floor3.SetColorKey(true, 0);
-    Surface image_water("../Images/Worms/wblink1.png");
-    Surface image_background("../Images/Terrain/Hospital/soil.png");
-    SdlMap map(renderer, image_floor1, image_floor2, image_floor3, image_water, image_background);
-    int sarasa[10][10] = {
-            {3, 3, 3, 3, 3, 3, 3, 3, 3, 3}, {3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
-            {3, 3, 3, 3, 3, 0, 0, 3, 3, 3}, {3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
-            {3, 3, 3, 3, 3, 3, 3, 3, 3, 3}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {3, 3, 3, 3, 3, 3, 3, 3, 3, 3}, {3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
-            {3, 3, 3, 3, 3, 3, 3, 3, 3, 3}, {3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
-    };
-    map.load_map(sarasa);
-    Surface image("../Images/Worms/wblink1.png");
+    //Surface image_floor3("../Images/Terrain/Construction/bridge-r.png");
+    //image_floor3.SetColorKey(true, 0);
+    Surface image_water("../../../Images/Worms/wblink1.png");//cambiar por el de water xd
+    Surface image_background("../../../Images/TerrainSprites/back1.png");
+
+    SdlTexturesManager textures_manager(renderer, image_floor1, image_floor2, image_water, image_background);
+    CommonMapParser parser;
+    SdlMap map(parser.get_map("../../../maps/mapita.txt"), textures_manager);
+    Surface image("../../../Images/Worms/wblink1.png");
 
     image.SetColorKey(true, SDL_MapRGB(image.Get()->format, 128, 128,
                                        192));  // los numeros magicos son el rgb del fondo Texture
@@ -254,11 +268,11 @@ void SdlManager::update_screen(Renderer& renderer, SdlWorm& worm, SdlMap& map) {
     renderer.Present();
 }
 
-/*int main() {
+int main() {
     Queue<int> commands;
     Queue<std::vector<int>> positions;
 
     SdlManager manager(commands, positions);
 
     manager.run();
-}*/
+}
