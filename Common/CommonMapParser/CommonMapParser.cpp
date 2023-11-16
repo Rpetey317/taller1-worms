@@ -5,7 +5,6 @@
 #include <iostream>
 /**
  * 
- *  primer numero es cantidad de tiles
  *  tipo_viga(1) angulo(3) posicion_x(4) posicion_y(4)
  *   0 -> viga corta
  *   1 -> viga larga
