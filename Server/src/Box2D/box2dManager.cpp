@@ -110,6 +110,7 @@ GameWorldUpdate* BoxSimulator::process(ClientBox2DUpdate& update) {
     outgoing.push(positions);  // paso la pos
 
     // falta return
+    return nullptr; // TODO: ver que devolver
 }
 
 void BoxSimulator::kill() { delete world; }

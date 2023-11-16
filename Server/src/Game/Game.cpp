@@ -15,7 +15,6 @@ GameHandler::GameHandler(Queue<ClientUpdate*>& _eventq):
         box2d_out(10000),
         box2d(box2d_in, box2d_out) {
     curr_pl = this->players.begin();
-    box2d.run();
 }
 
 void GameHandler::add_player(Socket&& peer) {
