@@ -3,20 +3,23 @@
 #include "CommonMapParser.h"
 using namespace SDL2pp;  // NOLINT
 
-
+//deberia ser map_textures_manager...
 class SdlTexturesManager {
 
         public:
-                SdlTexturesManager(Renderer& renderer, Surface& small_bridge, Surface& large_bridge, Surface& water, Surface& background);
+                SdlTexturesManager(Renderer& renderer, Window& window, std::string background_type);
                 void draw(Tile& tile);
+                void draw_background();
 
         private:
                 Renderer& renderer;
                 SDL_Rect src, dest;
+                Window& window;
                 Texture small_bridge;
                 Texture large_bridge;
                 Texture background;
                 Texture water;
+                
 
 
 };
