@@ -2,7 +2,7 @@
 #pragma once
 #include <map>
 #include <SDL2pp/SDL2pp.hh>
-
+#include "SdlWormState.h"
 
 
 class SdlWormTextureManager {
@@ -10,7 +10,7 @@ class SdlWormTextureManager {
         public:
                 explicit SdlWormTextureManager(Renderer &renderer);
                 //NECESITO UN DESTRUCTOR
-                void render(int worm_state, int animation_phase, int x_pos, int y_pos, SDL_RendererFlip flip);
+                void render(SdlWormState *worm_state, int animation_phase, int x_pos, int y_pos, SDL_RendererFlip flip);
 
 
         private:
