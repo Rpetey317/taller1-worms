@@ -11,7 +11,7 @@ class GameWorldUpdate: public GameUpdate {
     std::map<int, std::vector<int>> positions;
 
 public:
-    GameWorldUpdate();
+    GameWorldUpdate(const std::map<int, std::vector<int>>& positions);
     ~GameWorldUpdate();
 };
 

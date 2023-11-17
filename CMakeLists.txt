@@ -4,6 +4,10 @@ project(Worms)
 
 set(CMAKE_CXX_STANDARD 17)
 
+# Box2D---------------------------------------------------------------------------------------------------------------------
+add_subdirectory("./libs/box2d")
+include_directories(${PROJECT_SOURCE_DIR}/libs/box2d)
+
 # Flags
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -pedantic -pedantic-errors -I/usr/include/SDL2 -D_REENTRANT -lSDL2")
 # debugging flags
@@ -11,14 +15,13 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ggdb -DDEBUG -fno-inline ")
 # threads
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
-
-# COMMON
+# COMMON---------------------------------------------------------------------------------------------------------------------
 include_directories(${PROJECT_SOURCE_DIR}/Common) #Agrega el directiorio Common al conjunto de directorios
 include_directories(${PROJECT_SOURCE_DIR}/Common/Socket)
 
 add_subdirectory("Common") #Para buscar el archivo CMakeLists.txt en el directorio "Common"
 
-# SERVER
+# SERVER---------------------------------------------------------------------------------------------------------------------
 include_directories(${PROJECT_SOURCE_DIR}/Server/src)
 include_directories(${PROJECT_SOURCE_DIR}/Server/src/AccepterThread)
 include_directories(${PROJECT_SOURCE_DIR}/Server/src/ClientUpdate)
@@ -34,12 +37,16 @@ include_directories(${PROJECT_SOURCE_DIR}/Server/src/Box2D)
 
 add_subdirectory("Server/src")
 
-# CLIENT
+# CLIENT---------------------------------------------------------------------------------------------------------------------
 include_directories(${PROJECT_SOURCE_DIR}/Client/src)
-include_directories(${PROJECT_SOURCE_DIR}/Client/src/ServerUpdate)
-include_directories(${PROJECT_SOURCE_DIR}/Client/src/GameProcessing)
+include_directories(${PROJECT_SOURCE_DIR}/Client/src/Action)
+include_directories(${PROJECT_SOURCE_DIR}/Client/src/ClientProtocol)
 include_directories(${PROJECT_SOURCE_DIR}/Client/src/ClientReceiverThread)
 include_directories(${PROJECT_SOURCE_DIR}/Client/src/ClientSenderThread)
+include_directories(${PROJECT_SOURCE_DIR}/Client/src/Event)
+include_directories(${PROJECT_SOURCE_DIR}/Client/src/EventProcessor)
+include_directories(${PROJECT_SOURCE_DIR}/Client/src/GameProcessing)
+include_directories(${PROJECT_SOURCE_DIR}/Client/src/SdlManager) #Debatible. Habria que crear un nuevo directorio para SDL
 
 add_subdirectory("Client/src")
 
@@ -59,9 +66,10 @@ add_subdirectory("Client/src")
 
 
 
-# EJECUTABLES
+# EJECUTABLES---------------------------------------------------------------------------------------------------------------------
 add_executable(server "Server/main.cpp") #Define objeto ejecutable llamado server que se compila a partir de "Server/server_main.cpp"
 target_link_libraries(server server_classes common_classes) #Establece las bibliotecas necesarias para el ejecutable server
+target_link_libraries(server server_classes common_classes yaml-cpp box2d)
 
 add_executable(client "Client/main.cpp")
 target_link_libraries(client client_classes common_classes)
