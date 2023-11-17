@@ -15,7 +15,10 @@
 #include "../../../Common/queue.h"
 #include "../../../Common/thread.h"
 
+
 #include "box2dPlayer.h"
+#include "ClientUpdateHeaders.h"
+#include "GameUpdateHeaders.h"
 
 class BoxSimulator {
     Queue<int>& ingoing;
@@ -33,9 +36,15 @@ class BoxSimulator {
     void next_turn();
 public:
     BoxSimulator(Queue<int>& commands, Queue<std::vector<int>>& positions);
+
     void add_player(); // should reach agreement whether position is random or sent by server
     // 
     void run();
+
+    // add_player
+    //
+    GameWorldUpdate* process(ClientBox2DUpdate& update);
+
     void kill();
 };
 

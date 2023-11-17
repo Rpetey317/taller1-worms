@@ -53,10 +53,4 @@ GameUpdate* GameHandler::process_TurnAdvance(ClientPTurnAdvanceUpdate& event) {
     return new GameTurnChangeUpdate(new_curr_pl->first);
 }
 
-GameUpdate* GameHandler::process_box2d(ClientBox2DUpdate& event){
-    box2d_in.push(event.get_cmd());
-    for(auto player : this->players)
-        box2d_out.pop(); 
-    
-
-}
+GameUpdate* GameHandler::process_box2d(ClientBox2DUpdate& event) { return box2d.process(event); }

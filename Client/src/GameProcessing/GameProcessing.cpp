@@ -72,7 +72,7 @@ void GameProcessing::run() {
     std::string command;
     while (playing) {
         // pop.commands()
-        // 
+        //
         std::list<Event*> update_list;
 
         bool popped = false;

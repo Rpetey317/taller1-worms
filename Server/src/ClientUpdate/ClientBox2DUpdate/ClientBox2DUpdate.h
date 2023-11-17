@@ -3,12 +3,11 @@
 
 #include "../ClientUpdate.h"
 
-class ClientBox2DUpdate : public ClientUpdate {
-    
-    int command;
-    
-public:
+class ClientBox2DUpdate: public ClientUpdate {
 
+    int command;
+
+public:
     ClientBox2DUpdate(const int& id, const int& cmd);
 
     GameUpdate* get_processed_by(GameHandler& game) override;
@@ -18,4 +17,4 @@ public:
     ~ClientBox2DUpdate() override = default;
 };
 
-#endif // !__CLIENTBOX2DUPDATE_H__
+#endif  // !__CLIENTBOX2DUPDATE_H__
