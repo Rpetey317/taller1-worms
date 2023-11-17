@@ -15,6 +15,9 @@ class Box2DPlayer {
     b2Body* get_body(){
         return body;
     }
+    int get_id(){
+        return id;
+    }
 };
 
 #endif

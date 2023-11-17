@@ -34,12 +34,12 @@ class BoxSimulator {
     void create_long_beam(b2Vec2 start, float angle);
     void create_short_beam(b2Vec2 start, float angle);
     void next_turn();
+    void add_player(); // should reach agreement whether position is random or sent by server
 public:
     BoxSimulator(Queue<int>& commands, Queue<std::vector<int>>& positions);
 
-    void add_player(); // should reach agreement whether position is random or sent by server
     // 
-    void run();
+    // void run();
 
     // add_player
     //
