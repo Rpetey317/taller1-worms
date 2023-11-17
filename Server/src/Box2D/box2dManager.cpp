@@ -1,72 +1,122 @@
 #include "box2dManager.h"
 
+#define DEGTORAD 0.0174532925199432957f
+#define RADTODEG 57.295779513082320876f
+
 #define COMMAND_STOP 0
 #define COMMAND_EXIT -1
 #define COMMAND_RIGHT 1
 #define COMMAND_LEFT 2
 #define COMMAND_JUMP 3
 
+b2Body* BoxSimulator::create_worm(float x, float y) {
+    b2BodyDef myBodyDef;
+    myBodyDef.type = b2_dynamicBody; 
+    myBodyDef.position.Set(x, y); 
+    myBodyDef.angle = 0; 
+    b2Body *worm = world->CreateBody(&myBodyDef);
+
+    b2PolygonShape boxShape;
+    boxShape.SetAsBox(0.12f,0.15f); 
+    b2FixtureDef boxFixtureDef;
+    boxFixtureDef.shape = &boxShape;
+    boxFixtureDef.density = 1;
+    boxFixtureDef.friction = 0.2f;
+    worm->CreateFixture(&boxFixtureDef);
+    worm->SetFixedRotation(true);
+
+    return worm;
+}
+
+void BoxSimulator::create_wall(b2Vec2 start, b2Vec2 end){
+    b2EdgeShape edgeShape;
+    //fixture definition
+    b2FixtureDef myFixtureDef;
+    myFixtureDef.shape = &edgeShape;
+    myFixtureDef.density = 1;
+    myFixtureDef.friction = 0.4f;
+    //a static floor to drop things on
+    b2BodyDef myBodyDef;
+    myBodyDef.type = b2_staticBody;
+    myBodyDef.position.Set(0.0f, 0.0f);
+    edgeShape.SetTwoSided(start, end);
+    world->CreateBody(&myBodyDef)->CreateFixture(&myFixtureDef);
+}
+
+void BoxSimulator::create_ground(b2Vec2 lower_l, b2Vec2 lower_r, b2Vec2 upper_l, b2Vec2 upper_r){
+    // creo el mundo
+    b2PolygonShape boxShape;
+    b2BodyDef myBodyDef;
+
+    // Crear muros y piso
+    create_wall(lower_l, lower_r);
+    create_wall(upper_l, upper_r);
+    create_wall(lower_l, upper_l);
+    create_wall(lower_r, upper_r);
+}
+
+void BoxSimulator::create_long_beam(b2Vec2 start, float angle){
+    b2PolygonShape beamShape;
+    b2FixtureDef beamFixtureDef;
+    b2BodyDef myBodyDef;
+
+    beamShape.SetAsBox(0.64f,0.095f); // forma de caja de 2x2
+    beamFixtureDef.shape = &beamShape; // le doy la forma de la forma creada
+    if(angle < 45.0f)
+        beamFixtureDef.friction = 2.5f;
+
+    myBodyDef.type = b2_staticBody; //this will be a static body
+    myBodyDef.position.Set(start.x + 0.64f, start.y - 0.095f); //slightly lower position
+    myBodyDef.angle = angle; //set the starting angle
+    b2Body* staticBody = world->CreateBody(&myBodyDef); //add body to world
+    staticBody->CreateFixture(&beamFixtureDef); //add fixture to body
+}
+
+void BoxSimulator::create_short_beam(b2Vec2 start, float angle){
+    b2PolygonShape beamShape;
+    b2FixtureDef beamFixtureDef;
+    b2BodyDef myBodyDef;
+
+    beamShape.SetAsBox(0.32f,0.095f); // forma de caja de 2x2
+    beamFixtureDef.shape = &beamShape; // le doy la forma de la forma creada
+    if(angle < 45.0f)
+        beamFixtureDef.friction = 2.5f;
+
+    myBodyDef.type = b2_staticBody; //this will be a static body
+    myBodyDef.position.Set(start.x + 0.64f, start.y - 0.095f); //slightly lower position
+    myBodyDef.angle = angle; //set the starting angle
+    b2Body* staticBody = world->CreateBody(&myBodyDef); //add body to world
+    staticBody->CreateFixture(&beamFixtureDef); //add fixture to body
+}
+
+void create_map(){
+    // create_long_beam();
+    // create_short_beam();	
+}
+
+void BoxSimulator::add_player() {
+    float x = 0.0f;
+    float y = 0.0f;
+    worms.push_back(Box2DPlayer(worms.size(), create_worm(x, y)));
+    if(worms.size() == 1)
+        playing_worm = worms.begin();
+}
+
+void BoxSimulator::next_turn() {
+    if(++playing_worm == worms.end())
+        playing_worm = worms.begin();
+}
 
 void BoxSimulator::initialize_world() {
     // creo el mundo
     b2Vec2 gravity(0.0f, -9.8f);  // se le da el valor de gravedad que querramos
     world = new b2World(gravity);
-
-    // GUSANO
-    b2BodyDef myBodyDef;
-    myBodyDef.type = b2_dynamicBody;       // es dinamico (aplican fuerzas)
-    myBodyDef.position.Set(0.20f, 0.20f);  // pos inicial
-    myBodyDef.angle = 0;                   // angulo inicial
-    worm = world->CreateBody(&myBodyDef);  // añado el cuerpo al mundo
-
-    b2PolygonShape boxShape;          // creo una forma
-    boxShape.SetAsBox(0.12f, 0.15f);  // forma del gusano 24x30
-    b2FixtureDef boxFixtureDef;       // creo un fixture
-    boxFixtureDef.shape = &boxShape;  // le doy la forma de la forma creada
-    boxFixtureDef.density = 1;
-    worm->CreateFixture(&boxFixtureDef);  // añado el fixture
-    worm->SetFixedRotation(true);         // le saco la rotacion al cuerpo
-    // PLATAFORMA
-    boxShape.SetAsBox(0.64f, 0.095f);  // forma de caja 128x19
-    boxFixtureDef.shape = &boxShape;   // le doy la forma de la forma creada
-
-    // puedo re usar la definicion
-    myBodyDef.type = b2_staticBody;                      // estatico
-    myBodyDef.position.Set(3.84f, 1.425f);               // posicion
-    b2Body* staticBody = world->CreateBody(&myBodyDef);  // add body to world
-    staticBody->CreateFixture(&boxFixtureDef);           // add fixture to body
-
-    // PAREDES
-    b2EdgeShape edgeShape;
-    // fixture definition
-    b2FixtureDef myFixtureDef;
-    myFixtureDef.shape = &edgeShape;
-    myFixtureDef.density = 1;
-
-    // a static floor to drop things on
-    myBodyDef.type = b2_staticBody;
-    myBodyDef.position.Set(0.0f, 0.0f);
-    edgeShape.SetTwoSided(b2Vec2(0.0f, 0.0f), b2Vec2(6.4f, 0.0f));
-    world->CreateBody(&myBodyDef)->CreateFixture(&myFixtureDef);
-
-    // a static wall right
-    myBodyDef.type = b2_staticBody;
-    myBodyDef.position.Set(0.0f, 0.0f);
-    edgeShape.SetTwoSided(b2Vec2(0.0f, 0.0f), b2Vec2(0.0f, 1.9f));
-    world->CreateBody(&myBodyDef)->CreateFixture(&myFixtureDef);
-
-    // a static wall left
-    myBodyDef.type = b2_staticBody;
-    myBodyDef.position.Set(0.0f, 0.0f);
-    edgeShape.SetTwoSided(b2Vec2(6.4f, 0.0f), b2Vec2(6.4f, 1.9f));
-    world->CreateBody(&myBodyDef)->CreateFixture(&myFixtureDef);
-
-    // a static roof
-    myBodyDef.type = b2_staticBody;
-    myBodyDef.position.Set(0.0f, 0.0f);
-    edgeShape.SetTwoSided(b2Vec2(0.0f, 1.9f), b2Vec2(6.4f, 1.9f));
-    world->CreateBody(&myBodyDef)->CreateFixture(&myFixtureDef);
+    float height = 4.0f;
+    float width = 10.0f;
+    create_ground(b2Vec2(0.0f,0.0f), b2Vec2(width,0.0f), b2Vec2(0.0f,height), b2Vec2(width, height)); 
+    create_map(); 
 }
+
 
 
 BoxSimulator::BoxSimulator(Queue<int>& commands, Queue<std::vector<int>>& positions):
@@ -84,7 +134,7 @@ void BoxSimulator::run() {
     int current_command = COMMAND_STOP;
     while (current_command != COMMAND_EXIT) {
         current_command = ingoing.pop();
-        b2Vec2 vel = worm->GetLinearVelocity();  // vector vel del gusano
+        b2Vec2 vel = (*playing_worm).get_body()->GetLinearVelocity();  // vector vel del gusano
         switch (current_command) {
             case COMMAND_LEFT:
                 vel.x = -1.0f;  // modifico componente en x
@@ -96,17 +146,17 @@ void BoxSimulator::run() {
                 vel.x = 0.0f;
                 break;
             case COMMAND_JUMP:
-                if (worm->GetLinearVelocity().y == 0) {
-                    worm->ApplyLinearImpulse(b2Vec2(0.0f, 1.0f), worm->GetWorldCenter(), true);
+                if ((*playing_worm).get_body()->GetLinearVelocity().y == 0) {
+                    (*playing_worm).get_body()->ApplyLinearImpulse(b2Vec2(0.1f, 0.45f), (*playing_worm).get_body()->GetWorldCenter(), true);
                 }
                 break;
             default:
                 vel.x = 0.0f;
                 break;
         }
-        worm->SetLinearVelocity(vel);  // seteo la nueva velocidad
+        (*playing_worm).get_body()->SetLinearVelocity(vel);  // seteo la nueva velocidad
         world->Step(timeStep, velocityIterations, positionIterations); //simulo un paso con la info actual
-        b2Vec2 pos = worm->GetPosition(); //consigo la pos
+        b2Vec2 pos = (*playing_worm).get_body()->GetPosition(); //consigo la pos
         std::vector<int> positions = {int(pos.x*100.0f), int(pos.y*100.0f)};
         outgoing.push(positions); //paso la pos
     }
