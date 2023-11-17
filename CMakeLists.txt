@@ -4,13 +4,15 @@ project(Worms)
 
 set(CMAKE_CXX_STANDARD 17)
 
+add_subdirectory("./libs/box2d")
+include_directories(${PROJECT_SOURCE_DIR}/libs/box2d)
+
 # Flags
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -pedantic -pedantic-errors -I/usr/include/SDL2 -D_REENTRANT -lSDL2")
 # debugging flags
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ggdb -DDEBUG -fno-inline ")
 # threads
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
-
 
 # COMMON
 include_directories(${PROJECT_SOURCE_DIR}/Common) #Agrega el directiorio Common al conjunto de directorios
@@ -62,6 +64,7 @@ add_subdirectory("Client/src")
 # EJECUTABLES
 add_executable(server "Server/main.cpp") #Define objeto ejecutable llamado server que se compila a partir de "Server/server_main.cpp"
 target_link_libraries(server server_classes common_classes) #Establece las bibliotecas necesarias para el ejecutable server
+target_link_libraries(server server_classes common_classes yaml-cpp box2d)
 
 add_executable(client "Client/main.cpp")
 target_link_libraries(client client_classes common_classes)
