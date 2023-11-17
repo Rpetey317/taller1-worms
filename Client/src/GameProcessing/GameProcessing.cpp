@@ -24,23 +24,26 @@ using NetworkProtocol::MSGCODE_PLAYER_AMOUNT;
 using NetworkProtocol::MSGCODE_PLAYER_MESSAGE;
 using NetworkProtocol::msgcode_t;
 
-GameProcessing::GameProcessing(const char* hostname, const char* port):
-        skt(Socket(hostname, port)),
-        protocol(std::move(this->skt)),
-        incomingq(10000),
-        outgoingq(10000),
-        receiverTh(incomingq, protocol),  // pass the expected arguments to the constructor
-        senderTh(outgoingq, protocol),
-        id(0) {}
-
-// GameProcessing::GameProcessing(const char* hostname, const char* port, Queue<Action*> commands):
+// GameProcessing::GameProcessing(const char* hostname, const char* port):
 //         skt(Socket(hostname, port)),
 //         protocol(std::move(this->skt)),
 //         incomingq(10000),
-//         outgoingq(commands),
+//         outgoingq(10000),
 //         receiverTh(incomingq, protocol),  // pass the expected arguments to the constructor
 //         senderTh(outgoingq, protocol),
 //         id(0) {}
+
+GameProcessing::GameProcessing(const char* hostname, const char* port, Queue<Action*>& commands):
+        skt(Socket(hostname, port)),
+        protocol(std::move(this->skt)),
+        
+        incomingq(10000),
+        // outgoingq(commands),// Asi??
+        outgoingq(10000), // O asi???
+        actions(commands),
+        receiverTh(incomingq, protocol),  // pass the expected arguments to the constructor
+        senderTh(outgoingq, protocol),
+        id(0) {}
 
 std::string GameProcessing::ask_for_command() {
     std::string command;
@@ -172,21 +175,28 @@ void GameProcessing::alternate_run() {
     std::string command;
     while (playing) {
 
+        /*
+            Las acciones del cliente ya las poppea y envia el sender thread ya que le paso la outgoingq de
+            commands como parametro. Asi estaria bien o se deben poppear en este while y luego mandarlas a
+            la queue del sender?
+        */
+        // Si hacemos una queue distinta:
+        Action* action;
+        bool popped_action = this->actions.try_pop(action);
+        if (popped_action) {
+            this->outgoingq.push(action);
+        }
 
-        // pop.commands()
-        //
-
-
-        // Para actualizar SDL. El evento deberia ser de PlayerPosition
+        // Para actualizar SDL. El evento deberia ser de PlayerPosition. Esto lo habia hecho yo?
         std::list<Event*> update_list;
 
-        bool popped = false;
+        bool popped_event = false;
         do {
             Event* upd;
-            popped = this->incomingq.try_pop(upd);
-            if (popped)
+            popped_event = this->incomingq.try_pop(upd);
+            if (popped_event)
                 update_list.push_back(upd);
-        } while (popped);
+        } while (popped_event);
 
         for (auto upd: update_list) {
             std::cout << "Popped an event" << std::endl;

@@ -23,6 +23,7 @@ private:
     ClientProtocol protocol;  // El thread receiver y sender deberian tener el clientProtocol?
     Queue<Event*> incomingq;
     Queue<Action*> outgoingq;
+    Queue<Action*>& actions;
     ReceiverThread receiverTh;
     SenderThread senderTh;
     EventProcessor eventProcessor;
@@ -31,7 +32,7 @@ private:
 public:
     explicit GameProcessing(const char* hostname, const char* port);
 
-    explicit GameProcessing(const char* hostname, const char* port, Queue<Action*> commands);
+    explicit GameProcessing(const char* hostname, const char* port, Queue<Action*>& commands);
 
     std::string ask_for_command();
     void run();
