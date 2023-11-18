@@ -12,6 +12,7 @@ public:
     int x_pos;
     int y_pos;
     int animation_phase;
+    int angle;
     SDL_RendererFlip flip;
     SdlWormState *worm_state;
     int attack_power;

@@ -129,8 +129,8 @@ void SdlWorm::apply() {
 }
 
 SdlWorm::SdlWorm(SdlWormTextureManager& texture_manager, SdlSoundManager& sound_manager) : texture_manager(texture_manager), sound_manager(sound_manager) {
-    x_pos = 0;
-    y_pos = 0;
+    x_pos = 50;
+    y_pos = 50;
     animation_phase = 0;
     flip = SDL_FLIP_NONE;
     attack_power = 0;
@@ -186,7 +186,7 @@ bool SdlManager::event_handler() {
                     delete worms[id_of_player]->worm_state;
                     worms[id_of_player]->worm_state = new SdlWormStateWalk();
                     worms[id_of_player]->flip = SDL_FLIP_HORIZONTAL;
-                    
+                    worms[id_of_player]->angle = 0;
                     commands.push(1);
                     break;
                 }
@@ -194,9 +194,25 @@ bool SdlManager::event_handler() {
                     delete worms[id_of_player]->worm_state;
                     worms[id_of_player]->worm_state = new SdlWormStateWalk();
                     worms[id_of_player]->flip = SDL_FLIP_NONE;
+                    worms[id_of_player]->angle = 0;
                     commands.push(2);
                     break;
-                } break;
+                }
+                case SDLK_UP: {
+                    std::cout << "cambiando angulo..." << std::endl;
+                    worms[id_of_player]->angle = worms[id_of_player]->angle + 1;
+                    //buscar como mostrar el angulo en la pantalla de alguna forma
+                    break;
+                }
+                case SDLK_DOWN: {
+                    //verificar que este en algun modo arma
+                    std::cout << "cambiando angulo..." << worms[id_of_player]->angle << std::endl;
+                    worms[id_of_player]->angle = worms[id_of_player]->angle -1;
+                    //verificar no se pase de +- 90 el angulo
+                    break;
+                }
+                break;
+                
             }
 
         } else if (event.type == SDL_KEYUP) {
@@ -211,8 +227,12 @@ bool SdlManager::event_handler() {
                     break;
                 }
                 case SDLK_LEFT: {
+                    //crear mensaje de gusano "change_state", donde le paso el nuevo state.
+                    // en ese mensaje se libera la memoria, seteo el animation_phase y pongo el is_charging en lo que corresponda
                     delete worms[id_of_player]->worm_state;
                     worms[id_of_player]->worm_state = new SdlWormStateStill();
+                    //EL CAMBIO DE ESTADOS POSIBLEMENTE LO TENGA QUE CAMBIAR A CUANDO RECIBA DE LA QUEUE
+                    // YA QUE AHI HARIA UN FOR CAMBIANDOLE EL ESTADO A TODOS LOS BICHOS
                     worms[id_of_player]->animation_phase = 0;
                     commands.push(3);
                     break;
@@ -372,11 +392,10 @@ void SdlManager::run(std::string background_type, std::string selected_map) {
     SdlMap map(parser.get_map(selected_map), textures_manager);
     SdlSoundManager sound_manager;
     SdlWormTextureManager texture_manager(renderer);
-    worms[0] = new SdlWorm(texture_manager, sound_manager);
+    //LA CREACION DEL NUEVO GUSANO LA HARIA EN EL UPDATE_SCREEN, YA QUE ES DONDE HAGO EL POP
+    // AHI RECIBIRIA EL MENSAJE DE CREAR NUEVO GUSANO :)
+    worms[id_of_player] = new SdlWorm(texture_manager, sound_manager);
     
-    worms[0]->x_pos = 50;
-    worms[0]->y_pos = 50;
-    worms[0]->animation_phase = 0;
     while (is_running) {
         uint32_t frame_start;
         uint32_t frame_time;
