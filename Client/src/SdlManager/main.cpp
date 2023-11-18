@@ -299,11 +299,13 @@ bool SdlManager::event_handler() {
                 return true;
             switch(event.button.button) {
                 case SDL_BUTTON_LEFT : {
+                    //if (!worms[id_of_player].esta_en_modo_arma)
+                    //    break;
                     //ACA SETEO GUSANO EN "CARGANDO ARMA", Y A CADA TICK LE SUMO UNO EL PODER
                     worms[id_of_player]->play_sound("CHARGE");
                     worms[id_of_player]->is_charging = true;
-                    delete worms[id_of_player]->worm_state;
-                    worms[id_of_player]->worm_state = new SdlWormStateStill();
+                    //delete worms[id_of_player]->worm_state; se va a mantener en el modo arma
+                    //worms[id_of_player]->worm_state = new SdlWormStateStill();
                     break;
                 } 
                 default: {
@@ -316,6 +318,8 @@ bool SdlManager::event_handler() {
                 return true;
             switch(event.button.button) {
                 case SDL_BUTTON_LEFT : {
+                    //if (!worms[id_of_player].esta_en_modo_arma)
+                    //    break;
                     std::cout << "ATTACK_POWER: " << worms[0]->attack_power << std::endl;
                     worms[id_of_player]->play_sound("THROWING");
                     delete worms[id_of_player]->worm_state;
