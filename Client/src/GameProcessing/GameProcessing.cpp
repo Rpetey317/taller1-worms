@@ -36,10 +36,10 @@ using NetworkProtocol::msgcode_t;
 GameProcessing::GameProcessing(const char* hostname, const char* port, Queue<Action*>& commands):
         skt(Socket(hostname, port)),
         protocol(std::move(this->skt)),
-        
+
         incomingq(10000),
         // outgoingq(commands),// Asi??
-        outgoingq(10000), // O asi???
+        outgoingq(10000),  // O asi???
         actions(commands),
         receiverTh(incomingq, protocol),  // pass the expected arguments to the constructor
         senderTh(outgoingq, protocol),
@@ -176,9 +176,9 @@ void GameProcessing::alternate_run() {
     while (playing) {
 
         /*
-            Las acciones del cliente ya las poppea y envia el sender thread ya que le paso la outgoingq de
-            commands como parametro. Asi estaria bien o se deben poppear en este while y luego mandarlas a
-            la queue del sender?
+            Las acciones del cliente ya las poppea y envia el sender thread ya que le paso la
+           outgoingq de commands como parametro. Asi estaria bien o se deben poppear en este while y
+           luego mandarlas a la queue del sender?
         */
         // Si hacemos una queue distinta:
         Action* action;
@@ -207,7 +207,6 @@ void GameProcessing::alternate_run() {
     this->receiverTh.join();
     this->senderTh.end();
     this->senderTh.join();
-
 }
 
 

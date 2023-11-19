@@ -16,7 +16,8 @@ int main(int argc, char* argv[]) {
     // // Algo asi deberia ir:
 
     // Queue<Action> commands;
-    // Queue<std::vector<int>> positions;
+    // Queue<std::vector<int>> positions; // or std::map<int, std::vector<int>> positions; // Primer
+    // int es el id del jugador, el vector es la posicion
 
     // GameProssesing client(hostname, port, commands);
     // client.run();
