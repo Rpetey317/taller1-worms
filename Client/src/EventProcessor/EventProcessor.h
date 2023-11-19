@@ -21,6 +21,8 @@ public:
 
     void process_player_position(PlayerPosition& event);
 
+    void process_map_update(MapUpdate& event);
+
     void proccess_event(Event* event);
 
 

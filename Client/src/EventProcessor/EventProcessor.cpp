@@ -27,6 +27,12 @@ void EventProcessor::process_player_position(PlayerPosition& event) {
               << event.get_position_y() << std::endl;
 }
 
+void EventProcessor::process_map_update(MapUpdate& event) {
+    std::cout << "Tengo que modiciar el atributo map de sdl y remplazarlo por el que contiene este "
+                 "evento"
+              << std::endl;
+}
+
 void EventProcessor::proccess_event(Event* event) { event->get_processed_by(*this); }
 
 EventProcessor::~EventProcessor() {}
