@@ -84,6 +84,10 @@ Event* ClientProtocol::recv_turn_update(const playerid_t& player_id) {
     return new TurnUpdate((int)player_id);
 }
 
+Event* ClientProtocol::recv_map_update(const std::map<int, std::vector<int>>& worm_positions) {
+    return new MapUpdate(worm_positions);
+}
+
 ClientProtocol::ClientProtocol(Socket skt): skt(std::move(skt)), isclosed(false) {}
 
 playerid_t ClientProtocol::recv_player_id() {
@@ -156,6 +160,9 @@ Event* ClientProtocol::recv_update() {
             return this->recv_player_disconnected(player_id);
         case MSGCODE_TURN_UPDATE:
             return this->recv_turn_update(player_id);
+        // case MSGCODE_MAP_UPDATE:
+        //     return this->recv_map_update(); // Habria que crear un metodo privado que reciba
+        //     todas las posiciones y cree el map. Luego se lo pasa por parametro a esta clase
         default:
             return new NullEvent(player_id);
     }

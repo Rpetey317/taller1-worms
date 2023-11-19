@@ -1,9 +1,9 @@
 #ifndef MAPUPDATE_H
 #define MAPUPDATE_H
 
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
 
 #include "../Event.h"
 

@@ -39,6 +39,7 @@ private:
     Event* recv_player_message(const playerid_t& player_id);
     Event* recv_player_disconnected(const playerid_t& player_id);
     Event* recv_turn_update(const playerid_t& player_id);
+    Event* recv_map_update(const std::map<int, std::vector<int>>& worm_positions);
 
 public:
     explicit ClientProtocol(Socket skt);
