@@ -2,224 +2,409 @@
 #include <exception>
 #include <iostream>
 #include <string>
-
+#include <tgmath.h>
 #include <unistd.h>
-
 #include "SdlManager.h"
 #define FPS 15
 
 
 using namespace SDL2pp;  // NOLINT
 
-SdlMap::SdlMap(Renderer& renderer, Surface& image_floor1, Surface& image_floor2,
-               Surface& image_floor3, Surface& image_water, Surface& image_background):
-        floor1(renderer, image_floor1),
-        floor2(renderer, image_floor2),
-        floor3(renderer, image_floor3),
-        background(renderer, image_background),
-        water(renderer, image_water),
-        renderer(renderer) {
+
+CommonMapParser::CommonMapParser() {}
+
+std::vector<Tile> CommonMapParser::get_map(std::string file_name) {
+
+        std::fstream archivo(file_name);
+        std::vector<Tile> map;
+        char scape;
+        char type = ' ';
+        char angle[4];
+        char pos_x[5];
+        char pos_y[5];
+        while(!archivo.eof()) {
+            archivo.get(type);
+            archivo.get(scape);
+            archivo.get(angle[0]);
+            archivo.get(angle[1]);
+            archivo.get(angle[2]);
+            angle[3] = 0;
+            archivo.get(scape);
+            archivo.get(pos_x[0]);
+            archivo.get(pos_x[1]);
+            archivo.get(pos_x[2]);
+            archivo.get(pos_x[3]);
+            pos_x[4] = 0;
+            archivo.get(scape);
+            archivo.get(pos_y[0]);
+            archivo.get(pos_y[1]);
+            archivo.get(pos_y[2]);
+            archivo.get(pos_y[3]);
+            pos_y[4] = 0;
+            archivo.get(scape);
+            Tile tile = {type, atoi(angle), atoi(pos_x), atoi(pos_y)};
+            map.emplace_back(tile);
+        }
+
+    return map;
+}
+
+
+void SdlWormTextureManager::render(SdlWormState *worm_state, int animation_phase, int x_pos, int y_pos, SDL_RendererFlip flip) {
+    Rect dest(x_pos, y_pos, 50, 50);
+    worm_state->render(renderer, texture_map, dest, flip, animation_phase); 
+}
+
+SdlWormTextureManager::SdlWormTextureManager(Renderer &renderer) : renderer(renderer) {
+    Surface image_static("../../../Images/Worms/wblink1.png");
+    image_static.SetColorKey(true, SDL_MapRGB(image_static.Get()->format, 128, 128,
+                                       192));  // los numeros magicos son el rgb del fondo Texture
+    texture_map["STATIC"] = new Texture(renderer, image_static);
+    Surface image_walk("../../../Images/Worms/wwalk.png");
+    image_walk.SetColorKey(true, SDL_MapRGB(image_walk.Get()->format, 128, 128,
+                                       192));  
+    texture_map["WALK"] = new Texture(renderer, image_walk);
+
+
+}
+
+SdlMap::SdlMap(std::vector<Tile> map, SdlTexturesManager& textures_manager) : map(map), textures_manager(textures_manager) {}
+
+void SdlTexturesManager::draw_background() {
+    SDL_Rect src,dest;
+    src.x = src.y = dest.x = dest.y = 0;
+    src.w = dest.w = window.GetWidth();
+    src.h = dest.h = window.GetHeight();
+    renderer.Copy(background, src,dest);
+}
+
+SdlTexturesManager::SdlTexturesManager(Renderer& renderer, Window& window, std::string background_type) :
+ renderer(renderer), window(window),small_bridge(renderer, "../../../Images/TerrainSprites/bridge.png"), large_bridge(renderer, "../../../Images/TerrainSprites/large-bridge.png"), water(renderer, "../../../Images/Worms/wblink1.png"), background(renderer, background_type) {
+    
     src.x = src.y = 0;
-    src.w = dest.w = 64;
     src.h = dest.h = 19;
-    dest.x = dest.y = 0;
-    map[0][0] = 0;
+}
+
+void SdlTexturesManager::draw(Tile& tile) {
+    switch (tile.type) {
+        case '0':
+            src.w = dest.w = 64;
+            dest.x = tile.pos_x;
+            dest.y = tile.pos_y;
+            renderer.Copy(small_bridge, src, dest, tile.angle, NullOpt, 0);
+            break;
+        case '1':
+            src.w = dest.w = 128;
+            dest.x = tile.pos_x;
+            dest.y = tile.pos_y;
+            renderer.Copy(large_bridge, src, dest, tile.angle, NullOpt, 0);
+            break;
+        default:
+            break;
+    }
+    
 }
 
 void SdlMap::draw_map() {
-    int type;
-    for (int row = 0; row < 10; row++) {
-        for (int column = 0; column < 10; column++) {
-            type = map[row][column];
-
-            dest.x = column * 64;
-            dest.y = row * 19;
-
-            switch (type) {
-                case 0:
-
-                    renderer.Copy(floor1, src, dest);
-                    // renderer.Present();
-                    break;
-                case 1:
-                    renderer.Copy(floor2, src, dest);
-                    // renderer.Present();
-                    break;
-                case 2:
-                    renderer.Copy(floor3, src, dest);
-                    // renderer.Present();
-                    break;
-                case 3:
-                    renderer.Copy(background, src, dest);
-                    // renderer.Present();
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
+        textures_manager.draw_background();
+    for (auto& tile : map) 
+        textures_manager.draw(tile);
 }
-void SdlMap::load_map(int arr[10][10]) {
-    for (int row = 0; row < 10; row++) {
-        for (int column = 0; column < 10; column++) {
-            map[row][column] = arr[row][column];
+
+void SdlWorm::render_same() {
+    texture_manager.render(worm_state, animation_phase, x_pos, y_pos, flip);
+}
+
+void SdlWorm::render_new(Rect rect) {
+
+}
+
+void SdlWorm::apply() {
+    if (is_charging) { 
+        attack_power = attack_power + 1;
+        if (attack_power == 100) {
+            attack_power = 100;
         }
     }
 }
 
-SdlWorm::SdlWorm(Texture& sprite): flip(SDL_FLIP_NONE), sprite(sprite) {
-    x_pos = 0;
-    y_pos = 0;
+SdlWorm::SdlWorm(SdlWormTextureManager& texture_manager, SdlSoundManager& sound_manager) : texture_manager(texture_manager), sound_manager(sound_manager) {
+    x_pos = 50;
+    y_pos = 50;
     animation_phase = 0;
-    worm_state = 0;
+    flip = SDL_FLIP_NONE;
+    attack_power = 0;
+    worm_state = new SdlWormStateStill();
+}
+void SdlWorm::destroy() {
+    sound_manager.destroy();
+}
+
+void SdlWorm::play_sound(std::string sound_to_play) {
+    sound_manager.play_sound(sound_to_play);
 }
 
 void SdlWorm::next_animation() {
-    if (worm_state == 0) {
-        animation_phase = 0;
-        return;
-    }
+    
     animation_phase = animation_phase + 1;
-    if (animation_phase == 6) {
+    if (worm_state->is_at_max_animation_phase(animation_phase)) {
         animation_phase = 0;
-    }
+    } 
+    
 }
 
-SdlManager::SdlManager(Queue<int>& commands, Queue<std::vector<int>>& positions):
+SdlManager::SdlManager(Queue<int>& commands, Queue<std::vector<int>>& positions, int id_of_player):
         commands(commands), positions(positions) {
     // Initialize SDL library
     // SDL sdl(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
+    this->id_of_player = id_of_player;
+    this->id_of_player_turn = 0;
     // Initialize SDL_ttf library
     SDLTTF ttf;
 }
 
-bool SdlManager::event_handler(SdlWorm& worm, SDL_AudioDeviceID device, uint8_t* waveStart,
-                               uint32_t waveLength) {
-
+bool SdlManager::event_handler() {
+//VAMOS A ELEGIR ARMA CON NUMEROS 0 AL 9, YA QUE HAY 10 ARMAS :)
+    
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
+            worms[id_of_player]->destroy();
             return false;
         } else if (event.type == SDL_KEYDOWN) {
+            if (id_of_player_turn != id_of_player)
+                return true;
 
             switch (event.key.keysym.sym) {
                 case SDLK_ESCAPE: {
+                    worms[id_of_player]->destroy();
                     commands.push(0);
                     return false;
                 }
                 case SDLK_RIGHT: {
-                    worm.worm_state = 1;
-                    SDL_QueueAudio(device, waveStart, waveLength);
-                    SDL_PauseAudioDevice(device, 0);
-                    worm.flip = SDL_FLIP_HORIZONTAL;
+                    delete worms[id_of_player]->worm_state;
+                    worms[id_of_player]->worm_state = new SdlWormStateWalk();
+                    worms[id_of_player]->flip = SDL_FLIP_HORIZONTAL;
+                    worms[id_of_player]->angle = 0;
                     commands.push(1);
                     break;
                 }
                 case SDLK_LEFT: {
-                    worm.worm_state = 1;
-                    SDL_QueueAudio(device, waveStart, waveLength);
-                    SDL_PauseAudioDevice(device, 0);
-                    worm.flip = SDL_FLIP_NONE;
+                    delete worms[id_of_player]->worm_state;
+                    worms[id_of_player]->worm_state = new SdlWormStateWalk();
+                    worms[id_of_player]->flip = SDL_FLIP_NONE;
+                    worms[id_of_player]->angle = 0;
                     commands.push(2);
                     break;
-                } break;
+                }
+                case SDLK_UP: {
+                    std::cout << "cambiando angulo..." << std::endl;
+                    worms[id_of_player]->angle = worms[id_of_player]->angle + 1;
+                    //buscar como mostrar el angulo en la pantalla de alguna forma
+                    break;
+                }
+                case SDLK_DOWN: {
+                    //verificar que este en algun modo arma
+                    std::cout << "cambiando angulo..." << worms[id_of_player]->angle << std::endl;
+                    worms[id_of_player]->angle = worms[id_of_player]->angle -1;
+                    //verificar no se pase de +- 90 el angulo
+                    break;
+                }
+                break;
+                
             }
 
         } else if (event.type == SDL_KEYUP) {
+            if (id_of_player_turn != id_of_player)
+                return true;
             switch (event.key.keysym.sym) {
                 case SDLK_RIGHT: {
-                    worm.worm_state = 0;
-                    SDL_PauseAudioDevice(device, 1);
+                    delete worms[id_of_player]->worm_state;
+                    worms[id_of_player]->worm_state = new SdlWormStateStill();
+                    worms[id_of_player]->animation_phase = 0;
                     commands.push(3);
+                    break;
                 }
                 case SDLK_LEFT: {
-                    worm.worm_state = 0;
-                    SDL_PauseAudioDevice(device, 1);
+                    //crear mensaje de gusano "change_state", donde le paso el nuevo state.
+                    // en ese mensaje se libera la memoria, seteo el animation_phase y pongo el is_charging en lo que corresponda
+                    delete worms[id_of_player]->worm_state;
+                    worms[id_of_player]->worm_state = new SdlWormStateStill();
+                    //EL CAMBIO DE ESTADOS POSIBLEMENTE LO TENGA QUE CAMBIAR A CUANDO RECIBA DE LA QUEUE
+                    // YA QUE AHI HARIA UN FOR CAMBIANDOLE EL ESTADO A TODOS LOS BICHOS
+                    worms[id_of_player]->animation_phase = 0;
                     commands.push(3);
+                    break;
+                }
+                //ESTA EN WIP ESTAS
+                case SDLK_0:{ //BAZOOKA
+
+                    //worms[0]->worm_state = 3;
+
+                    break;
+                }
+                case SDLK_1:{//MORTERO
+                    //worms[0]->worm_state = 3;
+                    break;
+                }
+                case SDLK_2:{//GRANDA ROJA
+                    //worms[0]->worm_state = 3;
+                    break;
+                }
+                case SDLK_3:{//GRANADA VERDE
+                    //worms[0]->worm_state = 3;
+                    break;
+                }
+                case SDLK_4:{//BANANA
+                    //worms[0]->worm_state = 3;
+                    break;
+                }
+                case SDLK_5:{//GRANADA SANTA
+                    //worms[0]->worm_state = 3;
+                    break;
+                }
+                case SDLK_6:{//ATAQUE AEREO
+                    //worms[0]->worm_state = 3;
+                    break;
+                }
+                case SDLK_7:{//DINAMITA
+                    //worms[0]->worm_state = 3;
+                    break;
+                }
+                case SDLK_8:{//BATE DE BEISBOL
+                    //worms[0]->worm_state = 3;
+                    break;
+                }
+                case SDLK_9:{//TELETRANSPORTACION
+                    //worms[0]->worm_state = 3;
+                    break;
+                }
+                case SDLK_RETURN: { //SALTO HACIA DELANTE
+                    commands.push(4);
+                    break;
+                }
+                case SDLK_BACKSPACE: {  //SALTO HACIA ATRAS
+                    commands.push(5);
+                    break;
+                }
+                default: {
+
+                    break;
                 }
 
-                break;
             }
+        } else if(event.type == SDL_MOUSEBUTTONDOWN) {
+            if (id_of_player_turn != id_of_player)
+                return true;
+            switch(event.button.button) {
+                case SDL_BUTTON_LEFT : {
+                    //if (!worms[id_of_player].esta_en_modo_arma)
+                    //    break;
+                    //ACA SETEO GUSANO EN "CARGANDO ARMA", Y A CADA TICK LE SUMO UNO EL PODER
+                    worms[id_of_player]->play_sound("CHARGE");
+                    worms[id_of_player]->is_charging = true;
+                    //delete worms[id_of_player]->worm_state; se va a mantener en el modo arma
+                    //worms[id_of_player]->worm_state = new SdlWormStateStill();
+                    break;
+                } 
+                default: {
+                    break;
+                }
+            }
+
+        } else if (event.type == SDL_MOUSEBUTTONUP) {
+            if (id_of_player_turn != id_of_player)
+                return true;
+            switch(event.button.button) {
+                case SDL_BUTTON_LEFT : {
+                    //if (!worms[id_of_player].esta_en_modo_arma)
+                    //    break;
+                    std::cout << "ATTACK_POWER: " << worms[0]->attack_power << std::endl;
+                    worms[id_of_player]->play_sound("THROWING");
+                    delete worms[id_of_player]->worm_state;
+                    worms[id_of_player]->worm_state = new SdlWormStateStill();
+                    commands.push(6);
+                    worms[id_of_player]->is_charging = false;
+                    worms[id_of_player]->attack_power = 0; //en vez de worms[0], deberiamos hacer worms[jugador_en_turno], osea voy a necesitar 2 variables mas
+                    // uno es la variable del id jugador de este cliente, otro la variable del id jugador en turno :)
+                    
+                    break;
+                }
+                default: {
+                    break;
+                }
+                
+            }
+
         }
     }
-
     return true;
 }
 
-bool SdlManager::main_loop(Renderer& renderer, SdlWorm& worm, SdlMap& map, SDL_AudioDeviceID device,
-                           uint8_t* waveStart, uint32_t waveLength) {
+bool SdlManager::main_loop(Renderer& renderer, SdlMap& map) {
 
-    bool keep_playing = event_handler(worm, device, waveStart,
-                                      waveLength);  // si me tiro un escape el player, keep_playing
+    bool keep_playing = event_handler();  // si me tiro un escape el player, keep_playing
                                                     // sera false, para el resto siempre true
     // esto por si quiero cerrar de una forma un poco mas "linda"
-    update_screen(renderer, worm, map);
+    update_screen(renderer, map);
 
     return keep_playing;
 }
 
-void SdlManager::run() {
 
-    SDL_AudioDeviceID device;
-    SDL_AudioSpec audioSpec;
-    Uint8* waveStart;
-    Uint32 waveLength;
 
-    if (SDL_LoadWAV("../Images/tuki.wav", &audioSpec, &waveStart, &waveLength) == NULL)
-        std::cout << "triste" << std::endl;
+SdlSoundManager::SdlSoundManager() : mixer(44100, MIX_DEFAULT_FORMAT, 2, 2048), background_music("../../../Images/background.wav")
+{
+    mixer.PlayMusic(background_music, -1);
+    sound_map["CHARGE"] = new Chunk("../../../Images/tuki.wav"); 
+    sound_map["THROWING"] = new Chunk("../../../Images/charge.wav");
+}
 
-    device = SDL_OpenAudioDevice(nullptr, 0, &audioSpec, nullptr, SDL_AUDIO_ALLOW_ANY_CHANGE);
+void SdlSoundManager::play_sound(std::string sound_to_play) {
+try {
 
-    if (device == 0) {
-        std::cout << SDL_GetError() << std::endl;
-        std::cout << "re triste" << std::endl;
+    mixer.PlayChannel(-1, *sound_map[sound_to_play], 0);
+} catch (Exception& err) {
+    mixer.HaltChannel(-1);  //si hay demasiados sonidos -> quitalos todos
+}
+
+}
+
+void SdlSoundManager::destroy() {
+    for (auto chunk : sound_map) {
+        delete chunk.second;
     }
-    Mixer mixer(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+    
+}
 
-    Music background_music("../Images/background.wav");
-    Chunk sound_effect("../Images/tuki.wav");
-
+void SdlManager::run(std::string background_type, std::string selected_map) {
+    //QUIZA LA IDEA ES QUE TENGA ACA UN POP PARA RECIBIR ESTE BACKGROUND_TYPE Y SELECTED_MAP???
+    //COMO HACEMOS TEMA ANIMACIONES ENTRE MUCHOS PLAYERS???
+    //TENGO UNA IDEA, ADEMAS DE RECIBIR POSICIONES GUSANOS, RECIBO SUS ID Y QUE ACCION REALIAZARON
+    //SI ACCION ANTERIOR == LA QUE RECIBO -> EJECUTA PROX ANIMACION. SI ACCION ANTERIOR =/= LA QUE RECIBO, CAMBIO A ESA NUEVA ANIMACION :)
+    //EL ID DEL PLAYER QUIZA LO RECIBO POR ACA O POR UNA QUEUE?
     const int frame_delay = 1000 / FPS;
     bool is_running = true;
     Window window("PoC", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480,
                   SDL_WINDOW_RESIZABLE);
 
     Renderer renderer(window, -1, SDL_RENDERER_SOFTWARE);
-
-    Surface image_floor1("../Images/Terrain/Construction/bridge.png");
-    image_floor1.SetColorKey(true, 0);
-    Surface image_floor2("../Images/Terrain/Construction/bridge-l.png");
-    image_floor2.SetColorKey(true, 0);
-    Surface image_floor3("../Images/Terrain/Construction/bridge-r.png");
-    image_floor3.SetColorKey(true, 0);
-    Surface image_water("../Images/Worms/wblink1.png");
-    Surface image_background("../Images/Terrain/Hospital/soil.png");
-    SdlMap map(renderer, image_floor1, image_floor2, image_floor3, image_water, image_background);
-    int sarasa[10][10] = {
-            {3, 3, 3, 3, 3, 3, 3, 3, 3, 3}, {3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
-            {3, 3, 3, 3, 3, 0, 0, 3, 3, 3}, {3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
-            {3, 3, 3, 3, 3, 3, 3, 3, 3, 3}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {3, 3, 3, 3, 3, 3, 3, 3, 3, 3}, {3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
-            {3, 3, 3, 3, 3, 3, 3, 3, 3, 3}, {3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
-    };
-    map.load_map(sarasa);
-    Surface image("../Images/Worms/wblink1.png");
-
-    image.SetColorKey(true, SDL_MapRGB(image.Get()->format, 128, 128,
-                                       192));  // los numeros magicos son el rgb del fondo Texture
-
-    Texture sprites(renderer, image);
-    SdlWorm worm(sprites);
-    worm.x_pos = 50;
-    worm.y_pos = 50;
-    worm.animation_phase = 0;
-    mixer.PlayMusic(background_music, -1);
+    
+    SdlTexturesManager textures_manager(renderer, window, background_type);
+    CommonMapParser parser;
+    SdlMap map(parser.get_map(selected_map), textures_manager);
+    SdlSoundManager sound_manager;
+    SdlWormTextureManager texture_manager(renderer);
+    //LA CREACION DEL NUEVO GUSANO LA HARIA EN EL UPDATE_SCREEN, YA QUE ES DONDE HAGO EL POP
+    // AHI RECIBIRIA EL MENSAJE DE CREAR NUEVO GUSANO :)
+    worms[id_of_player] = new SdlWorm(texture_manager, sound_manager);
+    
     while (is_running) {
         uint32_t frame_start;
         uint32_t frame_time;
         frame_start = SDL_GetTicks();
-        is_running = main_loop(renderer, worm, map, device, waveStart, waveLength);
+        is_running = main_loop(renderer, map);
         // sleep(1); conexion super lagueada
         frame_time = SDL_GetTicks() - frame_start;
         if (frame_delay > frame_time)
@@ -227,38 +412,75 @@ void SdlManager::run() {
     }
 }
 
-void SdlManager::update_screen(Renderer& renderer, SdlWorm& worm, SdlMap& map) {
+void SdlManager::update_screen(Renderer& renderer, SdlMap& map) {
     std::vector<int> val;
     positions.try_pop(val);
-    int src_x = 0, src_y = 0;
-
+    //si se conecta un gusano nuevo, podria crear el worm y le pateo los managers, asi que ellos tienen el renderer :)
     if (!val.empty()) {
         renderer.Clear();
-        src_x = 0;
-        src_y = 60;
-        renderer.Copy(worm.sprite, Rect(src_x, src_y, 50, 50),
-                      Rect((int)val[0], (int)val[1], 50, 50), 0, NullOpt, worm.flip);
 
-    } else {
+        for (auto& worm : worms) {
+            worm.second->render_new(Rect(val[0], val[1], 50, 50));   //esto va a tocar cambiarlo cuando tengamos las distintas acciones...
+            worm.second->apply();
+        }
+    } else {    //SI NO RECIBO NADA, SEGUI EJECUTANDO LA ANTERIOR ANIMACION Y QUEDATE EN EL MISMO LUGAR
         renderer.Clear();
 
         map.draw_map();
 
-        src_x = 0;
-        src_y = 60 * worm.animation_phase;
-        renderer.Copy(worm.sprite, Rect(src_x, src_y, 50, 50), Rect(worm.x_pos, worm.y_pos, 50, 50),
-                      0, NullOpt, worm.flip);
-        worm.next_animation();
+        for (auto& worm : worms) {
+            worm.second->render_same();
+            worm.second->next_animation();
+            worm.second->apply();
+        }
     }
+
+    id_of_player_turn = 0;//ESTO LO RECIBIRIA CON EL RESTO DE COSAS :)
+    
 
     renderer.Present();
 }
 
-/*int main() {
+int main() {
     Queue<int> commands;
     Queue<std::vector<int>> positions;
+    
+    SdlManager manager(commands, positions, 0);
 
-    SdlManager manager(commands, positions);
+    manager.run("../../../Images/TerrainSprites/back1.png", "../../../maps/mapita.txt");
+}
 
-    manager.run();
-}*/
+
+SdlWormState::~SdlWormState() {}
+
+SdlWormState::SdlWormState(){}
+
+SdlWormStateBazooka::SdlWormStateBazooka(){}
+SdlWormStateStill::SdlWormStateStill(){}
+SdlWormStateWalk::SdlWormStateWalk(){}
+
+bool SdlWormStateStill::is_at_max_animation_phase(int animation_phase) {
+    return animation_phase == 6;
+}
+
+bool SdlWormStateBazooka::is_at_max_animation_phase(int animation_phase) {
+    return animation_phase == 6;
+}
+
+bool SdlWormStateWalk::is_at_max_animation_phase(int animation_phase) {
+    return animation_phase == 14;
+}
+
+
+
+void SdlWormStateStill::render(Renderer& renderer, std::map<std::string, Texture*>& texture_map, Rect& dest, SDL_RendererFlip& flip, int animation_phase) {
+    renderer.Copy(*texture_map["STATIC"], Rect(0, 60 * animation_phase, 50, 50), dest, 0, NullOpt, flip);
+}
+
+void SdlWormStateBazooka::render(Renderer& renderer, std::map<std::string, Texture*>& texture_map, Rect& dest, SDL_RendererFlip& flip, int animation_phase) {
+    renderer.Copy(*texture_map["BAZOOKA"], Rect(0, 60 * animation_phase, 50, 50), dest, 0, NullOpt, flip);
+}
+
+void SdlWormStateWalk::render(Renderer& renderer, std::map<std::string, Texture*>& texture_map, Rect& dest, SDL_RendererFlip& flip, int animation_phase) {
+    renderer.Copy(*texture_map["WALK"], Rect(0, 60 * animation_phase, 50, 50), dest, 0, NullOpt, flip);
+}
