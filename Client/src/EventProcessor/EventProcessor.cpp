@@ -24,8 +24,9 @@ void EventProcessor::process_turn_update(TurnUpdate& event) {
 }
 
 void EventProcessor::process_player_position(PlayerPosition& event) {
-    std::cout << "Player " << event.get_id() << "with position: " << event.get_position_x() << ","
-              << event.get_position_y() << std::endl;
+    Point position = event.get_position();
+    std::cout << "Player " << event.get_id() << "with position: " << position.x << "," << position.y
+              << std::endl;
 }
 
 void EventProcessor::process_map_update(MapUpdate& event) {

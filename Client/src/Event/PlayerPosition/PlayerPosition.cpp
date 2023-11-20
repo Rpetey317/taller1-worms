@@ -2,13 +2,11 @@
 
 #include "../EventProcessor/EventProcessor.h"
 
-PlayerPosition::PlayerPosition(const int& player_id, const int& pos_x, const int& pos_y):
-        Event(player_id), pos_x(pos_x), pos_y(pos_y) {}
+PlayerPosition::PlayerPosition(const int& player_id, Point position):
+        Event(player_id), position(position) {}
 
 void PlayerPosition::get_processed_by(EventProcessor& eventProcessor) {
     eventProcessor.process_player_position(*this);
 }
 
-int PlayerPosition::get_position_x() { return this->pos_x; }
-
-int PlayerPosition::get_position_y() { return this->pos_y; }
+Point PlayerPosition::get_position() { return this->position; }
