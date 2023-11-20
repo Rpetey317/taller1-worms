@@ -6,6 +6,7 @@
 namespace NetworkProtocol {
 // Message sending types
 typedef uint16_t strlen_t;
+typedef uint16_t point_t;
 typedef uint8_t input_t;
 typedef uint8_t msgcode_t;
 typedef uint8_t playerid_t;

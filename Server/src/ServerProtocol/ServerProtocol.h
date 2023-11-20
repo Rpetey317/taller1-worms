@@ -7,6 +7,7 @@
 #include "GameUpdateHeaders.h"
 #include "NetworkProtocol.h"
 #include "Socket.h"
+#include "Point.h"
 
 using NetworkProtocol::msgcode_t;
 using NetworkProtocol::strlen_t;
@@ -36,6 +37,7 @@ class ServerProtocol {
     bool send_long(const uint32_t& num);
     bool send_char(const uint8_t& num);
     bool send_str(const std::string& str);
+    bool send_point(const Point& pt);
 
 
 public:

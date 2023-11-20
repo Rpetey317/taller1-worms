@@ -2,7 +2,7 @@
 
 #include "ServerProtocol.h"
 
-GameWorldUpdate::GameWorldUpdate(const std::map<int, std::vector<int>>& positions) {
+GameWorldUpdate::GameWorldUpdate(const std::map<int, Point>& positions) {
     this->positions = positions;
 }
 

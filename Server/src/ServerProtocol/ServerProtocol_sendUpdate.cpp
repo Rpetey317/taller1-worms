@@ -80,4 +80,4 @@ char ServerProtocol::send_NullUpdate(const GameNullUpdate& upd) { return SUCCESS
 
 char ServerProtocol::send_WorldUpdate(const GameWorldUpdate& upd) {
     return CLOSED_SKT;
-}  // ayuda ruben
+}
