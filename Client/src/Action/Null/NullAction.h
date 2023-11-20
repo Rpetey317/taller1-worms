@@ -9,7 +9,7 @@
 class NullAction: public Action {
 
 public:
-        NullAction();
+    NullAction();
 
     char get_send_by(ClientProtocol& prot) override;
 };

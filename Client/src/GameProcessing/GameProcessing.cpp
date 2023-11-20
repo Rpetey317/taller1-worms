@@ -33,7 +33,8 @@ using NetworkProtocol::msgcode_t;
 //         senderTh(outgoingq, protocol),
 //         id(0) {}
 
-GameProcessing::GameProcessing(const char* hostname, const char* port, Queue<Action*>& commands, Queue<Event*>& events):
+GameProcessing::GameProcessing(const char* hostname, const char* port, Queue<Action*>& commands,
+                               Queue<Event*>& events):
         skt(Socket(hostname, port)),
         protocol(std::move(this->skt)),
 
@@ -175,8 +176,8 @@ void GameProcessing::alternate_run() {
     //     std::cout << "holi" << std::endl;
     //     /*
     //         Las acciones del cliente ya las poppea y envia el sender thread ya que le paso la
-    //        outgoingq de commands como parametro. Asi estaria bien o se deben poppear en este while y
-    //        luego mandarlas a la queue del sender?
+    //        outgoingq de commands como parametro. Asi estaria bien o se deben poppear en este
+    //        while y luego mandarlas a la queue del sender?
     //     */
     //     // Si hacemos una queue distinta:
     //     Action* action;

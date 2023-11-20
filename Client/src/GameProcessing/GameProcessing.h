@@ -30,7 +30,8 @@ private:
 
 public:
     // explicit GameProcessing(const char* hostname, const char* port);
-    explicit GameProcessing(const char* hostname, const char* port, Queue<Action*>& commands, Queue<Event*>& events);
+    explicit GameProcessing(const char* hostname, const char* port, Queue<Action*>& commands,
+                            Queue<Event*>& events);
 
     std::string ask_for_command();
     void run();

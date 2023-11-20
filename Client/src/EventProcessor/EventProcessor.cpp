@@ -16,7 +16,8 @@ void EventProcessor::process_disconnection(PlayerDisconnected& event) {
     std::cout << "Player " << event.get_id() << " disconnected." << std::endl;
 }
 
-void EventProcessor::process_null(NullEvent& event) { /*std::cout << "Null event" << std::endl;*/ }
+void EventProcessor::process_null(NullEvent& event) { /*std::cout << "Null event" << std::endl;*/
+}
 
 void EventProcessor::process_turn_update(TurnUpdate& event) {
     std::cout << "Now turn of player: " << event.get_id() << std::endl;

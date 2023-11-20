@@ -1,6 +1,7 @@
 #include "ClientProtocol.h"
 
 #include <iostream>
+#include <map>
 #include <sstream>
 
 #include <arpa/inet.h>
@@ -94,7 +95,7 @@ Event* ClientProtocol::recv_map_update() {
     }
     // Receive players positions
     std::map<int, Point> worm_positions;
-    
+
     for (int i = 0; i < amount_players; i++) {
         playerid_t player_id;
         this->skt.recvall(&player_id, sizeof(playerid_t), &this->isclosed);
@@ -184,7 +185,7 @@ Event* ClientProtocol::recv_update() {
     // TODO: change this to a dynamic switch
     msgcode_t code_update = this->recv_code();
     if (code_update == MSGCODE_MAP_UPDATE)
-            return this->recv_map_update();
+        return this->recv_map_update();
     playerid_t player_id = this->recv_player_id();
     switch (code_update) {
         case MSGCODE_ACK:

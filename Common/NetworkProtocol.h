@@ -30,7 +30,7 @@ const msgcode_t MSGCODE_NULL_ACTION = 0x13;
 
 const msgcode_t MSGCODE_MAP_UPDATE = 0x12;  // O Game World update para el server
 
-//TODO: separar los msgcodes para los que se mandan del server al client y del client al server
+// TODO: separar los msgcodes para los que se mandan del server al client y del client al server
 
 // TODO: delete
 const msgcode_t MSGCODE_BOX2D = 0xFF;

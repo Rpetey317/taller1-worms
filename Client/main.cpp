@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
 
     // // Algo asi deberia ir:
 
-    try{
+    try {
         int ret = -1;
 
         if (argc != 3) {
@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
 
         Queue<Action*> commands(10000);
         Queue<Event*> events(10000);
-                
+
         GameProcessing client(hostname, port, commands, events);
         client.alternate_run();
 
@@ -48,17 +48,16 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
-        // Queue<Action> commands;
-        // Queue<std::vector<int>> positions; // or std::map<int, std::vector<int>> positions; // Primer
-        // int es el id del jugador, el vector es la posicion
+    // Queue<Action> commands;
+    // Queue<std::vector<int>> positions; // or std::map<int, std::vector<int>> positions; // Primer
+    // int es el id del jugador, el vector es la posicion
 
-        // GameProssesing client(hostname, port, commands);
-        // client.run();
+    // GameProssesing client(hostname, port, commands);
+    // client.run();
 
-        // SdlManager manager(commands, positions);
+    // SdlManager manager(commands, positions);
 
-        // manager.run();
-
+    // manager.run();
 
 
     // try {

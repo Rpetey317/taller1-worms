@@ -14,7 +14,7 @@ class MapUpdate: public Event {
     std::map<int, Point> worm_positions;
 
 public:
-    MapUpdate(const std::map<int, Point>& positions);
+    explicit MapUpdate(const std::map<int, Point>& positions);
 
     void get_processed_by(EventProcessor& eventProcessor) override;
 };
