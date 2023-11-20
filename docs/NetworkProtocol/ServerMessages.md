@@ -74,3 +74,22 @@ The packet structure is
 - `<id>` is a `playerid_t` number representing the author of the message.
 - `<ln>` is a `strlen_t` representing the total length in bytes of the message.
 - `<msg...>` is a (non-null termiated) string of `<ln>` bytes with the message.
+
+## World Update
+
+A packet containing all relevant world updates, meant to be sent every tick. It contains updated positions for all players [Will add more stuff in the near future]
+
+The packet structure is:
+
+```
+<cd>
+    <plcount>
+        <id> <x> <y>
+        <id> <x> <y>
+        ...
+```
+
+- `<cd>` is the associated code
+- `<plcount>` is a `amount_players_t` number with the amount of player positions to receive
+- `<id>` is a player's id in `playerid_t`
+- `<x> <y>` are the x and y coordinates in `point_t` of a player
