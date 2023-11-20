@@ -98,4 +98,5 @@ char ServerProtocol::send_WorldUpdate(const GameWorldUpdate& upd) {
             return CLOSED_SKT;
         }
     }
+    return SUCCESS;
 }
