@@ -36,6 +36,8 @@ public:
     void run();
     void alternate_run();
     int get_id();
+    void end();
+
     ~GameProcessing();
 };
 

@@ -37,6 +37,8 @@ int main(int argc, char* argv[]) {
         SdlManager manager(commands, events, 0);
         manager.run("../../../Images/TerrainSprites/back1.png", "../../../maps/mapita.txt");
 
+        client.end();
+
         ret = 0;
         return ret;
     } catch (const std::exception& err) {

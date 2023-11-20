@@ -202,12 +202,15 @@ void GameProcessing::alternate_run() {
     //         this->eventProcessor.proccess_event(upd);
     //     }
     // }
+}
+
+int GameProcessing::get_id() { return this->id; }
+
+void GameProcessing::end() {
     this->receiverTh.end();
     this->receiverTh.join();
     this->senderTh.end();
     this->senderTh.join();
 }
-
-int GameProcessing::get_id() { return this->id; }
 
 GameProcessing::~GameProcessing() {}
