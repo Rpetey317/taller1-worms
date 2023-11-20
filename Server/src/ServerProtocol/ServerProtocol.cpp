@@ -50,6 +50,16 @@ bool ServerProtocol::send_str(const std::string& str) {
     return true;
 }
 
+bool ServerProtocol::send_point(const Point& pt) {
+    if (!this->send_short(pt.x)) {
+        return false;
+    }
+    if (!this->send_short(pt.y)) {
+        return false;
+    }
+    return true;
+}
+
 
 ServerProtocol::ServerProtocol(Socket&& _cli, const int& _plid):
         cli(std::move(_cli)), isclosed(false), plid(_plid) {}

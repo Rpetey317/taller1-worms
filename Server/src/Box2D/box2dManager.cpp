@@ -1,5 +1,7 @@
 #include "box2dManager.h"
 
+#include "Point.h"
+
 #define DEGTORAD 0.0174532925199432957f
 #define RADTODEG 57.295779513082320876f
 
@@ -123,13 +125,13 @@ BoxSimulator::BoxSimulator(Queue<int>& commands, Queue<std::vector<int>>& positi
     initialize_world();
 }
 
-std::map<int, std::vector<int>> create_position_map(const std::list<Box2DPlayer>& worms) {
-    std::map<int, std::vector<int>> positions;
+std::map<int, Point> create_position_map(const std::list<Box2DPlayer>& worms) {
+    std::map<int, Point> positions;
     for (auto worm : worms) {
         b2Body* body = worm.get_body(); // Obtener el cuerpo
         if (body) { // Verificar si el cuerpo es válido
             b2Vec2 pos = body->GetPosition();
-            std::vector<int> position = {static_cast<int>(pos.x * 100.0f), static_cast<int>(pos.y * 100.0f)};
+            Point position(static_cast<int>(pos.x * 100.0f), static_cast<int>(pos.y * 100.0f));
             positions[worm.get_id()] = position;
         }
     }

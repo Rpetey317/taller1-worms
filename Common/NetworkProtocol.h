@@ -6,6 +6,7 @@
 namespace NetworkProtocol {
 // Message sending types
 typedef uint16_t strlen_t;
+typedef uint16_t point_t;
 typedef uint8_t input_t;
 typedef uint8_t msgcode_t;
 typedef uint8_t playerid_t;
@@ -26,6 +27,8 @@ const msgcode_t MSGCODE_PLAYER_JUMP_BACKWARDS = 0x11;
 const msgcode_t MSGCODE_MAP_UPDATE = 0x12;  // O Game World update para el server
 const msgcode_t MSGCODE_NULL_ACTION = 0x13;
 
+
+const msgcode_t MSGCODE_WORLD_UPD = 0x12;
 
 // TODO: delete
 const msgcode_t MSGCODE_BOX2D = 0xFF;
