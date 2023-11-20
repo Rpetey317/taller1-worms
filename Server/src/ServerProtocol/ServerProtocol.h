@@ -6,8 +6,8 @@
 #include "ClientUpdateHeaders.h"
 #include "GameUpdateHeaders.h"
 #include "NetworkProtocol.h"
-#include "Socket.h"
 #include "Point.h"
+#include "Socket.h"
 
 using NetworkProtocol::msgcode_t;
 using NetworkProtocol::strlen_t;

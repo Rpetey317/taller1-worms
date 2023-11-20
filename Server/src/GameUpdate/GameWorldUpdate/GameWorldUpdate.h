@@ -4,17 +4,18 @@
 #include <map>
 #include <vector>
 
-#include "Point.h"
 #include "../GameUpdate.h"
+
+#include "Point.h"
 
 class GameWorldUpdate: public GameUpdate {
 
     std::map<int, Point> positions;
-    
+
 
 public:
     explicit GameWorldUpdate(const std::map<int, Point>& positions);
-    
+
     char get_sent_by(ServerProtocol& prot) override;
 
     std::map<int, Point>::const_iterator begin() const;
