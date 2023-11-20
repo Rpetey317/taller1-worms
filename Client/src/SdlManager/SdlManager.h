@@ -2,17 +2,19 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "../../../Common/queue.h"
+#include <algorithm>
+#include <exception>
+#include <string>
+#include <unistd.h>
 
-#include "SdlMap.h"
+#include <SDL2pp/SDL2pp.hh>
 #include "SdlWorm.h"
-#include "SdlTexturesManager.h"
-#include "SdlSoundManager.h"
-#include "SdlWormTextureManager.h"
+#include "SdlMap.h"
 #include "SdlWormState.h"
+#include "SdlWormStateStill.h"
 #include "SdlWormStateBazooka.h"
 #include "SdlWormStateWalk.h"
-#include "SdlWormStateStill.h"
+#include "../../../Common/queue.h"
 #include "../Event/EventHeaders.h"
 #include "../Action/ActionHeaders.h"
 using namespace SDL2pp;  // NOLINT

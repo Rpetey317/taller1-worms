@@ -2,6 +2,8 @@
 #pragma once
 #include <SDL2pp/SDL2pp.hh>
 #include <map>
+using namespace SDL2pp;  // NOLINT
+
 class SdlWormState {
 
         public:

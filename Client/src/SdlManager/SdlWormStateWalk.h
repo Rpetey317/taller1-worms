@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SdlWormState.h"
+using namespace SDL2pp;  // NOLINT
 
 class SdlWormStateWalk : public SdlWormState {
 

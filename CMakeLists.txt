@@ -46,23 +46,23 @@ include_directories(${PROJECT_SOURCE_DIR}/Client/src/ClientSenderThread)
 include_directories(${PROJECT_SOURCE_DIR}/Client/src/Event)
 include_directories(${PROJECT_SOURCE_DIR}/Client/src/EventProcessor)
 include_directories(${PROJECT_SOURCE_DIR}/Client/src/GameProcessing)
-include_directories(${PROJECT_SOURCE_DIR}/Client/src/SdlManager) #Debatible. Habria que crear un nuevo directorio para SDL
+#include_directories(${PROJECT_SOURCE_DIR}/Client/src/SdlManager) #Debatible. Habria que crear un nuevo directorio para SDL
 
 add_subdirectory("Client/src")
 
 
 
-
-#set(SDL2PP_WITH_IMAGE YES)
-#set(SDL2PP_WITH_TTF YES)
-#set(SDL2PP_WITH_MIXER YES)
-#add_subdirectory("Client/src/SdlManager/SDL2pp")
-#include_directories(${PROJECT_SOURCE_DIR}/Client/src/SdlManager/SDL2pp)
+set(SDL2PP_WITH_IMAGE YES)
+set(SDL2PP_WITH_TTF YES)
+set(SDL2PP_WITH_MIXER YES)
+add_subdirectory("Client/src/SdlManager/SDL2pp")
+include_directories(${PROJECT_SOURCE_DIR}/Client/src/SdlManager/SDL2pp)
 
 # define targets
-#add_library(mycpps STATIC "Client/src/SdlManager/main.cpp")
-#target_include_directories(mycpps PUBLIC "Client/src/SdlManager/SDL2pp")
-#target_link_libraries(mycpps PUBLIC SDL2pp)
+add_library(mycpps STATIC "Client/src/SdlManager/main.cpp")
+target_include_directories(mycpps PUBLIC "Client/src/SdlManager/SDL2pp")
+target_link_libraries(mycpps PUBLIC SDL2pp)
+
 
 
 
@@ -72,7 +72,7 @@ target_link_libraries(server server_classes common_classes) #Establece las bibli
 target_link_libraries(server server_classes common_classes yaml-cpp box2d)
 
 add_executable(client "Client/main.cpp")
-target_link_libraries(client client_classes common_classes)
+target_link_libraries(client client_classes common_classes mycpps)
 
 
 # # Add server executable

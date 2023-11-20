@@ -1,4 +1,4 @@
-
+#pragma once
 #include <SDL2pp/SDL2pp.hh>
 
 
@@ -14,8 +14,8 @@ public:
     void draw_map();
 
 private:
-    SdlTexturesManager& textures_manager;
     std::vector<Tile> map;
+    SdlTexturesManager& textures_manager;
     
 
 };

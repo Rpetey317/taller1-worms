@@ -174,7 +174,7 @@ void GameProcessing::alternate_run() {
     bool playing = true;
     std::string command;
     while (playing) {
-
+        std::cout << "holi" << std::endl;
         /*
             Las acciones del cliente ya las poppea y envia el sender thread ya que le paso la
            outgoingq de commands como parametro. Asi estaria bien o se deben poppear en este while y
@@ -200,7 +200,7 @@ void GameProcessing::alternate_run() {
         } while (popped_event);
 
         for (auto upd: update_list) {
-            std::cout << "Popped an event" << std::endl;
+            //std::cout << "Popped an event" << std::endl;
             this->eventProcessor.proccess_event(upd);
         }
     }

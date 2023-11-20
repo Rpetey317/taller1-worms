@@ -1,6 +1,7 @@
 #pragma once
 #include <map>
 #include <SDL2pp/SDL2pp.hh>
+using namespace SDL2pp;  // NOLINT
 
 
 class SdlSoundManager {

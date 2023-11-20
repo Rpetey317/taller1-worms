@@ -33,8 +33,9 @@ int main(int argc, char* argv[]) {
         GameProcessing client(hostname, port, commands);
         client.alternate_run();
 
-        // SdlManager manager(commands, events, 0);
-        // manager.run("../../../Images/TerrainSprites/back1.png", "../../../maps/mapita.txt");
+        std::cout << "HOLI" << std::endl;
+        SdlManager manager(commands, events, 0);
+        manager.run("../../../Images/TerrainSprites/back1.png", "../../../maps/mapita.txt");
 
         ret = 0;
         return ret;

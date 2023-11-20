@@ -5,6 +5,7 @@
 #include "SdlSoundManager.h"
 #include "SdlWormTextureManager.h"
 #include "SdlWormState.h"
+#include "SdlWormStateStill.h"
 using namespace SDL2pp;  // NOLINT
 
 class SdlWorm {

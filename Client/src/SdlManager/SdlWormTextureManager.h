@@ -4,6 +4,7 @@
 #include <SDL2pp/SDL2pp.hh>
 #include "SdlWormState.h"
 
+using namespace SDL2pp;  // NOLINT
 
 class SdlWormTextureManager {
 

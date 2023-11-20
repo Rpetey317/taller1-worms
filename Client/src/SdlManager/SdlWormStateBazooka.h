@@ -3,6 +3,7 @@
 
 
 #include "SdlWormState.h"
+using namespace SDL2pp;  // NOLINT
 
 class SdlWormStateBazooka : public SdlWormState {
 

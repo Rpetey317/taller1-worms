@@ -17,8 +17,8 @@ class SdlTexturesManager {
                 Window& window;
                 Texture small_bridge;
                 Texture large_bridge;
-                Texture background;
                 Texture water;
+                Texture background;
                 
 
 
