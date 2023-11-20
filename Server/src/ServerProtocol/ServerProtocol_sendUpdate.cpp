@@ -79,5 +79,23 @@ char ServerProtocol::send_PlayerConnectedUpdate(const GamePlayerConnectedUpdate&
 char ServerProtocol::send_NullUpdate(const GameNullUpdate& upd) { return SUCCESS; }
 
 char ServerProtocol::send_WorldUpdate(const GameWorldUpdate& upd) {
-    return CLOSED_SKT;
+    // send code
+    if (!this->send_char(MSGCODE_WORLD_UPD)) {
+        return CLOSED_SKT;
+    }
+    if (!this->send_char((amount_players_t)upd.get_plcount())) {
+        return CLOSED_SKT;
+    }
+    for (auto it = upd.begin(); it != upd.end(); ++it) {
+
+        // send player id
+        if (!this->send_char((playerid_t)it->first)) {
+            return CLOSED_SKT;
+        }
+
+        // send position
+        if (!this->send_point(it->second)) {
+            return CLOSED_SKT;
+        }
+    }
 }

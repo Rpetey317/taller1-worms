@@ -25,6 +25,8 @@ const msgcode_t MSGCODE_PLAYER_MESSAGE = 0x09;
 const msgcode_t MSGCODE_PLAYER_JUMP_FORWARD = 0x10;
 const msgcode_t MSGCODE_PLAYER_JUMP_BACKWARDS = 0x11;
 
+const msgcode_t MSGCODE_WORLD_UPD = 0x12;
+
 // TODO: delete
 const msgcode_t MSGCODE_BOX2D = 0xFF;
 
