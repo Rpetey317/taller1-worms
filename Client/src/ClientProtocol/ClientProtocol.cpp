@@ -84,7 +84,36 @@ Event* ClientProtocol::recv_turn_update(const playerid_t& player_id) {
     return new TurnUpdate((int)player_id);
 }
 
-Event* ClientProtocol::recv_map_update(const std::map<int, std::vector<int>>& worm_positions) {
+Event* ClientProtocol::recv_map_update() {
+
+    // Receive amount players or map size
+    amount_players_t amount_players;
+    this->skt.recvall(&amount_players, sizeof(amount_players_t), &this->isclosed);
+    if (this->isclosed) {
+        return new NullEvent(-1);
+    }
+    // Receive players positions
+    std::map<int, Point> worm_positions;
+    
+    for (int i = 0; i < amount_players; i++) {
+        playerid_t player_id;
+        this->skt.recvall(&player_id, sizeof(playerid_t), &this->isclosed);
+        if (this->isclosed) {
+            return new NullEvent(-1);
+        }
+        uint16_t x;
+        this->skt.recvall(&x, sizeof(uint16_t), &this->isclosed);
+        if (this->isclosed) {
+            return new NullEvent(-1);
+        }
+        uint16_t y;
+        this->skt.recvall(&y, sizeof(uint16_t), &this->isclosed);
+        if (this->isclosed) {
+            return new NullEvent(-1);
+        }
+        worm_positions[(int)player_id] = Point(ntohs(x), ntohs(y));
+    }
+
     return new MapUpdate(worm_positions);
 }
 
@@ -154,6 +183,8 @@ void ClientProtocol::send_code_game(size_t code) {
 Event* ClientProtocol::recv_update() {
     // TODO: change this to a dynamic switch
     msgcode_t code_update = this->recv_code();
+    if (code_update == MSGCODE_MAP_UPDATE)
+            return this->recv_map_update();
     playerid_t player_id = this->recv_player_id();
     switch (code_update) {
         case MSGCODE_ACK:
@@ -166,9 +197,6 @@ Event* ClientProtocol::recv_update() {
             return this->recv_player_disconnected(player_id);
         case MSGCODE_TURN_UPDATE:
             return this->recv_turn_update(player_id);
-        // case MSGCODE_MAP_UPDATE:
-        //     return this->recv_map_update(); // Habria que crear un metodo privado que reciba
-        //     todas las posiciones y cree el map. Luego se lo pasa por parametro a esta clase
         default:
             return new NullEvent(player_id);
     }

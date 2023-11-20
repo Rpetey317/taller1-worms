@@ -7,13 +7,14 @@
 
 #include "../Event.h"
 
+#include "Point.h"
 
 class MapUpdate: public Event {
     // private:
-    std::map<int, std::vector<int>> worm_positions;
+    std::map<int, Point> worm_positions;
 
 public:
-    MapUpdate(const std::map<int, std::vector<int>>& positions);
+    MapUpdate(const std::map<int, Point>& positions);
 
     void get_processed_by(EventProcessor& eventProcessor) override;
 };
