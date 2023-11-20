@@ -9,7 +9,7 @@ void SdlTexturesManager::draw_background() {
 }
 
 SdlTexturesManager::SdlTexturesManager(Renderer& renderer, Window& window, std::string background_type) :
- renderer(renderer), window(window),small_bridge(renderer, "../../../Images/TerrainSprites/bridge.png"), large_bridge(renderer, "../../../Images/TerrainSprites/large-bridge.png"), water(renderer, "../../../Images/Worms/wblink1.png"), background(renderer, background_type) {
+ renderer(renderer), window(window),small_bridge(renderer, "../Images/TerrainSprites/bridge.png"), large_bridge(renderer, "../Images/TerrainSprites/large-bridge.png"), water(renderer, "../Images/Worms/wblink1.png"), background(renderer, background_type) {
     
     src.x = src.y = 0;
     src.h = dest.h = 19;
