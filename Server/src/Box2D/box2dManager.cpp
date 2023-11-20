@@ -8,6 +8,7 @@
 #define COMMAND_RIGHT 1
 #define COMMAND_LEFT 2
 #define COMMAND_JUMP 3
+#define COMMAND_NEXT 4
 
 b2Body* BoxSimulator::create_worm(float x, float y) {
     b2BodyDef myBodyDef;
@@ -117,8 +118,6 @@ void BoxSimulator::initialize_world() {
     create_map(); 
 }
 
-
-
 BoxSimulator::BoxSimulator(Queue<int>& commands, Queue<std::vector<int>>& positions):
         ingoing(commands), outgoing(positions) {
     initialize_world();
@@ -126,10 +125,13 @@ BoxSimulator::BoxSimulator(Queue<int>& commands, Queue<std::vector<int>>& positi
 
 std::map<int, std::vector<int>> create_position_map(const std::list<Box2DPlayer>& worms) {
     std::map<int, std::vector<int>> positions;
-    for (const auto& worm : worms) {
-        b2Vec2 pos = worm.get_body()->GetPosition();
-        std::vector<int> position = {static_cast<int>(pos.x * 100.0f), static_cast<int>(pos.y * 100.0f)};
-        positions[worm.get_id()] = position;
+    for (auto worm : worms) {
+        b2Body* body = worm.get_body(); // Obtener el cuerpo
+        if (body) { // Verificar si el cuerpo es válido
+            b2Vec2 pos = body->GetPosition();
+            std::vector<int> position = {static_cast<int>(pos.x * 100.0f), static_cast<int>(pos.y * 100.0f)};
+            positions[worm.get_id()] = position;
+        }
     }
     return positions;
 }
@@ -141,9 +143,9 @@ GameWorldUpdate* BoxSimulator::process(ClientBox2DUpdate& update) {
     int32 velocityIterations = 6;
     int32 positionIterations = 2;
 
-    int current_command = COMMAND_STOP;
-    while (current_command != COMMAND_EXIT) {
-        current_command = update.get_cmd();
+    // int current_command = COMMAND_STOP;
+    // while (current_command != COMMAND_EXIT) {
+        int current_command = update.get_cmd();
         b2Vec2 vel = (*playing_worm).get_body()->GetLinearVelocity();  // vector vel del gusano
         switch (current_command) {
             case COMMAND_LEFT:
@@ -160,15 +162,18 @@ GameWorldUpdate* BoxSimulator::process(ClientBox2DUpdate& update) {
                     (*playing_worm).get_body()->ApplyLinearImpulse(b2Vec2(0.1f, 0.45f), (*playing_worm).get_body()->GetWorldCenter(), true);
                 }
                 break;
+            case COMMAND_NEXT:
+                this->next_turn();
+                break;
             default:
                 vel.x = 0.0f;
                 break;
         }
         (*playing_worm).get_body()->SetLinearVelocity(vel);  // seteo la nueva velocidad
-        world->Step(timeStep, velocityIterations, positionIterations); //simulo un paso con la info actual
+        world->Step(timeStep, velocityIterations, positionIterations); // esto no deberia depender de los updates, deberia correr en un hilo. (puede ser llamado por el hilo server(?))
         // b2Vec2 pos = (*playing_worm).get_body()->GetPosition(); //consigo la pos
         // std::vector<int> positions = {int(pos.x*100.0f), int(pos.y*100.0f)};
-    }
+    // }
     
     // falta return
     return new GameWorldUpdate(create_position_map(worms)); // TODO: ver que devolver

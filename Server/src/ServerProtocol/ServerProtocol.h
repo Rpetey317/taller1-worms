@@ -51,6 +51,7 @@ public:
     char send_TurnChangeUpdate(const GameTurnChangeUpdate& upd);
     char send_PlayerMessageUpdate(const GameChatMessageUpdate& upd);
     char send_NullUpdate(const GameNullUpdate& upd);
+    char send_WorldUpdate(const GameWorldUpdate& upd);
 
 
     /*

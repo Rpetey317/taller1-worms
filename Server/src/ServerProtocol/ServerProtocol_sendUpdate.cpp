@@ -73,8 +73,9 @@ char ServerProtocol::send_PlayerConnectedUpdate(const GamePlayerConnectedUpdate&
     if (!this->send_char((playerid_t)upd.get_player_id())) {
         return CLOSED_SKT;
     }
-
     return SUCCESS;
 }
 
 char ServerProtocol::send_NullUpdate(const GameNullUpdate& upd) { return SUCCESS; }
+
+char ServerProtocol::send_WorldUpdate(const GameWorldUpdate& upd) { return CLOSED_SKT; } //ayuda ruben
