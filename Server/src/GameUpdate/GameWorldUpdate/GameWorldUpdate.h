@@ -11,7 +11,7 @@ class GameWorldUpdate: public GameUpdate {
     std::map<int, std::vector<int>> positions;
 
 public:
-    GameWorldUpdate(const std::map<int, std::vector<int>>& positions);
+    explicit GameWorldUpdate(const std::map<int, std::vector<int>>& positions);
     char get_sent_by(ServerProtocol& prot) override;
     ~GameWorldUpdate();
 };

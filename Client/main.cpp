@@ -36,8 +36,9 @@ int main(int argc, char* argv[]) {
 
         const char* hostname = argv[1];
         const char* port = argv[2];
+        Queue<Action*> commands(10000);
 
-        GameProcessing client(hostname, port);
+        GameProcessing client(hostname, port, commands);
         client.run();
         ret = 0;
         return ret;
