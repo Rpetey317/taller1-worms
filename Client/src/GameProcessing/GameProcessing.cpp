@@ -33,14 +33,12 @@ using NetworkProtocol::msgcode_t;
 //         senderTh(outgoingq, protocol),
 //         id(0) {}
 
-GameProcessing::GameProcessing(const char* hostname, const char* port, Queue<Action*>& commands):
+GameProcessing::GameProcessing(const char* hostname, const char* port, Queue<Action*>& commands, Queue<Event*>& events):
         skt(Socket(hostname, port)),
         protocol(std::move(this->skt)),
 
-        incomingq(10000),
-        // outgoingq(commands),// Asi??
-        outgoingq(10000),  // O asi???
-        actions(commands),
+        outgoingq(commands),
+        incomingq(events),
         receiverTh(incomingq, protocol),  // pass the expected arguments to the constructor
         senderTh(outgoingq, protocol),
         id(0) {}
@@ -171,39 +169,39 @@ void GameProcessing::alternate_run() {
     this->receiverTh.start();
     this->senderTh.start();
 
-    bool playing = true;
-    std::string command;
-    while (playing) {
-        std::cout << "holi" << std::endl;
-        /*
-            Las acciones del cliente ya las poppea y envia el sender thread ya que le paso la
-           outgoingq de commands como parametro. Asi estaria bien o se deben poppear en este while y
-           luego mandarlas a la queue del sender?
-        */
-        // Si hacemos una queue distinta:
-        Action* action;
-        bool popped_action = this->actions.try_pop(action);
-        if (popped_action) {
-            // std::cout << "Poppea action" << std::endl;
-            this->outgoingq.push(action);
-        }
+    // bool playing = true;
+    // std::string command;
+    // while (playing) {
+    //     std::cout << "holi" << std::endl;
+    //     /*
+    //         Las acciones del cliente ya las poppea y envia el sender thread ya que le paso la
+    //        outgoingq de commands como parametro. Asi estaria bien o se deben poppear en este while y
+    //        luego mandarlas a la queue del sender?
+    //     */
+    //     // Si hacemos una queue distinta:
+    //     Action* action;
+    //     bool popped_action = this->actions.try_pop(action);
+    //     if (popped_action) {
+    //         // std::cout << "Poppea action" << std::endl;
+    //         this->outgoingq.push(action);
+    //     }
 
-        // Para actualizar SDL. El evento deberia ser de PlayerPosition. Esto lo habia hecho yo?
-        std::list<Event*> update_list;
+    //     // Para actualizar SDL. El evento deberia ser de PlayerPosition. Esto lo habia hecho yo?
+    //     std::list<Event*> update_list;
 
-        bool popped_event = false;
-        do {
-            Event* upd;
-            popped_event = this->incomingq.try_pop(upd);
-            if (popped_event)
-                update_list.push_back(upd);
-        } while (popped_event);
+    //     bool popped_event = false;
+    //     do {
+    //         Event* upd;
+    //         popped_event = this->incomingq.try_pop(upd);
+    //         if (popped_event)
+    //             update_list.push_back(upd);
+    //     } while (popped_event);
 
-        for (auto upd: update_list) {
-            //std::cout << "Popped an event" << std::endl;
-            this->eventProcessor.proccess_event(upd);
-        }
-    }
+    //     for (auto upd: update_list) {
+    //         //std::cout << "Popped an event" << std::endl;
+    //         this->eventProcessor.proccess_event(upd);
+    //     }
+    // }
     this->receiverTh.end();
     this->receiverTh.join();
     this->senderTh.end();

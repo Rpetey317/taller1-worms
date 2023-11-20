@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
         Queue<Action*> commands(10000);
         Queue<Event*> events(10000);
                 
-        GameProcessing client(hostname, port, commands);
+        GameProcessing client(hostname, port, commands, events);
         client.alternate_run();
 
         std::cout << "HOLI" << std::endl;

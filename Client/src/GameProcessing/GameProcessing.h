@@ -21,18 +21,16 @@ class GameProcessing {
 private:
     Socket skt;
     ClientProtocol protocol;  // El thread receiver y sender deberian tener el clientProtocol?
-    Queue<Event*> incomingq;
-    Queue<Action*> outgoingq;
-    Queue<Action*>& actions;
+    Queue<Action*>& outgoingq;
+    Queue<Event*>& incomingq;
     ReceiverThread receiverTh;
     SenderThread senderTh;
     EventProcessor eventProcessor;
     int id;
 
 public:
-    explicit GameProcessing(const char* hostname, const char* port);
-
-    explicit GameProcessing(const char* hostname, const char* port, Queue<Action*>& commands);
+    // explicit GameProcessing(const char* hostname, const char* port);
+    explicit GameProcessing(const char* hostname, const char* port, Queue<Action*>& commands, Queue<Event*>& events);
 
     std::string ask_for_command();
     void run();
