@@ -153,8 +153,8 @@ void SdlWorm::next_animation() {
     
 }
 
-SdlManager::SdlManager(Queue<int>& commands, Queue<std::vector<int>>& positions, int id_of_player):
-        commands(commands), positions(positions) {
+SdlManager::SdlManager(Queue<Action*>& outgoing, Queue<Event*>& ingoing, int id_of_player):
+        outgoing(outgoing), ingoing(ingoing) {
     // Initialize SDL library
     // SDL sdl(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
@@ -187,7 +187,7 @@ bool SdlManager::event_handler() {
                     worms[id_of_player]->worm_state = new SdlWormStateWalk();
                     worms[id_of_player]->flip = SDL_FLIP_HORIZONTAL;
                     worms[id_of_player]->angle = 0;
-                    commands.push(1);
+                    outgoing.push(new Move(true));
                     break;
                 }
                 case SDLK_LEFT: {
@@ -195,7 +195,7 @@ bool SdlManager::event_handler() {
                     worms[id_of_player]->worm_state = new SdlWormStateWalk();
                     worms[id_of_player]->flip = SDL_FLIP_NONE;
                     worms[id_of_player]->angle = 0;
-                    commands.push(2);
+                    outgoing.push(new Move(false));
                     break;
                 }
                 case SDLK_UP: {
@@ -223,7 +223,7 @@ bool SdlManager::event_handler() {
                     delete worms[id_of_player]->worm_state;
                     worms[id_of_player]->worm_state = new SdlWormStateStill();
                     worms[id_of_player]->animation_phase = 0;
-                    commands.push(3);
+                    outgoing.push(new NullAction());
                     break;
                 }
                 case SDLK_LEFT: {
@@ -234,7 +234,7 @@ bool SdlManager::event_handler() {
                     //EL CAMBIO DE ESTADOS POSIBLEMENTE LO TENGA QUE CAMBIAR A CUANDO RECIBA DE LA QUEUE
                     // YA QUE AHI HARIA UN FOR CAMBIANDOLE EL ESTADO A TODOS LOS BICHOS
                     worms[id_of_player]->animation_phase = 0;
-                    commands.push(3);
+                    outgoing.push(new NullAction());
                     break;
                 }
                 //ESTA EN WIP ESTAS
@@ -281,11 +281,11 @@ bool SdlManager::event_handler() {
                     break;
                 }
                 case SDLK_RETURN: { //SALTO HACIA DELANTE
-                    commands.push(4);
+                    outgoing.push(new Jump(true));
                     break;
                 }
                 case SDLK_BACKSPACE: {  //SALTO HACIA ATRAS
-                    commands.push(5);
+                    outgoing.push(new Jump(false));
                     break;
                 }
                 default: {
@@ -414,7 +414,10 @@ void SdlManager::run(std::string background_type, std::string selected_map) {
 
 void SdlManager::update_screen(Renderer& renderer, SdlMap& map) {
     std::vector<int> val;
-    positions.try_pop(val);
+    ingoing.try_pop(val);
+    // LAS POSICIONES DE TODOS LOS GUSANOS, EL ID DE TODOS LOS GUSANOS, Y EL ESTADO EN EL QUE ESTAN LOS GUSANOS
+    // ESTADOS -> MOVIENDOSE, HACIENDO NADA, CAYENDO, LLEVANDO UNA DE 10 ARMAS
+
     //si se conecta un gusano nuevo, podria crear el worm y le pateo los managers, asi que ellos tienen el renderer :)
     if (!val.empty()) {
         renderer.Clear();
@@ -441,14 +444,14 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map) {
     renderer.Present();
 }
 
-int main() {
+/*int main() {
     Queue<int> commands;
     Queue<std::vector<int>> positions;
     
     SdlManager manager(commands, positions, 0);
 
     manager.run("../../../Images/TerrainSprites/back1.png", "../../../maps/mapita.txt");
-}
+}*/
 
 
 SdlWormState::~SdlWormState() {}

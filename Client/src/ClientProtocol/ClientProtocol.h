@@ -54,6 +54,8 @@ public:
 
     char send_Jump(Jump action);
 
+    char send_NullAction(NullAction action);
+
     // Sends code game
     void send_code_game(size_t code);
 

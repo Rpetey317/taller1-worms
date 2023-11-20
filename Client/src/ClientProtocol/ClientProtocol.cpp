@@ -136,6 +136,12 @@ char ClientProtocol::send_Jump(Jump action) {
     return SUCCESS;
 }
 
+char ClientProtocol::send_NullAction(NullAction action) {
+    if (!this->send_char(MSGCODE_NULL_ACTION))
+        return CLOSED_SKT;
+    return SUCCESS;
+}
+
 
 void ClientProtocol::send_code_game(size_t code) {
     // Send code game to join
