@@ -12,7 +12,7 @@ public:
 
     char get_sent_by(ServerProtocol& prot) override;
 
-    const int& get_plid() const;
+    int get_plid() const;
 
     ~GameAcknowledgeUpdate() override = default;
 };
