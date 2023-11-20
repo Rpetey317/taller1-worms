@@ -37,6 +37,7 @@ public:
     std::string ask_for_command();
     void run();
     void alternate_run();
+    int get_id();
     ~GameProcessing();
 };
 

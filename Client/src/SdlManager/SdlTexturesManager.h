@@ -1,6 +1,6 @@
 #pragma once
 #include <SDL2pp/SDL2pp.hh>
-#include "CommonMapParser.h"
+#include "../../../Common/CommonMapParser/CommonMapParser.h"
 using namespace SDL2pp;  // NOLINT
 
 //deberia ser map_textures_manager...

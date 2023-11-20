@@ -184,6 +184,7 @@ void GameProcessing::alternate_run() {
         Action* action;
         bool popped_action = this->actions.try_pop(action);
         if (popped_action) {
+            // std::cout << "Poppea action" << std::endl;
             this->outgoingq.push(action);
         }
 
@@ -209,5 +210,6 @@ void GameProcessing::alternate_run() {
     this->senderTh.join();
 }
 
+int GameProcessing::get_id() { return this->id; }
 
 GameProcessing::~GameProcessing() {}
