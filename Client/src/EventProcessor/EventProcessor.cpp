@@ -29,9 +29,12 @@ void EventProcessor::process_player_position(PlayerPosition& event) {
 }
 
 void EventProcessor::process_map_update(MapUpdate& event) {
-    std::cout << "Tengo que modiciar el atributo map de sdl y remplazarlo por el que contiene este "
-                 "evento"
-              << std::endl;
+    // std::cout << "Map update" << std::endl;
+    // std::map<int, Point> worm_positions = event.get_worm_positions();
+    // for (auto& worm : worm_positions) {
+    //     std::cout << "Player " << worm.first << " with position: " << worm.second.get_x() << ","
+    //               << worm.second.get_y() << std::endl;
+    // }
 }
 
 void EventProcessor::proccess_event(Event* event) { event->get_processed_by(*this); }
