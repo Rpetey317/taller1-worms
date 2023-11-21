@@ -114,7 +114,6 @@ Event* ClientProtocol::recv_map_update() {
         }
         worm_positions[(int)player_id] = Point(ntohs(x), ntohs(y));
     }
-
     return new MapUpdate(worm_positions);
 }
 
@@ -185,8 +184,10 @@ void ClientProtocol::send_code_game(size_t code) {
 Event* ClientProtocol::recv_update() {
     // TODO: change this to a dynamic switch
     msgcode_t code_update = this->recv_code();
-    if (code_update == MSGCODE_MAP_UPDATE)
+    if (code_update == MSGCODE_WORLD_UPD){
+        std::cout << "Recibo mapa" << std::endl;
         return this->recv_map_update();
+    }
     playerid_t player_id = this->recv_player_id();
     switch (code_update) {
         case MSGCODE_ACK:

@@ -68,8 +68,6 @@ char ServerProtocol::send_PlayerDisconnectedUpdate(const GamePlayerDisconnectedU
 
 char ServerProtocol::send_PlayerConnectedUpdate(const GamePlayerConnectedUpdate& upd) {
     // send code
-    std::cout << "Sending player connected"
-              << std::endl;  // Nunca se imprime. No llega a esta funcion
     if (!this->send_char(MSGCODE_PLAYER_CONNECT)) {
         return CLOSED_SKT;
     }
@@ -105,5 +103,6 @@ char ServerProtocol::send_WorldUpdate(const GameWorldUpdate& upd) {
             return CLOSED_SKT;
         }
     }
+    std::cout << "Envio mapa" << std::endl;
     return SUCCESS;
 }

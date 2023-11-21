@@ -31,7 +31,6 @@ GameUpdate* GameHandler::process_new_connect(ClientConnectedUpdate& event) {
         this->eventq.push(new ClientPTurnAdvanceUpdate(SERVER_ID, this->curr_pl));
     }
 
-    std::cout << "New connection " << std::endl;
     return new GamePlayerConnectedUpdate(event.get_id());
 }
 

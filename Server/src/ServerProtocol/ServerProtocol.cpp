@@ -66,7 +66,9 @@ ServerProtocol::ServerProtocol(Socket&& _cli, const int& _plid):
         cli(std::move(_cli)), isclosed(false), plid(_plid) {}
 
 // DD methods for each update type implemented in ServerProtocol_sendUpdate.cpp
-char ServerProtocol::send_update(GameUpdate* msg) { return msg->get_sent_by(*this); }
+char ServerProtocol::send_update(GameUpdate* msg) { 
+    std::cout << "Envio mensaje valido" << std::endl;
+    return msg->get_sent_by(*this); }
 
 ClientUpdate* ServerProtocol::recv_update() {
     char code;
