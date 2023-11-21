@@ -42,7 +42,7 @@ GameUpdate* GameHandler::process_message(ClientMessageUpdate& event) {
 }
 
 GameUpdate* GameHandler::process_NullUpdate(ClientNullUpdate& event) {
-    
+
     std::cout << "Null update" << std::endl;
     return new GameNullUpdate();
 }

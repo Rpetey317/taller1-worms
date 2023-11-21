@@ -55,7 +55,7 @@ public:
     char send_Jump(Jump action);
     char send_NullAction(NullAction action);
 
-    /* 
+    /*
         Sends code of match game
     */
     void send_code_game(size_t code);
@@ -73,13 +73,13 @@ public:
     /*
         Receives the amount of players in the game
     */
-    int recv_amount_players(); // Not used. Could delete
-    
+    int recv_amount_players();  // Not used. Could delete
+
     /*
         Closes socket
     */
     void close();
-    
+
     ~ClientProtocol();
 };
 

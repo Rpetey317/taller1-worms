@@ -20,8 +20,8 @@ class GameProcessing {
 private:
     Socket skt;
     ClientProtocol protocol;
-    Queue<Action*>& outgoingq; // For sender thread. SDL has a reference too
-    Queue<Event*>& incomingq; // For receiver thread. SDL has a reference too
+    Queue<Action*>& outgoingq;  // For sender thread. SDL has a reference too
+    Queue<Event*>& incomingq;   // For receiver thread. SDL has a reference too
     ReceiverThread receiverTh;
     SenderThread senderTh;
     EventProcessor eventProcessor;
@@ -40,7 +40,7 @@ public:
     */
     std::string ask_for_command();
 
-    void alternate_run(); // Should delete
+    void alternate_run();  // Should delete
 
     /*
         Runs the game. Receives the id of the client and runs the receiver and sender threads
@@ -51,7 +51,7 @@ public:
         Returns the id of the client
     */
     int get_id();
-    
+
     /*
         Ends the game. Joins the threads.
     */
