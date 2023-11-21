@@ -21,6 +21,7 @@ void SenderThread::run() {
 void SenderThread::end() {
     _keep_running = false;
     this->outgoingq.close();
+    _is_alive = false;
 }
 
 SenderThread::~SenderThread() {}

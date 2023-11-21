@@ -34,6 +34,7 @@ void ReceiverThread::end() {
     _keep_running = false;
     this->incomingq.close();
     this->prot.close();
+    _is_alive = false;
 }
 
 ReceiverThread::~ReceiverThread() {}

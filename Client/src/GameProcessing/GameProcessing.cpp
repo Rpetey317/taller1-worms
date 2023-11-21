@@ -59,7 +59,7 @@ std::string GameProcessing::ask_for_command() {
     return command;
 }
 
-void GameProcessing::run() {
+void GameProcessing::alternate_run() {
     // Creo los threads sender y receiver pasandoles el protocolo y los corro
 
     const std::map<std::string, int> lut{
@@ -149,7 +149,7 @@ void GameProcessing::run() {
     this->senderTh.join();
 }
 
-void GameProcessing::alternate_run() {
+void GameProcessing::run() {
 
     // Creo los threads sender y receiver pasandoles el protocolo y los corro
 
@@ -209,9 +209,11 @@ int GameProcessing::get_id() { return this->id; }
 
 void GameProcessing::end() {
     this->receiverTh.end();
-    this->receiverTh.join();
     this->senderTh.end();
+    std::cout << "Joining threads" << std::endl;
+    this->receiverTh.join();
     this->senderTh.join();
+    std::cout << "Threads joined" << std::endl;
 }
 
 GameProcessing::~GameProcessing() {}

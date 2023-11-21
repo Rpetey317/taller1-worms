@@ -31,9 +31,11 @@ int main(int argc, char* argv[]) {
         Queue<Event*> events(10000);
 
         GameProcessing client(hostname, port, commands, events);
-        client.alternate_run();
 
         SdlManager manager(commands, events, 0);
+
+        client.run();
+
         manager.run("../Images/TerrainSprites/back1.png", "../maps/mapita.txt");
 
         client.end();

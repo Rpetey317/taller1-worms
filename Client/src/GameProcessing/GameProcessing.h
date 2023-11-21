@@ -9,7 +9,6 @@
 #include <utility>
 #include <vector>
 
-// #include "../ClientProtocol/ClientProtocol.h"
 #include "../ClientReceiverThread/ClientReceiverThread.h"
 #include "../ClientSenderThread/ClientSenderThread.h"
 #include "../EventProcessor/EventProcessor.h"
@@ -34,8 +33,8 @@ public:
                             Queue<Event*>& events);
 
     std::string ask_for_command();
-    void run();
     void alternate_run();
+    void run();
     int get_id();
     void end();
 

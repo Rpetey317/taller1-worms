@@ -1,5 +1,7 @@
 #include "ServerProtocol.h"
 
+#include <iostream>
+
 using namespace NetworkProtocol;  // NOLINT
 
 char ServerProtocol::send_PlayerMessageUpdate(const GameChatMessageUpdate& upd) {
@@ -37,6 +39,7 @@ char ServerProtocol::send_TurnChangeUpdate(const GameTurnChangeUpdate& upd) {
 
 char ServerProtocol::send_ConnectionAcknowledgeUpdate(const GameAcknowledgeUpdate& upd) {
     // send code
+    std::cout << "Sending ack" << std::endl;
     if (!this->send_char(MSGCODE_ACK)) {
         return CLOSED_SKT;
     }
