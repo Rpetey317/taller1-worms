@@ -9,6 +9,10 @@ class EventProcessor {
 public:
     EventProcessor();
 
+    /*
+        Process methods for each type of event.
+    */
+
     void process_connection(PlayerConnected& event);
 
     void process_msg(PlayerMessage& event);
