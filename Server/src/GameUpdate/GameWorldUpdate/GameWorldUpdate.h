@@ -10,11 +10,11 @@
 
 class GameWorldUpdate: public GameUpdate {
 
-    std::map<int, Point> positions;
+    std::map<int, Point>* positions;
 
 
 public:
-    explicit GameWorldUpdate(const std::map<int, Point>& positions);
+    explicit GameWorldUpdate(std::map<int, Point>* positions);
 
     char get_sent_by(ServerProtocol& prot) override;
 

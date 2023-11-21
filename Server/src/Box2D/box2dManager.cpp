@@ -124,14 +124,14 @@ BoxSimulator::BoxSimulator(Queue<int>& commands, Queue<std::vector<int>>& positi
     initialize_world();
 }
 
-std::map<int, Point> create_position_map(const std::list<Box2DPlayer>& worms) {
-    std::map<int, Point> positions;
+std::map<int, Point>* create_position_map(const std::list<Box2DPlayer>& worms) {
+    std::map<int, Point>* positions = new std::map<int, Point>();
     for (auto worm : worms) {
         b2Body* body = worm.get_body(); // Obtener el cuerpo
         if (body) { // Verificar si el cuerpo es válido
             b2Vec2 pos = body->GetPosition();
             Point position(static_cast<int>(pos.x * 100.0f), static_cast<int>(pos.y * 100.0f));
-            positions[worm.get_id()] = position;
+            positions->insert(std::make_pair(worm.get_id(), position));
         }
     }
     return positions;

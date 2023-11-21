@@ -31,25 +31,31 @@ GameUpdate* GameHandler::process_new_connect(ClientConnectedUpdate& event) {
         this->eventq.push(new ClientPTurnAdvanceUpdate(SERVER_ID, this->curr_pl));
     }
 
+    std::cout << "New connection " << std::endl;
     return new GamePlayerConnectedUpdate(event.get_id());
 }
 
 GameUpdate* GameHandler::process_message(ClientMessageUpdate& event) {
+
+    std::cout << "Message " << std::endl;
     return new GameChatMessageUpdate(event.get_id(), event.get_msg());
 }
 
 GameUpdate* GameHandler::process_NullUpdate(ClientNullUpdate& event) {
+
+    std::cout << "Null update" << std::endl;
     return new GameNullUpdate();
 }
 
 GameUpdate* GameHandler::process_TurnAdvance(ClientPTurnAdvanceUpdate& event) {
+    std::cout << "Starting turn advance" << std::endl;
     auto new_curr_pl = event.get_new_pl();
 
     if (new_curr_pl == this->players.end()) {
         return new GameNullUpdate();
     }
     this->curr_pl = new_curr_pl;
-
+    std::cout << "Turn advance " << std::endl;
     return new GameTurnChangeUpdate(new_curr_pl->first);
 }
 

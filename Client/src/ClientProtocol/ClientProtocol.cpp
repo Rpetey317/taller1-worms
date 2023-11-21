@@ -1,6 +1,7 @@
 #include "ClientProtocol.h"
 
 #include <iostream>
+#include <map>
 #include <sstream>
 
 #include <arpa/inet.h>
@@ -84,6 +85,39 @@ Event* ClientProtocol::recv_turn_update(const playerid_t& player_id) {
     return new TurnUpdate((int)player_id);
 }
 
+Event* ClientProtocol::recv_map_update() {
+
+    // Receive amount players or map size
+    amount_players_t amount_players;
+    this->skt.recvall(&amount_players, sizeof(amount_players_t), &this->isclosed);
+    if (this->isclosed) {
+        return new NullEvent(-1);
+    }
+    // Receive players positions
+    std::map<int, Point> worm_positions;
+
+    for (int i = 0; i < amount_players; i++) {
+        playerid_t player_id;
+        this->skt.recvall(&player_id, sizeof(playerid_t), &this->isclosed);
+        if (this->isclosed) {
+            return new NullEvent(-1);
+        }
+        uint16_t x;
+        this->skt.recvall(&x, sizeof(uint16_t), &this->isclosed);
+        if (this->isclosed) {
+            return new NullEvent(-1);
+        }
+        uint16_t y;
+        this->skt.recvall(&y, sizeof(uint16_t), &this->isclosed);
+        if (this->isclosed) {
+            return new NullEvent(-1);
+        }
+        worm_positions[(int)player_id] = Point(ntohs(x), ntohs(y));
+    }
+
+    return new MapUpdate(worm_positions);
+}
+
 ClientProtocol::ClientProtocol(Socket skt): skt(std::move(skt)), isclosed(false) {}
 
 playerid_t ClientProtocol::recv_player_id() {
@@ -132,6 +166,12 @@ char ClientProtocol::send_Jump(Jump action) {
     return SUCCESS;
 }
 
+char ClientProtocol::send_NullAction(NullAction action) {
+    if (!this->send_char(MSGCODE_NULL_ACTION))
+        return CLOSED_SKT;
+    return SUCCESS;
+}
+
 
 void ClientProtocol::send_code_game(size_t code) {
     // Send code game to join
@@ -144,6 +184,8 @@ void ClientProtocol::send_code_game(size_t code) {
 Event* ClientProtocol::recv_update() {
     // TODO: change this to a dynamic switch
     msgcode_t code_update = this->recv_code();
+    if (code_update == MSGCODE_MAP_UPDATE)
+        return this->recv_map_update();
     playerid_t player_id = this->recv_player_id();
     switch (code_update) {
         case MSGCODE_ACK:

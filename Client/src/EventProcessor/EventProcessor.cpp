@@ -16,15 +16,26 @@ void EventProcessor::process_disconnection(PlayerDisconnected& event) {
     std::cout << "Player " << event.get_id() << " disconnected." << std::endl;
 }
 
-void EventProcessor::process_null(NullEvent& event) { std::cout << "Null event" << std::endl; }
+void EventProcessor::process_null(NullEvent& event) { /*std::cout << "Null event" << std::endl;*/
+}
 
 void EventProcessor::process_turn_update(TurnUpdate& event) {
     std::cout << "Now turn of player: " << event.get_id() << std::endl;
 }
 
 void EventProcessor::process_player_position(PlayerPosition& event) {
-    std::cout << "Player " << event.get_id() << "with position: " << event.get_position_x() << ","
-              << event.get_position_y() << std::endl;
+    Point position = event.get_position();
+    std::cout << "Player " << event.get_id() << "with position: " << position.x << "," << position.y
+              << std::endl;
+}
+
+void EventProcessor::process_map_update(MapUpdate& event) {
+    // std::cout << "Map update" << std::endl;
+    // std::map<int, Point> worm_positions = event.get_worm_positions();
+    // for (auto& worm : worm_positions) {
+    //     std::cout << "Player " << worm.first << " with position: " << worm.second.get_x() << ","
+    //               << worm.second.get_y() << std::endl;
+    // }
 }
 
 void EventProcessor::proccess_event(Event* event) { event->get_processed_by(*this); }

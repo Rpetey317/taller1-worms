@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "ServerProtocol.h"
 
 using namespace NetworkProtocol;  // NOLINT
@@ -37,6 +39,7 @@ char ServerProtocol::send_TurnChangeUpdate(const GameTurnChangeUpdate& upd) {
 
 char ServerProtocol::send_ConnectionAcknowledgeUpdate(const GameAcknowledgeUpdate& upd) {
     // send code
+    std::cout << "Sending ack" << std::endl;
     if (!this->send_char(MSGCODE_ACK)) {
         return CLOSED_SKT;
     }
@@ -65,6 +68,8 @@ char ServerProtocol::send_PlayerDisconnectedUpdate(const GamePlayerDisconnectedU
 
 char ServerProtocol::send_PlayerConnectedUpdate(const GamePlayerConnectedUpdate& upd) {
     // send code
+    std::cout << "Sending player connected"
+              << std::endl;  // Nunca se imprime. No llega a esta funcion
     if (!this->send_char(MSGCODE_PLAYER_CONNECT)) {
         return CLOSED_SKT;
     }
@@ -73,6 +78,8 @@ char ServerProtocol::send_PlayerConnectedUpdate(const GamePlayerConnectedUpdate&
     if (!this->send_char((playerid_t)upd.get_player_id())) {
         return CLOSED_SKT;
     }
+    std::cout << "Sent player connected" << std::endl;
+
     return SUCCESS;
 }
 

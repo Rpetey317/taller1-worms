@@ -1,3 +1,4 @@
+#include "MapUpdate/MapUpdate.h"
 #include "NullEvent/NullEvent.h"
 #include "PlayerConnectedEvent/PlayerConnectedEvent.h"
 #include "PlayerDisconnectedEvent/PlayerDisconnectedEvent.h"

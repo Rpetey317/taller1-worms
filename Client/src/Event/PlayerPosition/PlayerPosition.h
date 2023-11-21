@@ -6,20 +6,19 @@
 
 #include "../Event.h"
 
+#include "Point.h"
+
 
 class PlayerPosition: public Event {
     // private:
-    int pos_x;
-    int pos_y;
+    Point position;
 
 public:
-    PlayerPosition(const int& player_id, const int& pos_x, const int& pos_y);
+    PlayerPosition(const int& player_id, Point position);
 
     void get_processed_by(EventProcessor& eventProcessor) override;
 
-    int get_position_x();
-
-    int get_position_y();
+    Point get_position();
 };
 
 #endif  // PLAYERPOSITION_H_
