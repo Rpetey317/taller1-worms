@@ -31,7 +31,6 @@ GameUpdate* GameHandler::process_new_connect(ClientConnectedUpdate& event) {
         this->eventq.push(new ClientPTurnAdvanceUpdate(SERVER_ID, this->curr_pl));
     }
 
-    std::cout << "New connection " << std::endl;
     return new GamePlayerConnectedUpdate(event.get_id());
 }
 
@@ -59,4 +58,7 @@ GameUpdate* GameHandler::process_TurnAdvance(ClientPTurnAdvanceUpdate& event) {
     return new GameTurnChangeUpdate(new_curr_pl->first);
 }
 
-GameUpdate* GameHandler::process_box2d(ClientBox2DUpdate& event) { return box2d.process(event); }
+GameUpdate* GameHandler::process_box2d(ClientBox2DUpdate& event) {
+    std::cout << "Intento procesar box2d event" << std::endl;
+    return box2d.process(event);
+}

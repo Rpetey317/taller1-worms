@@ -7,3 +7,5 @@ NullEvent::NullEvent(const int& _id): Event(_id) {}
 void NullEvent::get_processed_by(EventProcessor& eventProcessor) {
     eventProcessor.process_null(*this);
 }
+
+std::map<int, Point> NullEvent::get_worm_positions() { return std::map<int, Point>(); }
