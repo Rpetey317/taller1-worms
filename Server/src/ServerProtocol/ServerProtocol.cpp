@@ -1,9 +1,8 @@
 #include "ServerProtocol.h"
 
+#include <iostream>
 #include <utility>
 #include <vector>
-
-#include <iostream>
 
 #include <arpa/inet.h>
 
@@ -105,8 +104,7 @@ ClientUpdate* ServerProtocol::recv_update() {
         return new ClientBox2DUpdate(plid, 1);
     } else if (code == MSGCODE_PLAYER_MOVE_LEFT) {
         return new ClientBox2DUpdate(plid, 2);
-    }
-    else {
+    } else {
         return new ClientNullUpdate();
     }
 }

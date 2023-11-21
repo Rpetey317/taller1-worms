@@ -19,7 +19,7 @@ void GameLoopThread::run() {
         do {
             ClientUpdate* event;
             popped = this->eventq.try_pop(event);
-            if (popped){
+            if (popped) {
                 std::cout << "Poppeo mensaje valido" << std::endl;
                 event_list.push_back(event);
             }
@@ -29,7 +29,7 @@ void GameLoopThread::run() {
         for (auto event: event_list) {
             GameUpdate* update = this->game.execute(event);
             game.broadcast(update);
-            //delete update;
+            // delete update;
         }
 
         // Take time elapsed

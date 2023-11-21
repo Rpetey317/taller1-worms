@@ -59,6 +59,7 @@ GameUpdate* GameHandler::process_TurnAdvance(ClientPTurnAdvanceUpdate& event) {
     return new GameTurnChangeUpdate(new_curr_pl->first);
 }
 
-GameUpdate* GameHandler::process_box2d(ClientBox2DUpdate& event) { 
+GameUpdate* GameHandler::process_box2d(ClientBox2DUpdate& event) {
     std::cout << "Intento procesar box2d event" << std::endl;
-    return box2d.process(event); }
+    return box2d.process(event);
+}
