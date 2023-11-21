@@ -31,32 +31,27 @@ bool SdlManager::event_handler() {
                     return false;
                 }
                 case SDLK_RIGHT: {
-                    delete worms[id_of_player]->worm_state;
-                    worms[id_of_player]->worm_state = new SdlWormStateWalk();
+                    worms[id_of_player]->change_state("WALK");
                     worms[id_of_player]->flip = SDL_FLIP_HORIZONTAL;
-                    worms[id_of_player]->angle = 0;
                     outgoing.push(new Move(true));
                     break;
                 }
                 case SDLK_LEFT: {
-                    delete worms[id_of_player]->worm_state;
-                    worms[id_of_player]->worm_state = new SdlWormStateWalk();
+                    worms[id_of_player]->change_state("WALK");
                     worms[id_of_player]->flip = SDL_FLIP_NONE;
-                    worms[id_of_player]->angle = 0;
                     outgoing.push(new Move(false));
                     break;
                 }
                 case SDLK_UP: {
-                    std::cout << "cambiando angulo..." << std::endl;
-                    worms[id_of_player]->angle = worms[id_of_player]->angle + 1;
-                    //buscar como mostrar el angulo en la pantalla de alguna forma
+                    if (!worms[id_of_player]->is_in_gun_state())
+                        break;
+                    worms[id_of_player]->change_angle(2);
                     break;
                 }
                 case SDLK_DOWN: {
-                    //verificar que este en algun modo arma
-                    std::cout << "cambiando angulo..." << worms[id_of_player]->angle << std::endl;
-                    worms[id_of_player]->angle = worms[id_of_player]->angle -1;
-                    //verificar no se pase de +- 90 el angulo
+                    if (!worms[id_of_player]->is_in_gun_state())
+                        break;
+                    worms[id_of_player]->change_angle(-2);
                     break;
                 }
                 break;
@@ -68,63 +63,67 @@ bool SdlManager::event_handler() {
                 return true;
             switch (event.key.keysym.sym) {
                 case SDLK_RIGHT: {
-                    delete worms[id_of_player]->worm_state;
-                    worms[id_of_player]->worm_state = new SdlWormStateStill();
-                    worms[id_of_player]->animation_phase = 0;
+                    worms[id_of_player]->change_state("STILL");
                     outgoing.push(new NullAction());
                     break;
                 }
                 case SDLK_LEFT: {
-                    //crear mensaje de gusano "change_state", donde le paso el nuevo state.
-                    // en ese mensaje se libera la memoria, seteo el animation_phase y pongo el is_charging en lo que corresponda
-                    delete worms[id_of_player]->worm_state;
-                    worms[id_of_player]->worm_state = new SdlWormStateStill();
+                    worms[id_of_player]->change_state("STILL");
                     //EL CAMBIO DE ESTADOS POSIBLEMENTE LO TENGA QUE CAMBIAR A CUANDO RECIBA DE LA QUEUE
                     // YA QUE AHI HARIA UN FOR CAMBIANDOLE EL ESTADO A TODOS LOS BICHOS
-                    worms[id_of_player]->animation_phase = 0;
                     outgoing.push(new NullAction());
                     break;
                 }
                 //ESTA EN WIP ESTAS
                 case SDLK_0:{ //BAZOOKA
-
+                    worms[id_of_player]->change_state("BAZOOKA");
                     //worms[0]->worm_state = 3;
-
+                    //PUSH DEL NUEVO ESTADO, NOMAS HAY QUE HACER UN BROADCAST AL RESTO DE GUSANOS PARA QUE ACTUALICEN
                     break;
                 }
                 case SDLK_1:{//MORTERO
+                    worms[id_of_player]->change_state("MORTAR");
                     //worms[0]->worm_state = 3;
                     break;
                 }
                 case SDLK_2:{//GRANDA ROJA
+                    worms[id_of_player]->change_state("RED_GRENADE");
                     //worms[0]->worm_state = 3;
                     break;
                 }
                 case SDLK_3:{//GRANADA VERDE
+                    worms[id_of_player]->change_state("GREEN_GRENADE");
                     //worms[0]->worm_state = 3;
                     break;
                 }
                 case SDLK_4:{//BANANA
+                    worms[id_of_player]->change_state("BANANA");
                     //worms[0]->worm_state = 3;
                     break;
                 }
                 case SDLK_5:{//GRANADA SANTA
+
+                    worms[id_of_player]->change_state("HOLY_GRENADE");
                     //worms[0]->worm_state = 3;
                     break;
                 }
                 case SDLK_6:{//ATAQUE AEREO
+                    worms[id_of_player]->change_state("AIR_STRIKE");
                     //worms[0]->worm_state = 3;
                     break;
                 }
                 case SDLK_7:{//DINAMITA
+                    worms[id_of_player]->change_state("DYNAMITE");
                     //worms[0]->worm_state = 3;
                     break;
                 }
                 case SDLK_8:{//BATE DE BEISBOL
+                    worms[id_of_player]->change_state("BEISBOLL");
                     //worms[0]->worm_state = 3;
                     break;
                 }
                 case SDLK_9:{//TELETRANSPORTACION
+                    worms[id_of_player]->change_state("TELEPORT");
                     //worms[0]->worm_state = 3;
                     break;
                 }
@@ -147,13 +146,12 @@ bool SdlManager::event_handler() {
                 return true;
             switch(event.button.button) {
                 case SDL_BUTTON_LEFT : {
-                    //if (!worms[id_of_player].esta_en_modo_arma)
-                    //    break;
+                    if (!worms[id_of_player]->is_in_gun_state())
+                        break;
+                    
                     //ACA SETEO GUSANO EN "CARGANDO ARMA", Y A CADA TICK LE SUMO UNO EL PODER
                     worms[id_of_player]->play_sound("CHARGE");
                     worms[id_of_player]->is_charging = true;
-                    //delete worms[id_of_player]->worm_state; se va a mantener en el modo arma
-                    //worms[id_of_player]->worm_state = new SdlWormStateStill();
                     break;
                 } 
                 default: {
@@ -166,17 +164,14 @@ bool SdlManager::event_handler() {
                 return true;
             switch(event.button.button) {
                 case SDL_BUTTON_LEFT : {
-                    //if (!worms[id_of_player].esta_en_modo_arma)
-                    //    break;
-                    std::cout << "ATTACK_POWER: " << worms[0]->attack_power << std::endl;
+                    if (!worms[id_of_player]->is_in_gun_state())
+                        break;
+                    std::cout << "ATTACK_POWER: " << worms[id_of_player]->attack_power << std::endl;
                     worms[id_of_player]->play_sound("THROWING");
-                    delete worms[id_of_player]->worm_state;
-                    worms[id_of_player]->worm_state = new SdlWormStateStill();
-                    //commands.push(6);
                     worms[id_of_player]->is_charging = false;
                     worms[id_of_player]->attack_power = 0; //en vez de worms[0], deberiamos hacer worms[jugador_en_turno], osea voy a necesitar 2 variables mas
                     // uno es la variable del id jugador de este cliente, otro la variable del id jugador en turno :)
-                    
+                    //push de que disparo algo
                     break;
                 }
                 default: {
@@ -253,7 +248,6 @@ void SdlManager::run(std::string background_type, std::string selected_map) {
     //LA CREACION DEL NUEVO GUSANO LA HARIA EN EL UPDATE_SCREEN, YA QUE ES DONDE HAGO EL POP
     // AHI RECIBIRIA EL MENSAJE DE CREAR NUEVO GUSANO :)
     worms[id_of_player] = new SdlWorm(texture_manager, sound_manager);
-    
     while (is_running) {
         uint32_t frame_start;
         uint32_t frame_time;
