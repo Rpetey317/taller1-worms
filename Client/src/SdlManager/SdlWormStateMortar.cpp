@@ -14,9 +14,14 @@ bool SdlWormStateMortar::is_in_gun_state() {
     return true;
 }
 
+bool SdlWormStateMortar::has_ammo(std::map<std::string, int>& gun_ammo) {
+    return gun_ammo["MORTAR"] != 0;
+}
+
+
 bool SdlWormStateMortar::reduce_ammo(std::map<std::string, int>& gun_ammo) {
-    gun_ammo["MORTAR"] = gun_ammo["MORTAR"] -1;
     if (gun_ammo["MORTAR"] == 0)
-        return true;
-    return false;
+        return false;
+    gun_ammo["MORTAR"] = gun_ammo["MORTAR"] -1;
+    return true;
 }

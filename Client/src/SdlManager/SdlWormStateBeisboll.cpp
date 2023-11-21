@@ -14,6 +14,10 @@ bool SdlWormStateBeisboll::is_in_gun_state() {
     return true;
 }
 
+bool SdlWormStateBeisboll::has_ammo(std::map<std::string, int>& gun_ammo) {
+    return true;
+}
+
 bool SdlWormStateBeisboll::reduce_ammo(std::map<std::string, int>& gun_ammo) {
-    return false;
+    return true;
 }

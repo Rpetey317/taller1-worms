@@ -14,9 +14,15 @@ bool SdlWormStateHolyGrenade::is_in_gun_state() {
     return true;
 }
 
+bool SdlWormStateHolyGrenade::has_ammo(std::map<std::string, int>& gun_ammo) {
+    return gun_ammo["HOLY_GRENADE"] != 0;
+}
+
 bool SdlWormStateHolyGrenade::reduce_ammo(std::map<std::string, int>& gun_ammo) {
+    if (!has_ammo(gun_ammo))
+        return false;
+    
     gun_ammo["HOLY_GRENADE"] = gun_ammo["HOLY_GRENADE"] -1;
-    if (gun_ammo["HOLY_GRENADE"] == 0)
-        return true;
-    return false;
+    
+    return true;
 }

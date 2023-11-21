@@ -37,8 +37,8 @@ public:
     void apply();
     bool is_in_gun_state();
     void change_angle(int angle);
-    void reduce_ammo();
-
+    bool reduce_ammo();
+    bool has_ammo();
 private:
     SdlWormTextureManager& texture_manager;
     SdlSoundManager& sound_manager;

@@ -18,3 +18,8 @@ bool SdlWormStateStill::is_in_gun_state() {
 bool SdlWormStateStill::reduce_ammo(std::map<std::string, int>& gun_ammo) {
     return false;
 }
+bool SdlWormStateStill::has_ammo(std::map<std::string, int>& gun_ammo) {
+    return true;
+}
+
+

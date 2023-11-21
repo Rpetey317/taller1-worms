@@ -14,6 +14,10 @@ bool SdlWormStateBazooka::is_in_gun_state() {
     return true;
 }
 
+bool SdlWormStateBazooka::has_ammo(std::map<std::string, int>& gun_ammo) {
+    return true;
+}
+
 bool SdlWormStateBazooka::reduce_ammo(std::map<std::string, int>& gun_ammo) {
-    return false;
+    return true;
 }

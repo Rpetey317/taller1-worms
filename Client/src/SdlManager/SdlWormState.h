@@ -13,4 +13,5 @@ class SdlWormState {
                 virtual bool is_in_gun_state() = 0;
                 virtual ~SdlWormState();
                 virtual bool reduce_ammo(std::map<std::string, int>& gun_ammo) = 0;
+                virtual bool has_ammo(std::map<std::string, int>& gun_ammo) = 0;
 };

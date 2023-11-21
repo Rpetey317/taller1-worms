@@ -52,9 +52,14 @@ SdlWorm::SdlWorm(SdlWormTextureManager& texture_manager, SdlSoundManager& sound_
 
     worm_state = worm_states["STILL"];
 }
-
-void SdlWorm::reduce_ammo() {
-    worm_state->reduce_ammo(gun_ammo);
+bool SdlWorm::has_ammo() {
+    std::cout << "HOLA PANA" << std::endl;
+    bool result = worm_state->has_ammo(gun_ammo);
+    std::cout << result << std::endl;
+    return result;
+}
+bool SdlWorm::reduce_ammo() {
+    return worm_state->reduce_ammo(gun_ammo);
 }
 
 void SdlWorm::destroy() {

@@ -15,5 +15,11 @@ bool SdlWormStateTeleport::is_in_gun_state() {
 }
 
 bool SdlWormStateTeleport::reduce_ammo(std::map<std::string, int>& gun_ammo) {
-    return false;
+    return true;
 }
+
+bool SdlWormStateTeleport::has_ammo(std::map<std::string, int>& gun_ammo) {
+    return true;
+}
+
+

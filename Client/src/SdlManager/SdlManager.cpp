@@ -148,7 +148,8 @@ bool SdlManager::event_handler() {
                 case SDL_BUTTON_LEFT : {
                     if (!worms[id_of_player]->is_in_gun_state())
                         break;
-                    
+                    if (!worms[id_of_player]->has_ammo())
+                        break;
                     //ACA SETEO GUSANO EN "CARGANDO ARMA", Y A CADA TICK LE SUMO UNO EL PODER
                     worms[id_of_player]->play_sound("CHARGE");
                     worms[id_of_player]->is_charging = true;
@@ -165,6 +166,8 @@ bool SdlManager::event_handler() {
             switch(event.button.button) {
                 case SDL_BUTTON_LEFT : {
                     if (!worms[id_of_player]->is_in_gun_state())
+                        break;
+                    if (!worms[id_of_player]->has_ammo())
                         break;
                     worms[id_of_player]->reduce_ammo();
                     std::cout << "ATTACK_POWER: " << worms[id_of_player]->attack_power << std::endl;
