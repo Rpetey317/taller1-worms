@@ -13,3 +13,7 @@ void SdlWormStateBeisboll::render(Renderer& renderer, std::map<std::string, Text
 bool SdlWormStateBeisboll::is_in_gun_state() {
     return true;
 }
+
+bool SdlWormStateBeisboll::reduce_ammo(std::map<std::string, int>& gun_ammo) {
+    return false;
+}

@@ -25,14 +25,14 @@ public:
     void run(std::string background_type, std::string selected_map);  //este background_type lo deberia recibir para saber que cargar, quiza vienen por el server (?
 
 private:
-    // WIP, deberia ser alguna clase comando
-    Queue<Action*>& outgoing;                // alguien me deberia patear esto
-    Queue<Event*>& ingoing;  // posiciones para ir actualizando
+
+    Queue<Action*>& outgoing;                
+    Queue<Event*>& ingoing;  
     std::map<int, SdlWorm*> worms;
     int id_of_player_turn;
     int id_of_player;
 
     bool event_handler();
-    bool main_loop(Renderer& renderer, SdlMap& map);
-    void update_screen(Renderer& renderer, SdlMap& map);
+    bool main_loop(Renderer& renderer, SdlMap& map, SdlSoundManager& sound_manager, SdlWormTextureManager& worm_texture_manager);
+    void update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager& sound_manager, SdlWormTextureManager& worm_texture_manager);
 };

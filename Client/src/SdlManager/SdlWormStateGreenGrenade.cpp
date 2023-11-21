@@ -14,3 +14,10 @@ void SdlWormStateGreenGrenade::render(Renderer& renderer, std::map<std::string, 
 bool SdlWormStateGreenGrenade::is_in_gun_state() {
     return true;
 }
+
+bool SdlWormStateGreenGrenade::reduce_ammo(std::map<std::string, int>& gun_ammo) {
+    gun_ammo["GREEN_GRENADE"] = gun_ammo["GREEN_GRENADE"] -1;
+    if (gun_ammo["GREEN_GRENADE"] == 0)
+        return true;
+    return false;
+}

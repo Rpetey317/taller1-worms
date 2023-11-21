@@ -13,3 +13,10 @@ void SdlWormStateMortar::render(Renderer& renderer, std::map<std::string, Textur
 bool SdlWormStateMortar::is_in_gun_state() {
     return true;
 }
+
+bool SdlWormStateMortar::reduce_ammo(std::map<std::string, int>& gun_ammo) {
+    gun_ammo["MORTAR"] = gun_ammo["MORTAR"] -1;
+    if (gun_ammo["MORTAR"] == 0)
+        return true;
+    return false;
+}

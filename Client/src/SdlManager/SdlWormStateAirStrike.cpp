@@ -13,3 +13,11 @@ void SdlWormStateAirStrike::render(Renderer& renderer, std::map<std::string, Tex
 bool SdlWormStateAirStrike::is_in_gun_state() {
     return false;
 }
+
+bool SdlWormStateAirStrike::reduce_ammo(std::map<std::string, int>& gun_ammo) {
+    gun_ammo["AIR_STRIKE"] = gun_ammo["AIR_STRIKE"] -1;
+    if (gun_ammo["AIR_STRIKE"] == 0)
+        return true;
+    return false;
+}
+

@@ -37,14 +37,16 @@ public:
     void apply();
     bool is_in_gun_state();
     void change_angle(int angle);
+    void reduce_ammo();
 
 private:
-    int angle;
     SdlWormTextureManager& texture_manager;
     SdlSoundManager& sound_manager;
+    int angle;
     int animation_phase;
     
     SdlWormState *worm_state;
     std::map<std::string, SdlWormState*> worm_states;
+    std::map<std::string, int> gun_ammo;
 
 };

@@ -14,3 +14,7 @@ void SdlWormStateStill::render(Renderer& renderer, std::map<std::string, Texture
 bool SdlWormStateStill::is_in_gun_state() {
     return false;
 }
+
+bool SdlWormStateStill::reduce_ammo(std::map<std::string, int>& gun_ammo) {
+    return false;
+}

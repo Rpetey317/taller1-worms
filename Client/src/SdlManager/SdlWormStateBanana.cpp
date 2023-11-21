@@ -14,3 +14,6 @@ bool SdlWormStateBanana::is_in_gun_state() {
     return true;
 }
 
+bool SdlWormStateBanana::reduce_ammo(std::map<std::string, int>& gun_ammo) {
+    return false;
+}
