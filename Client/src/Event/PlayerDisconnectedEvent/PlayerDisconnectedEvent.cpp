@@ -8,4 +8,6 @@ void PlayerDisconnected::get_processed_by(EventProcessor& eventProcessor) {
     eventProcessor.process_disconnection(*this);
 }
 
+std::map<int, Point> PlayerDisconnected::get_worm_positions() { return std::map<int, Point>(); }
+
 // std::string PlayerDisconnected::get_player_name() { return this->player_name; }

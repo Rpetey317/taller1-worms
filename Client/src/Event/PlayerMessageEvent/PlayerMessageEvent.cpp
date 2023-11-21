@@ -8,4 +8,6 @@ void PlayerMessage::get_processed_by(EventProcessor& eventProcessor) {
     eventProcessor.process_msg(*this);
 }
 
+std::map<int, Point> PlayerMessage::get_worm_positions() { return std::map<int, Point>(); }
+
 std::string PlayerMessage::get_msg() { return this->msg; }
