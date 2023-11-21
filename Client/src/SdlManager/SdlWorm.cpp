@@ -41,10 +41,10 @@ SdlWorm::SdlWorm(SdlWormTextureManager& texture_manager, SdlSoundManager& sound_
     worm_state = worm_states["STILL"];
 }
 void SdlWorm::destroy() {
-    sound_manager.destroy();
-    for (auto state : worm_states) {
-        delete state.second;
-    }
+    //sound_manager.destroy();
+    //for (auto state : worm_states) {
+    //    delete state.second;
+    //}
 }
 
 void SdlWorm::play_sound(std::string sound_to_play) {

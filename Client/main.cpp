@@ -32,11 +32,11 @@ int main(int argc, char* argv[]) {
 
         GameProcessing client(hostname, port, commands, events);
 
-        SdlManager manager(commands, events, 0);
-
         client.run();
 
+        SdlManager manager(commands, events, 0);
         manager.run("../Images/TerrainSprites/back1.png", "../maps/mapita.txt");
+        std::cout << "CERRANDO SDL" << std::endl;
 
         client.end();
 

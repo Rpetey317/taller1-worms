@@ -27,7 +27,7 @@ void GameLoopThread::run() {
         for (auto event: event_list) {
             GameUpdate* update = this->game.execute(event);
             game.broadcast(update);
-            delete update;
+            //delete update;
         }
 
         // Take time elapsed
