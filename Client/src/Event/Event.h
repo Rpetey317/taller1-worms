@@ -3,10 +3,14 @@
 
 #include <string>
 #include <vector>
+#include <map>
+
+#include "Point.h"
 
 class ClientProtocol;
 class EventProcessor;
 // #include "../EventProcessor/EventProcessor.h"
+
 
 class Event {
 protected:

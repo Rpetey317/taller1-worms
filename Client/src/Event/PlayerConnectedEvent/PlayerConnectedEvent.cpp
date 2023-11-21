@@ -8,4 +8,6 @@ void PlayerConnected::get_processed_by(EventProcessor& eventProcessor) {
     eventProcessor.process_connection(*this);
 }
 
+std::map<int, Point> PlayerConnected::get_worm_positions() { return std::map<int, Point>(); }
+
 // std::string PlayerConnected::get_player_name() { return this->player_name; }
