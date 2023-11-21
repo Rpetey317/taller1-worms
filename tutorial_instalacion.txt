@@ -1,0 +1,27 @@
+para instalar y usar la versión 0.18 de libsdl2pp, 
+
+sudo apt-get install libjpeg-dev libpng-dev libfreetype-dev libopusfile-dev libflac-dev libxmp-dev libfluidsynth-dev libwavpack-dev cmake libmodplug-dev libsdl2-dev
+
+
+descargar los zips ( 2.6.3, https://github.com/libsdl-org/SDL_image/releases/tag/release-2.6.3),  libsdl2-mixer (2.6.3, https://github.com/libsdl-org/SDL_mixer/releases/tag/release-2.6.3)  y libsdl2-ttf (2.20.2, https://github.com/libsdl-org/SDL_ttf/releases/tag/release-2.20.2)
+hacer unzip de cada uno y
+cd carpeta_sdl_x
+mkdir build
+cd build
+cmake ..
+make -j4
+sudo make install
+
+luego ir a 
+https://github.com/libSDL2pp/libSDL2pp/releases 
+y descargarse el zip de la ultima version, hacer unzip
+
+y hacer
+cd libSDL2pp-0.18.1
+mkdir build
+cd build
+cmake ..
+make -j4
+sudo make install
+
+con eso deberian estar todas las dependencias instaladas
