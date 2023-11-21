@@ -117,6 +117,7 @@ void BoxSimulator::initialize_world() {
     float height = 4.0f;
     float width = 10.0f;
     create_ground(b2Vec2(0.0f,0.0f), b2Vec2(width,0.0f), b2Vec2(0.0f,height), b2Vec2(width, height)); 
+    add_player();
     create_map(); 
 }
 
@@ -144,40 +145,32 @@ GameWorldUpdate* BoxSimulator::process(ClientBox2DUpdate& update) {
     float timeStep = 1.0f / 60.0f;  // Paso de tiempo para la simulación (60 FPS)
     int32 velocityIterations = 6;
     int32 positionIterations = 2;
-
-    // int current_command = COMMAND_STOP;
-    // while (current_command != COMMAND_EXIT) {
-        int current_command = update.get_cmd();
-        b2Vec2 vel = (*playing_worm).get_body()->GetLinearVelocity();  // vector vel del gusano
-        switch (current_command) {
-            case COMMAND_LEFT:
-                vel.x = -1.0f;  // modifico componente en x
-                break;
-            case COMMAND_RIGHT:
-                vel.x = 1.0f;
-                break;
-            case COMMAND_STOP:
-                vel.x = 0.0f;
-                break;
-            case COMMAND_JUMP:
-                if ((*playing_worm).get_body()->GetLinearVelocity().y == 0) {
-                    (*playing_worm).get_body()->ApplyLinearImpulse(b2Vec2(0.1f, 0.45f), (*playing_worm).get_body()->GetWorldCenter(), true);
-                }
-                break;
-            case COMMAND_NEXT:
-                this->next_turn();
-                break;
-            default:
-                vel.x = 0.0f;
-                break;
-        }
-        (*playing_worm).get_body()->SetLinearVelocity(vel);  // seteo la nueva velocidad
-        world->Step(timeStep, velocityIterations, positionIterations); // esto no deberia depender de los updates, deberia correr en un hilo. (puede ser llamado por el hilo server(?))
-        // b2Vec2 pos = (*playing_worm).get_body()->GetPosition(); //consigo la pos
-        // std::vector<int> positions = {int(pos.x*100.0f), int(pos.y*100.0f)};
-    // }
-    
-    // falta return
+    int current_command = update.get_cmd();        
+    b2Vec2 vel = (*playing_worm).get_body()->GetLinearVelocity();  // vector vel del gusano
+    switch (current_command) {
+        case COMMAND_LEFT:
+            vel.x = -1.0f;  // modifico componente en x
+            break;
+        case COMMAND_RIGHT:
+            vel.x = 1.0f;
+            break;
+        case COMMAND_STOP:
+            vel.x = 0.0f;
+            break;
+        case COMMAND_JUMP:
+            if ((*playing_worm).get_body()->GetLinearVelocity().y == 0) {
+                (*playing_worm).get_body()->ApplyLinearImpulse(b2Vec2(0.1f, 0.45f), (*playing_worm).get_body()->GetWorldCenter(), true);
+            }
+            break;
+        case COMMAND_NEXT:
+            this->next_turn();
+            break;
+        default:
+            vel.x = 0.0f;
+            break;
+    }
+    (*playing_worm).get_body()->SetLinearVelocity(vel);  // seteo la nueva velocidad
+    world->Step(timeStep, velocityIterations, positionIterations); // esto no deberia depender de los updates, deberia correr en un hilo. (puede ser llamado por el hilo server(?))
     return new GameWorldUpdate(create_position_map(worms)); // TODO: ver que devolver
 }
 

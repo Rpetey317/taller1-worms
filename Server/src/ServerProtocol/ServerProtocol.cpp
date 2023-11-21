@@ -3,6 +3,8 @@
 #include <utility>
 #include <vector>
 
+#include <iostream>
+
 #include <arpa/inet.h>
 
 #include "GameUpdate.h"
@@ -98,7 +100,13 @@ ClientUpdate* ServerProtocol::recv_update() {
             return new ClientNullUpdate();
         }
         return new ClientBox2DUpdate(plid, input);
-    } else {
+    } else if (code == MSGCODE_PLAYER_MOVE_RIGHT) {
+        std::cout << "Recibo movimiento a la derecha" << std::endl;
+        return new ClientBox2DUpdate(plid, 1);
+    } else if (code == MSGCODE_PLAYER_MOVE_LEFT) {
+        return new ClientBox2DUpdate(plid, 2);
+    }
+    else {
         return new ClientNullUpdate();
     }
 }

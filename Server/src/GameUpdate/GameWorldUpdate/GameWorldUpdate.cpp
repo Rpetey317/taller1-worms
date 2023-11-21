@@ -2,7 +2,10 @@
 
 #include "ServerProtocol.h"
 
-GameWorldUpdate::GameWorldUpdate(std::map<int, Point>* _positions): positions(_positions) {}
+#include <iostream>
+
+GameWorldUpdate::GameWorldUpdate(std::map<int, Point>* _positions): positions(_positions) { 
+    std::cout << "GameWorldUpdate created" << std::endl; }
 
 char GameWorldUpdate::get_sent_by(ServerProtocol& prot) { return prot.send_WorldUpdate(*this); }
 

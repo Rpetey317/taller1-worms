@@ -151,6 +151,7 @@ char ClientProtocol::send_Movement(Move action) {
         if (!this->send_char(MSGCODE_PLAYER_MOVE_LEFT))
             return CLOSED_SKT;
     }
+    std::cout << "Envio movimiento" << std::endl;
     return SUCCESS;
 }
 

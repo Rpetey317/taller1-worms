@@ -19,8 +19,10 @@ void GameLoopThread::run() {
         do {
             ClientUpdate* event;
             popped = this->eventq.try_pop(event);
-            if (popped)
+            if (popped){
+                std::cout << "Poppeo mensaje valido" << std::endl;
                 event_list.push_back(event);
+            }
         } while (popped);
 
         // Execute actions if needed

@@ -17,6 +17,7 @@ void ReceiverThread::run() {
             ClientUpdate* msg = prot.recv_update();
 
             if (msg->is_valid()) {
+                std::cout <<"Recibo mensaje valido" << std::endl;
                 this->eventq.push(msg);
             } else {
                 _keep_running = false;
