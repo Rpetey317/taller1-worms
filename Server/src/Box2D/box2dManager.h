@@ -14,6 +14,8 @@
 #include "../../../libs/box2d/include/box2d/box2d.h"
 #include "../../../Common/queue.h"
 #include "../../../Common/thread.h"
+#include "../../../Common/Point.h"
+
 
 
 #include "box2dPlayer.h"
@@ -35,6 +37,9 @@ class BoxSimulator {
     void create_short_beam(b2Vec2 start, float angle);
     void next_turn();
     void add_player(); // should reach agreement whether position is random or sent by server
+
+    // might fall into player subclass
+    void player_shoot(float angle, float power);
 public:
     BoxSimulator(Queue<int>& commands, Queue<std::vector<int>>& positions);
 

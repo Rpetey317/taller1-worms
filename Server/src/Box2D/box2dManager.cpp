@@ -1,6 +1,5 @@
 #include "box2dManager.h"
 
-#include "Point.h"
 
 #define DEGTORAD 0.0174532925199432957f
 #define RADTODEG 57.295779513082320876f
@@ -182,3 +181,7 @@ GameWorldUpdate* BoxSimulator::process(ClientBox2DUpdate& update) {
 }
 
 void BoxSimulator::kill() { delete world; }
+
+void BoxSimulator::player_shoot(float angle, float power) {
+    
+}
