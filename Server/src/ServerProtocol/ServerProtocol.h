@@ -6,7 +6,7 @@
 #include "ClientUpdateHeaders.h"
 #include "GameUpdateHeaders.h"
 #include "NetworkProtocol.h"
-#include "Point.h"
+#include "Vect2D.h"
 #include "Socket.h"
 
 using NetworkProtocol::msgcode_t;
@@ -37,7 +37,7 @@ class ServerProtocol {
     bool send_long(const uint32_t& num);
     bool send_char(const uint8_t& num);
     bool send_str(const std::string& str);
-    bool send_point(const Point& pt);
+    bool send_Vect2D(const Vect2D& pt);
 
 
 public:

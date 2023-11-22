@@ -210,6 +210,7 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
     
     if (there_is_element) {
         for (auto& worm : worms) {
+            val->get_worm_positions()[1];
             worm.second->render_same();
             worm.second->next_animation();
             worm.second->apply();

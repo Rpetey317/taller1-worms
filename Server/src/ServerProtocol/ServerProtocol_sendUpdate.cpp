@@ -97,7 +97,7 @@ char ServerProtocol::send_WorldUpdate(const GameWorldUpdate& upd) {
         }
 
         // send position
-        if (!this->send_point(it->second)) {
+        if (!this->send_Vect2D(it->second)) {
             return CLOSED_SKT;
         }
     }
