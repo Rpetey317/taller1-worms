@@ -27,11 +27,12 @@ public:
     SDL_RendererFlip flip;
     bool is_charging;
     int attack_power;
-    explicit SdlWorm(SdlWormTextureManager& texture_manager, SdlSoundManager& sound_manager);
+    int id;
+    explicit SdlWorm(SdlWormTextureManager& texture_manager, SdlSoundManager& sound_manager, int id);
     void next_animation();
     void change_state(std::string state);
     void play_sound(std::string sound_to_play);
-    void render_new(Rect rect);
+    void render_new(Vect2D position);
     void render_same();
     void destroy();
     void apply();
