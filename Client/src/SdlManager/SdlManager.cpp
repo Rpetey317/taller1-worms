@@ -215,9 +215,6 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
             worm.second->apply();
         }
     } else {  //SI NO RECIBO NADA, SEGUI EJECUTANDO LA ANTERIOR ANIMACION Y QUEDATE EN EL MISMO LUGAR
-        renderer.Clear();
-
-        map.draw_map();
 
         for (auto& worm : worms) {
             worm.second->render_same();
