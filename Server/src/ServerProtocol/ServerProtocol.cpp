@@ -51,7 +51,7 @@ bool ServerProtocol::send_str(const std::string& str) {
     return true;
 }
 
-bool ServerProtocol::send_point(const Point& pt) {
+bool ServerProtocol::send_Vect2D(const Vect2D& pt) {
     if (!this->send_short(pt.x)) {
         return false;
     }

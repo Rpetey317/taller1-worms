@@ -98,7 +98,7 @@ Event* ClientProtocol::recv_map_update() {
         return new NullEvent(-1);
     }
     // Receive players positions
-    std::map<int, Point> worm_positions;
+    std::map<int, Vect2D> worm_positions;
 
     for (int i = 0; i < amount_players; i++) {
         playerid_t player_id;
@@ -116,7 +116,7 @@ Event* ClientProtocol::recv_map_update() {
         if (this->isclosed) {
             return new NullEvent(-1);
         }
-        worm_positions[(int)player_id] = Point(ntohs(x), ntohs(y));
+        worm_positions[(int)player_id] = Vect2D(ntohs(x), ntohs(y));
     }
     return new MapUpdate(worm_positions);
 }
