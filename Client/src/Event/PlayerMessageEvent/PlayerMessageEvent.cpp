@@ -10,4 +10,6 @@ void PlayerMessage::get_processed_by(EventProcessor& eventProcessor) {
 
 std::map<int, Vect2D> PlayerMessage::get_worm_positions() { return std::map<int, Vect2D>(); }
 
+bool PlayerMessage::is_new_player() { return false; }
+
 std::string PlayerMessage::get_msg() { return this->msg; }

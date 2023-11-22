@@ -243,15 +243,8 @@ int ClientProtocol::recv_amount_players() {
 
 void ClientProtocol::close() {
     if (this->isclosed) {
-        std::cout << "Mando a cerrar el socket pero no esta closed" << std::endl;
         return;
     }
-    // if (this->skt.closed) {
-    //     this->isclosed = true;
-    //     return;
-    // }
-
-    std::cout << "Cierro socket nose porq" << std::endl;
     this->skt.shutdown(2);
     this->skt.close();
     this->isclosed = true;

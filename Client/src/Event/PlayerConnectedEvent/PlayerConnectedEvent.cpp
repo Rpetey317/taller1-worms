@@ -10,4 +10,6 @@ void PlayerConnected::get_processed_by(EventProcessor& eventProcessor) {
 
 std::map<int, Vect2D> PlayerConnected::get_worm_positions() { return std::map<int, Vect2D>(); }
 
+bool PlayerConnected::is_new_player() { return true; }
+
 // std::string PlayerConnected::get_player_name() { return this->player_name; }

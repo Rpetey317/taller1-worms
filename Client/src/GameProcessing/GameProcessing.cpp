@@ -210,10 +210,8 @@ int GameProcessing::get_id() { return this->id; }
 void GameProcessing::end() {
     this->receiverTh.end();
     this->senderTh.end();
-    std::cout << "End of threads pero falta el join" << std::endl;
-    // this->receiverTh.join();
-    // this->senderTh.join();
-    // std::cout << "Threads joined" << std::endl;
+    this->receiverTh.join();
+    this->senderTh.join();
 }
 
 GameProcessing::~GameProcessing() {}

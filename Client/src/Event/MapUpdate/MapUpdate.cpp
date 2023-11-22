@@ -10,3 +10,5 @@ void MapUpdate::get_processed_by(EventProcessor& eventProcessor) {
 }
 
 std::map<int, Vect2D> MapUpdate::get_worm_positions() { return this->worm_positions; }
+
+bool MapUpdate::is_new_player() { return false; }
