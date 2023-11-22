@@ -17,7 +17,6 @@ Vect2D BoxSimulator::meter_to_pixel(b2Vec2 meter) {
 
 
 BoxSimulator::BoxSimulator(): world() {
-    std::cout << "dou" << std::endl;
     set_map();
 }
 
