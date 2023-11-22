@@ -6,8 +6,8 @@
 #include "ClientUpdateHeaders.h"
 #include "GameUpdateHeaders.h"
 #include "NetworkProtocol.h"
-#include "Vect2D.h"
 #include "Socket.h"
+#include "Vect2D.h"
 
 using NetworkProtocol::msgcode_t;
 using NetworkProtocol::strlen_t;

@@ -9,3 +9,5 @@ void NullEvent::get_processed_by(EventProcessor& eventProcessor) {
 }
 
 std::map<int, Vect2D> NullEvent::get_worm_positions() { return std::map<int, Vect2D>(); }
+
+bool NullEvent::is_new_player() { return false; }

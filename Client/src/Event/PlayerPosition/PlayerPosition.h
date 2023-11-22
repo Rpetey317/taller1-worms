@@ -20,6 +20,8 @@ public:
 
     std::map<int, Vect2D> get_worm_positions() override;
 
+    bool is_new_player() override;
+
     Vect2D get_position();
 };
 

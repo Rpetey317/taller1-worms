@@ -25,6 +25,8 @@ public:
 
     virtual std::map<int, Vect2D> get_worm_positions() = 0;
 
+    virtual bool is_new_player() = 0;
+
     virtual ~Event() = default;
 };
 

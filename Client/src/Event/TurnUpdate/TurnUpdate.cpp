@@ -9,3 +9,5 @@ void TurnUpdate::get_processed_by(EventProcessor& eventProcessor) {
 }
 
 std::map<int, Vect2D> TurnUpdate::get_worm_positions() { return std::map<int, Vect2D>(); }
+
+bool TurnUpdate::is_new_player() { return false; }
