@@ -14,7 +14,7 @@
 #include "../../../libs/box2d/include/box2d/box2d.h"
 #include "../../../Common/queue.h"
 #include "../../../Common/thread.h"
-#include "../../../Common/Point.h"
+#include "../../../Common/Vect2D.h"
 #include "../../../Common/CommonMapParser/CommonMapParser.h"
 
 #include "box2dPlayer.h"

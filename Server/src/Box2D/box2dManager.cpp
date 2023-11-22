@@ -14,8 +14,8 @@
 BoxSimulator::BoxSimulator(): world() {}
 
 void BoxSimulator::add_player() {
-    float x = 0.0f;
-    float y = 0.0f;
+    float x = 0.5f;
+    float y = 49.5f;
     worms.push_back(Box2DPlayer(worms.size(), world.create_worm(x, y)));
     if(worms.size() == 1)
         playing_worm = worms.begin();
@@ -38,7 +38,7 @@ std::map<int, Vect2D>* create_position_map(const std::list<Box2DPlayer>& worms) 
         b2Body* body = worm.get_body(); // Obtener el cuerpo
         if (body) { // Verificar si el cuerpo es válido
             b2Vec2 pos = body->GetPosition();
-            Point position(static_cast<int>((pos.x * 100.0f)-WORM_HALF_WIDTH), static_cast<int>((pos.y * 100.0f)+WORM_HALF_HEIGHT));
+            Vect2D position(static_cast<int>((pos.x * 100.0f)-WORM_HALF_WIDTH), static_cast<int>((pos.y * 100.0f)+WORM_HALF_HEIGHT));
             positions->insert(std::make_pair(worm.get_id(), position));
         }
     }
