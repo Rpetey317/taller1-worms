@@ -38,8 +38,30 @@ SdlWorm::SdlWorm(SdlWormTextureManager& texture_manager, SdlSoundManager& sound_
     worm_states["TELEPORT"] = new SdlWormStateTeleport();
     worm_states["WALK"] = new SdlWormStateWalk();
 
+    gun_ammo["BANANA"] = -1;
+    gun_ammo["BAZOOKA"] = -1;
+    gun_ammo["BEISBOLL"] = -1;
+    gun_ammo["TELEPORT"] = -1;
+
+    gun_ammo["MORTAR"] = 10;
+    gun_ammo["GREEN_GRENADE"] = 5;
+    gun_ammo["HOLY_GRENADE"] = 2;
+    gun_ammo["DYNAMITE"] = 5;
+    gun_ammo["RED_GRENADE"] = 10;
+    gun_ammo["AIR_STRIKE"] = 2;
+
     worm_state = worm_states["STILL"];
 }
+bool SdlWorm::has_ammo() {
+    std::cout << "HOLA PANA" << std::endl;
+    bool result = worm_state->has_ammo(gun_ammo);
+    std::cout << result << std::endl;
+    return result;
+}
+bool SdlWorm::reduce_ammo() {
+    return worm_state->reduce_ammo(gun_ammo);
+}
+
 void SdlWorm::destroy() {
     //sound_manager.destroy();
     //for (auto state : worm_states) {

@@ -13,3 +13,11 @@ void SdlWormStateFalling::render(Renderer& renderer, std::map<std::string, Textu
 bool SdlWormStateFalling::is_in_gun_state() {
     return false;
 }
+
+bool SdlWormStateFalling::reduce_ammo(std::map<std::string, int>& gun_ammo) {
+    return false;
+}
+
+bool SdlWormStateFalling::has_ammo(std::map<std::string, int>& gun_ammo) {
+    return false;
+}
