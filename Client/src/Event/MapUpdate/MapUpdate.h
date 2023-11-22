@@ -7,18 +7,18 @@
 
 #include "../Event.h"
 
-#include "Point.h"
+#include "Vect2D.h"
 
 class MapUpdate: public Event {
     // private:
-    std::map<int, Point> worm_positions;
+    std::map<int, Vect2D> worm_positions;
 
 public:
-    explicit MapUpdate(const std::map<int, Point>& positions);
+    explicit MapUpdate(const std::map<int, Vect2D>& positions);
 
     void get_processed_by(EventProcessor& eventProcessor) override;
 
-    std::map<int, Point> get_worm_positions() override;
+    std::map<int, Vect2D> get_worm_positions() override;
 };
 
 #endif  // MAPUPDATE_H

@@ -9,7 +9,7 @@ public:
 
     void get_processed_by(EventProcessor& eventProcessor) override;
 
-    std::map<int, Point> get_worm_positions() override;
+    std::map<int, Vect2D> get_worm_positions() override;
 
     ~TurnUpdate() = default;
 };

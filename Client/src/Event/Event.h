@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "Point.h"
+#include "Vect2D.h"
 
 class ClientProtocol;
 class EventProcessor;
@@ -23,7 +23,7 @@ public:
 
     virtual void get_processed_by(EventProcessor& eventProcessor) = 0;
 
-    virtual std::map<int, Point> get_worm_positions() = 0;
+    virtual std::map<int, Vect2D> get_worm_positions() = 0;
 
     virtual ~Event() = default;
 };

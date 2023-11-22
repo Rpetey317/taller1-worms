@@ -24,14 +24,14 @@ void EventProcessor::process_turn_update(TurnUpdate& event) {
 }
 
 void EventProcessor::process_player_position(PlayerPosition& event) {
-    Point position = event.get_position();
+    Vect2D position = event.get_position();
     std::cout << "Player " << event.get_id() << "with position: " << position.x << "," << position.y
               << std::endl;
 }
 
 void EventProcessor::process_map_update(MapUpdate& event) {
     // std::cout << "Map update" << std::endl;
-    // std::map<int, Point> worm_positions = event.get_worm_positions();
+    // std::map<int, Vect2D> worm_positions = event.get_worm_positions();
     // for (auto& worm : worm_positions) {
     //     std::cout << "Player " << worm.first << " with position: " << worm.second.get_x() << ","
     //               << worm.second.get_y() << std::endl;
