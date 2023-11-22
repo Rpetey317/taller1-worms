@@ -21,6 +21,6 @@ class BoxWorld {
     void create_short_beam(b2Vec2 start, float angle);
     void step();
     bool set_map(std::vector<Tile> map);
-}
+};
 
 #endif
