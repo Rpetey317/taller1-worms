@@ -15,13 +15,9 @@ void ReceiverThread::run() {
         try {
 
             ClientUpdate* msg = prot.recv_update();
-
-            if (msg->is_valid()) {
+            if (msg->is_valid())
                 this->eventq.push(msg);
-            } else {
-                _keep_running = false;
-                continue;
-            }
+
         } catch (LibError& e) {
             // This is a "socket was closed" error
             // i.e.: not an error, just someone closing connection from another thread
@@ -31,7 +27,6 @@ void ReceiverThread::run() {
             std::cerr << "Unexpected error in receiver thread" << std::endl;
         }
     }
-
     // Player disconnected
     this->eventq.push((ClientUpdate*)new ClientDisconnectedUpdate(this->plid));
 }

@@ -1,5 +1,6 @@
 #include "ServerProtocol.h"
 
+#include <iostream>
 #include <utility>
 #include <vector>
 
@@ -98,6 +99,10 @@ ClientUpdate* ServerProtocol::recv_update() {
             return new ClientNullUpdate();
         }
         return new ClientBox2DUpdate(plid, input);
+    } else if (code == MSGCODE_PLAYER_MOVE_RIGHT) {
+        return new ClientBox2DUpdate(plid, 1);
+    } else if (code == MSGCODE_PLAYER_MOVE_LEFT) {
+        return new ClientBox2DUpdate(plid, 2);
     } else {
         return new ClientNullUpdate();
     }

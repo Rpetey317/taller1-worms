@@ -1,5 +1,7 @@
 #include "GameWorldUpdate.h"
 
+#include <iostream>
+
 #include "ServerProtocol.h"
 
 GameWorldUpdate::GameWorldUpdate(std::map<int, Point>* _positions): positions(_positions) {}

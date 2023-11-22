@@ -50,7 +50,7 @@ std::string ClientProtocol::recv_msg() {
     std::string msg = "";
     strlen_t name_size;
     this->skt.recvall(&name_size, sizeof(strlen_t), &isclosed);
-    if (isclosed) {
+    if (this->isclosed) {
         std::cout << "Falla lectura de tamanio de palabra" << std::endl;
         return msg;
     }
@@ -65,11 +65,13 @@ std::string ClientProtocol::recv_msg() {
     return msg;
 }
 
-Event* ClientProtocol::recv_player_connected(const playerid_t& player_id) {
+Event* ClientProtocol::recv_player_connected() {
+    playerid_t player_id = this->recv_player_id();
     return new PlayerConnected((int)player_id);
 }
 
-Event* ClientProtocol::recv_player_message(const playerid_t& player_id) {
+Event* ClientProtocol::recv_player_message() {
+    playerid_t player_id = this->recv_player_id();
     std::string msg = this->recv_msg();
     if (msg == "") {
         return new NullEvent(player_id);
@@ -77,11 +79,13 @@ Event* ClientProtocol::recv_player_message(const playerid_t& player_id) {
     return new PlayerMessage((int)player_id, msg);
 }
 
-Event* ClientProtocol::recv_player_disconnected(const playerid_t& player_id) {
+Event* ClientProtocol::recv_player_disconnected() {
+    playerid_t player_id = this->recv_player_id();
     return new PlayerDisconnected((int)player_id);
 }
 
-Event* ClientProtocol::recv_turn_update(const playerid_t& player_id) {
+Event* ClientProtocol::recv_turn_update() {
+    playerid_t player_id = this->recv_player_id();
     return new TurnUpdate((int)player_id);
 }
 
@@ -114,7 +118,6 @@ Event* ClientProtocol::recv_map_update() {
         }
         worm_positions[(int)player_id] = Point(ntohs(x), ntohs(y));
     }
-
     return new MapUpdate(worm_positions);
 }
 
@@ -122,6 +125,7 @@ ClientProtocol::ClientProtocol(Socket skt): skt(std::move(skt)), isclosed(false)
 
 playerid_t ClientProtocol::recv_player_id() {
     playerid_t id;
+
     this->skt.recvall(&id, sizeof(playerid_t), &this->isclosed);
     if (this->isclosed) {
         return -1;
@@ -145,11 +149,13 @@ char ClientProtocol::send_Message(Message action) {
 char ClientProtocol::send_Movement(Move action) {
     // Send code
     if (action.is_right()) {
-        if (!this->send_char(MSGCODE_PLAYER_MOVE_RIGHT))
+        if (!this->send_char(MSGCODE_PLAYER_MOVE_RIGHT)) {
             return CLOSED_SKT;
+        }
     } else {
-        if (!this->send_char(MSGCODE_PLAYER_MOVE_LEFT))
+        if (!this->send_char(MSGCODE_PLAYER_MOVE_LEFT)) {
             return CLOSED_SKT;
+        }
     }
     return SUCCESS;
 }
@@ -167,8 +173,9 @@ char ClientProtocol::send_Jump(Jump action) {
 }
 
 char ClientProtocol::send_NullAction(NullAction action) {
-    if (!this->send_char(MSGCODE_NULL_ACTION))
+    if (!this->send_char(MSGCODE_NULL_ACTION)) {
         return CLOSED_SKT;
+    }
     return SUCCESS;
 }
 
@@ -184,22 +191,22 @@ void ClientProtocol::send_code_game(size_t code) {
 Event* ClientProtocol::recv_update() {
     // TODO: change this to a dynamic switch
     msgcode_t code_update = this->recv_code();
-    if (code_update == MSGCODE_MAP_UPDATE)
+    if (code_update == MSGCODE_WORLD_UPD) {
         return this->recv_map_update();
-    playerid_t player_id = this->recv_player_id();
+    }
     switch (code_update) {
         case MSGCODE_ACK:
-            return this->recv_player_connected(player_id);
+            return this->recv_player_connected();
         case MSGCODE_PLAYER_CONNECT:
-            return this->recv_player_connected(player_id);
+            return this->recv_player_connected();
         case MSGCODE_PLAYER_MESSAGE:
-            return this->recv_player_message(player_id);
+            return this->recv_player_message();
         case MSGCODE_PLAYER_DISCONNECT:
-            return this->recv_player_disconnected(player_id);
+            return this->recv_player_disconnected();
         case MSGCODE_TURN_UPDATE:
-            return this->recv_turn_update(player_id);
+            return this->recv_turn_update();
         default:
-            return new NullEvent(player_id);
+            return new NullEvent(-1);
     }
 }
 
@@ -235,9 +242,16 @@ int ClientProtocol::recv_amount_players() {
 // }
 
 void ClientProtocol::close() {
-    if (this->isclosed)
+    if (this->isclosed) {
+        std::cout << "Mando a cerrar el socket pero no esta closed" << std::endl;
         return;
+    }
+    // if (this->skt.closed) {
+    //     this->isclosed = true;
+    //     return;
+    // }
 
+    std::cout << "Cierro socket nose porq" << std::endl;
     this->skt.shutdown(2);
     this->skt.close();
     this->isclosed = true;

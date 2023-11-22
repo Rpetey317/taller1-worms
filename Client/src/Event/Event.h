@@ -1,12 +1,16 @@
 #ifndef EVENT_H_
 #define EVENT_H_
 
+#include <map>
 #include <string>
 #include <vector>
+
+#include "Point.h"
 
 class ClientProtocol;
 class EventProcessor;
 // #include "../EventProcessor/EventProcessor.h"
+
 
 class Event {
 protected:
@@ -19,6 +23,7 @@ public:
 
     virtual void get_processed_by(EventProcessor& eventProcessor) = 0;
 
+    virtual std::map<int, Point> get_worm_positions() = 0;
 
     virtual ~Event() = default;
 };
