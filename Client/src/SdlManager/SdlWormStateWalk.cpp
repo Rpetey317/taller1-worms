@@ -12,3 +12,11 @@ void SdlWormStateWalk::render(Renderer& renderer, std::map<std::string, Texture*
 bool SdlWormStateWalk::is_in_gun_state() {
     return false;
 }
+
+bool SdlWormStateWalk::reduce_ammo(std::map<std::string, int>& gun_ammo) {
+    return false;
+}
+
+bool SdlWormStateWalk::has_ammo(std::map<std::string, int>& gun_ammo) {
+    return false;
+}

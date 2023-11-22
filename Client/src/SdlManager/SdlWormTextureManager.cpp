@@ -54,14 +54,23 @@ SdlWormTextureManager::SdlWormTextureManager(Renderer &renderer) : renderer(rend
     image_teleport.SetColorKey(true, SDL_MapRGB(image_teleport.Get()->format, 192, 192,
                                        128));  
     texture_map["TELEPORT"] = new Texture(renderer, image_teleport);
-    Surface image_teleporting("../Images/Worms/wteldsv.png");
-    image_teleporting.SetColorKey(true, SDL_MapRGB(image_teleporting.Get()->format, 128, 128,
-                                       192));  
-    texture_map["TELEPORTING"] = new Texture(renderer, image_teleporting);//LA QUE DESAPARECE UN POQUITO ANTES DE TELETRANSPORTARSE, ESTA TODO UN TEMA
+
     Surface image_banana("../Images/Worms/wthrban.png");
     image_banana.SetColorKey(true, SDL_MapRGB(image_banana.Get()->format, 128, 128,
                                        192));  //TIENE ANGULOS
     texture_map["BANANA"] = new Texture(renderer, image_banana);
 
+
+
+    Surface image_teleporting("../Images/Worms/wteldsv.png");
+    image_teleporting.SetColorKey(true, SDL_MapRGB(image_teleporting.Get()->format, 128, 128,
+                                       192));  
+    texture_map["TELEPORTING"] = new Texture(renderer, image_teleporting);//LA QUE DESAPARECE UN POQUITO ANTES DE TELETRANSPORTARSE, ESTA TODO UN TEMA
+    
+
+    Surface image_beisboll_attack("../Images/Worms/wbsbbk2.png");
+    image_banana.SetColorKey(true, SDL_MapRGB(image_banana.Get()->format, 128, 128,
+                                       192));  //TIENE ANGULOS
+    texture_map["BEISBOLL_ATTACK"] = new Texture(renderer, image_banana);
 
 }

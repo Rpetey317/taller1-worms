@@ -14,3 +14,16 @@ void SdlWormStateDynamite::render(Renderer& renderer, std::map<std::string, Text
 bool SdlWormStateDynamite::is_in_gun_state() {
     return false;
 }
+
+bool SdlWormStateDynamite::has_ammo(std::map<std::string, int>& gun_ammo) {
+    return gun_ammo["DYNAMITE"] != 0;
+}
+
+
+bool SdlWormStateDynamite::reduce_ammo(std::map<std::string, int>& gun_ammo) {
+    
+    if (!has_ammo(gun_ammo))
+        return false;
+    gun_ammo["DYNAMITE"] = gun_ammo["DYNAMITE"] -1;
+    return true;
+}

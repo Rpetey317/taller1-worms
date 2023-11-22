@@ -148,7 +148,8 @@ bool SdlManager::event_handler() {
                 case SDL_BUTTON_LEFT : {
                     if (!worms[id_of_player]->is_in_gun_state())
                         break;
-                    
+                    if (!worms[id_of_player]->has_ammo())
+                        break;
                     //ACA SETEO GUSANO EN "CARGANDO ARMA", Y A CADA TICK LE SUMO UNO EL PODER
                     worms[id_of_player]->play_sound("CHARGE");
                     worms[id_of_player]->is_charging = true;
@@ -166,6 +167,9 @@ bool SdlManager::event_handler() {
                 case SDL_BUTTON_LEFT : {
                     if (!worms[id_of_player]->is_in_gun_state())
                         break;
+                    if (!worms[id_of_player]->has_ammo())
+                        break;
+                    worms[id_of_player]->reduce_ammo();
                     std::cout << "ATTACK_POWER: " << worms[id_of_player]->attack_power << std::endl;
                     worms[id_of_player]->play_sound("THROWING");
                     worms[id_of_player]->is_charging = false;
@@ -185,34 +189,32 @@ bool SdlManager::event_handler() {
     return true;
 }
 
-bool SdlManager::main_loop(Renderer& renderer, SdlMap& map) {
+bool SdlManager::main_loop(Renderer& renderer, SdlMap& map, SdlSoundManager& sound_manager, SdlWormTextureManager& worm_texture_manager) {
 
     bool keep_playing = event_handler();  // si me tiro un escape el player, keep_playing
                                                     // sera false, para el resto siempre true
     // esto por si quiero cerrar de una forma un poco mas "linda"
-    update_screen(renderer, map);
+    update_screen(renderer, map, sound_manager, worm_texture_manager);
 
     return keep_playing;
 }
-void SdlManager::update_screen(Renderer& renderer, SdlMap& map) {
+void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager& sound_manager, SdlWormTextureManager& worm_texture_manager) {
     Event *val;
-    bool is_empty = ingoing.try_pop(val);
+    bool there_is_element = ingoing.try_pop(val);
     // LAS POSICIONES DE TODOS LOS GUSANOS, EL ID DE TODOS LOS GUSANOS, Y EL ESTADO EN EL QUE ESTAN LOS GUSANOS
     // ESTADOS -> MOVIENDOSE, HACIENDO NADA, CAYENDO, LLEVANDO UNA DE 10 ARMAS
 
     //si se conecta un gusano nuevo, podria crear el worm y le pateo los managers, asi que ellos tienen el renderer :)
-    if (!is_empty) {
-        renderer.Clear();
-
+    renderer.Clear();
+    map.draw_map();
+    
+    if (there_is_element) {
         for (auto& worm : worms) {
-            worm.second->render_new(Rect(0,0, 50, 50));   //esto va a tocar cambiarlo cuando tengamos las distintas acciones...
+            worm.second->render_same();
+            worm.second->next_animation();
             worm.second->apply();
         }
     } else {  //SI NO RECIBO NADA, SEGUI EJECUTANDO LA ANTERIOR ANIMACION Y QUEDATE EN EL MISMO LUGAR
-        std::cout << "Event id: " << val->get_id() << std::endl;
-        renderer.Clear();
-
-        map.draw_map();
 
         for (auto& worm : worms) {
             worm.second->render_same();
@@ -245,15 +247,15 @@ void SdlManager::run(std::string background_type, std::string selected_map) {
     CommonMapParser parser;
     SdlMap map(parser.get_map(selected_map), textures_manager);
     SdlSoundManager sound_manager;
-    SdlWormTextureManager texture_manager(renderer);
+    SdlWormTextureManager worm_texture_manager(renderer);
     //LA CREACION DEL NUEVO GUSANO LA HARIA EN EL UPDATE_SCREEN, YA QUE ES DONDE HAGO EL POP
     // AHI RECIBIRIA EL MENSAJE DE CREAR NUEVO GUSANO :)
-    worms[id_of_player] = new SdlWorm(texture_manager, sound_manager);
+    worms[id_of_player] = new SdlWorm(worm_texture_manager, sound_manager);
     while (is_running) {
         uint32_t frame_start;
         uint32_t frame_time;
         frame_start = SDL_GetTicks();
-        is_running = main_loop(renderer, map);
+        is_running = main_loop(renderer, map, sound_manager, worm_texture_manager);
         // sleep(1); conexion super lagueada
         frame_time = SDL_GetTicks() - frame_start;
         if (frame_delay > frame_time)
