@@ -1,6 +1,5 @@
 #include "box2dManager.h"
 
-
 #define DEGTORAD 0.0174532925199432957f
 #define RADTODEG 57.295779513082320876f
 
@@ -10,6 +9,9 @@
 #define COMMAND_LEFT 2
 #define COMMAND_JUMP 3
 #define COMMAND_NEXT 4
+
+#define SHORT_BEAM 0
+#define LONG_BEAM 1
 
 b2Body* BoxSimulator::create_worm(float x, float y) {
     b2BodyDef myBodyDef;
@@ -69,7 +71,7 @@ void BoxSimulator::create_long_beam(b2Vec2 start, float angle){
 
     myBodyDef.type = b2_staticBody; //this will be a static body
     myBodyDef.position.Set(start.x + 0.64f, start.y - 0.095f); //slightly lower position
-    myBodyDef.angle = angle; //set the starting angle
+    myBodyDef.angle = angle * DEGTORAD; //set the starting angle
     b2Body* staticBody = world->CreateBody(&myBodyDef); //add body to world
     staticBody->CreateFixture(&beamFixtureDef); //add fixture to body
 }
@@ -86,7 +88,7 @@ void BoxSimulator::create_short_beam(b2Vec2 start, float angle){
 
     myBodyDef.type = b2_staticBody; //this will be a static body
     myBodyDef.position.Set(start.x + 0.64f, start.y - 0.095f); //slightly lower position
-    myBodyDef.angle = angle; //set the starting angle
+    myBodyDef.angle = angle * DEGTORAD; //set the starting angle
     b2Body* staticBody = world->CreateBody(&myBodyDef); //add body to world
     staticBody->CreateFixture(&beamFixtureDef); //add fixture to body
 }
@@ -120,9 +122,24 @@ void BoxSimulator::initialize_world() {
     create_map(); 
 }
 
-BoxSimulator::BoxSimulator(Queue<int>& commands, Queue<std::vector<int>>& positions):
-        ingoing(commands), outgoing(positions) {
+BoxSimulator::BoxSimulator() {
     initialize_world();
+}
+
+bool BoxSimulator::set_map(std::vector<Tile> map) {
+    for (auto tile : map) {
+        switch(tile.type) {
+            case SHORT_BEAM:
+                create_short_beam(b2Vec2(tile.pos_x * 0.01f, tile.pos_y * 0.01f), tile.angle);
+                break;
+            case LONG_BEAM:
+                create_long_beam(b2Vec2(tile.pos_x * 0.01f, tile.pos_y * 0.01f), tile.angle);
+                break;
+            default:
+                return false;
+        }
+    }
+    return true;
 }
 
 std::map<int, Point>* create_position_map(const std::list<Box2DPlayer>& worms) {

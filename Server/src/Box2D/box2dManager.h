@@ -15,6 +15,8 @@
 #include "../../../Common/queue.h"
 #include "../../../Common/thread.h"
 #include "../../../Common/Point.h"
+#include "../../../Common/CommonMapParser/CommonMapParser.h"
+
 
 
 
@@ -23,9 +25,6 @@
 #include "GameUpdateHeaders.h"
 
 class BoxSimulator {
-    Queue<int>& ingoing;
-
-    Queue<std::vector<int>>& outgoing;
     b2World* world;
     std::list<Box2DPlayer> worms;
     std::list<Box2DPlayer>::iterator playing_worm;
@@ -36,18 +35,18 @@ class BoxSimulator {
     void create_long_beam(b2Vec2 start, float angle);
     void create_short_beam(b2Vec2 start, float angle);
     void next_turn();
-    void add_player(); // should reach agreement whether position is random or sent by server
 
     // might fall into player subclass
     void player_shoot(float angle, float power);
 public:
-    BoxSimulator(Queue<int>& commands, Queue<std::vector<int>>& positions);
-
+    BoxSimulator();
+    bool set_map(std::vector<Tile> map);
     // 
     // void run();
 
     // add_player
     //
+    void add_player(); // should reach agreement whether position is random or sent by server
     GameWorldUpdate* process(ClientBox2DUpdate& update);
 
     void kill();
