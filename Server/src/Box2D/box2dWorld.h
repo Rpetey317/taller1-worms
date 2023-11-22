@@ -9,6 +9,9 @@
 #include <list>
 #include <vector>
 
+#define WORM_HALF_WIDTH 0.12f
+#define WORM_HALF_HEIGHT 0.15f
+
 class BoxWorld {
     friend class BoxSimulator;
     BoxWorld();
