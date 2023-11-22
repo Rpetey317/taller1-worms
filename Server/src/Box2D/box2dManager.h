@@ -17,7 +17,6 @@
 #include "../../../Common/Vect2D.h"
 #include "../../../Common/CommonMapParser/CommonMapParser.h"
 
-#include "box2dUtility.h"
 #include "box2dPlayer.h"
 #include "box2dWorld.h"
 #include "ClientUpdateHeaders.h"
@@ -33,6 +32,10 @@ class BoxSimulator {
     void next_turn();
     void player_shoot(float angle, float power);
 public:
+
+    std::map<int, Vect2D>* create_position_map(const std::list<Box2DPlayer>& worms);
+    Vect2D meter_to_pixel(b2Vec2 meter);
+
     BoxSimulator();
     bool set_map();
     void add_player(); // should reach agreement whether position is random or sent by server

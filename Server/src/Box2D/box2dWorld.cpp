@@ -3,8 +3,8 @@
 #define DEGTORAD 0.0174532925199432957f
 #define RADTODEG 57.295779513082320876f
 
-#define SHORT_BEAM 0
-#define LONG_BEAM 1
+#define SHORT_BEAM '0'
+#define LONG_BEAM '1'
 
 
 BoxWorld::BoxWorld() {
@@ -109,15 +109,23 @@ void BoxWorld::step(){
     world->Step(timeStep, velocityIterations, positionIterations);
 }
 
+b2Vec2 BoxWorld::pixel_to_meter(Vect2D pixel) {
+    return b2Vec2(pixel.x * 0.01f, (pixel.y * (-0.01f)) + 50.0f);
+}
+#include <iostream>
 bool BoxWorld::set_map(std::vector<Tile> map) {
+    std::cout << "lgbt?" << std::endl;
     for (auto tile : map) {
         Vect2D position(tile.pos_x, tile.pos_y);
+    
         switch(tile.type) {
             case SHORT_BEAM:
                 create_short_beam(pixel_to_meter(position), tile.angle);
+                std::cout << "creamos una corta" << std::endl;
                 break;
             case LONG_BEAM:
                 create_long_beam(pixel_to_meter(position), tile.angle);
+                std::cout << "creamos una laaaarga" << std::endl;
                 break;
             default:
                 return false;

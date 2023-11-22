@@ -1,6 +1,6 @@
 
 #include "SdlManager.h"
-#define FPS 15
+#define FPS 60
 SdlManager::SdlManager(Queue<Action*>& outgoing, Queue<Event*>& ingoing, int id_of_player):
         outgoing(outgoing), ingoing(ingoing) {
     // Initialize SDL library
