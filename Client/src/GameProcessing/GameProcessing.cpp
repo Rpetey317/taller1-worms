@@ -212,7 +212,6 @@ void GameProcessing::end() {
     this->senderTh.end();
     this->receiverTh.join();
     this->senderTh.join();
-    std::cout << "Threads joined" << std::endl;
 }
 
 GameProcessing::~GameProcessing() {}
