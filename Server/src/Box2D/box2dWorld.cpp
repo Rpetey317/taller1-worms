@@ -14,9 +14,9 @@ void BoxWorld::initialize_world() {
     // creo el mundo
     b2Vec2 gravity(0.0f, -9.8f);  // se le da el valor de gravedad que querramos
     world = new b2World(gravity);
-    float height = 4.0f;
-    float width = 10.0f;
-    float zero = 0.0f;
+    float height = 200.0f;
+    float width = 50.0f;
+    float zero = -0.15f;
     create_ground(b2Vec2(zero,zero), b2Vec2(width,zero), b2Vec2(zero,height), b2Vec2(width, height)); 
     //set_map
 }
