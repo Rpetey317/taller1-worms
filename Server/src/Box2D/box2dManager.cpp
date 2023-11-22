@@ -17,7 +17,6 @@ Vect2D BoxSimulator::meter_to_pixel(b2Vec2 meter) {
 
 
 BoxSimulator::BoxSimulator(): world() {
-    std::cout << "dou" << std::endl;
     set_map();
 }
 
@@ -37,7 +36,6 @@ void BoxSimulator::next_turn() {
 // should later introduce to recive the map position automatically
 bool BoxSimulator::set_map() {
     CommonMapParser parser;
-    std::cout << "dou de set_map boxsimulator" << std::endl;
     return world.set_map(parser.get_map("../maps/mapita.txt"));
 }
 

@@ -114,18 +114,15 @@ b2Vec2 BoxWorld::pixel_to_meter(Vect2D pixel) {
 }
 #include <iostream>
 bool BoxWorld::set_map(std::vector<Tile> map) {
-    std::cout << "lgbt?" << std::endl;
     for (auto tile : map) {
         Vect2D position(tile.pos_x, tile.pos_y);
     
         switch(tile.type) {
             case SHORT_BEAM:
                 create_short_beam(pixel_to_meter(position), tile.angle);
-                std::cout << "creamos una corta" << std::endl;
                 break;
             case LONG_BEAM:
                 create_long_beam(pixel_to_meter(position), tile.angle);
-                std::cout << "creamos una laaaarga" << std::endl;
                 break;
             default:
                 return false;
