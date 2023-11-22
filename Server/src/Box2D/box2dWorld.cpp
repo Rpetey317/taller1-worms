@@ -6,6 +6,14 @@
 #define SHORT_BEAM 0
 #define LONG_BEAM 1
 
+b2Vec2 pixel_to_meter(Vect2D pixel) {
+    return b2Vec2(pixel.x * 0.01f, (pixel.y * (-0.01f)) + 50.0f);
+}
+
+Vect2D meter_to_pixel(b2Vec2 meter) {
+    return Vect2D(static_cast<int>(meter.x * 100.0f), static_cast<int>(meter.y * 100.0f));
+}
+
 BoxWorld::BoxWorld() {
     initialize_world();
 }
@@ -14,8 +22,8 @@ void BoxWorld::initialize_world() {
     // creo el mundo
     b2Vec2 gravity(0.0f, -9.8f);  // se le da el valor de gravedad que querramos
     world = new b2World(gravity);
-    float height = 200.0f;
-    float width = 50.0f;
+    float height = 50.0f;
+    float width = 200.0f;
     float zero = -0.15f;
     create_ground(b2Vec2(zero,zero), b2Vec2(width,zero), b2Vec2(zero,height), b2Vec2(width, height)); 
     //set_map
@@ -110,12 +118,13 @@ void BoxWorld::step(){
 
 bool BoxWorld::set_map(std::vector<Tile> map) {
     for (auto tile : map) {
+        Vect2D position(tile.pos_x, tile.pos_y);
         switch(tile.type) {
             case SHORT_BEAM:
-                create_short_beam(b2Vec2(tile.pos_x * 0.01f, tile.pos_y * 0.01f), tile.angle);
+                create_short_beam(pixel_to_meter(position), tile.angle);
                 break;
             case LONG_BEAM:
-                create_long_beam(b2Vec2(tile.pos_x * 0.01f, tile.pos_y * 0.01f), tile.angle);
+                create_long_beam(pixel_to_meter(position), tile.angle);
                 break;
             default:
                 return false;
@@ -123,3 +132,5 @@ bool BoxWorld::set_map(std::vector<Tile> map) {
     }
     return true;
 }
+
+
