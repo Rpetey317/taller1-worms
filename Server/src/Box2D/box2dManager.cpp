@@ -13,14 +13,6 @@
 
 BoxSimulator::BoxSimulator(): world() {}
 
-b2Vec2 pixel_to_meter(Vect2D pixel) {
-    return b2Vec2(pixel.x * 0.01f, (pixel.y * (-0.01f)) + 50.0f);
-}
-
-Vect2D meter_to_pixel(b2Vec2 meter) {
-    return Vect2D(static_cast<int>((meter.x * 100.0f)-WORM_HALF_WIDTH), static_cast<int>((meter.y * 100.0f)+WORM_HALF_HEIGHT));
-}
-
 void BoxSimulator::add_player() {
     float x = 0.5f;
     float y = 49.5f;

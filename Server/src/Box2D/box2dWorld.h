@@ -4,6 +4,7 @@
 #include "../../../libs/box2d/include/box2d/box2d.h"
 #include "../../../Common/CommonMapParser/CommonMapParser.h"
 #include "../../../Common/Vect2D.h"
+#include "box2dUtility.h"
 
 #include <cstdio>
 #include <vector>
