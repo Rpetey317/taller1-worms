@@ -37,10 +37,10 @@ private:
     /*
         Receive methods of the diferent type of Events
     */
-    Event* recv_player_connected(const playerid_t& player_id);
-    Event* recv_player_message(const playerid_t& player_id);
-    Event* recv_player_disconnected(const playerid_t& player_id);
-    Event* recv_turn_update(const playerid_t& player_id);
+    Event* recv_player_connected();
+    Event* recv_player_message();
+    Event* recv_player_disconnected();
+    Event* recv_turn_update();
     Event* recv_map_update();
 
 public:

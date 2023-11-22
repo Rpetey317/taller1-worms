@@ -209,7 +209,6 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map) {
             worm.second->apply();
         }
     } else {  //SI NO RECIBO NADA, SEGUI EJECUTANDO LA ANTERIOR ANIMACION Y QUEDATE EN EL MISMO LUGAR
-        std::cout << "Event id: " << val->get_id() << std::endl;
         renderer.Clear();
 
         map.draw_map();

@@ -39,7 +39,6 @@ char ServerProtocol::send_TurnChangeUpdate(const GameTurnChangeUpdate& upd) {
 
 char ServerProtocol::send_ConnectionAcknowledgeUpdate(const GameAcknowledgeUpdate& upd) {
     // send code
-    std::cout << "Sending ack" << std::endl;
     if (!this->send_char(MSGCODE_ACK)) {
         return CLOSED_SKT;
     }
@@ -76,7 +75,6 @@ char ServerProtocol::send_PlayerConnectedUpdate(const GamePlayerConnectedUpdate&
     if (!this->send_char((playerid_t)upd.get_player_id())) {
         return CLOSED_SKT;
     }
-    std::cout << "Sent player connected" << std::endl;
 
     return SUCCESS;
 }
@@ -103,6 +101,5 @@ char ServerProtocol::send_WorldUpdate(const GameWorldUpdate& upd) {
             return CLOSED_SKT;
         }
     }
-    std::cout << "Envio mapa" << std::endl;
     return SUCCESS;
 }

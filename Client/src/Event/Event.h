@@ -1,9 +1,9 @@
 #ifndef EVENT_H_
 #define EVENT_H_
 
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
 
 #include "Point.h"
 
