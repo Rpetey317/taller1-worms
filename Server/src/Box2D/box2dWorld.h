@@ -3,6 +3,7 @@
 
 #include "../../../libs/box2d/include/box2d/box2d.h"
 #include "../../../Common/CommonMapParser/CommonMapParser.h"
+#include "../../../Common/Vect2D.h"
 
 #include <cstdio>
 #include <vector>
@@ -23,7 +24,8 @@ class BoxWorld {
     void create_long_beam(b2Vec2 start, float angle);
     void create_short_beam(b2Vec2 start, float angle);
     void step();
-    bool set_map(std::vector<Tile> map);
+    bool set_map(std::vector<Tile> map); 
+    b2Vec2 pixel_to_meter(Vect2D pixel);
 };
 
 #endif

@@ -4,8 +4,11 @@ void SdlWorm::render_same() {
     texture_manager.render(worm_state, animation_phase, x_pos, y_pos, flip);
 }
 
-void SdlWorm::render_new(Rect rect) {
-
+void SdlWorm::render_new(Vect2D position) {
+    x_pos = position.x;
+    y_pos = position.y;
+    std::cout << position.x << " " << position.y << std::endl;
+    texture_manager.render(worm_state, animation_phase, position.x, position.y, flip);
 }
 
 void SdlWorm::apply() {
@@ -17,7 +20,8 @@ void SdlWorm::apply() {
     }
 }
 
-SdlWorm::SdlWorm(SdlWormTextureManager& texture_manager, SdlSoundManager& sound_manager) : texture_manager(texture_manager), sound_manager(sound_manager) {
+SdlWorm::SdlWorm(SdlWormTextureManager& texture_manager, SdlSoundManager& sound_manager, int id) : texture_manager(texture_manager), sound_manager(sound_manager) {
+    this->id = id;
     x_pos = 50;
     y_pos = 50;
     animation_phase = 0;
@@ -53,7 +57,6 @@ SdlWorm::SdlWorm(SdlWormTextureManager& texture_manager, SdlSoundManager& sound_
     worm_state = worm_states["STILL"];
 }
 bool SdlWorm::has_ammo() {
-    std::cout << "HOLA PANA" << std::endl;
     bool result = worm_state->has_ammo(gun_ammo);
     std::cout << result << std::endl;
     return result;

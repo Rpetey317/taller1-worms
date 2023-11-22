@@ -1,6 +1,6 @@
 
 #include "SdlManager.h"
-#define FPS 15
+#define FPS 60
 SdlManager::SdlManager(Queue<Action*>& outgoing, Queue<Event*>& ingoing, int id_of_player):
         outgoing(outgoing), ingoing(ingoing) {
     // Initialize SDL library
@@ -209,9 +209,14 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
     map.draw_map();
     
     if (there_is_element) {
+        std::map<int, Vect2D> positions = val->get_worm_positions();
+        
         for (auto& worm : worms) {
-            val->get_worm_positions()[1];
-            worm.second->render_same();
+            if (!positions.empty()) {
+                worm.second->render_new(positions[worm.second->id]);
+            } else {
+                worm.second->render_same();
+            }
             worm.second->next_animation();
             worm.second->apply();
         }
@@ -251,7 +256,7 @@ void SdlManager::run(std::string background_type, std::string selected_map) {
     SdlWormTextureManager worm_texture_manager(renderer);
     //LA CREACION DEL NUEVO GUSANO LA HARIA EN EL UPDATE_SCREEN, YA QUE ES DONDE HAGO EL POP
     // AHI RECIBIRIA EL MENSAJE DE CREAR NUEVO GUSANO :)
-    worms[id_of_player] = new SdlWorm(worm_texture_manager, sound_manager);
+    worms[id_of_player] = new SdlWorm(worm_texture_manager, sound_manager, id_of_player);
     while (is_running) {
         uint32_t frame_start;
         uint32_t frame_time;

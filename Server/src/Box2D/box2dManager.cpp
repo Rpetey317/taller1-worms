@@ -11,7 +11,15 @@
 #define COMMAND_JUMP 3
 #define COMMAND_NEXT 4
 
-BoxSimulator::BoxSimulator(): world() {}
+Vect2D BoxSimulator::meter_to_pixel(b2Vec2 meter) { 
+    return Vect2D(static_cast<int>(meter.x * 100.0f), static_cast<int>(50.0f - meter.y) * 100.0f);
+}
+
+
+BoxSimulator::BoxSimulator(): world() {
+    std::cout << "dou" << std::endl;
+    set_map();
+}
 
 void BoxSimulator::add_player() {
     float x = 0.5f;
@@ -29,17 +37,17 @@ void BoxSimulator::next_turn() {
 // should later introduce to recive the map position automatically
 bool BoxSimulator::set_map() {
     CommonMapParser parser;
-    return world.set_map(parser.get_map("../../../maps/mapita.txt"));
+    std::cout << "dou de set_map boxsimulator" << std::endl;
+    return world.set_map(parser.get_map("../maps/mapita.txt"));
 }
 
-std::map<int, Vect2D>* create_position_map(const std::list<Box2DPlayer>& worms) {
+std::map<int, Vect2D>* BoxSimulator::create_position_map(const std::list<Box2DPlayer>& worms) {
     std::map<int, Vect2D>* positions = new std::map<int, Vect2D>();
     for (auto worm : worms) {
         b2Body* body = worm.get_body(); // Obtener el cuerpo
         if (body) { // Verificar si el cuerpo es válido
             b2Vec2 pos = body->GetPosition();
-            Vect2D position(static_cast<int>((pos.x * 100.0f)-WORM_HALF_WIDTH), static_cast<int>((pos.y * 100.0f)+WORM_HALF_HEIGHT));
-            positions->insert(std::make_pair(worm.get_id(), position));
+            positions->insert(std::make_pair(worm.get_id(), meter_to_pixel(pos)));
         }
     }
     return positions;
