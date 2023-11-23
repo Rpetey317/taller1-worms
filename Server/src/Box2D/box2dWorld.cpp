@@ -1,6 +1,6 @@
 #include "box2dWorld.h"
 
-#define DEGTORAD 0.0174532925199432957f
+#define DEGTORAD -0.0174532925199432957f
 #define RADTODEG 57.295779513082320876f
 
 #define SHORT_BEAM '0'
@@ -116,7 +116,6 @@ b2Vec2 BoxWorld::pixel_to_meter(Vect2D pixel) {
 bool BoxWorld::set_map(std::vector<Tile> map) {
     for (auto tile : map) {
         Vect2D position(tile.pos_x, tile.pos_y);
-    
         switch(tile.type) {
             case SHORT_BEAM:
                 create_short_beam(pixel_to_meter(position), tile.angle);
