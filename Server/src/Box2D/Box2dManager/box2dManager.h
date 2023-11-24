@@ -17,8 +17,8 @@
 #include "../../../Common/Vect2D.h"
 #include "../../../Common/CommonMapParser/CommonMapParser.h"
 
-#include "box2dPlayer.h"
-#include "box2dWorld.h"
+#include "../Box2dPlayer/box2dPlayer.h"
+#include "../Box2dWorld/box2dWorld.h"
 #include "ClientUpdateHeaders.h"
 #include "GameUpdateHeaders.h"
 

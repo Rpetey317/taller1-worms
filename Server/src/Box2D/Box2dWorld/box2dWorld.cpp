@@ -6,6 +6,7 @@
 #define SHORT_BEAM '0'
 #define LONG_BEAM '1'
 
+#include <iostream>
 
 BoxWorld::BoxWorld() {
     initialize_world();
@@ -77,7 +78,7 @@ void BoxWorld::create_long_beam(b2Vec2 start, float angle){
     beamFixtureDef.shape = &beamShape; // le doy la forma de la forma creada
     if(angle < 45.0f)
         beamFixtureDef.friction = 2.5f;
-
+    std::cout << "viga de: " << std::to_string(start.x) << std::to_string(start.x) << std::endl;
     myBodyDef.type = b2_staticBody; //this will be a static body
     myBodyDef.position.Set(start.x + 0.64f, start.y - 0.095f); //slightly lower position
     myBodyDef.angle = angle * DEGTORAD; //set the starting angle
@@ -94,6 +95,7 @@ void BoxWorld::create_short_beam(b2Vec2 start, float angle){
     beamFixtureDef.shape = &beamShape; // le doy la forma de la forma creada
     if(angle < 45.0f)
         beamFixtureDef.friction = 2.5f;
+    std::cout << "viga de: " << std::to_string(start.x) << std::to_string(start.x) << std::endl;
 
     myBodyDef.type = b2_staticBody; //this will be a static body
     myBodyDef.position.Set(start.x + 0.64f, start.y - 0.095f); //slightly lower position
@@ -112,7 +114,9 @@ void BoxWorld::step(){
 b2Vec2 BoxWorld::pixel_to_meter(Vect2D pixel) {
     return b2Vec2(pixel.x * 0.01f, (pixel.y * (-0.01f)) + 50.0f);
 }
+
 #include <iostream>
+
 bool BoxWorld::set_map(std::vector<Tile> map) {
     for (auto tile : map) {
         Vect2D position(tile.pos_x, tile.pos_y);

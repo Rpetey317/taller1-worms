@@ -12,7 +12,7 @@
 #define COMMAND_NEXT 4
 
 Vect2D BoxSimulator::meter_to_pixel(b2Vec2 meter) { 
-    return Vect2D(static_cast<int>(meter.x * 100.0f), static_cast<int>(50.0f - meter.y) * 100.0f);
+    return Vect2D(static_cast<int>((meter.x-0.12f) * 100.0f), static_cast<int>(5000.00f - ((0.245+meter.y) * 100.0f)));
 }
 
 
@@ -38,13 +38,14 @@ bool BoxSimulator::set_map() {
     CommonMapParser parser;
     return world.set_map(parser.get_map("../maps/mapita.txt"));
 }
-
+#include <iostream>
 std::map<int, Vect2D>* BoxSimulator::create_position_map(const std::list<Box2DPlayer>& worms) {
     std::map<int, Vect2D>* positions = new std::map<int, Vect2D>();
     for (auto worm : worms) {
         b2Body* body = worm.get_body(); // Obtener el cuerpo
         if (body) { // Verificar si el cuerpo es válido
             b2Vec2 pos = body->GetPosition();
+            Vect2D position = meter_to_pixel(pos);
             positions->insert(std::make_pair(worm.get_id(), meter_to_pixel(pos)));
         }
     }
