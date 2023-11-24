@@ -1,4 +1,3 @@
-#include <iostream>
 #include "box2dWorld.h"
 
 #define DEGTORAD 0.0174532925199432957f
@@ -16,9 +15,10 @@ void BoxWorld::initialize_world() {
     // creo el mundo
     b2Vec2 gravity(0.0f, -9.8f);  // se le da el valor de gravedad que querramos
     world = new b2World(gravity);
-    float half_height = 50.15f;
-    float half_width = 100.15f;
-    create_ground(b2Vec2(-half_width, -half_height), b2Vec2(-half_width, half_height), b2Vec2(half_width, -half_height), b2Vec2(half_width, half_height)); 
+    float height = 50.0f;
+    float width = 200.0f;
+    float zero = -0.15f;
+    create_ground(b2Vec2(zero,zero), b2Vec2(width,zero), b2Vec2(zero,height), b2Vec2(width, height)); 
     //set_map
 }
 
@@ -112,15 +112,20 @@ void BoxWorld::step(){
 b2Vec2 BoxWorld::pixel_to_meter(Vect2D pixel) {
     return b2Vec2(pixel.x * 0.01f, (pixel.y * (-0.01f)) + 50.0f);
 }
+#include <iostream>
 bool BoxWorld::set_map(std::vector<Tile> map) {
+    std::cout << "lgbt?" << std::endl;
     for (auto tile : map) {
         Vect2D position(tile.pos_x, tile.pos_y);
+    
         switch(tile.type) {
             case SHORT_BEAM:
                 create_short_beam(pixel_to_meter(position), tile.angle);
+                std::cout << "creamos una corta" << std::endl;
                 break;
             case LONG_BEAM:
                 create_long_beam(pixel_to_meter(position), tile.angle);
+                std::cout << "creamos una laaaarga" << std::endl;
                 break;
             default:
                 return false;
