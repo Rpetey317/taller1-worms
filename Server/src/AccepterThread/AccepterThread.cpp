@@ -12,10 +12,7 @@ void ServerAccepterThread::run() {
     while (_keep_running) {
         try {
             Socket peer = acc.accept();
-            lobby.add_player(std::move(peer));
-            lobby.remove_disconnected();
-            // std::cout << "Player connected. Current player count: " << this->lobby.count()
-            //           << std::endl;
+            this->lobby.add_player(std::move(peer));
         } catch (LibError& e) {
             // This is a "socket was closed" error
             // (i.e. not really an error, just someone calling this->end)

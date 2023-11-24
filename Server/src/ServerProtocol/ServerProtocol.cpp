@@ -1,81 +1,136 @@
 #include "ServerProtocol.h"
 
+#include <iostream>
 #include <utility>
 #include <vector>
 
 #include <arpa/inet.h>
 
-#include "ClientUpdate.h"
 #include "GameUpdate.h"
 
+// I thoroughly refuse to manually write the using directive
+// for every. single. constant. in the NetworkProtocol namespace.
+using namespace NetworkProtocol;  // NOLINT
 
-ServerProtocol::ServerProtocol(Socket&& _cli): cli(std::move(_cli)), isclosed(false) {}
-
-char ServerProtocol::send_update(GameUpdate* msg) { return msg->get_sent_by(*this); }
-
-ClientUpdate ServerProtocol::recv_msg() {
-    char code;
-    ClientUpdate upd;
-    this->cli.recvall(&code, sizeof(char), &this->isclosed);
+bool ServerProtocol::send_short(const uint16_t& num) {
+    uint16_t nnum = htons(num);
+    this->cli.sendall(&nnum, sizeof(uint16_t), &this->isclosed);
     if (this->isclosed) {
-        return upd;
+        return false;
     }
-
-    msglen_t msg_len;
-    this->cli.recvall(&msg_len, sizeof(msglen_t), &this->isclosed);
-    if (this->isclosed) {
-        return upd;
-    }
-    msg_len = ntohs(msg_len);
-    std::vector<char> vmsg(msg_len);
-    this->cli.recvall(&vmsg[0], msg_len, &this->isclosed);
-    if (this->isclosed) {
-        return upd;
-    }
-    std::string msg(vmsg.begin(), vmsg.end());
-    return ClientUpdate(msg);
+    return true;
 }
 
-msgcode_t ServerProtocol::recv_request() { 
+bool ServerProtocol::send_long(const uint32_t& num) {
+    uint32_t nnum = htonl(num);
+    this->cli.sendall(&nnum, sizeof(uint32_t), &this->isclosed);
+    if (this->isclosed) {
+        return false;
+    }
+    return true;
+}
+
+bool ServerProtocol::send_char(const uint8_t& num) {
+    this->cli.sendall(&num, 1, &this->isclosed);
+    if (this->isclosed) {
+        return false;
+    }
+    return true;
+}
+
+bool ServerProtocol::send_str(const std::string& str) {
+    strlen_t len = htons(str.length());
+    this->cli.sendall(&len, sizeof(strlen_t), &this->isclosed);
+    if (this->isclosed) {
+        return false;
+    }
+    this->cli.sendall(str.data(), str.length(), &this->isclosed);
+    if (this->isclosed) {
+        return false;
+    }
+    return true;
+}
+
+bool ServerProtocol::send_Vect2D(const Vect2D& pt) {
+    if (!this->send_short(pt.x)) {
+        return false;
+    }
+    if (!this->send_short(pt.y)) {
+        return false;
+    }
+    return true;
+}
+
+
+ServerProtocol::ServerProtocol(Socket&& _cli, const int& _plid):
+        cli(std::move(_cli)), isclosed(false), plid(_plid) {}
+
+// DD methods for each update type implemented in ServerProtocol_sendUpdate.cpp
+char ServerProtocol::send_update(GameUpdate* msg) { return msg->get_sent_by(*this); }
+
+ClientUpdate* ServerProtocol::recv_update() {
+    char code;
+    this->cli.recvall(&code, sizeof(char), &this->isclosed);
+/*
+// Del multiple-games-feature commit
+// size_t ServerProtocol::recv_join() { 
+//     size_t game_code;
+//     this->cli.recvall(&game_code, sizeof(game_code), &this->isclosed);
+//     if (this->isclosed) {
+//         return -1;
+//     }
+//     return game_code;
+// }
+
+// char ServerProtocol::send_PlayerMessageUpdate(const PlayerMessageUpdate& upd) {
+//     // send code
+//     msgcode_t code = MSGCODE_PLAYER_MESSAGE;
+//     this->cli.sendall(&code, sizeof(msgcode_t), &this->isclosed);
+*/
+    if (this->isclosed) {
+        return new ClientNullUpdate();
+    }
+
+    // TODO: fix this
+    if (code == MSGCODE_PLAYER_MESSAGE) {
+
+        strlen_t msg_len;
+        this->cli.recvall(&msg_len, sizeof(strlen_t), &this->isclosed);
+        if (this->isclosed) {
+            return new ClientNullUpdate();
+        }
+
+        msg_len = ntohs(msg_len);
+        std::vector<char> vmsg(msg_len);
+        this->cli.recvall(&vmsg[0], msg_len, &this->isclosed);
+        if (this->isclosed) {
+            return new ClientNullUpdate();
+        }
+        std::string msg(vmsg.begin(), vmsg.end());
+        return new ClientMessageUpdate(plid, msg);
+    } else if (code == MSGCODE_BOX2D) {
+        input_t input;
+        this->cli.recvall(&input, sizeof(input_t), &this->isclosed);
+        if (this->isclosed) {
+            return new ClientNullUpdate();
+        }
+        return new ClientBox2DUpdate(plid, input);
+    } else if (code == MSGCODE_PLAYER_MOVE_RIGHT) {
+        return new ClientBox2DUpdate(plid, 1);
+    } else if (code == MSGCODE_PLAYER_MOVE_LEFT) {
+        return new ClientBox2DUpdate(plid, 2);
+    } else {
+        return new ClientNullUpdate();
+    }
+}
+
+msgcode_t ServerProtocol::recv_request() {
     msgcode_t request;
     this->cli.recvall(&request, sizeof(msgcode_t), &this->isclosed);
     if (this->isclosed) {
         return -1;
     }
     return request;
-}
-
-size_t ServerProtocol::recv_join() { 
-    size_t game_code;
-    this->cli.recvall(&game_code, sizeof(game_code), &this->isclosed);
-    if (this->isclosed) {
-        return -1;
-    }
-    return game_code;
-}
-
-char ServerProtocol::send_PlayerMessageUpdate(const PlayerMessageUpdate& upd) {
-    // send code
-    msgcode_t code = MSGCODE_PLAYER_MESSAGE;
-    this->cli.sendall(&code, sizeof(msgcode_t), &this->isclosed);
-    if (this->isclosed) {
-        return CLOSED_SKT;
-    }
-
-    // send message length
-    msglen_t msg_len = htons(upd.get_msg().length());
-    this->cli.sendall(&msg_len, sizeof(msglen_t), &this->isclosed);
-    if (this->isclosed) {
-        return CLOSED_SKT;
-    }
-
-    // send message
-    this->cli.sendall(upd.get_msg().data(), upd.get_msg().length(), &this->isclosed);
-    if (this->isclosed) {
-        return CLOSED_SKT;
-    }
-
-    return SUCCESS;
 }
 
 bool ServerProtocol::is_connected() { return !this->isclosed; }

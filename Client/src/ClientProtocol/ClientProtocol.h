@@ -4,33 +4,82 @@
 #include <variant>
 #include <vector>
 
+#include "../Action/ActionHeaders.h"
+#include "../Event/EventHeaders.h"
+
+#include "NetworkProtocol.h"
 #include "Socket.h"
 #include "string"
-#include "NetworkProtocol.h"
 
+using namespace NetworkProtocol;  // NOLINT
 
-using NetworkProtocol::msgcode_t;
-using NetworkProtocol::msglen_t;
-using NetworkProtocol::amount_players_t;
-using NetworkProtocol::MSGCODE_PLAYER_MESSAGE;
-// using NetworkProtocol::MSGCODE_PLAYER_CONNECT;
-// using NetworkProtocol::MSGCODE_PLAYER_DISCONNECT;
-using NetworkProtocol::ERROR;
+#define CLOSED_SKT -1
+#define SUCCESS 0
 
 class ClientProtocol {
 private:
     Socket skt;
-    std::string create_players_msg(int amount_players);
-    bool was_closed;
+    bool isclosed;
+    /*
+        Primitive type send methods, to simplify update-specific send methods
+        On successful send returns true, false if socket closed
+     */
+    bool send_short(const uint16_t& num);
+    bool send_long(const uint32_t& num);
+    bool send_char(const uint8_t& num);
+    bool send_str(const std::string& str);
+
+    /*
+        Receive methods of the diferent type of Events
+     */
+    std::string recv_msg();
+
+    /*
+        Receive methods of the diferent type of Events
+    */
+    Event* recv_player_connected();
+    Event* recv_player_message();
+    Event* recv_player_disconnected();
+    Event* recv_turn_update();
+    Event* recv_map_update();
 
 public:
     explicit ClientProtocol(Socket skt);
-    void client_send_msg(const std::string& chat_msg);
+    playerid_t recv_player_id();
+
+    /*
+        Send methods for each type of action.
+     */
+    char send_Message(Message action);
+    char send_Movement(Move action);
+    char send_Jump(Jump action);
+    char send_NullAction(NullAction action);
+
+    /*
+        Sends code of match game
+    */
+    void send_code_game(size_t code);
+
+    /*
+        Receives the specific event update from the server
+    */
+    Event* recv_update();
+
+    /*
+        Receives the code of the specific event update from the server
+    */
     msgcode_t recv_code();
-    std::string recv_msg();
-    int recv_amount_players();
-    // uint8_t receive_gameupdate();
+
+    /*
+        Receives the amount of players in the game
+    */
+    int recv_amount_players();  // Not used. Could delete
+
+    /*
+        Closes socket
+    */
     void close();
+
     ~ClientProtocol();
 };
 

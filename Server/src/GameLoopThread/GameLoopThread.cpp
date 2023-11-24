@@ -1,6 +1,8 @@
 #include "GameLoopThread.h"
 
 #include <chrono>
+#include <list>
+#include <memory>
 
 const std::chrono::milliseconds tickrate(1000 / 60);
 
@@ -9,16 +11,22 @@ GameLoopThread::GameLoopThread(Queue<ClientUpdate*>& _eventq, GameHandler& _game
 
 void GameLoopThread::run() {
     while (_keep_running) {
-        ClientUpdate* event;
+        std::list<ClientUpdate*> event_list;
         auto start_time = std::chrono::steady_clock::now();
 
-        // Try to pop something from the event queue
-        bool popped = this->eventq.try_pop(event);
+        // Pop everything from event queue
+        bool popped = false;
+        do {
+            ClientUpdate* event;
+            popped = this->eventq.try_pop(event);
+            if (popped) {
+                event_list.push_back(event);
+            }
+        } while (popped);
 
-        // Execute said action if needed
-        if (popped) {
+        // Execute actions if needed
+        for (auto event: event_list) {
             GameUpdate* update = this->game.execute(event);
-            std::cout << "Update received. Broadcasting update" << std::endl;
             game.broadcast(update);
             // delete update;
         }
@@ -36,8 +44,6 @@ void GameLoopThread::run() {
                     std::chrono::steady_clock::now() + time_to_sleep;
             std::this_thread::sleep_until(end);
         }
-        // Advance turn and loop
-        game.advance_turn();
 
         // std::cout << "Tick" << std::endl;
     }

@@ -1,17 +1,20 @@
 
 #ifndef GAMESHANDLER_H
 #define GAMESHANDLER_H
-#include "Game.h"
-#include <vector>
 #include <string>
+#include <vector>
+
+#include "Game.h"
 
 class GamesHandler {
 private:
     size_t code;
     std::vector<GameHandler*> games;
     std::mutex m;
-    ServerProtocol prot;
-public:
+  
+    // ServerProtocol prot;
+
+  public:
     GamesHandler();
     GameHandler* create_GamesHandler();
     // GameHandler* join_GamesHandler(size_t code);
@@ -21,4 +24,4 @@ public:
 };
 
 
-#endif //GAMESHANDLER_H
+#endif  // GAMESHANDLER_H

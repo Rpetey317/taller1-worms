@@ -3,14 +3,14 @@
 
 #include <string>
 
-#include "ClientUpdate.h"
+#include "ClientUpdateHeaders.h"
 #include "GameUpdateHeaders.h"
-#include "Socket.h"
-
 #include "NetworkProtocol.h"
+#include "Socket.h"
+#include "Vect2D.h"
 
 using NetworkProtocol::msgcode_t;
-using NetworkProtocol::msglen_t;
+using NetworkProtocol::strlen_t;
 
 using NetworkProtocol::MSGCODE_PLAYER_DISCONNECT;
 using NetworkProtocol::MSGCODE_PLAYER_MESSAGE;
@@ -27,12 +27,39 @@ using NetworkProtocol::MSGCODE_PLAYER_MESSAGE;
 class ServerProtocol {
     Socket cli;
     bool isclosed;
+    const int plid;
+
+    /*
+     * Primitive type send methods, to simplify update-specific send methods
+     * On successful send returns true, false if socket closed
+     */
+    bool send_short(const uint16_t& num);
+    bool send_long(const uint32_t& num);
+    bool send_char(const uint8_t& num);
+    bool send_str(const std::string& str);
+    bool send_Vect2D(const Vect2D& pt);
+
 
 public:
+    // ========== DD ============ //
+    // This methods need to be public, because they are called from GameHandler::process_new_connect
+    /*
+     * Send methods for each type of update.
+     * Refer to protocol documentation for details
+     */
+    char send_ConnectionAcknowledgeUpdate(const GameAcknowledgeUpdate& upd);
+    char send_PlayerConnectedUpdate(const GamePlayerConnectedUpdate& upd);
+    char send_PlayerDisconnectedUpdate(const GamePlayerDisconnectedUpdate& upd);
+    char send_TurnChangeUpdate(const GameTurnChangeUpdate& upd);
+    char send_PlayerMessageUpdate(const GameChatMessageUpdate& upd);
+    char send_NullUpdate(const GameNullUpdate& upd);
+    char send_WorldUpdate(const GameWorldUpdate& upd);
+
+
     /*
      * Constructs a new protocol from socket with move semantics
      */
-    explicit ServerProtocol(Socket&& cli);
+    ServerProtocol(Socket&& cli, const int& plid);
 
     /*
      * Sends given message to client
@@ -40,13 +67,13 @@ public:
     char send_update(GameUpdate* msg);
 
     /*
-     * Reads a message from client. Returns NO_MSG_READ if connection closed
+     * Reads a message from client. Returns NullMsg if connection closed
      */
-    ClientUpdate recv_msg();
+    ClientUpdate* recv_update();
 
     /*
-    * Reads the first request the client sends. Can be CREATE_GAME or JOIN_GAME
-    */
+     * Reads the first request the client sends. Can be CREATE_GAME or JOIN_GAME
+     */
     msgcode_t recv_request();
 
     /*
@@ -58,8 +85,6 @@ public:
      * returns true if connection with client is still open
      */
     bool is_connected();
-
-    char send_PlayerMessageUpdate(const PlayerMessageUpdate& upd);
 
     /*
      * Closes connection to client. Destructor already closes connection,

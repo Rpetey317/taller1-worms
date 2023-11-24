@@ -5,17 +5,17 @@
 #include <string>
 
 #include "../ClientProtocol/ClientProtocol.h"
-#include "../Action/Action.h"
+#include "../Event/Event.h"
 
 #include "queue.h"
 #include "thread.h"
 
 class ReceiverThread: public Thread {
-    Queue<Action>& incomingq;
+    Queue<Event*>& incomingq;
     ClientProtocol& prot;
 
 public:
-    ReceiverThread(Queue<Action>& incomingq, ClientProtocol& prot);
+    ReceiverThread(Queue<Event*>& incomingq, ClientProtocol& prot);
     void run() override;
     void end();
 

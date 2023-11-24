@@ -4,18 +4,17 @@
 #include <string>
 #include <vector>
 
-//#include "../ServerProtocol/ServerProtocol.h"
-class ServerProtocol;
+class ClientProtocol;
 
 class Action {
-
+private:
+    /* data */
 public:
-    msgcode_t type_action;
-    std::string msg;  // to be removed
-    Action();
-    Action(std::string msg);
-    std::string get_msg();
-    ~Action();
+    Action() = default;
+
+    virtual char get_send_by(ClientProtocol& prot) = 0;
+
+    virtual ~Action() = default;
 };
 
 #endif  // ACTION_H_

@@ -50,7 +50,7 @@ void GamesHandler::add_player(Socket&& player) {
 void GamesHandler::remove_disconnected() {}
 
 GamesHandler::~GamesHandler() {
-    for (auto i : this->games) {
+    for (auto i: this->games) {
         delete i;
     }
 }
