@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "Vect2D.h"
+#include "Worm.h"
 
 class ClientProtocol;
 class EventProcessor;
@@ -24,6 +25,8 @@ public:
     virtual void get_processed_by(EventProcessor& eventProcessor) = 0;
 
     virtual std::map<int, Vect2D> get_worm_positions() = 0;
+
+    virtual std::map<int, Worm> get_worms() = 0;
 
     virtual bool is_new_player() = 0;
 
