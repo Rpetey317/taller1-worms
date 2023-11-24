@@ -77,6 +77,11 @@ public:
     msgcode_t recv_request();
 
     /*
+    * Reads the code of the game the client wants to join
+    */
+    size_t recv_join();
+
+    /*
      * returns true if connection with client is still open
      */
     bool is_connected();
