@@ -45,7 +45,6 @@ std::map<int, Vect2D>* BoxSimulator::create_position_map(const std::list<Box2DPl
         b2Body* body = worm.get_body(); // Obtener el cuerpo
         if (body) { // Verificar si el cuerpo es válido
             b2Vec2 pos = body->GetPosition();
-            Vect2D position = meter_to_pixel(pos);
             positions->insert(std::make_pair(worm.get_id(), meter_to_pixel(pos)));
         }
     }
