@@ -132,7 +132,6 @@ b2Vec2 BoxWorld::pixel_to_meter(Vect2D pixel) {
 }
 #include <iostream>
 bool BoxWorld::set_map(std::vector<Tile> map) {
-    std::cout << "lgbt?" << std::endl;
     for (auto tile : map) {
         Vect2D position(tile.pos_x, tile.pos_y);
     
