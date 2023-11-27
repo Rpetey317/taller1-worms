@@ -20,10 +20,11 @@ void SdlWorm::apply() {
     }
 }
 
-SdlWorm::SdlWorm(SdlWormTextureManager& texture_manager, SdlSoundManager& sound_manager, int id) : texture_manager(texture_manager), sound_manager(sound_manager) {
-    this->id = id;
-    x_pos = 50;
-    y_pos = 50;
+SdlWorm::SdlWorm(SdlWormTextureManager& texture_manager, SdlSoundManager& sound_manager, int x_pos, int y_pos, int worm_id, int player_id) : texture_manager(texture_manager), sound_manager(sound_manager) {
+    this->worm_id = worm_id;
+    this->player_id = player_id;
+    this->x_pos = x_pos;
+    this->y_pos = y_pos;
     animation_phase = 0;
     flip = SDL_FLIP_NONE;
     attack_power = 0;
