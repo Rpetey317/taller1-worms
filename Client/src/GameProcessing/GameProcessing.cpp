@@ -33,8 +33,9 @@ using NetworkProtocol::msgcode_t;
 //         senderTh(outgoingq, protocol),
 //         id(0) {}
 
-GameProcessing::GameProcessing(const char* hostname, const char* port, Queue<Action*>& commands,
-                               Queue<Event*>& events):
+GameProcessing::GameProcessing(const char* hostname, const char* port,
+                               Queue<std::shared_ptr<Action>>& commands,
+                               Queue<std::shared_ptr<Event>>& events):
         skt(Socket(hostname, port)),
         protocol(std::move(this->skt)),
 
@@ -67,9 +68,10 @@ void GameProcessing::alternate_run() {
             {READ_STR, READ},     {EXIT_STR, EXIT}, {NOCMD_STR, NOCMD},
     };
 
-    Event* ack_update =
+    std::shared_ptr<Event> ack_update =
             this->protocol.recv_update();  // Va a ser player connected. Me devuelve mi id
-    PlayerConnected* connected = dynamic_cast<PlayerConnected*>(ack_update);
+    std::shared_ptr<PlayerConnected> connected =
+            std::dynamic_pointer_cast<PlayerConnected>(ack_update);
     this->id = connected->get_id();
     if (id < 0) {
         throw std::runtime_error("Error al recibir el id del jugador");
@@ -84,11 +86,11 @@ void GameProcessing::alternate_run() {
     while (playing) {
         // pop.commands()
         //
-        std::list<Event*> update_list;
+        std::list<std::shared_ptr<Event>> update_list;
 
         bool popped = false;
         do {
-            Event* upd;
+            std::shared_ptr<Event> upd;
             popped = this->incomingq.try_pop(upd);
             if (popped)
                 update_list.push_back(upd);
@@ -125,15 +127,15 @@ void GameProcessing::alternate_run() {
             }
             // Action new_action(MSGCODE_PLAYER_MESSAGE, new_chatmsg);
             std::string new_chatmsg = chatmsg.substr(position);
-            Message* action = new Message(new_chatmsg);
+            std::shared_ptr<Message> action = std::make_shared<Message>(new_chatmsg);
             this->outgoingq.push(action);
         } else if (cmd_id == READ) {
             int amount_msgs;
             ss >> amount_msgs;
 
             while (amount_msgs > 0) {
-                Event* popped_update = this->incomingq.pop();
-                PlayerMessage* msg = dynamic_cast<PlayerMessage*>(
+                std::shared_ptr<Event> popped_update = this->incomingq.pop();
+                std::shared_ptr<PlayerMessage> msg = std::dynamic_pointer_cast<PlayerMessage>(
                         popped_update);  // TODO: ver si esto esta bien. Por ahora se que es un
                                          // PlayerMessage action
                 if (msg != nullptr && msg->get_msg() != "")
@@ -158,9 +160,10 @@ void GameProcessing::run() {
             {READ_STR, READ},     {EXIT_STR, EXIT}, {NOCMD_STR, NOCMD},
     };
 
-    Event* ack_update =
+    std::shared_ptr<Event> ack_update =
             this->protocol.recv_update();  // Va a ser player connected. Me devuelve mi id
-    PlayerConnected* connected = dynamic_cast<PlayerConnected*>(ack_update);
+    std::shared_ptr<PlayerConnected> connected =
+            std::dynamic_pointer_cast<PlayerConnected>(ack_update);
     this->id = connected->get_id();
     if (id < 0) {
         throw std::runtime_error("Error al recibir el id del jugador");

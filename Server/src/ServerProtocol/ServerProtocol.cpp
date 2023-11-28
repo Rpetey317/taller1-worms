@@ -1,6 +1,7 @@
 #include "ServerProtocol.h"
 
 #include <iostream>
+#include <memory>
 #include <utility>
 #include <vector>
 
@@ -66,13 +67,15 @@ ServerProtocol::ServerProtocol(Socket&& _cli, const int& _plid):
         cli(std::move(_cli)), isclosed(false), plid(_plid) {}
 
 // DD methods for each update type implemented in ServerProtocol_sendUpdate.cpp
-char ServerProtocol::send_update(GameUpdate* msg) { return msg->get_sent_by(*this); }
+char ServerProtocol::send_update(std::shared_ptr<GameUpdate> msg) {
+    return msg->get_sent_by(*this);
+}
 
-ClientUpdate* ServerProtocol::recv_update() {
+std::shared_ptr<ClientUpdate> ServerProtocol::recv_update() {
     char code;
     this->cli.recvall(&code, sizeof(char), &this->isclosed);
     if (this->isclosed) {
-        return new ClientNullUpdate();
+        return std::make_shared<ClientNullUpdate>();
     }
 
     // TODO: fix this
@@ -81,30 +84,30 @@ ClientUpdate* ServerProtocol::recv_update() {
         strlen_t msg_len;
         this->cli.recvall(&msg_len, sizeof(strlen_t), &this->isclosed);
         if (this->isclosed) {
-            return new ClientNullUpdate();
+            return std::make_shared<ClientNullUpdate>();
         }
 
         msg_len = ntohs(msg_len);
         std::vector<char> vmsg(msg_len);
         this->cli.recvall(&vmsg[0], msg_len, &this->isclosed);
         if (this->isclosed) {
-            return new ClientNullUpdate();
+            return std::make_shared<ClientNullUpdate>();
         }
         std::string msg(vmsg.begin(), vmsg.end());
-        return new ClientMessageUpdate(plid, msg);
+        return std::make_shared<ClientMessageUpdate>(plid, msg);
     } else if (code == MSGCODE_BOX2D) {
         input_t input;
         this->cli.recvall(&input, sizeof(input_t), &this->isclosed);
         if (this->isclosed) {
-            return new ClientNullUpdate();
+            return std::make_shared<ClientNullUpdate>();
         }
-        return new ClientBox2DUpdate(plid, input);
+        return std::make_shared<ClientBox2DUpdate>(plid, input);
     } else if (code == MSGCODE_PLAYER_MOVE_RIGHT) {
-        return new ClientBox2DUpdate(plid, 1);
+        return std::make_shared<ClientBox2DUpdate>(plid, 1);
     } else if (code == MSGCODE_PLAYER_MOVE_LEFT) {
-        return new ClientBox2DUpdate(plid, 2);
+        return std::make_shared<ClientBox2DUpdate>(plid, 2);
     } else {
-        return new ClientNullUpdate();
+        return std::make_shared<ClientNullUpdate>();
     }
 }
 

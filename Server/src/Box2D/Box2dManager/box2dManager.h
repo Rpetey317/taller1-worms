@@ -39,7 +39,7 @@ public:
     BoxSimulator();
     bool set_map();
     void add_player(); // should reach agreement whether position is random or sent by server
-    GameWorldUpdate* process(ClientBox2DUpdate& update);
+    std::shared_ptr<GameWorldUpdate> process(ClientBox2DUpdate& update);
 };
 
 #endif

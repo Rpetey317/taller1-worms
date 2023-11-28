@@ -1,6 +1,7 @@
 #ifndef __SERVER_PROTOCOL_H__
 #define __SERVER_PROTOCOL_H__
 
+#include <memory>
 #include <string>
 
 #include "ClientUpdateHeaders.h"
@@ -42,7 +43,7 @@ class ServerProtocol {
 
 public:
     // ========== DD ============ //
-    // This methods need to be public, because they are called from GameHandler::process_new_connect
+    // This methods need to be public, because they are called from Game::process_new_connect
     /*
      * Send methods for each type of update.
      * Refer to protocol documentation for details
@@ -64,12 +65,12 @@ public:
     /*
      * Sends given message to client
      */
-    char send_update(GameUpdate* msg);
+    char send_update(std::shared_ptr<GameUpdate> msg);
 
     /*
      * Reads a message from client. Returns NullMsg if connection closed
      */
-    ClientUpdate* recv_update();
+    std::shared_ptr<ClientUpdate> recv_update();
 
     /*
      * Reads the first request the client sends. Can be CREATE_GAME or JOIN_GAME

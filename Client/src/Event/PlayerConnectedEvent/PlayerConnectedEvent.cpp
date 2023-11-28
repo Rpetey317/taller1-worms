@@ -1,5 +1,7 @@
 #include "PlayerConnectedEvent.h"
 
+#include <map>
+
 #include "../EventProcessor/EventProcessor.h"
 
 PlayerConnected::PlayerConnected(const int& player_id): Event(player_id) {}

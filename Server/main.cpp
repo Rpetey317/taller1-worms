@@ -6,7 +6,6 @@
 #include "ClientUpdate.h"
 #include "Game.h"
 #include "GameLoopThread.h"
-#include "PlayerListMonitor.h"
 #include "ServerProtocol.h"
 #include "Socket.h"
 #include "queue.h"
@@ -29,11 +28,11 @@ int main(int argc, const char** argv) {
 
     // Initialization
     Socket acc(argv[1]);
-    Queue<ClientUpdate*> eventq(10000);
-    GameHandler clients(eventq);
+    Queue<std::shared_ptr<ClientUpdate>> eventq(10000);
+    Game game(eventq);
 
-    ServerAccepterThread acc_th(std::move(acc), clients);
-    GameLoopThread gloop(eventq, clients);
+    ServerAccepterThread acc_th(std::move(acc), game);
+    GameLoopThread gloop(eventq, game);
 
     // Execution
     acc_th.start();
@@ -45,7 +44,7 @@ int main(int argc, const char** argv) {
     }
 
     // Destruction
-    clients.close();
+    game.close();
     acc_th.end();
     acc_th.join();
     gloop.stop();

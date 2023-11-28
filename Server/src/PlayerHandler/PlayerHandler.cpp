@@ -8,15 +8,16 @@ using NetworkProtocol::MSGCODE_ACK;             // MGSCODE_CREATE_GAME
 using NetworkProtocol::MSGCODE_PLAYER_CONNECT;  // MSGCODE_PLAYER_CONNECT_TO_GAME
 using NetworkProtocol::msgcode_t;
 
-PlayerHandler::PlayerHandler(Socket&& _peer, Queue<ClientUpdate*>& _eventq, int& _id):
+PlayerHandler::PlayerHandler(Socket&& _peer, Queue<std::shared_ptr<ClientUpdate>>& _eventq,
+                             int& _id):
         prot(std::move(_peer), _id),
         sendq(10000),
         send_th(sendq, prot),
         recv_th(_eventq, prot, _id),
         id(_id) {
-    GameAcknowledgeUpdate ack(_id);
-    this->prot.send_update((GameUpdate*)&ack);
-    _eventq.push((ClientUpdate*)new ClientConnectedUpdate(_id));
+    std::shared_ptr<GameAcknowledgeUpdate> ack = std::make_shared<GameAcknowledgeUpdate>(_id);
+    this->prot.send_update(ack);
+    _eventq.push(std::make_shared<ClientConnectedUpdate>(_id));
 }
 
 void PlayerHandler::start() {
@@ -24,14 +25,14 @@ void PlayerHandler::start() {
     // msgcode_t request = this->prot.recv_request();
     // if (request == MSGCODE_CREATE_GAME) {
     //     int code = 0;
-    //     // Create game. Esto deberia ir en el constructor de GameHandler (?)
+    //     // Create game. Esto deberia ir en el constructor de Game (?)
     //     std::cout << "Created match: " << std::to_string(code) << std::endl;
     // } else if (request == MSGCODE_PLAYER_CONNECT_TO_GAME) {
     //     int code = this->prot.recv_join();
     //     int8_t join_result = OK;
 
     //     try {
-    //         // Agregar al jugador a la partida. Tmb en el GameHandler (?)
+    //         // Agregar al jugador a la partida. Tmb en el Game (?)
     //     } catch (const std::exception& err) {
     //         if (std::string(err.what()) == "El codigo ingresado no pertenece a ninguna partida!")
     //         {
@@ -54,7 +55,7 @@ void PlayerHandler::start() {
 
 bool PlayerHandler::is_connected() { return prot.is_connected(); }
 
-void PlayerHandler::send(GameUpdate* msg) { sendq.push(msg); }
+void PlayerHandler::send(std::shared_ptr<GameUpdate> msg) { sendq.push(msg); }
 
 PlayerHandler::~PlayerHandler() {
     prot.close();

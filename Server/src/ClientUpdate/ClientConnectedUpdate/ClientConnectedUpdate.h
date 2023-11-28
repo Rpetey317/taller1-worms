@@ -1,6 +1,8 @@
 #ifndef __CLIENTCONNECTEDUPDATE_H__
 #define __CLIENTCONNECTEDUPDATE_H__
 
+#include <memory>
+
 #include "../ClientUpdate.h"
 
 class ClientConnectedUpdate: public ClientUpdate {
@@ -8,7 +10,7 @@ class ClientConnectedUpdate: public ClientUpdate {
 public:
     explicit ClientConnectedUpdate(const int& _id);
 
-    GameUpdate* get_processed_by(GameHandler& game) override;
+    std::shared_ptr<GameUpdate> get_processed_by(Game& game) override;
 
     ~ClientConnectedUpdate() override = default;
 };

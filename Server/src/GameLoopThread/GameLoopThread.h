@@ -1,17 +1,19 @@
 #ifndef GAME_LOOP_THREAD_H
 #define GAME_LOOP_THREAD_H
 
+#include <memory>
+
 #include "ClientUpdate.h"
 #include "Game.h"
 #include "queue.h"
 #include "thread.h"
 
 class GameLoopThread: public Thread {
-    Queue<ClientUpdate*>& eventq;
-    GameHandler& game;
+    Queue<std::shared_ptr<ClientUpdate>>& eventq;
+    Game& game;
 
 public:
-    GameLoopThread(Queue<ClientUpdate*>& _eventq, GameHandler& _game);
+    GameLoopThread(Queue<std::shared_ptr<ClientUpdate>>& _eventq, Game& _game);
 
     void run() override;
 
