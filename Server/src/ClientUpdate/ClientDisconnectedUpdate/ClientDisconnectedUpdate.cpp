@@ -1,5 +1,7 @@
 #include "ClientDisconnectedUpdate.h"
 
+#include <memory>
+
 #include "Game.h"
 
 ClientDisconnectedUpdate::ClientDisconnectedUpdate(const int& _id): ClientUpdate(_id) {}

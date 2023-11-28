@@ -1,6 +1,7 @@
 #ifndef __SERVER_PROTOCOL_H__
 #define __SERVER_PROTOCOL_H__
 
+#include <memory>
 #include <string>
 
 #include "ClientUpdateHeaders.h"

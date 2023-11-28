@@ -1,6 +1,7 @@
 #ifndef PLAYERMESSAGE_H_
 #define PLAYERMESSAGE_H_
 
+#include <map>
 #include <string>
 #include <vector>
 

@@ -1,5 +1,7 @@
 #include "ClientNullUpdate.h"
 
+#include <memory>
+
 #include "Game.h"
 
 ClientNullUpdate::ClientNullUpdate(): ClientUpdate(-1) {}

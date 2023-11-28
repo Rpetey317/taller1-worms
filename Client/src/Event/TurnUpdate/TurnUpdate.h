@@ -1,6 +1,8 @@
 #ifndef __TURNUPDATE_H__
 #define __TURNUPDATE_H__
 
+#include <map>
+
 #include "../Event.h"
 
 class TurnUpdate: public Event {

@@ -1,5 +1,7 @@
 #include "SenderThread.h"
 
+#include <memory>
+
 #include "GameUpdate.h"
 
 SenderThread::SenderThread(Queue<std::shared_ptr<GameUpdate>>& _sendq, ServerProtocol& _prot):

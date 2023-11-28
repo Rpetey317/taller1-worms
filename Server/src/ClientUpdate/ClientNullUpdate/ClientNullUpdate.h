@@ -1,6 +1,8 @@
 #ifndef __CLIENT_NULL_UPDATE_H__
 #define __CLIENT_NULL_UPDATE_H__
 
+#include <memory>
+
 #include "../ClientUpdate.h"
 
 class ClientNullUpdate: public ClientUpdate {

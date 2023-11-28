@@ -1,5 +1,7 @@
 #include "ClientMessageUpdate.h"
 
+#include <memory>
+
 #include "Game.h"
 
 ClientMessageUpdate::ClientMessageUpdate(const int& _id, const std::string& _msg):

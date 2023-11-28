@@ -1,6 +1,8 @@
 #ifndef __CLIENTBOX2DUPDATE_H__
 #define __CLIENTBOX2DUPDATE_H__
 
+#include <memory>
+
 #include "../ClientUpdate.h"
 
 class ClientBox2DUpdate: public ClientUpdate {

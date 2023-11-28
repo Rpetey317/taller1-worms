@@ -1,6 +1,7 @@
 #ifndef __SERVER_MESSENGER_H__
 #define __SERVER_MESSENGER_H__
 
+#include <memory>
 #include <mutex>
 #include <string>
 

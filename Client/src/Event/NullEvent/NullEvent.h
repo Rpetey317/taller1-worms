@@ -1,6 +1,8 @@
 #ifndef __NULL_EVENT_H__
 #define __NULL_EVENT_H__
 
+#include <map>
+
 #include "../Event.h"
 
 class NullEvent: public Event {

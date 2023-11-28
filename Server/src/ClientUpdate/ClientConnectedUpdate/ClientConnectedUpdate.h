@@ -1,6 +1,8 @@
 #ifndef __CLIENTCONNECTEDUPDATE_H__
 #define __CLIENTCONNECTEDUPDATE_H__
 
+#include <memory>
+
 #include "../ClientUpdate.h"
 
 class ClientConnectedUpdate: public ClientUpdate {

@@ -1,6 +1,7 @@
 #ifndef PLAYERPOSITION_H_
 #define PLAYERPOSITION_H_
 
+#include <map>
 #include <string>
 #include <vector>
 

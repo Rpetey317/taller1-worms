@@ -1,6 +1,7 @@
 #ifndef __CLIENTMESSAGEUPDATE_H__
 #define __CLIENTMESSAGEUPDATE_H__
 
+#include <memory>
 #include <string>
 
 #include "../ClientUpdate.h"

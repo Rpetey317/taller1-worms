@@ -1,5 +1,7 @@
 #include "TurnUpdate.h"
 
+#include <map>
+
 #include "../EventProcessor/EventProcessor.h"
 
 TurnUpdate::TurnUpdate(const int& player_id): Event(player_id) {}

@@ -1,6 +1,8 @@
 #ifndef __CLIENTDISCONNECTEDUPDATE_H__
 #define __CLIENTDISCONNECTEDUPDATE_H__
 
+#include <memory>
+
 #include "../ClientUpdate.h"
 
 class ClientDisconnectedUpdate: public ClientUpdate {

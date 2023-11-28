@@ -1,5 +1,7 @@
 #include "ClientConnectedUpdate.h"
 
+#include <memory>
+
 #include "Game.h"
 
 ClientConnectedUpdate::ClientConnectedUpdate(const int& _id): ClientUpdate(_id) {}

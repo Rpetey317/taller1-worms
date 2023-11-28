@@ -1,6 +1,7 @@
 #ifndef PLAYERDISCONNECTED_H_
 #define PLAYERDISCONNECTED_H_
 
+#include <map>
 #include <string>
 #include <vector>
 

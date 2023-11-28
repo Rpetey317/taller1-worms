@@ -1,5 +1,7 @@
 #include "ClientBox2DUpdate.h"
 
+#include <memory>
+
 #include "Game.h"
 
 ClientBox2DUpdate::ClientBox2DUpdate(const int& _id, const int& _cmd):
