@@ -6,7 +6,7 @@
 #include "ReceiverThread.h"
 #include "SenderThread.h"
 
-GameHandler::GameHandler(Queue<ClientUpdate*>& _eventq):
+GameHandler::GameHandler(Queue<std::shared_ptr<ClientUpdate>>& _eventq):
         plcount(0),
         eventq(_eventq),
         game_code(0),
@@ -25,7 +25,7 @@ void GameHandler::add_player(Socket&& peer) {
 }
 
 // DD methods implemented in Game_processUpdate.cpp
-std::shared_ptr<GameUpdate> GameHandler::execute(ClientUpdate* event) {
+std::shared_ptr<GameUpdate> GameHandler::execute(std::shared_ptr<ClientUpdate> event) {
     return event->get_processed_by(*this);
 }
 

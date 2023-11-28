@@ -22,7 +22,7 @@
 class GameHandler {
     std::map<int, std::unique_ptr<PlayerHandler>> players;
     std::atomic<int> plcount;
-    Queue<ClientUpdate*>& eventq;
+    Queue<std::shared_ptr<ClientUpdate>>& eventq;
     std::map<int, std::unique_ptr<PlayerHandler>>::iterator curr_pl;
     int game_code;
     int next_free_id;
@@ -66,8 +66,8 @@ public:
     /*
      * Creates new handler, adding players (recievers) to given list
      */
-    explicit GameHandler(Queue<ClientUpdate*>& _eventq);
-    // explicit GameHandler(Queue<ClientUpdate*>& _eventq, int code);
+    explicit GameHandler(Queue<std::shared_ptr<ClientUpdate>>& _eventq);
+    // explicit GameHandler(Queue<std::shared_ptr<ClientUpdate>>& _eventq, int code);
 
     /*
      * Adds a new player, connected to given socket
@@ -78,7 +78,7 @@ public:
      * Executes given event, returns update to be sent back to players
      * Implemented via DD, a process_eventType method must be implemented for each event type
      */
-    std::shared_ptr<GameUpdate> execute(ClientUpdate* event);
+    std::shared_ptr<GameUpdate> execute(std::shared_ptr<ClientUpdate> event);
 
     /*
      * broadcasts given update to all players
