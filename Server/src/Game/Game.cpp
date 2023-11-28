@@ -19,6 +19,7 @@ Game::Game(Queue<std::shared_ptr<ClientUpdate>>& _eventq):
 
 void Game::add_player(Socket&& peer) {
     PlayerHandler* new_player = new PlayerHandler(std::move(peer), this->eventq, ++next_free_id);
+    //Más fácil usar punteros inteligentes.
     this->players.insert(std::make_pair(next_free_id, std::unique_ptr<PlayerHandler>(new_player)));
     new_player->start();
     box2d.add_player();
@@ -30,6 +31,8 @@ std::shared_ptr<GameUpdate> Game::execute(std::shared_ptr<ClientUpdate> event) {
 }
 
 void Game::broadcast(std::shared_ptr<GameUpdate> update) {
+//Fijense que acá tienen una Race Condition, al mimso tiempo que iteran esta lista podría entrar otro jugador.
+//Metan la lista de jugadores en un monitor.
     for (auto pl = this->players.begin(); pl != this->players.end(); pl++) {
         (*pl).second->send(update);
     }

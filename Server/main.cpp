@@ -42,7 +42,7 @@ int main(int argc, const char** argv) {
     while (c != 'q') {
         std::cin.get(c);
     }
-
+    //Este main tiene mucha lógica
     // Destruction
     game.close();
     acc_th.end();

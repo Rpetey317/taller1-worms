@@ -105,7 +105,9 @@ void GameProcessing::alternate_run() {
         std::istringstream ss(command);
         std::string action_str;
         ss >> action_str;
-        int cmd_id = lut.at(action_str);
+        int cmd_id = lut.at(action_str); // Estas lineas no se entienden nada
+
+        //cmd.execute(). Este if no debería estar acá
         if (cmd_id == EXIT) {
             playing = false;
             // break;
@@ -114,7 +116,7 @@ void GameProcessing::alternate_run() {
             // this->outgoingq.push(create_game);
         } else if (cmd_id == JOIN) {
             /* code */
-        } else if (cmd_id == CHAT) {
+        } else if (cmd_id == CHAT) { //para que un chat??
             std::string chatmsg;
             std::getline(ss, chatmsg);
             int lenght;
@@ -151,6 +153,7 @@ void GameProcessing::alternate_run() {
     this->senderTh.join();
 }
 
+//Este es el run posta? o es el de arriba
 void GameProcessing::run() {
 
     // Creo los threads sender y receiver pasandoles el protocolo y los corro
