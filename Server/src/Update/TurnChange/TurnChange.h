@@ -1,20 +1,20 @@
 #ifndef __TURNCHANGEUPDATE_H__
 #define __TURNCHANGEUPDATE_H__
 
-#include "../GameUpdate.h"
+#include "../Update.h"
 
-class GameTurnChangeUpdate: public GameUpdate {
+class TurnChange: public Update {
 private:
     const int new_curr_player;
 
 public:
-    explicit GameTurnChangeUpdate(const int& new_curr_player);
+    explicit TurnChange(const int& new_curr_player);
 
     char get_sent_by(ServerProtocol& prot) override;
 
     const int& get_new_curr_player() const;
 
-    ~GameTurnChangeUpdate() override = default;
+    ~TurnChange() override = default;
 };
 
 #endif  // !__TURNCHANGEUPDATE_H__

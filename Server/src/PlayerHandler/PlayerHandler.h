@@ -13,7 +13,7 @@
  */
 class PlayerHandler {
     ServerProtocol prot;
-    Queue<std::shared_ptr<GameUpdate>> sendq;
+    Queue<std::shared_ptr<Update>> sendq;
     SenderThread send_th;
     ReceiverThread recv_th;
     const int id;
@@ -40,7 +40,7 @@ public:
     /*
      * Sends a message back to client
      */
-    void send(std::shared_ptr<GameUpdate> msg);
+    void send(std::shared_ptr<Update> msg);
 
     /*
      * Stops associated threads and frees all resources

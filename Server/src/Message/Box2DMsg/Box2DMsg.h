@@ -12,7 +12,7 @@ class Box2DMsg: public Message {
 public:
     Box2DMsg(const int& id, const int& cmd);
 
-    std::shared_ptr<GameUpdate> get_processed_by(Game& game) override;
+    std::shared_ptr<Update> get_processed_by(Game& game) override;
 
     int& get_cmd();
 

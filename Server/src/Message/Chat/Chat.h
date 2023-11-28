@@ -12,7 +12,7 @@ class Chat: public Message {
 public:
     Chat(const int& _id, const std::string& _msg);
 
-    std::shared_ptr<GameUpdate> get_processed_by(Game& game) override;
+    std::shared_ptr<Update> get_processed_by(Game& game) override;
 
     std::string& get_msg();
 

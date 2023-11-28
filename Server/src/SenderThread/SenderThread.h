@@ -14,7 +14,7 @@
  * Waits for new messages to be sent back to client
  */
 class SenderThread: public Thread {
-    Queue<std::shared_ptr<GameUpdate>>& sendq;
+    Queue<std::shared_ptr<Update>>& sendq;
     ServerProtocol& prot;
 
 public:
@@ -22,7 +22,7 @@ public:
      * Initializes a new thread for a given client (prot)
      * Messages will be read from sendq
      */
-    SenderThread(Queue<std::shared_ptr<GameUpdate>>& sendq, ServerProtocol& prot);
+    SenderThread(Queue<std::shared_ptr<Update>>& sendq, ServerProtocol& prot);
 
     /*
      * Runs the thread. Attempts to read message from queue. If a message is present,

@@ -28,7 +28,7 @@ void ReceiverThread::run() {
         }
     }
     // Player disconnected
-    this->eventq.push(std::make_shared<PlayerDisconnected>(this->plid));
+    this->eventq.push(std::make_shared<PlayerDisconnectedMessage>(this->plid));
 }
 
 void ReceiverThread::end() { _keep_running = false; }

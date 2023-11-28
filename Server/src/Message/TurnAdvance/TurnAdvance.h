@@ -21,7 +21,7 @@ public:
 
     const std::map<int, std::unique_ptr<PlayerHandler>>::iterator& get_new_pl();
 
-    std::shared_ptr<GameUpdate> get_processed_by(Game& game) override;
+    std::shared_ptr<Update> get_processed_by(Game& game) override;
 };
 
 #endif  // !__TurnAdvance_H__

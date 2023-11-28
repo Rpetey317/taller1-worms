@@ -3,7 +3,7 @@
 
 #include "Game.h"
 
-std::shared_ptr<GameUpdate> Game::process_disconnect(PlayerDisconnected& event) {
+std::shared_ptr<Update> Game::process_disconnect(PlayerDisconnectedMessage& event) {
     int disconnected_id = event.get_id();
     if (this->curr_pl->first == disconnected_id) {
         auto nx_pl = std::next(this->curr_pl);
@@ -17,10 +17,10 @@ std::shared_ptr<GameUpdate> Game::process_disconnect(PlayerDisconnected& event) 
     plcount--;
 
     std::cout << "A player disconnected. Now online: " << plcount << " players." << std::endl;
-    return std::make_shared<GamePlayerDisconnectedUpdate>(disconnected_id);
+    return std::make_shared<PlayerDisconnectedUpdate>(disconnected_id);
 }
 
-std::shared_ptr<GameUpdate> Game::process_new_connect(PlayerConnected& event) {
+std::shared_ptr<Update> Game::process_new_connect(PlayerConnectedMessage& event) {
     plcount++;
     std::cout << "New player connected. Now online: " << plcount << " players." << std::endl;
 
@@ -32,27 +32,27 @@ std::shared_ptr<GameUpdate> Game::process_new_connect(PlayerConnected& event) {
         this->eventq.push(std::make_shared<TurnAdvance>(SERVER_ID, this->curr_pl));
     }
 
-    return std::make_shared<GamePlayerConnectedUpdate>(event.get_id());
+    return std::make_shared<PlayerConnectedUpdate>(event.get_id());
 }
 
-std::shared_ptr<GameUpdate> Game::process_message(Chat& event) {
-    return std::make_shared<GameChatMessageUpdate>(event.get_id(), event.get_msg());
+std::shared_ptr<Update> Game::process_message(Chat& event) {
+    return std::make_shared<ChatUpdate>(event.get_id(), event.get_msg());
 }
 
-std::shared_ptr<GameUpdate> Game::process_NullUpdate(NullMessage& event) {
-    return std::make_shared<GameNullUpdate>();
+std::shared_ptr<Update> Game::process_NullUpdate(NullMessage& event) {
+    return std::make_shared<NullUpdate>();
 }
 
-std::shared_ptr<GameUpdate> Game::process_TurnAdvance(TurnAdvance& event) {
+std::shared_ptr<Update> Game::process_TurnAdvance(TurnAdvance& event) {
     auto new_curr_pl = event.get_new_pl();
 
     if (new_curr_pl == this->players.end()) {
-        return std::make_shared<GameNullUpdate>();
+        return std::make_shared<NullUpdate>();
     }
     this->curr_pl = new_curr_pl;
-    return std::make_shared<GameTurnChangeUpdate>(new_curr_pl->first);
+    return std::make_shared<TurnChange>(new_curr_pl->first);
 }
 
-std::shared_ptr<GameUpdate> Game::process_box2d(Box2DMsg& event) {
-    return std::shared_ptr<GameUpdate>(box2d.process(event));
+std::shared_ptr<Update> Game::process_box2d(Box2DMsg& event) {
+    return std::shared_ptr<Update>(box2d.process(event));
 }

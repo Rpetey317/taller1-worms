@@ -9,7 +9,7 @@ TurnAdvance::~TurnAdvance() {}
 
 bool TurnAdvance::is_valid() { return true; }
 
-std::shared_ptr<GameUpdate> TurnAdvance::get_processed_by(Game& game) {
+std::shared_ptr<Update> TurnAdvance::get_processed_by(Game& game) {
     return game.process_TurnAdvance(*this);
 }
 

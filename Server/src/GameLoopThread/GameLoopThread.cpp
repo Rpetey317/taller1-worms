@@ -26,7 +26,7 @@ void GameLoopThread::run() {
 
         // Execute actions if needed
         for (auto event: event_list) {
-            std::shared_ptr<GameUpdate> update = this->game.execute(event);
+            std::shared_ptr<Update> update = this->game.execute(event);
             game.broadcast(update);
             // delete update;
         }

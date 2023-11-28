@@ -9,10 +9,10 @@
 
 #include "../Box2D/Box2dManager/box2dManager.h"
 
-#include "GameUpdate.h"
 #include "MessageHeaders.h"
 #include "PlayerHandler.h"
 #include "Socket.h"
+#include "Update.h"
 #include "queue.h"
 
 #define SERVER_ID 0
@@ -36,32 +36,32 @@ public:
     // This three methods cannot be private. They are called from Message::get_processed_by
     /*
      * Increments player count
-     * Returns corresponding GamePlayerConnectedUpdate
+     * Returns corresponding PlayerConnectedUpdate
      */
-    std::shared_ptr<GameUpdate> process_new_connect(PlayerConnected& event);
+    std::shared_ptr<Update> process_new_connect(PlayerConnectedMessage& event);
 
     /*
      * Decrements player count
-     * Returns corresponding GamePlayerDisconnectedUpdate
+     * Returns corresponding PlayerDisconnectedUpdate
      */
-    std::shared_ptr<GameUpdate> process_disconnect(PlayerDisconnected& event);
+    std::shared_ptr<Update> process_disconnect(PlayerDisconnectedMessage& event);
 
     /*
-     * Returns GameChatMessageUpdate with same message
+     * Returns ChatUpdate with same message
      */
-    std::shared_ptr<GameUpdate> process_message(Chat& event);
+    std::shared_ptr<Update> process_message(Chat& event);
 
     /*
      * Processess NullUpdate (i.e. does nothing)
      */
-    std::shared_ptr<GameUpdate> process_NullUpdate(NullMessage& event);
+    std::shared_ptr<Update> process_NullUpdate(NullMessage& event);
 
     /*
      * Advances turn to next player and notifies relevant players of the change
      */
-    std::shared_ptr<GameUpdate> process_TurnAdvance(TurnAdvance& event);
+    std::shared_ptr<Update> process_TurnAdvance(TurnAdvance& event);
 
-    std::shared_ptr<GameUpdate> process_box2d(Box2DMsg& event);
+    std::shared_ptr<Update> process_box2d(Box2DMsg& event);
 
 
     /*
@@ -79,12 +79,12 @@ public:
      * Executes given event, returns update to be sent back to players
      * Implemented via DD, a process_eventType method must be implemented for each event type
      */
-    std::shared_ptr<GameUpdate> execute(std::shared_ptr<Message> event);
+    std::shared_ptr<Update> execute(std::shared_ptr<Message> event);
 
     /*
      * broadcasts given update to all players
      */
-    void broadcast(std::shared_ptr<GameUpdate> update);
+    void broadcast(std::shared_ptr<Update> update);
 
     /*
      * Closes lobby and frees all resources

@@ -1,20 +1,20 @@
 #ifndef __PLAYERDISCONNECTEDUPDATE_H__
 #define __PLAYERDISCONNECTEDUPDATE_H__
 
-#include "../GameUpdate.h"
+#include "../Update.h"
 
-class GamePlayerDisconnectedUpdate: public GameUpdate {
+class PlayerDisconnectedUpdate: public Update {
 private:
     const int player_id;
 
 public:
-    explicit GamePlayerDisconnectedUpdate(int _player_id);
+    explicit PlayerDisconnectedUpdate(int _player_id);
 
     int get_player_id() const;
 
     char get_sent_by(ServerProtocol& prot) override;
 
-    ~GamePlayerDisconnectedUpdate();
+    ~PlayerDisconnectedUpdate();
 };
 
 #endif  // !__PLAYERDISCONNECTEDUPDATE_H__

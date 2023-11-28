@@ -7,7 +7,7 @@
 
 #include <arpa/inet.h>
 
-#include "GameUpdate.h"
+#include "Update.h"
 
 // I thoroughly refuse to manually write the using directive
 // for every. single. constant. in the NetworkProtocol namespace.
@@ -67,9 +67,7 @@ ServerProtocol::ServerProtocol(Socket&& _cli, const int& _plid):
         cli(std::move(_cli)), isclosed(false), plid(_plid) {}
 
 // DD methods for each update type implemented in ServerProtocol_sendUpdate.cpp
-char ServerProtocol::send_update(std::shared_ptr<GameUpdate> msg) {
-    return msg->get_sent_by(*this);
-}
+char ServerProtocol::send_update(std::shared_ptr<Update> msg) { return msg->get_sent_by(*this); }
 
 std::shared_ptr<Message> ServerProtocol::recv_update() {
     char code;

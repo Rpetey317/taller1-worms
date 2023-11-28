@@ -5,7 +5,7 @@
 #include <string>
 
 class Game;
-class GameUpdate;
+class Update;
 
 // TODO: make this polymorphic
 class Message {
@@ -17,7 +17,7 @@ protected:
 public:
     int get_id() { return this->id; }
 
-    virtual std::shared_ptr<GameUpdate> get_processed_by(Game& game) = 0;
+    virtual std::shared_ptr<Update> get_processed_by(Game& game) = 0;
 
     virtual bool is_valid() { return true; }
 

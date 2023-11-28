@@ -4,15 +4,15 @@
 #include <string>
 #include <vector>
 
-#include "../GameUpdate.h"
+#include "../Update.h"
 
-class GameChatMessageUpdate: public GameUpdate {
+class ChatUpdate: public Update {
 private:
     const std::string message;
     const int plid;
 
 public:
-    explicit GameChatMessageUpdate(const int& plid, std::string const& _msg);
+    explicit ChatUpdate(const int& plid, std::string const& _msg);
 
     const std::string& get_msg() const;
 
@@ -20,7 +20,7 @@ public:
 
     char get_sent_by(ServerProtocol& prot) override;
 
-    ~GameChatMessageUpdate() override;
+    ~ChatUpdate() override;
 };
 
 

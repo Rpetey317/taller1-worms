@@ -1,12 +1,12 @@
 #ifndef __GAME_NULL_UPDATE_H__
 #define __GAME_NULL_UPDATE_H__
 
-#include "../GameUpdate.h"
+#include "../Update.h"
 
-class GameNullUpdate: public GameUpdate {
+class NullUpdate: public Update {
 public:
-    GameNullUpdate() = default;
-    ~GameNullUpdate() = default;
+    NullUpdate() = default;
+    ~NullUpdate() = default;
 
     char get_sent_by(ServerProtocol& prot) override;
 };
