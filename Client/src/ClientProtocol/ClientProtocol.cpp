@@ -65,37 +65,37 @@ std::string ClientProtocol::recv_msg() {
     return msg;
 }
 
-Event* ClientProtocol::recv_player_connected() {
+std::shared_ptr<Event> ClientProtocol::recv_player_connected() {
     playerid_t player_id = this->recv_player_id();
-    return new PlayerConnected((int)player_id);
+    return std::make_shared<PlayerConnected>((int)player_id);
 }
 
-Event* ClientProtocol::recv_player_message() {
+std::shared_ptr<Event> ClientProtocol::recv_player_message() {
     playerid_t player_id = this->recv_player_id();
     std::string msg = this->recv_msg();
     if (msg == "") {
-        return new NullEvent(player_id);
+        return std::make_shared<NullEvent>(player_id);
     }
-    return new PlayerMessage((int)player_id, msg);
+    return std::make_shared<PlayerMessage>((int)player_id, msg);
 }
 
-Event* ClientProtocol::recv_player_disconnected() {
+std::shared_ptr<Event> ClientProtocol::recv_player_disconnected() {
     playerid_t player_id = this->recv_player_id();
-    return new PlayerDisconnected((int)player_id);
+    return std::make_shared<PlayerDisconnected>((int)player_id);
 }
 
-Event* ClientProtocol::recv_turn_update() {
+std::shared_ptr<Event> ClientProtocol::recv_turn_update() {
     playerid_t player_id = this->recv_player_id();
-    return new TurnUpdate((int)player_id);
+    return std::make_shared<TurnUpdate>((int)player_id);
 }
 
-Event* ClientProtocol::recv_map_update() {
+std::shared_ptr<Event> ClientProtocol::recv_map_update() {
 
     // Receive amount players or map size
     amount_players_t amount_players;
     this->skt.recvall(&amount_players, sizeof(amount_players_t), &this->isclosed);
     if (this->isclosed) {
-        return new NullEvent(-1);
+        return std::make_shared<NullEvent>(-1);
     }
     // Receive players positions
     std::map<int, Vect2D> worm_positions;
@@ -104,21 +104,21 @@ Event* ClientProtocol::recv_map_update() {
         playerid_t player_id;
         this->skt.recvall(&player_id, sizeof(playerid_t), &this->isclosed);
         if (this->isclosed) {
-            return new NullEvent(-1);
+            return std::make_shared<NullEvent>(-1);
         }
         uint16_t x;
         this->skt.recvall(&x, sizeof(uint16_t), &this->isclosed);
         if (this->isclosed) {
-            return new NullEvent(-1);
+            return std::make_shared<NullEvent>(-1);
         }
         uint16_t y;
         this->skt.recvall(&y, sizeof(uint16_t), &this->isclosed);
         if (this->isclosed) {
-            return new NullEvent(-1);
+            return std::make_shared<NullEvent>(-1);
         }
         worm_positions[(int)player_id] = Vect2D(ntohs(x), ntohs(y));
     }
-    return new MapUpdate(worm_positions);
+    return std::make_shared<MapUpdate>(worm_positions);
 }
 
 ClientProtocol::ClientProtocol(Socket skt): skt(std::move(skt)), isclosed(false) {}
@@ -188,7 +188,7 @@ void ClientProtocol::send_code_game(size_t code) {
     }
 }
 
-Event* ClientProtocol::recv_update() {
+std::shared_ptr<Event> ClientProtocol::recv_update() {
     // TODO: change this to a dynamic switch
     msgcode_t code_update = this->recv_code();
     if (code_update == MSGCODE_WORLD_UPD) {
@@ -206,7 +206,7 @@ Event* ClientProtocol::recv_update() {
         case MSGCODE_TURN_UPDATE:
             return this->recv_turn_update();
         default:
-            return new NullEvent(-1);
+            return std::make_shared<NullEvent>(-1);
     }
 }
 

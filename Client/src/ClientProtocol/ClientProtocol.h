@@ -1,5 +1,7 @@
 #ifndef PROTOCOL_H
 #define PROTOCOL_H
+
+#include <memory>
 #include <utility>
 #include <variant>
 #include <vector>
@@ -37,11 +39,11 @@ private:
     /*
         Receive methods of the diferent type of Events
     */
-    Event* recv_player_connected();
-    Event* recv_player_message();
-    Event* recv_player_disconnected();
-    Event* recv_turn_update();
-    Event* recv_map_update();
+    std::shared_ptr<Event> recv_player_connected();
+    std::shared_ptr<Event> recv_player_message();
+    std::shared_ptr<Event> recv_player_disconnected();
+    std::shared_ptr<Event> recv_turn_update();
+    std::shared_ptr<Event> recv_map_update();
 
 public:
     explicit ClientProtocol(Socket skt);
@@ -63,7 +65,7 @@ public:
     /*
         Receives the specific event update from the server
     */
-    Event* recv_update();
+    std::shared_ptr<Event> recv_update();
 
     /*
         Receives the code of the specific event update from the server

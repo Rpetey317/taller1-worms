@@ -1,6 +1,7 @@
 #ifndef EVENTPROCESSOR_H
 #define EVENTPROCESSOR_H
 
+#include <memory>
 #include <string>
 
 #include "../Event/EventHeaders.h"
@@ -27,7 +28,7 @@ public:
 
     void process_map_update(MapUpdate& event);
 
-    void proccess_event(Event* event);
+    void proccess_event(std::shared_ptr<Event> event);
 
 
     ~EventProcessor();

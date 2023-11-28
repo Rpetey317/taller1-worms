@@ -27,8 +27,8 @@ int main(int argc, char* argv[]) {
         const char* port = argv[2];
 
 
-        Queue<Action*> commands(10000);
-        Queue<Event*> events(10000);
+        Queue<std::shared_ptr<Action>> commands(10000);
+        Queue<std::shared_ptr<Event>> events(10000);
 
         GameProcessing client(hostname, port, commands, events);
 

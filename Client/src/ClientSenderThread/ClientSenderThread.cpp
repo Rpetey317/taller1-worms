@@ -1,12 +1,14 @@
 #include "ClientSenderThread.h"
 
-SenderThread::SenderThread(Queue<Action*>& outgoingq, ClientProtocol& prot):
+#include <memory>
+
+SenderThread::SenderThread(Queue<std::shared_ptr<Action>>& outgoingq, ClientProtocol& prot):
         outgoingq(outgoingq), prot(prot) {}
 
 void SenderThread::run() {
     while (_keep_running) {
         try {
-            Action* action = outgoingq.pop();
+            std::shared_ptr<Action> action = outgoingq.pop();
             std::cout << "Se envia accion a servidor" << std::endl;
             action->get_send_by(this->prot);
         } catch (ClosedQueue& e) {
