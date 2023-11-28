@@ -9,6 +9,7 @@ class CreateGame : public QDialog {
 public:
     explicit CreateGame();
 private:
+    void createNewGame();
     void connectEvents();
 };
 

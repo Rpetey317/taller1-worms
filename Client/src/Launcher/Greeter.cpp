@@ -50,6 +50,13 @@ void Greeter::createGame() {
         newGame.exec();
 }
 
+void Greeter::joinGame() {
+        // JoinGame joinGame;
+        // joinGame.setModal(true);
+        // joinGame.exec();
+}
+
+
 void Greeter::connectEvents() {
     // Conecto el evento del boton
     QPushButton* button_select_name = findChild<QPushButton*>("selectNameButton");
@@ -60,4 +67,8 @@ void Greeter::connectEvents() {
 
     QPushButton *button_create_game = findChild<QPushButton*>("createButton");
     QObject::connect(button_create_game, &QPushButton::clicked, this, &Greeter::createGame);
+
+    QPushButton *button_join_game = findChild<QPushButton*>("joinButton");
+    QObject::connect(button_join_game, &QPushButton::clicked, this, &Greeter::joinGame);
+
 }

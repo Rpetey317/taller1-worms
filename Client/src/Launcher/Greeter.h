@@ -12,6 +12,7 @@ private:
     void connectEvents();
     void updateNameRandom();
     void createGame();
+    void joinGame();
 };
 
 #endif // GREETER_H
