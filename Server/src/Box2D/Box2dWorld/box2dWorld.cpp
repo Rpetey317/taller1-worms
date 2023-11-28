@@ -1,11 +1,15 @@
 #include "box2dWorld.h"
 
-#define DEGTORAD 0.0174532925199432957f
+#define DEGTORAD -0.0174532925199432957f
 #define RADTODEG 57.295779513082320876f
 
 #define SHORT_BEAM '0'
 #define LONG_BEAM '1'
 
+enum _entityCategory {
+    BEAM = 0x0001,
+    WORM = 0x0002,
+};
 
 BoxWorld::BoxWorld() {
     initialize_world();
@@ -29,12 +33,22 @@ b2Body* BoxWorld::create_worm(float x, float y) {
     myBodyDef.angle = 0; 
     b2Body *worm = world->CreateBody(&myBodyDef);
 
-    b2PolygonShape boxShape;
-    boxShape.SetAsBox(0.12f,0.15f); 
+    b2Vec2 vertices[6];
+    vertices[0].Set(-0.06f, -0.15f);
+    vertices[1].Set(-0.12f, -0.1f);
+    vertices[2].Set(-0.12f, 0.15);
+    vertices[3].Set( 0.12f, 0.15f);
+    vertices[4].Set( 0.12f, -0.1f);
+    vertices[5].Set( 0.06f, -0.15f);
+    b2PolygonShape wormShape;
+    wormShape.Set(vertices, 6);
+
     b2FixtureDef boxFixtureDef;
-    boxFixtureDef.shape = &boxShape;
+    boxFixtureDef.shape = &wormShape;
     boxFixtureDef.density = 1;
     boxFixtureDef.friction = 0.2f;
+    boxFixtureDef.filter.categoryBits = WORM;
+    boxFixtureDef.filter.maskBits = BEAM;
     worm->CreateFixture(&boxFixtureDef);
     worm->SetFixedRotation(true);
 
@@ -75,6 +89,8 @@ void BoxWorld::create_long_beam(b2Vec2 start, float angle){
 
     beamShape.SetAsBox(0.64f,0.095f); // forma de caja de 2x2
     beamFixtureDef.shape = &beamShape; // le doy la forma de la forma creada
+    beamFixtureDef.filter.categoryBits = BEAM;
+    beamFixtureDef.filter.maskBits = WORM;
     if(angle < 45.0f)
         beamFixtureDef.friction = 2.5f;
 
@@ -92,8 +108,10 @@ void BoxWorld::create_short_beam(b2Vec2 start, float angle){
 
     beamShape.SetAsBox(0.32f,0.095f); // forma de caja de 2x2
     beamFixtureDef.shape = &beamShape; // le doy la forma de la forma creada
+    beamFixtureDef.filter.categoryBits = BEAM;
+    beamFixtureDef.filter.maskBits = WORM;
     if(angle < 45.0f)
-        beamFixtureDef.friction = 2.5f;
+            beamFixtureDef.friction = 2.5f;
 
     myBodyDef.type = b2_staticBody; //this will be a static body
     myBodyDef.position.Set(start.x + 0.64f, start.y - 0.095f); //slightly lower position
@@ -120,9 +138,11 @@ bool BoxWorld::set_map(std::vector<Tile> map) {
         switch(tile.type) {
             case SHORT_BEAM:
                 create_short_beam(pixel_to_meter(position), tile.angle);
+                std::cout << "creamos una corta" << std::endl;
                 break;
             case LONG_BEAM:
                 create_long_beam(pixel_to_meter(position), tile.angle);
+                std::cout << "creamos una laaaarga" << std::endl;
                 break;
             default:
                 return false;
