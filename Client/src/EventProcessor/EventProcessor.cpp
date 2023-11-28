@@ -38,6 +38,8 @@ void EventProcessor::process_map_update(MapUpdate& event) {
     // }
 }
 
-void EventProcessor::proccess_event(Event* event) { event->get_processed_by(*this); }
+void EventProcessor::proccess_event(std::shared_ptr<Event> event) {
+    event->get_processed_by(*this);
+}
 
 EventProcessor::~EventProcessor() {}

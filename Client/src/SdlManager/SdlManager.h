@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <memory>
 #include <algorithm>
 #include <exception>
 #include <string>
@@ -21,13 +22,13 @@ using namespace SDL2pp;  // NOLINT
 class SdlManager {
 
 public:
-    SdlManager(Queue<Action*>& outgoing, Queue<Event*>& ingoing, int id_of_player);
+    SdlManager(Queue<std::shared_ptr<Action>>& outgoing, Queue<std::shared_ptr<Event>>& ingoing, int id_of_player);
     void run(std::string background_type, std::string selected_map);  //este background_type lo deberia recibir para saber que cargar, quiza vienen por el server (?
 
 private:
 
-    Queue<Action*>& outgoing;                
-    Queue<Event*>& ingoing;  
+    Queue<std::shared_ptr<Action>>& outgoing;                
+    Queue<std::shared_ptr<Event>>& ingoing;  
     std::map<int, SdlWorm*> worms;
     int id_of_player_turn;
     int id_of_player;

@@ -1,5 +1,7 @@
 #include "GamesHandler.h"
 
+// TODO: Rewrite like 99% of this lmao
+/*
 using NetworkProtocol::msgcode_t;
 using NetworkProtocol::MSGCODE_CREATE_GAME;
 using NetworkProtocol::MSGCODE_PLAYER_CONNECT_TO_GAME;
@@ -7,16 +9,15 @@ using NetworkProtocol::MSGCODE_PLAYER_CONNECT_TO_GAME;
 
 GamesHandler::GamesHandler(): code(0) {}
 
-GameHandler* GamesHandler::create_GamesHandler() {
-    std::lock_guard< std::mutex> lock(m);
-    Queue<ClientUpdate*> eventq(10000);
-    GameHandler* new_game = new GameHandler(eventq, this->code);
-    this->code++;
-    this->games.push_back(new_game);
-    return new_game;
-}
+// Game* GamesHandler::create_GamesHandler(Queue<Message*>& client_queue) {
+//     std::lock_guard< std::mutex> lock(m);
+//     Game* new_game = new Game(client_queue, this->code);
+//     this->code++;
+//     this->games.push_back(new_game);
+//     return new_game;
+// }
 
-// GameHandler* GamesHandler::join_GamesHandler(size_t code) {
+// Game* GamesHandler::join_GamesHandler(int code, Queue<Message*>& client_queue) {
 //     std::lock_guard< std::mutex> lock(m);
 //     if ((int)code >= (int)this->games.size()) {
 //         throw std::runtime_error("El codigo ingresado no pertenece a ninguna partida!");
@@ -54,3 +55,4 @@ GamesHandler::~GamesHandler() {
         delete i;
     }
 }
+ */

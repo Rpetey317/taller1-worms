@@ -1,6 +1,7 @@
 #ifndef CLIENT_SERVER_THREAD_H
 #define CLIENT_SERVER_THREAD_H
 
+#include <memory>
 #include <mutex>
 #include <string>
 
@@ -11,11 +12,11 @@
 #include "thread.h"
 
 class SenderThread: public Thread {
-    Queue<Action*>& outgoingq;
+    Queue<std::shared_ptr<Action>>& outgoingq;
     ClientProtocol& prot;
 
 public:
-    SenderThread(Queue<Action*>& outgoingq, ClientProtocol& prot);
+    SenderThread(Queue<std::shared_ptr<Action>>& outgoingq, ClientProtocol& prot);
     void run() override;
     void end();
 

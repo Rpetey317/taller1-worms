@@ -4,11 +4,11 @@
 
 #include "LibError.h"
 
-ServerAccepterThread::ServerAccepterThread(Socket&& _acc):
-        acc(std::move(_acc)) {}
+ServerAccepterThread::ServerAccepterThread(Socket&& _acc, Game& _players):
+        acc(std::move(_acc)), lobby(_players) {}
 
 void ServerAccepterThread::run() {
-    GamesHandler lobby;
+    // GamesHandler lobby;
     while (_keep_running) {
         try {
             Socket peer = acc.accept();
