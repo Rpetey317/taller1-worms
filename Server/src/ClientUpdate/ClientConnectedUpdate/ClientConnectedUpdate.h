@@ -10,7 +10,7 @@ class ClientConnectedUpdate: public ClientUpdate {
 public:
     explicit ClientConnectedUpdate(const int& _id);
 
-    std::shared_ptr<GameUpdate> get_processed_by(GameHandler& game) override;
+    std::shared_ptr<GameUpdate> get_processed_by(Game& game) override;
 
     ~ClientConnectedUpdate() override = default;
 };

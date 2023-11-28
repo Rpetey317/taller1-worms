@@ -10,6 +10,6 @@ ClientNullUpdate::~ClientNullUpdate() = default;
 
 bool ClientNullUpdate::is_valid() { return false; }
 
-std::shared_ptr<GameUpdate> ClientNullUpdate::get_processed_by(GameHandler& game) {
+std::shared_ptr<GameUpdate> ClientNullUpdate::get_processed_by(Game& game) {
     return game.process_NullUpdate(*this);
 }

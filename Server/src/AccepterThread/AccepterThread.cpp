@@ -4,7 +4,7 @@
 
 #include "LibError.h"
 
-ServerAccepterThread::ServerAccepterThread(Socket&& _acc, GameHandler& _players):
+ServerAccepterThread::ServerAccepterThread(Socket&& _acc, Game& _players):
         acc(std::move(_acc)), lobby(_players) {}
 
 void ServerAccepterThread::run() {

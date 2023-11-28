@@ -10,10 +10,10 @@
 
 class GameLoopThread: public Thread {
     Queue<std::shared_ptr<ClientUpdate>>& eventq;
-    GameHandler& game;
+    Game& game;
 
 public:
-    GameLoopThread(Queue<std::shared_ptr<ClientUpdate>>& _eventq, GameHandler& _game);
+    GameLoopThread(Queue<std::shared_ptr<ClientUpdate>>& _eventq, Game& _game);
 
     void run() override;
 

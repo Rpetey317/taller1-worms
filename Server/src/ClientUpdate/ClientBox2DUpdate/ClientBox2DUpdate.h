@@ -12,7 +12,7 @@ class ClientBox2DUpdate: public ClientUpdate {
 public:
     ClientBox2DUpdate(const int& id, const int& cmd);
 
-    std::shared_ptr<GameUpdate> get_processed_by(GameHandler& game) override;
+    std::shared_ptr<GameUpdate> get_processed_by(Game& game) override;
 
     int& get_cmd();
 

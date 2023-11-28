@@ -6,7 +6,7 @@
 
 const std::chrono::milliseconds tickrate(1000 / 60);
 
-GameLoopThread::GameLoopThread(Queue<std::shared_ptr<ClientUpdate>>& _eventq, GameHandler& _game):
+GameLoopThread::GameLoopThread(Queue<std::shared_ptr<ClientUpdate>>& _eventq, Game& _game):
         eventq(_eventq), game(_game) {}
 
 void GameLoopThread::run() {

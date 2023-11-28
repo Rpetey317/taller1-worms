@@ -19,7 +19,7 @@
 /*
  * Handles the game lobby and its players
  */
-class GameHandler {
+class Game {
     std::map<int, std::unique_ptr<PlayerHandler>> players;
     std::atomic<int> plcount;
     Queue<std::shared_ptr<ClientUpdate>>& eventq;
@@ -66,7 +66,7 @@ public:
     /*
      * Creates new handler, adding players (recievers) to given list
      */
-    explicit GameHandler(Queue<std::shared_ptr<ClientUpdate>>& _eventq);
+    explicit Game(Queue<std::shared_ptr<ClientUpdate>>& _eventq);
     // explicit GameHandler(Queue<std::shared_ptr<ClientUpdate>>& _eventq, int code);
 
     /*

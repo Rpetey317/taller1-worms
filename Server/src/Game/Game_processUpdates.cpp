@@ -3,7 +3,7 @@
 
 #include "Game.h"
 
-std::shared_ptr<GameUpdate> GameHandler::process_disconnect(ClientDisconnectedUpdate& event) {
+std::shared_ptr<GameUpdate> Game::process_disconnect(ClientDisconnectedUpdate& event) {
     int disconnected_id = event.get_id();
     if (this->curr_pl->first == disconnected_id) {
         auto nx_pl = std::next(this->curr_pl);
@@ -20,7 +20,7 @@ std::shared_ptr<GameUpdate> GameHandler::process_disconnect(ClientDisconnectedUp
     return std::make_shared<GamePlayerDisconnectedUpdate>(disconnected_id);
 }
 
-std::shared_ptr<GameUpdate> GameHandler::process_new_connect(ClientConnectedUpdate& event) {
+std::shared_ptr<GameUpdate> Game::process_new_connect(ClientConnectedUpdate& event) {
     plcount++;
     std::cout << "New player connected. Now online: " << plcount << " players." << std::endl;
 
@@ -35,15 +35,15 @@ std::shared_ptr<GameUpdate> GameHandler::process_new_connect(ClientConnectedUpda
     return std::make_shared<GamePlayerConnectedUpdate>(event.get_id());
 }
 
-std::shared_ptr<GameUpdate> GameHandler::process_message(ClientMessageUpdate& event) {
+std::shared_ptr<GameUpdate> Game::process_message(ClientMessageUpdate& event) {
     return std::make_shared<GameChatMessageUpdate>(event.get_id(), event.get_msg());
 }
 
-std::shared_ptr<GameUpdate> GameHandler::process_NullUpdate(ClientNullUpdate& event) {
+std::shared_ptr<GameUpdate> Game::process_NullUpdate(ClientNullUpdate& event) {
     return std::make_shared<GameNullUpdate>();
 }
 
-std::shared_ptr<GameUpdate> GameHandler::process_TurnAdvance(ClientPTurnAdvanceUpdate& event) {
+std::shared_ptr<GameUpdate> Game::process_TurnAdvance(ClientPTurnAdvanceUpdate& event) {
     auto new_curr_pl = event.get_new_pl();
 
     if (new_curr_pl == this->players.end()) {
@@ -53,6 +53,6 @@ std::shared_ptr<GameUpdate> GameHandler::process_TurnAdvance(ClientPTurnAdvanceU
     return std::make_shared<GameTurnChangeUpdate>(new_curr_pl->first);
 }
 
-std::shared_ptr<GameUpdate> GameHandler::process_box2d(ClientBox2DUpdate& event) {
+std::shared_ptr<GameUpdate> Game::process_box2d(ClientBox2DUpdate& event) {
     return std::shared_ptr<GameUpdate>(box2d.process(event));
 }
