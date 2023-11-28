@@ -104,6 +104,7 @@ std::shared_ptr<ClientUpdate> ServerProtocol::recv_update() {
         return std::make_shared<ClientBox2DUpdate>(plid, input);
     } else if (code == MSGCODE_PLAYER_MOVE_RIGHT) {
         return std::make_shared<ClientBox2DUpdate>(plid, 1);
+        // Esto habria q analizarlo, pero creo que estos punteros pueden ser unique y no shared.
     } else if (code == MSGCODE_PLAYER_MOVE_LEFT) {
         return std::make_shared<ClientBox2DUpdate>(plid, 2);
     } else {
