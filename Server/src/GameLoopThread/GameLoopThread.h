@@ -3,17 +3,17 @@
 
 #include <memory>
 
-#include "ClientUpdate.h"
 #include "Game.h"
+#include "Message.h"
 #include "queue.h"
 #include "thread.h"
 
 class GameLoopThread: public Thread {
-    Queue<std::shared_ptr<ClientUpdate>>& eventq;
+    Queue<std::shared_ptr<Message>>& eventq;
     Game& game;
 
 public:
-    GameLoopThread(Queue<std::shared_ptr<ClientUpdate>>& _eventq, Game& _game);
+    GameLoopThread(Queue<std::shared_ptr<Message>>& _eventq, Game& _game);
 
     void run() override;
 

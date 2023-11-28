@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "ClientUpdate.h"
+#include "Message.h"
 #include "ServerProtocol.h"
 #include "queue.h"
 #include "thread.h"
@@ -12,7 +12,7 @@
  * Constantly listens to client for new messages
  */
 class ReceiverThread: public Thread {
-    Queue<std::shared_ptr<ClientUpdate>>& eventq;
+    Queue<std::shared_ptr<Message>>& eventq;
     ServerProtocol& prot;
     const int plid;
 
@@ -22,8 +22,7 @@ public:
      * Initializes a new thread for a given client (prot)
      * Incoming messages will be forvarded to recvers
      */
-    ReceiverThread(Queue<std::shared_ptr<ClientUpdate>>& eventq, ServerProtocol& prot,
-                   const int& plid);
+    ReceiverThread(Queue<std::shared_ptr<Message>>& eventq, ServerProtocol& prot, const int& plid);
 
     /*
      * Runs thread. Listens for messages, and when one is received,

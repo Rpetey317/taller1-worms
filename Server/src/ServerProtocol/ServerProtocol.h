@@ -4,10 +4,10 @@
 #include <memory>
 #include <string>
 
-#include "ClientUpdateHeaders.h"
-#include "GameUpdateHeaders.h"
+#include "MessageHeaders.h"
 #include "NetworkProtocol.h"
 #include "Socket.h"
+#include "UpdateHeaders.h"
 #include "Vect2D.h"
 
 using NetworkProtocol::msgcode_t;
@@ -48,13 +48,13 @@ public:
      * Send methods for each type of update.
      * Refer to protocol documentation for details
      */
-    char send_ConnectionAcknowledgeUpdate(const GameAcknowledgeUpdate& upd);
-    char send_PlayerConnectedUpdate(const GamePlayerConnectedUpdate& upd);
-    char send_PlayerDisconnectedUpdate(const GamePlayerDisconnectedUpdate& upd);
-    char send_TurnChangeUpdate(const GameTurnChangeUpdate& upd);
-    char send_PlayerMessageUpdate(const GameChatMessageUpdate& upd);
-    char send_NullUpdate(const GameNullUpdate& upd);
-    char send_WorldUpdate(const GameWorldUpdate& upd);
+    char send_ConnectionAcknowledgeUpdate(const PlayerAcknowledge& upd);
+    char send_PlayerConnectedUpdate(const PlayerConnectedUpdate& upd);
+    char send_PlayerDisconnectedUpdate(const PlayerDisconnectedUpdate& upd);
+    char send_TurnChangeUpdate(const TurnChange& upd);
+    char send_PlayerMessageUpdate(const ChatUpdate& upd);
+    char send_NullUpdate(const NullUpdate& upd);
+    char send_WorldUpdate(const WorldUpdate& upd);
 
 
     /*
@@ -65,12 +65,12 @@ public:
     /*
      * Sends given message to client
      */
-    char send_update(std::shared_ptr<GameUpdate> msg);
+    char send_update(std::shared_ptr<Update> msg);
 
     /*
      * Reads a message from client. Returns NullMsg if connection closed
      */
-    std::shared_ptr<ClientUpdate> recv_update();
+    std::shared_ptr<Message> recv_update();
 
     /*
      * Reads the first request the client sends. Can be CREATE_GAME or JOIN_GAME

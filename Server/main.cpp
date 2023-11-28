@@ -3,9 +3,9 @@
 #include <utility>
 
 #include "AccepterThread.h"
-#include "ClientUpdate.h"
 #include "Game.h"
 #include "GameLoopThread.h"
+#include "Message.h"
 #include "ServerProtocol.h"
 #include "Socket.h"
 #include "queue.h"
@@ -28,7 +28,7 @@ int main(int argc, const char** argv) {
 
     // Initialization
     Socket acc(argv[1]);
-    Queue<std::shared_ptr<ClientUpdate>> eventq(10000);
+    Queue<std::shared_ptr<Message>> eventq(10000);
     Game game(eventq);
 
     ServerAccepterThread acc_th(std::move(acc), game);

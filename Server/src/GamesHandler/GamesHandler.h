@@ -14,8 +14,8 @@ private:
 
 public:
     GamesHandler();
-    Game* create_GamesHandler(Queue<ClientUpdate*>& client_queue);
-    Game* join_GamesHandler(int code, Queue<ClientUpdate*>& client_queue);
+    Game* create_GamesHandler(Queue<Message*>& client_queue);
+    Game* join_GamesHandler(int code, Queue<Message*>& client_queue);
     ~GamesHandler();
 };
 

@@ -8,16 +8,15 @@ using NetworkProtocol::MSGCODE_ACK;             // MGSCODE_CREATE_GAME
 using NetworkProtocol::MSGCODE_PLAYER_CONNECT;  // MSGCODE_PLAYER_CONNECT_TO_GAME
 using NetworkProtocol::msgcode_t;
 
-PlayerHandler::PlayerHandler(Socket&& _peer, Queue<std::shared_ptr<ClientUpdate>>& _eventq,
-                             int& _id):
+PlayerHandler::PlayerHandler(Socket&& _peer, Queue<std::shared_ptr<Message>>& _eventq, int& _id):
         prot(std::move(_peer), _id),
         sendq(10000),
         send_th(sendq, prot),
         recv_th(_eventq, prot, _id),
         id(_id) {
-    std::shared_ptr<GameAcknowledgeUpdate> ack = std::make_shared<GameAcknowledgeUpdate>(_id);
+    std::shared_ptr<PlayerAcknowledge> ack = std::make_shared<PlayerAcknowledge>(_id);
     this->prot.send_update(ack);
-    _eventq.push(std::make_shared<ClientConnectedUpdate>(_id));
+    _eventq.push(std::make_shared<PlayerConnectedMessage>(_id));
 }
 
 void PlayerHandler::start() {
@@ -55,7 +54,7 @@ void PlayerHandler::start() {
 
 bool PlayerHandler::is_connected() { return prot.is_connected(); }
 
-void PlayerHandler::send(std::shared_ptr<GameUpdate> msg) { sendq.push(msg); }
+void PlayerHandler::send(std::shared_ptr<Update> msg) { sendq.push(msg); }
 
 PlayerHandler::~PlayerHandler() {
     prot.close();
