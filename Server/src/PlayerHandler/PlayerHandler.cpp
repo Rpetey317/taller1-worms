@@ -14,8 +14,8 @@ PlayerHandler::PlayerHandler(Socket&& _peer, Queue<ClientUpdate*>& _eventq, int&
         send_th(sendq, prot),
         recv_th(_eventq, prot, _id),
         id(_id) {
-    GameAcknowledgeUpdate ack(_id);
-    this->prot.send_update(std::shared_ptr<GameUpdate>(&ack));
+    std::shared_ptr<GameAcknowledgeUpdate> ack = std::make_shared<GameAcknowledgeUpdate>(_id);
+    this->prot.send_update(ack);
     _eventq.push((ClientUpdate*)new ClientConnectedUpdate(_id));
 }
 
