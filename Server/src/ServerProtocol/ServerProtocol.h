@@ -4,8 +4,8 @@
 #include <memory>
 #include <string>
 
-#include "ClientUpdateHeaders.h"
 #include "GameUpdateHeaders.h"
+#include "MessageHeaders.h"
 #include "NetworkProtocol.h"
 #include "Socket.h"
 #include "Vect2D.h"
@@ -70,7 +70,7 @@ public:
     /*
      * Reads a message from client. Returns NullMsg if connection closed
      */
-    std::shared_ptr<ClientUpdate> recv_update();
+    std::shared_ptr<Message> recv_update();
 
     /*
      * Reads the first request the client sends. Can be CREATE_GAME or JOIN_GAME

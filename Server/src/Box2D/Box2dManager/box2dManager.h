@@ -19,7 +19,7 @@
 
 #include "../Box2dPlayer/box2dPlayer.h"
 #include "../Box2dWorld/box2dWorld.h"
-#include "ClientUpdateHeaders.h"
+#include "MessageHeaders.h"
 #include "GameUpdateHeaders.h"
 
 class BoxSimulator {
@@ -39,7 +39,7 @@ public:
     BoxSimulator();
     bool set_map();
     void add_player(); // should reach agreement whether position is random or sent by server
-    std::shared_ptr<GameWorldUpdate> process(ClientBox2DUpdate& update);
+    std::shared_ptr<GameWorldUpdate> process(Box2DMsg& update);
 };
 
 #endif

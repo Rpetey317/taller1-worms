@@ -3,10 +3,10 @@
 #include <memory>
 #include <string>
 
-#include "ClientUpdate.h"
 #include "LibError.h"
+#include "Message.h"
 
-ReceiverThread::ReceiverThread(Queue<std::shared_ptr<ClientUpdate>>& _eventq, ServerProtocol& _prot,
+ReceiverThread::ReceiverThread(Queue<std::shared_ptr<Message>>& _eventq, ServerProtocol& _prot,
                                const int& _plid):
         eventq(_eventq), prot(_prot), plid(_plid) {}
 
@@ -14,7 +14,7 @@ void ReceiverThread::run() {
     while (_keep_running) {
         try {
 
-            std::shared_ptr<ClientUpdate> msg = prot.recv_update();
+            std::shared_ptr<Message> msg = prot.recv_update();
             if (msg->is_valid())
                 this->eventq.push(msg);
 
@@ -28,7 +28,7 @@ void ReceiverThread::run() {
         }
     }
     // Player disconnected
-    this->eventq.push(std::make_shared<ClientDisconnectedUpdate>(this->plid));
+    this->eventq.push(std::make_shared<PlayerDisconnected>(this->plid));
 }
 
 void ReceiverThread::end() { _keep_running = false; }

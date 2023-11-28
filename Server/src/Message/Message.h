@@ -1,5 +1,5 @@
-#ifndef __CLIENTUPDATE_H__
-#define __CLIENTUPDATE_H__
+#ifndef __Message_H__
+#define __Message_H__
 
 #include <memory>
 #include <string>
@@ -8,11 +8,11 @@ class Game;
 class GameUpdate;
 
 // TODO: make this polymorphic
-class ClientUpdate {
+class Message {
 protected:
     int id;
 
-    explicit ClientUpdate(const int& _id): id(_id) {}
+    explicit Message(const int& _id): id(_id) {}
 
 public:
     int get_id() { return this->id; }
@@ -21,7 +21,7 @@ public:
 
     virtual bool is_valid() { return true; }
 
-    virtual ~ClientUpdate() = default;
+    virtual ~Message() = default;
 };
 
-#endif  // !__CLIENTUPDATE_H__
+#endif  // !__Message_H__

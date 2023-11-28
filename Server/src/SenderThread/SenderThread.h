@@ -5,7 +5,7 @@
 #include <mutex>
 #include <string>
 
-#include "ClientUpdate.h"
+#include "Message.h"
 #include "ServerProtocol.h"
 #include "queue.h"
 #include "thread.h"

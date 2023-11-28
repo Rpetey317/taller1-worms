@@ -4,7 +4,7 @@
 
 GamesHandler::GamesHandler(): code(0) {}
 
-// Game* GamesHandler::create_GamesHandler(Queue<ClientUpdate*>& client_queue) {
+// Game* GamesHandler::create_GamesHandler(Queue<Message*>& client_queue) {
 //     std::lock_guard< std::mutex> lock(m);
 //     Game* new_game = new Game(client_queue, this->code);
 //     this->code++;
@@ -12,7 +12,7 @@ GamesHandler::GamesHandler(): code(0) {}
 //     return new_game;
 // }
 
-// Game* GamesHandler::join_GamesHandler(int code, Queue<ClientUpdate*>& client_queue) {
+// Game* GamesHandler::join_GamesHandler(int code, Queue<Message*>& client_queue) {
 //     std::lock_guard< std::mutex> lock(m);
 //     if ((int)code >= (int)this->games.size()) {
 //         throw std::runtime_error("El codigo ingresado no pertenece a ninguna partida!");

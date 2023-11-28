@@ -24,7 +24,7 @@ add_subdirectory("Common") #Para buscar el archivo CMakeLists.txt en el director
 # SERVER---------------------------------------------------------------------------------------------------------------------
 include_directories(${PROJECT_SOURCE_DIR}/Server/src)
 include_directories(${PROJECT_SOURCE_DIR}/Server/src/AccepterThread)
-include_directories(${PROJECT_SOURCE_DIR}/Server/src/ClientUpdate)
+include_directories(${PROJECT_SOURCE_DIR}/Server/src/Message)
 include_directories(${PROJECT_SOURCE_DIR}/Server/src/Game)
 include_directories(${PROJECT_SOURCE_DIR}/Server/src/GameLoopThread)
 include_directories(${PROJECT_SOURCE_DIR}/Server/src/GameUpdate)

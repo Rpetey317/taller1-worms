@@ -3,12 +3,12 @@
 
 #include <memory>
 
-#include "../ClientUpdate.h"
+#include "../Message.h"
 
-class ClientNullUpdate: public ClientUpdate {
+class NullMessage: public Message {
 public:
-    ClientNullUpdate();
-    ~ClientNullUpdate();
+    NullMessage();
+    ~NullMessage();
 
     bool is_valid() override;
 

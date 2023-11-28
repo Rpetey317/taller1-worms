@@ -6,18 +6,18 @@
 
 const std::chrono::milliseconds tickrate(1000 / 60);
 
-GameLoopThread::GameLoopThread(Queue<std::shared_ptr<ClientUpdate>>& _eventq, Game& _game):
+GameLoopThread::GameLoopThread(Queue<std::shared_ptr<Message>>& _eventq, Game& _game):
         eventq(_eventq), game(_game) {}
 
 void GameLoopThread::run() {
     while (_keep_running) {
-        std::list<std::shared_ptr<ClientUpdate>> event_list;
+        std::list<std::shared_ptr<Message>> event_list;
         auto start_time = std::chrono::steady_clock::now();
 
         // Pop everything from event queue
         bool popped = false;
         do {
-            std::shared_ptr<ClientUpdate> event;
+            std::shared_ptr<Message> event;
             popped = this->eventq.try_pop(event);
             if (popped) {
                 event_list.push_back(event);

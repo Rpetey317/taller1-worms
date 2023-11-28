@@ -9,8 +9,8 @@
 
 #include "../Box2D/Box2dManager/box2dManager.h"
 
-#include "ClientUpdateHeaders.h"
 #include "GameUpdate.h"
+#include "MessageHeaders.h"
 #include "PlayerHandler.h"
 #include "Socket.h"
 #include "queue.h"
@@ -23,7 +23,7 @@
 class Game {
     std::map<int, std::unique_ptr<PlayerHandler>> players;
     std::atomic<int> plcount;
-    Queue<std::shared_ptr<ClientUpdate>>& eventq;
+    Queue<std::shared_ptr<Message>>& eventq;
     std::map<int, std::unique_ptr<PlayerHandler>>::iterator curr_pl;
     int game_code;
     int next_free_id;
@@ -33,42 +33,42 @@ class Game {
 
 public:
     // ============ DD ============= //
-    // This three methods cannot be private. They are called from ClientUpdate::get_processed_by
+    // This three methods cannot be private. They are called from Message::get_processed_by
     /*
      * Increments player count
      * Returns corresponding GamePlayerConnectedUpdate
      */
-    std::shared_ptr<GameUpdate> process_new_connect(ClientConnectedUpdate& event);
+    std::shared_ptr<GameUpdate> process_new_connect(PlayerConnected& event);
 
     /*
      * Decrements player count
      * Returns corresponding GamePlayerDisconnectedUpdate
      */
-    std::shared_ptr<GameUpdate> process_disconnect(ClientDisconnectedUpdate& event);
+    std::shared_ptr<GameUpdate> process_disconnect(PlayerDisconnected& event);
 
     /*
      * Returns GameChatMessageUpdate with same message
      */
-    std::shared_ptr<GameUpdate> process_message(ClientMessageUpdate& event);
+    std::shared_ptr<GameUpdate> process_message(Chat& event);
 
     /*
      * Processess NullUpdate (i.e. does nothing)
      */
-    std::shared_ptr<GameUpdate> process_NullUpdate(ClientNullUpdate& event);
+    std::shared_ptr<GameUpdate> process_NullUpdate(NullMessage& event);
 
     /*
      * Advances turn to next player and notifies relevant players of the change
      */
-    std::shared_ptr<GameUpdate> process_TurnAdvance(ClientPTurnAdvanceUpdate& event);
+    std::shared_ptr<GameUpdate> process_TurnAdvance(TurnAdvance& event);
 
-    std::shared_ptr<GameUpdate> process_box2d(ClientBox2DUpdate& event);
+    std::shared_ptr<GameUpdate> process_box2d(Box2DMsg& event);
 
 
     /*
      * Creates new handler, adding players (recievers) to given list
      */
-    explicit Game(Queue<std::shared_ptr<ClientUpdate>>& _eventq);
-    // explicit GameHandler(Queue<std::shared_ptr<ClientUpdate>>& _eventq, int code);
+    explicit Game(Queue<std::shared_ptr<Message>>& _eventq);
+    // explicit GameHandler(Queue<std::shared_ptr<Message>>& _eventq, int code);
 
     /*
      * Adds a new player, connected to given socket
@@ -79,7 +79,7 @@ public:
      * Executes given event, returns update to be sent back to players
      * Implemented via DD, a process_eventType method must be implemented for each event type
      */
-    std::shared_ptr<GameUpdate> execute(std::shared_ptr<ClientUpdate> event);
+    std::shared_ptr<GameUpdate> execute(std::shared_ptr<Message> event);
 
     /*
      * broadcasts given update to all players
