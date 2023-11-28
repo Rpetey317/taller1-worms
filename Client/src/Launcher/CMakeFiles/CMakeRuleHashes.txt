@@ -1,0 +1,3 @@
+# Hashes of file build rules.
+13b107dcab1f8d4a49c6322a06fc2bb9 ui_crear_partida_nueva.h
+d5f8491df8a25da6e2646c84c8bc9037 ui_super_duper_tuki.h
