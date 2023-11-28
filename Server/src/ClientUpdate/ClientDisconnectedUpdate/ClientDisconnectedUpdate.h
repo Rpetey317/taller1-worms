@@ -8,7 +8,7 @@ class ClientDisconnectedUpdate: public ClientUpdate {
 public:
     explicit ClientDisconnectedUpdate(const int& _id);
 
-    GameUpdate* get_processed_by(GameHandler& game) override;
+    std::shared_ptr<GameUpdate> get_processed_by(GameHandler& game) override;
 
     ~ClientDisconnectedUpdate() override = default;
 };

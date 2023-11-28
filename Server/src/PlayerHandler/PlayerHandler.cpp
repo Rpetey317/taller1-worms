@@ -15,7 +15,7 @@ PlayerHandler::PlayerHandler(Socket&& _peer, Queue<ClientUpdate*>& _eventq, int&
         recv_th(_eventq, prot, _id),
         id(_id) {
     GameAcknowledgeUpdate ack(_id);
-    this->prot.send_update((GameUpdate*)&ack);
+    this->prot.send_update(std::shared_ptr<GameUpdate>(&ack));
     _eventq.push((ClientUpdate*)new ClientConnectedUpdate(_id));
 }
 
@@ -54,7 +54,7 @@ void PlayerHandler::start() {
 
 bool PlayerHandler::is_connected() { return prot.is_connected(); }
 
-void PlayerHandler::send(GameUpdate* msg) { sendq.push(msg); }
+void PlayerHandler::send(std::shared_ptr<GameUpdate> msg) { sendq.push(msg); }
 
 PlayerHandler::~PlayerHandler() {
     prot.close();

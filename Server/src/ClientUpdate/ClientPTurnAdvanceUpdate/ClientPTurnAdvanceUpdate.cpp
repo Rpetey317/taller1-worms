@@ -11,7 +11,7 @@ ClientPTurnAdvanceUpdate::~ClientPTurnAdvanceUpdate() {}
 
 bool ClientPTurnAdvanceUpdate::is_valid() { return true; }
 
-GameUpdate* ClientPTurnAdvanceUpdate::get_processed_by(GameHandler& game) {
+std::shared_ptr<GameUpdate> ClientPTurnAdvanceUpdate::get_processed_by(GameHandler& game) {
     return game.process_TurnAdvance(*this);
 }
 

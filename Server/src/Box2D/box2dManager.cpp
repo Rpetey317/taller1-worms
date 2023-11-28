@@ -51,7 +51,7 @@ std::map<int, Vect2D>* BoxSimulator::create_position_map(const std::list<Box2DPl
     return positions;
 }
 
-GameWorldUpdate* BoxSimulator::process(ClientBox2DUpdate& update) {
+std::shared_ptr<GameWorldUpdate> BoxSimulator::process(ClientBox2DUpdate& update) {
     int current_command = update.get_cmd();        
     b2Vec2 vel = (*playing_worm).get_body()->GetLinearVelocity();  // vector vel del gusano
     switch (current_command) {
@@ -78,7 +78,7 @@ GameWorldUpdate* BoxSimulator::process(ClientBox2DUpdate& update) {
     }
     (*playing_worm).get_body()->SetLinearVelocity(vel);  // seteo la nueva velocidad
     world.step();
-    return new GameWorldUpdate(create_position_map(worms)); // TODO: ver que devolver
+    return std::make_shared<GameWorldUpdate>(create_position_map(worms)); // TODO: ver que devolver
 }
 
 void BoxSimulator::player_shoot(float angle, float power) {

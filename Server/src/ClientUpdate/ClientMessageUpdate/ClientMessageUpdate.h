@@ -11,7 +11,7 @@ class ClientMessageUpdate: public ClientUpdate {
 public:
     ClientMessageUpdate(const int& _id, const std::string& _msg);
 
-    GameUpdate* get_processed_by(GameHandler& game) override;
+    std::shared_ptr<GameUpdate> get_processed_by(GameHandler& game) override;
 
     std::string& get_msg();
 

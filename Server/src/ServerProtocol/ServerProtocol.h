@@ -64,7 +64,7 @@ public:
     /*
      * Sends given message to client
      */
-    char send_update(GameUpdate* msg);
+    char send_update(std::shared_ptr<GameUpdate> msg);
 
     /*
      * Reads a message from client. Returns NullMsg if connection closed

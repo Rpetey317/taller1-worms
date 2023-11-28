@@ -1,6 +1,7 @@
 #ifndef __CLIENTUPDATE_H__
 #define __CLIENTUPDATE_H__
 
+#include <memory>
 #include <string>
 
 class GameHandler;
@@ -16,7 +17,7 @@ protected:
 public:
     int get_id() { return this->id; }
 
-    virtual GameUpdate* get_processed_by(GameHandler& game) = 0;
+    virtual std::shared_ptr<GameUpdate> get_processed_by(GameHandler& game) = 0;
 
     virtual bool is_valid() { return true; }
 

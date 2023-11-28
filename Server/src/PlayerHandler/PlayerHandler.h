@@ -2,6 +2,7 @@
 #define __SERVER_PLWRAPPER_H__
 
 #include <list>
+#include <memory>
 #include <string>
 
 #include "PlayerListMonitor.h"
@@ -13,7 +14,7 @@
  */
 class PlayerHandler {
     ServerProtocol prot;
-    Queue<GameUpdate*> sendq;
+    Queue<std::shared_ptr<GameUpdate>> sendq;
     SenderThread send_th;
     ReceiverThread recv_th;
     const int id;
@@ -40,7 +41,7 @@ public:
     /*
      * Sends a message back to client
      */
-    void send(GameUpdate* msg);
+    void send(std::shared_ptr<GameUpdate> msg);
 
     /*
      * Stops associated threads and frees all resources

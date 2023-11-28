@@ -25,9 +25,11 @@ void GameHandler::add_player(Socket&& peer) {
 }
 
 // DD methods implemented in Game_processUpdate.cpp
-GameUpdate* GameHandler::execute(ClientUpdate* event) { return event->get_processed_by(*this); }
+std::shared_ptr<GameUpdate> GameHandler::execute(ClientUpdate* event) {
+    return event->get_processed_by(*this);
+}
 
-void GameHandler::broadcast(GameUpdate* update) {
+void GameHandler::broadcast(std::shared_ptr<GameUpdate> update) {
     for (auto pl = this->players.begin(); pl != this->players.end(); pl++) {
         (*pl).second->send(update);
     }
