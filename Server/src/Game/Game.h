@@ -7,12 +7,13 @@
 #include <string>
 #include <vector>
 
+#include "../Box2D/Box2dManager/box2dManager.h"
+
 #include "ClientUpdateHeaders.h"
 #include "GameUpdate.h"
 #include "PlayerHandler.h"
 #include "PlayerListMonitor.h"
 #include "Socket.h"
-#include "box2dManager.h"
 #include "queue.h"
 
 #define SERVER_ID 0

@@ -12,6 +12,8 @@ void PlayerDisconnected::get_processed_by(EventProcessor& eventProcessor) {
 
 std::map<int, Vect2D> PlayerDisconnected::get_worm_positions() { return std::map<int, Vect2D>(); }
 
+std::map<int, Worm> PlayerDisconnected::get_worms() { return std::map<int, Worm>(); }
+
 bool PlayerDisconnected::is_new_player() { return false; }
 
 // std::string PlayerDisconnected::get_player_name() { return this->player_name; }
