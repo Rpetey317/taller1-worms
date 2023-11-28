@@ -5,7 +5,6 @@
 #include <memory>
 #include <string>
 
-#include "PlayerListMonitor.h"
 #include "ReceiverThread.h"
 #include "SenderThread.h"
 

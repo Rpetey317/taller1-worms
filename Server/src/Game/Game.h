@@ -10,7 +10,6 @@
 #include "ClientUpdateHeaders.h"
 #include "GameUpdate.h"
 #include "PlayerHandler.h"
-#include "PlayerListMonitor.h"
 #include "Socket.h"
 #include "box2dManager.h"
 #include "queue.h"

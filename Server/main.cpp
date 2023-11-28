@@ -6,7 +6,6 @@
 #include "ClientUpdate.h"
 #include "Game.h"
 #include "GameLoopThread.h"
-#include "PlayerListMonitor.h"
 #include "ServerProtocol.h"
 #include "Socket.h"
 #include "queue.h"

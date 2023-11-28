@@ -2,7 +2,6 @@
 #define __SERVER_RECEIVER_H__
 
 #include "ClientUpdate.h"
-#include "PlayerListMonitor.h"
 #include "ServerProtocol.h"
 #include "queue.h"
 #include "thread.h"
