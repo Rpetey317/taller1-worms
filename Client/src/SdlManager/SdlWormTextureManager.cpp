@@ -6,6 +6,9 @@ void SdlWormTextureManager::render(SdlWormState *worm_state, int animation_phase
 }
 // los numeros magicos son el rgb del fondo Texture
 SdlWormTextureManager::SdlWormTextureManager(Renderer &renderer) : renderer(renderer) {
+
+
+    //STATIC IMAGES
     Surface image_static("../Images/Worms/wblink1.png");
     image_static.SetColorKey(true, SDL_MapRGB(image_static.Get()->format, 128, 128,
                                        192));  
@@ -61,16 +64,63 @@ SdlWormTextureManager::SdlWormTextureManager(Renderer &renderer) : renderer(rend
     texture_map["BANANA"] = new Texture(renderer, image_banana);
 
 
+    //ATTACKING ANIMATION
+
 
     Surface image_teleporting("../Images/Worms/wteldsv.png");
-    image_teleporting.SetColorKey(true, SDL_MapRGB(image_teleporting.Get()->format, 128, 128,
-                                       192));  
+    image_teleporting.SetColorKey(true, SDL_MapRGB(image_teleporting.Get()->format, 192, 192,
+                                       128));  
     texture_map["TELEPORTING"] = new Texture(renderer, image_teleporting);//LA QUE DESAPARECE UN POQUITO ANTES DE TELETRANSPORTARSE, ESTA TODO UN TEMA
     
 
     Surface image_beisboll_attack("../Images/Worms/wbsbbk2.png");
-    image_banana.SetColorKey(true, SDL_MapRGB(image_banana.Get()->format, 128, 128,
-                                       192));  //TIENE ANGULOS
-    texture_map["BEISBOLL_ATTACK"] = new Texture(renderer, image_banana);
+    image_beisboll_attack.SetColorKey(true, SDL_MapRGB(image_beisboll_attack.Get()->format, 192, 192,
+                                       128));  
+    texture_map["BEISBOLL_ATTACK"] = new Texture(renderer, image_beisboll_attack);
+
+    // CHOOSING WEAPON ANIMATION
+
+    Surface image_choosing_banana("../Images/Worms/wbanlnk.png");
+    image_choosing_banana.SetColorKey(true, SDL_MapRGB(image_choosing_banana.Get()->format, 128, 128,
+                                       192));  
+    texture_map["CHOOSING_BANANA"] = new Texture(renderer, image_choosing_banana);    
+
+    Surface image_choosing_bazooka("../Images/Worms/wbazlnk.png");
+    image_choosing_bazooka.SetColorKey(true, SDL_MapRGB(image_choosing_bazooka.Get()->format, 128, 128,
+                                       192));  
+    texture_map["CHOOSING_BAZOOKA"] = new Texture(renderer, image_choosing_bazooka);   //QUE ES == A MORTERO
+
+    Surface image_choosing_beisboll("../Images/Worms/wbsblnk.png");
+    image_choosing_beisboll.SetColorKey(true, SDL_MapRGB(image_choosing_beisboll.Get()->format, 192, 192,
+                                       128));  
+    texture_map["CHOOSING_BEISBOLL"] = new Texture(renderer, image_choosing_beisboll); 
+
+    Surface image_choosing_red_grenade("../Images/Worms/wclslnk.png");
+    image_choosing_red_grenade.SetColorKey(true, SDL_MapRGB(image_choosing_red_grenade.Get()->format, 128, 128,
+                                       192));  
+    texture_map["CHOOSING_RED_GRENADE"] = new Texture(renderer, image_choosing_red_grenade);  
+
+    Surface image_choosing_green_grenade("../Images/Worms/wgrnlnk.png");
+    image_choosing_green_grenade.SetColorKey(true, SDL_MapRGB(image_choosing_green_grenade.Get()->format, 128, 128,
+                                       192));  
+    texture_map["CHOOSING_GREEN_GRENADE"] = new Texture(renderer, image_choosing_green_grenade);  
+
+    Surface image_choosing_holy_grenade("../Images/Worms/whgrlnk.png");
+    image_choosing_holy_grenade.SetColorKey(true, SDL_MapRGB(image_choosing_holy_grenade.Get()->format, 128, 128,
+                                       192));  
+    texture_map["CHOOSING_HOLY_GRENADE"] = new Texture(renderer, image_choosing_holy_grenade);  
+
+
+    //other animations
+
+    Surface image_die("../Images/Worms/wdie.png");
+    image_die.SetColorKey(true, SDL_MapRGB(image_die.Get()->format, 128, 128,
+                                       192));  
+    texture_map["DIE"] = new Texture(renderer, image_die);  
+
+    Surface image_fall("../Images/Worms/wfall.png");
+    image_fall.SetColorKey(true, SDL_MapRGB(image_fall.Get()->format, 128, 128,
+                                       192));  
+    texture_map["FALL"] = new Texture(renderer, image_fall);  
 
 }

@@ -1,6 +1,6 @@
 
 #include "SdlManager.h"
-#define FPS 60
+#define FPS 30
 SdlManager::SdlManager(Queue<Action*>& outgoing, Queue<Event*>& ingoing, int id_of_player):
         outgoing(outgoing), ingoing(ingoing) {
     // Initialize SDL library
@@ -21,7 +21,7 @@ bool SdlManager::event_handler() {
             worms[id_of_player]->destroy();
             return false;
         } else if (event.type == SDL_KEYDOWN) {
-            if (id_of_player_turn != id_of_player)
+            if (id_of_player_turn != id_of_player || worms[id_worm_turn]->is_animation_playing)
                 return true;
 
             switch (event.key.keysym.sym) {
@@ -59,7 +59,7 @@ bool SdlManager::event_handler() {
             }
 
         } else if (event.type == SDL_KEYUP) {
-            if (id_of_player_turn != id_of_player)
+            if (id_of_player_turn != id_of_player || worms[id_worm_turn]->is_animation_playing)
                 return true;
             switch (event.key.keysym.sym) {
                 case SDLK_RIGHT: {
@@ -142,9 +142,10 @@ bool SdlManager::event_handler() {
 
             }
         } else if(event.type == SDL_MOUSEBUTTONDOWN) {
-            if (id_of_player_turn != id_of_player)
+            if (id_of_player_turn != id_of_player || worms[id_worm_turn]->is_animation_playing)
                 return true;
             switch(event.button.button) {
+                
                 case SDL_BUTTON_LEFT : {
                     if (!worms[id_worm_turn]->is_in_gun_state())
                         break;
@@ -161,17 +162,16 @@ bool SdlManager::event_handler() {
             }
 
         } else if (event.type == SDL_MOUSEBUTTONUP) {
-            if (id_of_player_turn != id_of_player)
+            if (id_of_player_turn != id_of_player || worms[id_worm_turn]->is_animation_playing)
                 return true;
             switch(event.button.button) {
                 case SDL_BUTTON_LEFT : {
-                    if (!worms[id_worm_turn]->is_in_gun_state())
-                        break;
                     if (!worms[id_worm_turn]->has_ammo())
                         break;
                     worms[id_worm_turn]->reduce_ammo();
-                    std::cout << "ATTACK_POWER: " << worms[id_worm_turn]->attack_power << std::endl;
+                    worms[id_worm_turn]->play_animation();
                     worms[id_worm_turn]->play_sound("THROWING");
+                    
                     worms[id_worm_turn]->is_charging = false;
                     worms[id_worm_turn]->attack_power = 0; //en vez de worms[0], deberiamos hacer worms[jugador_en_turno], osea voy a necesitar 2 variables mas
                     // uno es la variable del id jugador de este cliente, otro la variable del id jugador en turno :)
