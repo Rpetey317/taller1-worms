@@ -12,6 +12,8 @@ class Greeter : public QWidget {
 public:
     explicit Greeter(QWidget *parent = 0);
     // DataLoggin dataLoggin;
+    QString gameName;
+    
 private:
     // Ui::Greeter *ui;
     void updateGreetings();
