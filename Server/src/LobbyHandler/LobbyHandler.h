@@ -1,25 +1,26 @@
 
-#ifndef GAMESHANDLER_H
-#define GAMESHANDLER_H
+#ifndef __LOBBYHANDLER_H__
+#define __LOBBYHANDLER_H__
+
 #include <string>
-#include <vector>
+#include <map>
 
 #include "Game.h"
 
-class GamesHandler {
+class LobbyHandler {
 private:
     int code;
-    std::vector<Game*> games;
+    std::map<std::string, std::unique_ptr<Game>> games;
     std::mutex m;
   
     // ServerProtocol prot;
 
   public:
-    GamesHandler();
-    Game* create_GamesHandler(Queue<Message*>& client_queue);
-    Game* join_GamesHandler(int code, Queue<Message*>& client_queue);
-    ~GamesHandler();
+    LobbyHandler();
+    Game* create_LobbyHandler(Queue<Message*>& client_queue);
+    Game* join_LobbyHandler(int code, Queue<Message*>& client_queue);
+    ~LobbyHandler();
 };
 
 
-#endif  // GAMESHANDLER_H
+#endif  // __LOBBYHANDLER_H__
