@@ -18,6 +18,7 @@
 #include "SdlWormStateStill.h"
 #include "SdlWormStateTeleport.h"
 #include "SdlWormStateWalk.h"
+
 using namespace SDL2pp;  // NOLINT
 
 class SdlWorm {
@@ -27,9 +28,9 @@ public:
     SDL_RendererFlip flip;
     bool is_charging;
     int attack_power;
-    int id;
-    explicit SdlWorm(SdlWormTextureManager& texture_manager, SdlSoundManager& sound_manager, int id);
-    void next_animation();
+    int worm_id;
+    explicit SdlWorm(SdlWormTextureManager& texture_manager, SdlSoundManager& sound_manager, int x_pos, int y_pos, int worm_id, int player_id);
+    bool next_animation();
     void change_state(std::string state);
     void play_sound(std::string sound_to_play);
     void render_new(Vect2D position);
@@ -40,9 +41,12 @@ public:
     void change_angle(int angle);
     bool reduce_ammo();
     bool has_ammo();
+    void play_animation();
+    bool is_animation_playing;
 private:
     SdlWormTextureManager& texture_manager;
     SdlSoundManager& sound_manager;
+    int player_id;
     int angle;
     int animation_phase;
     

@@ -31,6 +31,7 @@ private:
     Queue<std::shared_ptr<Event>>& ingoing;  
     std::map<int, SdlWorm*> worms;
     int id_of_player_turn;
+    int id_worm_turn;
     int id_of_player;
 
     bool event_handler();

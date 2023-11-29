@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#define WORM_TYPE '2'
 
 struct Tile {
     int type;

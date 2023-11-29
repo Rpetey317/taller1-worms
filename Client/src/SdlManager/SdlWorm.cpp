@@ -8,7 +8,11 @@ void SdlWorm::render_new(Vect2D position) {
     x_pos = position.x;
     y_pos = position.y;
     std::cout << position.x << " " << position.y << std::endl;
-    texture_manager.render(worm_state, animation_phase, position.x, position.y, flip);
+    if (is_animation_playing) {
+        texture_manager.render(worm_state, animation_phase, position.x, position.y, flip);
+    } else {
+        texture_manager.render(worm_state, animation_phase, position.x, position.y, flip);
+    }
 }
 
 void SdlWorm::apply() {
@@ -20,13 +24,15 @@ void SdlWorm::apply() {
     }
 }
 
-SdlWorm::SdlWorm(SdlWormTextureManager& texture_manager, SdlSoundManager& sound_manager, int id) : texture_manager(texture_manager), sound_manager(sound_manager) {
-    this->id = id;
-    x_pos = 50;
-    y_pos = 50;
+SdlWorm::SdlWorm(SdlWormTextureManager& texture_manager, SdlSoundManager& sound_manager, int x_pos, int y_pos, int worm_id, int player_id) : texture_manager(texture_manager), sound_manager(sound_manager) {
+    this->worm_id = worm_id;
+    this->player_id = player_id;
+    this->x_pos = x_pos;
+    this->y_pos = y_pos;
     animation_phase = 0;
     flip = SDL_FLIP_NONE;
     attack_power = 0;
+    is_animation_playing = false;
 
     worm_states["AIR_STRIKE"] = new SdlWormStateAirStrike();
     worm_states["BANANA"] = new SdlWormStateBanana();
@@ -61,9 +67,12 @@ bool SdlWorm::has_ammo() {
     std::cout << result << std::endl;
     return result;
 }
-bool SdlWorm::reduce_ammo() {
-    return worm_state->reduce_ammo(gun_ammo);
+void SdlWorm::play_animation() {
+    is_animation_playing = true;
+    animation_phase = 0;
+    worm_state->play_animation();
 }
+bool SdlWorm::reduce_ammo() { return worm_state->reduce_ammo(gun_ammo); }
 
 void SdlWorm::destroy() {
     //sound_manager.destroy();
@@ -84,8 +93,18 @@ void SdlWorm::change_angle(int angle) {
         this->angle = -90;
 }
 
-void SdlWorm::next_animation() {//30 animaciones de angulos
-    if (worm_state->is_in_gun_state()) {
+bool SdlWorm::next_animation() {
+
+
+    if (is_animation_playing) {
+        animation_phase = animation_phase + 1;
+        if (worm_state->is_at_max_animation_phase(animation_phase)) {
+            animation_phase = 0;
+            is_animation_playing = false;
+        } 
+        return true;
+    }
+    if (worm_state->is_in_gun_state() && !worm_state->just_choosen) {
         if (angle >= 0) {
             int animation_angle = angle + 90;
             animation_phase = round(animation_angle / 6);
@@ -93,7 +112,7 @@ void SdlWorm::next_animation() {//30 animaciones de angulos
             int animation_angle = angle + 90;
             animation_phase = round(animation_angle/6);
         }
-        return;
+        return false;
     }
         
     animation_phase = animation_phase + 1;
@@ -101,6 +120,7 @@ void SdlWorm::next_animation() {//30 animaciones de angulos
         animation_phase = 0;
     } 
     
+    return false;
 }
 
 void SdlWorm::change_state(std::string state) {
@@ -110,6 +130,8 @@ void SdlWorm::change_state(std::string state) {
 
     animation_phase = 0;
     worm_state = worm_states[state];
+    std::cout << "CAMBIO MI ESTADO" << std::endl;
+    worm_state->play_choosen_animation();
     angle = 0;
     attack_power = 0;
 }
