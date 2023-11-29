@@ -27,3 +27,9 @@ sudo make install
 con eso deberian estar todas las dependencias instaladas
 
 Luego, ir a carpeta Images y hacer unzip de los 2 zip
+
+
+
+INSTALACION PARA QT:
+
+suda apt-install qt5-default

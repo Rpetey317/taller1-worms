@@ -9,10 +9,15 @@ JoinGame::JoinGame() {
     connectEvents();
 }
 
-void JoinGame::JoinGameByName() {
+QString JoinGame::getEnteredText() const { 
     QLineEdit* inputName = findChild<QLineEdit*>("gameName");
-    QString name = inputName->text();
-    std::cout << "Joined to game: " << name.toStdString() << std::endl;
+    // QString name = inputName->text();
+    // std::cout << "New game created: " << name.toStdString() << std::endl;
+    return inputName->text();
+}
+
+void JoinGame::JoinGameByName() {
+    QDialog::accept();
 }
 
 void JoinGame::connectEvents() {

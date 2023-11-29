@@ -48,13 +48,19 @@ void Greeter::updateNameRandom() {
 void Greeter::createGame() {
         CreateGame newGame;
         newGame.setModal(true);
-        newGame.exec();
+        if(newGame.exec() == QDialog::Accepted){
+            QString enteredText = newGame.getEnteredText();
+            std::cout << "Game created succesfully with name: " << enteredText.toStdString() << std::endl;
+        };
 }
 
 void Greeter::joinToGame() {
         JoinGame joinGame;
         joinGame.setModal(true);
-        joinGame.exec();
+        if(joinGame.exec() == QDialog::Accepted){
+            QString enteredText = joinGame.getEnteredText();
+            std::cout << "Joined succesfully to game: " << enteredText.toStdString() << std::endl;
+        };
 }
 
 

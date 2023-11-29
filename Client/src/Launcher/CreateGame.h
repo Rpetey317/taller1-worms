@@ -8,8 +8,12 @@
 class CreateGame : public QDialog {
 public:
     explicit CreateGame();
-private:
+    QString getEnteredText() const;
+
+private slots:
     void createNewGame();
+
+private:
     void connectEvents();
 };
 
