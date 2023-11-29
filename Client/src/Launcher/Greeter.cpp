@@ -1,6 +1,7 @@
 #include "Greeter.h"
 // Cargo el archivo generado por uic, leer el CMakelist.txt para mas info
 
+
 #include <iostream>
 #include <stdlib.h>
 #include <QPixmap>
@@ -50,10 +51,10 @@ void Greeter::createGame() {
         newGame.exec();
 }
 
-void Greeter::joinGame() {
-        // JoinGame joinGame;
-        // joinGame.setModal(true);
-        // joinGame.exec();
+void Greeter::joinToGame() {
+        JoinGame joinGame;
+        joinGame.setModal(true);
+        joinGame.exec();
 }
 
 
@@ -69,6 +70,6 @@ void Greeter::connectEvents() {
     QObject::connect(button_create_game, &QPushButton::clicked, this, &Greeter::createGame);
 
     QPushButton *button_join_game = findChild<QPushButton*>("joinButton");
-    QObject::connect(button_join_game, &QPushButton::clicked, this, &Greeter::joinGame);
+    QObject::connect(button_join_game, &QPushButton::clicked, this, &Greeter::joinToGame);
 
 }

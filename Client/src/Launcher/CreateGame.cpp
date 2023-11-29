@@ -13,10 +13,8 @@ CreateGame::CreateGame() {
 
 void CreateGame::createNewGame() {
     QLineEdit* inputName = findChild<QLineEdit*>("gameName");
-    QLineEdit* inputPort = findChild<QLineEdit*>("portNumber");
     QString name = inputName->text();
-    QString port = inputPort->text();
-    std::cout << "Create new game: " << name.toStdString() << " " << port.toStdString() << std::endl;
+    std::cout << "New game created: " << name.toStdString() << std::endl;
     // Deberia devolver el puerto para que se cree el cliente. No hace falta nombre de partida o si?
 }
 

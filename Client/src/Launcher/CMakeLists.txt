@@ -17,6 +17,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 qt5_wrap_ui(UIS_HEADERS
         ui/super_duper_tuki.ui
         ui/crear_partida_nueva.ui
+        ui/unirse_a_partida.ui
 )
 
 # Agrego la carpeta con los headers autogenerados a los includes
@@ -29,6 +30,7 @@ add_executable(step-3
   Greeter.cpp
   main.cpp
   CreateGame.cpp
+  JoinGame.cpp
   ${UIS_HEADERS})
 
 # Use the Widgets module from Qt 5.

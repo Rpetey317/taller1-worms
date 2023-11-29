@@ -26,9 +26,6 @@ class Ui_CreateGame
 public:
     QWidget *verticalLayoutWidget;
     QVBoxLayout *verticalLayout;
-    QHBoxLayout *horizontalLayout_2;
-    QLabel *label_2;
-    QLineEdit *portNumber;
     QHBoxLayout *horizontalLayout;
     QLabel *label;
     QLineEdit *gameName;
@@ -48,21 +45,6 @@ public:
         verticalLayout = new QVBoxLayout(verticalLayoutWidget);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         verticalLayout->setContentsMargins(0, 0, 0, 0);
-        horizontalLayout_2 = new QHBoxLayout();
-        horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
-        label_2 = new QLabel(verticalLayoutWidget);
-        label_2->setObjectName(QString::fromUtf8("label_2"));
-
-        horizontalLayout_2->addWidget(label_2);
-
-        portNumber = new QLineEdit(verticalLayoutWidget);
-        portNumber->setObjectName(QString::fromUtf8("portNumber"));
-
-        horizontalLayout_2->addWidget(portNumber);
-
-
-        verticalLayout->addLayout(horizontalLayout_2);
-
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         label = new QLabel(verticalLayoutWidget);
@@ -107,7 +89,6 @@ public:
     void retranslateUi(QWidget *CreateGame)
     {
         CreateGame->setWindowTitle(QCoreApplication::translate("CreateGame", "Form", nullptr));
-        label_2->setText(QCoreApplication::translate("CreateGame", "Port", nullptr));
         label->setText(QCoreApplication::translate("CreateGame", "Name", nullptr));
         label_3->setText(QCoreApplication::translate("CreateGame", "Map", nullptr));
         acceptButton->setText(QCoreApplication::translate("CreateGame", "Accept", nullptr));

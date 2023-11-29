@@ -1,6 +1,7 @@
 #ifndef GREETER_H
 #define GREETER_H
 
+#include "JoinGame.h"
 #include "CreateGame.h"
 #include <QWidget>
 #include "ui_super_duper_tuki.h"
@@ -12,7 +13,7 @@ private:
     void connectEvents();
     void updateNameRandom();
     void createGame();
-    void joinGame();
+    void joinToGame();
 };
 
 #endif // GREETER_H

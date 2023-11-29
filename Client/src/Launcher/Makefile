@@ -160,6 +160,21 @@ Greeter.s:
 .PHONY : Greeter.s
 
 # target to build an object file
+JoinGame.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/step-3.dir/build.make CMakeFiles/step-3.dir/JoinGame.o
+.PHONY : JoinGame.o
+
+# target to preprocess a source file
+JoinGame.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/step-3.dir/build.make CMakeFiles/step-3.dir/JoinGame.i
+.PHONY : JoinGame.i
+
+# target to generate assembly for a file
+JoinGame.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/step-3.dir/build.make CMakeFiles/step-3.dir/JoinGame.s
+.PHONY : JoinGame.s
+
+# target to build an object file
 main.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/step-3.dir/build.make CMakeFiles/step-3.dir/main.o
 .PHONY : main.o
@@ -189,6 +204,9 @@ help:
 	@echo "... Greeter.o"
 	@echo "... Greeter.i"
 	@echo "... Greeter.s"
+	@echo "... JoinGame.o"
+	@echo "... JoinGame.i"
+	@echo "... JoinGame.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
