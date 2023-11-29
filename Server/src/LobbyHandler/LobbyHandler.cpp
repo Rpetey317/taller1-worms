@@ -1,8 +1,11 @@
 #include "LobbyHandler.h"
 
+#include <memory>
+#include <utility>
+
 // All of this is yet untested
 
-LobbyHandler::LobbyHandler() : games() {}
+LobbyHandler::LobbyHandler(): games() {}
 
 bool LobbyHandler::create_game(const std::string& name) {
     if (games.find(name) != games.end()) {
@@ -21,7 +24,7 @@ bool LobbyHandler::join_player(const std::string& game, Socket&& player) {
 }
 
 LobbyHandler::~LobbyHandler() {
-    for (auto& game : games) {
+    for (auto& game: games) {
         game.second->~GameWrapper();
-    } // I trust copilot with my life (and my ram)
+    }  // I trust copilot with my life (and my ram)
 }

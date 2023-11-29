@@ -4,9 +4,9 @@
 #include <memory>
 
 #include "Game.h"
+#include "GameLoopThread.h"
 #include "Socket.h"
 #include "queue.h"
-#include "GameLoopThread.h"
 
 class GameWrapper {
     Queue<std::shared_ptr<Message>> queue;
@@ -21,4 +21,4 @@ public:
     ~GameWrapper();
 };
 
-#endif // !__GAMEWRAPPER_H__
+#endif  // !__GAMEWRAPPER_H__

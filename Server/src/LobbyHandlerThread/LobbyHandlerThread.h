@@ -1,17 +1,19 @@
 #ifndef __LOBBYHANDLERTHREAD_H__
 #define __LOBBYHANDLERTHREAD_H__
 
-#include "thread.h"
-#include "queue.h"
-#include "Socket.h"
-#include "LobbyHandler.h"
+#include <memory>
 
-class LobbyHandlerThread : public Thread {
+#include "LobbyHandler.h"
+#include "Socket.h"
+#include "queue.h"
+#include "thread.h"
+
+class LobbyHandlerThread: public Thread {
     LobbyHandler handler;
-    Queue<std::unique_ptr<Socket>>& queue;
+    Queue<std::shared_ptr<Socket>>& queue;
 
 public:
-    LobbyHandlerThread(Queue<std::unique_ptr<Socket>>& queue);
+    explicit LobbyHandlerThread(Queue<std::shared_ptr<Socket>>& queue);
 
     void run() override;
 
@@ -20,4 +22,4 @@ public:
     ~LobbyHandlerThread();
 };
 
-#endif // !__LOBBYHANDLERTHREAD_H__
+#endif  // !__LOBBYHANDLERTHREAD_H__

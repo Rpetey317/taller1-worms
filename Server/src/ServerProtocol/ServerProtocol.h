@@ -78,8 +78,8 @@ public:
     msgcode_t recv_request();
 
     /*
-    * Reads the code of the game the client wants to join
-    */
+     * Reads the code of the game the client wants to join
+     */
     size_t recv_join();
 
     /*

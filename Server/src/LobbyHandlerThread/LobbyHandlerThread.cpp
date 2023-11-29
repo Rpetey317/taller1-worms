@@ -1,10 +1,12 @@
 #include "LobbyHandlerThread.h"
 
-LobbyHandlerThread::LobbyHandlerThread(Queue<std::unique_ptr<Socket>>& _queue) : queue(_queue) {}
+#include <memory>
+
+LobbyHandlerThread::LobbyHandlerThread(Queue<std::shared_ptr<Socket>>& _queue): queue(_queue) {}
 
 void LobbyHandlerThread::run() {
     while (_keep_running) {
-        std::unique_ptr<Socket> player = queue.pop();
+        std::shared_ptr<Socket> player = queue.pop();
 
         /* TODO:
          * - Receive a message from player

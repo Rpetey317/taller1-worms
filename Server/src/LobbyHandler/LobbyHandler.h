@@ -2,15 +2,16 @@
 #ifndef __LOBBYHANDLER_H__
 #define __LOBBYHANDLER_H__
 
-#include <string>
 #include <map>
+#include <memory>
+#include <string>
 
 #include "GameWrapper.h"
 
 class LobbyHandler {
 private:
     std::map<std::string, std::unique_ptr<GameWrapper>> games;
-  
+
 public:
     LobbyHandler();
 

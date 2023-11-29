@@ -72,22 +72,22 @@ char ServerProtocol::send_update(std::shared_ptr<Update> msg) { return msg->get_
 std::shared_ptr<Message> ServerProtocol::recv_update() {
     char code;
     this->cli.recvall(&code, sizeof(char), &this->isclosed);
-/*
-// Del multiple-games-feature commit
-// size_t ServerProtocol::recv_join() { 
-//     size_t game_code;
-//     this->cli.recvall(&game_code, sizeof(game_code), &this->isclosed);
-//     if (this->isclosed) {
-//         return -1;
-//     }
-//     return game_code;
-// }
+    /*
+    // Del multiple-games-feature commit
+    // size_t ServerProtocol::recv_join() {
+    //     size_t game_code;
+    //     this->cli.recvall(&game_code, sizeof(game_code), &this->isclosed);
+    //     if (this->isclosed) {
+    //         return -1;
+    //     }
+    //     return game_code;
+    // }
 
-// char ServerProtocol::send_PlayerMessageUpdate(const PlayerMessageUpdate& upd) {
-//     // send code
-//     msgcode_t code = MSGCODE_PLAYER_MESSAGE;
-//     this->cli.sendall(&code, sizeof(msgcode_t), &this->isclosed);
-*/
+    // char ServerProtocol::send_PlayerMessageUpdate(const PlayerMessageUpdate& upd) {
+    //     // send code
+    //     msgcode_t code = MSGCODE_PLAYER_MESSAGE;
+    //     this->cli.sendall(&code, sizeof(msgcode_t), &this->isclosed);
+    */
     if (this->isclosed) {
         return std::make_shared<NullMessage>();
     }
