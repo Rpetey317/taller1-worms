@@ -5,20 +5,19 @@
 #include <string>
 #include <map>
 
-#include "Game.h"
+#include "GameWrapper.h"
 
 class LobbyHandler {
 private:
-    int code;
-    std::map<std::string, std::unique_ptr<Game>> games;
-    std::mutex m;
+    std::map<std::string, std::unique_ptr<GameWrapper>> games;
   
-    // ServerProtocol prot;
-
-  public:
+public:
     LobbyHandler();
-    Game* create_LobbyHandler(Queue<Message*>& client_queue);
-    Game* join_LobbyHandler(int code, Queue<Message*>& client_queue);
+
+    bool create_game(const std::string& name);
+
+    bool join_player(const std::string& game, Socket&& player);
+
     ~LobbyHandler();
 };
 

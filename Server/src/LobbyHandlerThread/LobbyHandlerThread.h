@@ -11,7 +11,7 @@ class LobbyHandlerThread : public Thread {
     Queue<std::unique_ptr<Socket>>& queue;
 
 public:
-    LobbyHandlerThread();
+    LobbyHandlerThread(Queue<std::unique_ptr<Socket>>& queue);
 
     void run() override;
 
