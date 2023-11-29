@@ -7,13 +7,13 @@ using NetworkProtocol::MSGCODE_PLAYER_AMOUNT;
 using NetworkProtocol::MSGCODE_PLAYER_MESSAGE;
 using NetworkProtocol::msgcode_t;
 
-ReceiverThread::ReceiverThread(Queue<Event*>& incomingq, ClientProtocol& prot):
+ReceiverThread::ReceiverThread(Queue<std::shared_ptr<Event>>& incomingq, ClientProtocol& prot):
         incomingq(incomingq), prot(prot) {}
 
 void ReceiverThread::run() {
     while (_keep_running) {
         try {
-            Event* event = prot.recv_update();
+            std::shared_ptr<Event> event(prot.recv_update());
             this->incomingq.push(event);
         } catch (LibError& e) {
             // This is a "socket was closed" error

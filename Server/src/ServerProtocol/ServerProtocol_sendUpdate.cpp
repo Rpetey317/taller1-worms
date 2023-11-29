@@ -4,7 +4,7 @@
 
 using namespace NetworkProtocol;  // NOLINT
 
-char ServerProtocol::send_PlayerMessageUpdate(const GameChatMessageUpdate& upd) {
+char ServerProtocol::send_PlayerMessageUpdate(const ChatUpdate& upd) {
     // send code
     if (!this->send_char(MSGCODE_PLAYER_MESSAGE)) {
         return CLOSED_SKT;
@@ -23,7 +23,7 @@ char ServerProtocol::send_PlayerMessageUpdate(const GameChatMessageUpdate& upd) 
     return SUCCESS;
 }
 
-char ServerProtocol::send_TurnChangeUpdate(const GameTurnChangeUpdate& upd) {
+char ServerProtocol::send_TurnChangeUpdate(const TurnChange& upd) {
     // send code
     if (!this->send_char(MSGCODE_TURN_UPDATE)) {
         return CLOSED_SKT;
@@ -37,7 +37,7 @@ char ServerProtocol::send_TurnChangeUpdate(const GameTurnChangeUpdate& upd) {
     return SUCCESS;
 }
 
-char ServerProtocol::send_ConnectionAcknowledgeUpdate(const GameAcknowledgeUpdate& upd) {
+char ServerProtocol::send_ConnectionAcknowledgeUpdate(const PlayerAcknowledge& upd) {
     // send code
     if (!this->send_char(MSGCODE_ACK)) {
         return CLOSED_SKT;
@@ -51,7 +51,7 @@ char ServerProtocol::send_ConnectionAcknowledgeUpdate(const GameAcknowledgeUpdat
     return SUCCESS;
 }
 
-char ServerProtocol::send_PlayerDisconnectedUpdate(const GamePlayerDisconnectedUpdate& upd) {
+char ServerProtocol::send_PlayerDisconnectedUpdate(const PlayerDisconnectedUpdate& upd) {
     // send code
     if (!this->send_char(MSGCODE_PLAYER_DISCONNECT)) {
         return CLOSED_SKT;
@@ -65,7 +65,7 @@ char ServerProtocol::send_PlayerDisconnectedUpdate(const GamePlayerDisconnectedU
     return SUCCESS;
 }
 
-char ServerProtocol::send_PlayerConnectedUpdate(const GamePlayerConnectedUpdate& upd) {
+char ServerProtocol::send_PlayerConnectedUpdate(const PlayerConnectedUpdate& upd) {
     // send code
     if (!this->send_char(MSGCODE_PLAYER_CONNECT)) {
         return CLOSED_SKT;
@@ -79,9 +79,9 @@ char ServerProtocol::send_PlayerConnectedUpdate(const GamePlayerConnectedUpdate&
     return SUCCESS;
 }
 
-char ServerProtocol::send_NullUpdate(const GameNullUpdate& upd) { return SUCCESS; }
+char ServerProtocol::send_NullUpdate(const NullUpdate& upd) { return SUCCESS; }
 
-char ServerProtocol::send_WorldUpdate(const GameWorldUpdate& upd) {
+char ServerProtocol::send_WorldUpdate(const WorldUpdate& upd) {
     // send code
     if (!this->send_char(MSGCODE_WORLD_UPD)) {
         return CLOSED_SKT;

@@ -1,7 +1,7 @@
 
 #include "SdlManager.h"
 #define FPS 30
-SdlManager::SdlManager(Queue<Action*>& outgoing, Queue<Event*>& ingoing, int id_of_player):
+SdlManager::SdlManager(Queue<std::shared_ptr<Action>>& outgoing, Queue<std::shared_ptr<Event>>& ingoing, int id_of_player):
         outgoing(outgoing), ingoing(ingoing) {
     // Initialize SDL library
     // SDL sdl(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
@@ -31,15 +31,15 @@ bool SdlManager::event_handler() {
                     return false;
                 }
                 case SDLK_RIGHT: {
-                    worms[id_worm_turn]->change_state("WALK");
-                    worms[id_worm_turn]->flip = SDL_FLIP_HORIZONTAL;
-                    outgoing.push(new Move(true));
+                    worms[id_of_player]->change_state("WALK");
+                    worms[id_of_player]->flip = SDL_FLIP_HORIZONTAL;
+                    outgoing.push(std::make_shared<Move>(true));
                     break;
                 }
                 case SDLK_LEFT: {
-                    worms[id_worm_turn]->change_state("WALK");
-                    worms[id_worm_turn]->flip = SDL_FLIP_NONE;
-                    outgoing.push(new Move(false));
+                    worms[id_of_player]->change_state("WALK");
+                    worms[id_of_player]->flip = SDL_FLIP_NONE;
+                    outgoing.push(std::make_shared<Move>(false));
                     break;
                 }
                 case SDLK_UP: {
@@ -63,15 +63,15 @@ bool SdlManager::event_handler() {
                 return true;
             switch (event.key.keysym.sym) {
                 case SDLK_RIGHT: {
-                    worms[id_worm_turn]->change_state("STILL");
-                    outgoing.push(new NullAction());
+                    worms[id_of_player]->change_state("STILL");
+                    outgoing.push(std::make_shared<NullAction>());
                     break;
                 }
                 case SDLK_LEFT: {
                     worms[id_worm_turn]->change_state("STILL");
                     //EL CAMBIO DE ESTADOS POSIBLEMENTE LO TENGA QUE CAMBIAR A CUANDO RECIBA DE LA QUEUE
                     // YA QUE AHI HARIA UN FOR CAMBIANDOLE EL ESTADO A TODOS LOS BICHOS
-                    outgoing.push(new NullAction());
+                    outgoing.push(std::make_shared<NullAction>());
                     break;
                 }
                 //ESTA EN WIP ESTAS
@@ -128,11 +128,11 @@ bool SdlManager::event_handler() {
                     break;
                 }
                 case SDLK_RETURN: { //SALTO HACIA DELANTE
-                    outgoing.push(new Jump(true));
+                    outgoing.push(std::make_shared<Jump>(true));
                     break;
                 }
                 case SDLK_BACKSPACE: {  //SALTO HACIA ATRAS
-                    outgoing.push(new Jump(false));
+                    outgoing.push(std::make_shared<Jump>(false));
                     break;
                 }
                 default: {
@@ -199,7 +199,7 @@ bool SdlManager::main_loop(Renderer& renderer, SdlMap& map, SdlSoundManager& sou
     return keep_playing;
 }
 void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager& sound_manager, SdlWormTextureManager& worm_texture_manager) {
-    Event *val;
+    std::shared_ptr<Event> val;
     bool there_is_element = ingoing.try_pop(val);
     // LAS POSICIONES DE TODOS LOS GUSANOS, EL ID DE TODOS LOS GUSANOS, Y EL ESTADO EN EL QUE ESTAN LOS GUSANOS
     // ESTADOS -> MOVIENDOSE, HACIENDO NADA, CAYENDO, LLEVANDO UNA DE 10 ARMAS

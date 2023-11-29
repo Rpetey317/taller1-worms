@@ -2,9 +2,9 @@
 #define __SERVER_PLWRAPPER_H__
 
 #include <list>
+#include <memory>
 #include <string>
 
-#include "PlayerListMonitor.h"
 #include "ReceiverThread.h"
 #include "SenderThread.h"
 
@@ -13,7 +13,7 @@
  */
 class PlayerHandler {
     ServerProtocol prot;
-    Queue<GameUpdate*> sendq;
+    Queue<std::shared_ptr<Update>> sendq;
     SenderThread send_th;
     ReceiverThread recv_th;
     const int id;
@@ -25,7 +25,7 @@ public:
      * New player will be added to recvers, and a message notifying this will be sent
      * plcount is incremented, and when player disconnects, will be decremented
      */
-    PlayerHandler(Socket&& peer, Queue<ClientUpdate*>& eventq, int& id);
+    PlayerHandler(Socket&& peer, Queue<std::shared_ptr<Message>>& eventq, int& id);
 
     /*
      * Starts to run associated threads
@@ -40,7 +40,7 @@ public:
     /*
      * Sends a message back to client
      */
-    void send(GameUpdate* msg);
+    void send(std::shared_ptr<Update> msg);
 
     /*
      * Stops associated threads and frees all resources

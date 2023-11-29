@@ -4,6 +4,7 @@
 #include <atomic>
 #include <iostream>
 #include <map>
+#include <memory>
 #include <sstream>
 #include <string>
 #include <utility>
@@ -20,8 +21,8 @@ class GameProcessing {
 private:
     Socket skt;
     ClientProtocol protocol;
-    Queue<Action*>& outgoingq;  // For sender thread. SDL has a reference too
-    Queue<Event*>& incomingq;   // For receiver thread. SDL has a reference too
+    Queue<std::shared_ptr<Action>>& outgoingq;  // For sender thread. SDL has a reference too
+    Queue<std::shared_ptr<Event>>& incomingq;   // For receiver thread. SDL has a reference too
     ReceiverThread receiverTh;
     SenderThread senderTh;
     EventProcessor eventProcessor;
@@ -32,8 +33,9 @@ public:
         Creates a GameProcessing object. It will create a socket and connect to the server.
         It will also create the threads for sending and receiving messages.
     */
-    explicit GameProcessing(const char* hostname, const char* port, Queue<Action*>& commands,
-                            Queue<Event*>& events);
+    explicit GameProcessing(const char* hostname, const char* port,
+                            Queue<std::shared_ptr<Action>>& commands,
+                            Queue<std::shared_ptr<Event>>& events);
 
     /*
         Checks if the command send by the user in the terminal is valid.

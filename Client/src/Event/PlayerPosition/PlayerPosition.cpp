@@ -1,5 +1,7 @@
 #include "PlayerPosition.h"
 
+#include <map>
+
 #include "../EventProcessor/EventProcessor.h"
 
 PlayerPosition::PlayerPosition(const int& player_id, Vect2D position):

@@ -1,6 +1,7 @@
 #ifndef CLIENT_RECEIVER_THREAD_H
 #define CLIENT_RECEIVER_THREAD_H
 
+#include <memory>
 #include <mutex>
 #include <string>
 
@@ -11,11 +12,11 @@
 #include "thread.h"
 
 class ReceiverThread: public Thread {
-    Queue<Event*>& incomingq;
+    Queue<std::shared_ptr<Event>>& incomingq;
     ClientProtocol& prot;
 
 public:
-    ReceiverThread(Queue<Event*>& incomingq, ClientProtocol& prot);
+    ReceiverThread(Queue<std::shared_ptr<Event>>& incomingq, ClientProtocol& prot);
     void run() override;
     void end();
 
