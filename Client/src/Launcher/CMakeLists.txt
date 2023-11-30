@@ -14,16 +14,19 @@ find_package(Qt5Widgets COMPONENTS Widgets REQUIRED)
 # como primer parámetro.
 # No, no los genera con la carpeta como prefijo.
 qt5_wrap_ui(UIS_HEADERS
-        ui/super_duper_tuki.ui
-        ui/crear_partida_nueva.ui
-        ui/unirse_a_partida.ui
+        Forms/super_duper_tuki.ui
+        Forms/crear_partida_nueva.ui
+        Forms/unirse_a_partida.ui
 )
 
+set(SOURCES
+  Sources/Greeter.cpp
+  Sources/main.cpp
+  Sources/CreateGame.cpp
+  Sources/JoinGame.cpp)
+
 add_executable(qtLauncher
-  Greeter.cpp
-  main.cpp
-  CreateGame.cpp
-  JoinGame.cpp
+  ${SOURCES}
   ${UIS_HEADERS})
 
 # Use the Widgets module from Qt 5.

@@ -1,5 +1,5 @@
 #include <QApplication>
-#include "Greeter.h"
+#include "../Headers/Greeter.h"
 #include <iostream>
 
 int main(int argc, char *argv[]) {

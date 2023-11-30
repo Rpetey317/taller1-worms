@@ -1,4 +1,4 @@
-#include "CreateGame.h"
+#include "../Headers/CreateGame.h"
 // Cargo el archivo generado por uic, leer el CMakelist.txt para mas info
 
 #include <iostream>

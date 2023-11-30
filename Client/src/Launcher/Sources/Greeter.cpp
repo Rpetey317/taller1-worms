@@ -1,4 +1,4 @@
-#include "Greeter.h"
+#include "../Headers/Greeter.h"
 // Cargo el archivo generado por uic, leer el CMakelist.txt para mas info
 
 

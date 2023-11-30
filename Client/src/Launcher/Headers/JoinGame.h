@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QDialog>
-#include "ui_unirse_a_partida.h"
+#include "../ui_unirse_a_partida.h"
 
 class JoinGame : public QDialog {
 public:

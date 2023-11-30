@@ -1,3 +1,0 @@
-/home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/CMakeFiles/qtLauncher.dir
-/home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/CMakeFiles/edit_cache.dir
-/home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/CMakeFiles/rebuild_cache.dir

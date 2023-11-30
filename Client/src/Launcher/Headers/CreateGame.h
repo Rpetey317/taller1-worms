@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QDialog>
-#include "ui_crear_partida_nueva.h"
+#include "../ui_crear_partida_nueva.h"
 
 class CreateGame : public QDialog {
 public:

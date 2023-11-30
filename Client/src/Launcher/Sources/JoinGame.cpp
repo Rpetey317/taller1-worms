@@ -1,4 +1,4 @@
-#include "JoinGame.h"
+#include "../Headers/JoinGame.h"
 
 #include <iostream>
 #include <stdlib.h>
