@@ -245,7 +245,7 @@ void SdlManager::run(std::string background_type, std::string selected_map) {
 
     const uint32_t frame_delay = 1000 / FPS;
     bool is_running = true;
-    Window window("PoC", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480,
+    Window window("Worms", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480,
                   SDL_WINDOW_RESIZABLE);
 
     Renderer renderer(window, -1, SDL_RENDERER_SOFTWARE);
@@ -259,8 +259,8 @@ void SdlManager::run(std::string background_type, std::string selected_map) {
     //aca creo los gusanos, pero deberia recibir como son los equipos y sus id
     std::vector<Tile> worms_positions = map.get_worms_positions();
     int i = 0;
-    for (auto worm : worms_positions) {
-        worms[i] = new SdlWorm(worm_texture_manager, sound_manager, worm.pos_x, worm.pos_y, i, i%2);//hago este %2 para probar distintos id de jugadores
+    for (auto worm : worms_positions) {//me deberian pasar tambien la vida de los gusanitos
+        worms[i] = new SdlWorm(renderer, worm_texture_manager, sound_manager, worm.pos_x, worm.pos_y, i, i%2, 100);//hago este %2 para probar distintos id de jugadores
         i++;
     }
     while (is_running) {

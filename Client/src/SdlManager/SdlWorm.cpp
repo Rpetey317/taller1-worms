@@ -2,17 +2,40 @@
 #include <tgmath.h>
 void SdlWorm::render_same() {
     texture_manager.render(worm_state, animation_phase, x_pos, y_pos, flip);
+    health_bar.SetX(x_pos);
+    health_bar.SetY(y_pos - 10);
+    health_bar.SetW(health/2);
+
+    health_bar_delim.SetX(x_pos -1);
+    health_bar_delim.SetY(y_pos - 11);
+    health_bar_delim.SetW((health/2) +2);
+    renderer.SetDrawColor(delim_color);
+    renderer.DrawRect(health_bar_delim);
+    renderer.SetDrawColor(color);
+    renderer.FillRect(health_bar);
+
 }
 
 void SdlWorm::render_new(Vect2D position) {
     x_pos = position.x;
     y_pos = position.y;
-    std::cout << position.x << " " << position.y << std::endl;
     if (is_animation_playing) {
         texture_manager.render(worm_state, animation_phase, position.x, position.y, flip);
     } else {
         texture_manager.render(worm_state, animation_phase, position.x, position.y, flip);
     }
+    health_bar.SetX(x_pos);
+    health_bar.SetY(y_pos - 10);
+    health_bar.SetW(health/2);
+
+    health_bar_delim.SetX(x_pos -1);
+    health_bar_delim.SetY(y_pos - 11);
+    health_bar_delim.SetW((health/2)+2);
+    renderer.SetDrawColor(delim_color);
+    renderer.DrawRect(health_bar_delim);
+    renderer.SetDrawColor(color);
+    renderer.FillRect(health_bar);
+    
 }
 
 void SdlWorm::apply() {
@@ -24,7 +47,68 @@ void SdlWorm::apply() {
     }
 }
 
-SdlWorm::SdlWorm(SdlWormTextureManager& texture_manager, SdlSoundManager& sound_manager, int x_pos, int y_pos, int worm_id, int player_id) : texture_manager(texture_manager), sound_manager(sound_manager) {
+void SdlWorm::set_color() {
+    delim_color.SetBlue(0);
+    delim_color.SetGreen(102);
+    delim_color.SetRed(204);
+    switch (player_id)
+    {
+    case 0:
+        color.SetBlue(255);
+        color.SetGreen(0);
+        color.SetRed(0);
+        break;
+    case 1:
+        color.SetBlue(0);
+        color.SetGreen(255);
+        color.SetRed(0);
+        break;
+    case 2:
+        color.SetBlue(0);
+        color.SetGreen(0);
+        color.SetRed(255);
+        break;
+    case 3:
+        color.SetBlue(255);
+        color.SetGreen(255);
+        color.SetRed(0);
+        break;
+    case 4:
+        color.SetBlue(255);
+        color.SetGreen(0);
+        color.SetRed(255);
+        break;
+    case 5:
+        color.SetBlue(0);
+        color.SetGreen(255);
+        color.SetRed(255);
+        break;
+    case 6:
+        color.SetBlue(192);
+        color.SetGreen(192);
+        color.SetRed(128);
+        break;
+    case 7:
+        color.SetBlue(128);
+        color.SetGreen(192);
+        color.SetRed(192);
+        break;
+    case 8:
+        color.SetBlue(192);
+        color.SetGreen(128);
+        color.SetRed(192);
+        break;
+        
+    default:
+        color.SetBlue(128);
+        color.SetGreen(128);
+        color.SetRed(192);
+        break;
+    }
+
+}
+
+SdlWorm::SdlWorm(Renderer& renderer, SdlWormTextureManager& texture_manager, SdlSoundManager& sound_manager, int x_pos, int y_pos, int worm_id, int player_id, int health) : renderer(renderer), texture_manager(texture_manager), sound_manager(sound_manager) {
     this->worm_id = worm_id;
     this->player_id = player_id;
     this->x_pos = x_pos;
@@ -33,6 +117,12 @@ SdlWorm::SdlWorm(SdlWormTextureManager& texture_manager, SdlSoundManager& sound_
     flip = SDL_FLIP_NONE;
     attack_power = 0;
     is_animation_playing = false;
+    this->health = health;
+    health_bar.SetH(10);
+    health_bar.SetW(health/2);
+    health_bar_delim.SetH(12);
+    health_bar_delim.SetW((health/2) + 2);
+    set_color();
 
     worm_states["AIR_STRIKE"] = new SdlWormStateAirStrike();
     worm_states["BANANA"] = new SdlWormStateBanana();
