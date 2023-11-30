@@ -29,7 +29,7 @@ public:
     bool is_charging;
     int attack_power;
     int worm_id;
-    explicit SdlWorm(SdlWormTextureManager& texture_manager, SdlSoundManager& sound_manager, int x_pos, int y_pos, int worm_id, int player_id);
+    explicit SdlWorm(Renderer& renderer, SdlWormTextureManager& texture_manager, SdlSoundManager& sound_manager, int x_pos, int y_pos, int worm_id, int player_id, int health);
     bool next_animation();
     void change_state(std::string state);
     void play_sound(std::string sound_to_play);
@@ -44,12 +44,18 @@ public:
     void play_animation();
     bool is_animation_playing;
 private:
+    void set_color();
+    Renderer &renderer;
     SdlWormTextureManager& texture_manager;
     SdlSoundManager& sound_manager;
     int player_id;
     int angle;
     int animation_phase;
-    
+    int health;
+    Color color;
+    Color delim_color;
+    Rect health_bar;
+    Rect health_bar_delim;
     SdlWormState *worm_state;
     std::map<std::string, SdlWormState*> worm_states;
     std::map<std::string, int> gun_ammo;
