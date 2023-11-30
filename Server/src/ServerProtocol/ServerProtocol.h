@@ -28,7 +28,6 @@ using NetworkProtocol::MSGCODE_PLAYER_MESSAGE;
 class ServerProtocol {
     Socket cli;
     bool isclosed;
-    const int plid;
 
     /*
      * Primitive type send methods, to simplify update-specific send methods
@@ -60,7 +59,11 @@ public:
     /*
      * Constructs a new protocol from socket with move semantics
      */
-    ServerProtocol(Socket&& cli, const int& plid);
+    explicit ServerProtocol(Socket&& cli);
+
+    ServerProtocol(const ServerProtocol&) = delete;
+
+    ServerProtocol(ServerProtocol&& other);
 
     /*
      * Sends given message to client
@@ -70,7 +73,7 @@ public:
     /*
      * Reads a message from client. Returns NullMsg if connection closed
      */
-    std::shared_ptr<Message> recv_update();
+    std::shared_ptr<Message> recv_update(const int& plid);
 
     /*
      * Reads the first request the client sends. Can be CREATE_GAME or JOIN_GAME

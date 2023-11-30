@@ -11,7 +11,7 @@
 
 #include "MessageHeaders.h"
 #include "PlayerHandler.h"
-#include "Socket.h"
+#include "ServerProtocol.h"
 #include "Update.h"
 #include "queue.h"
 
@@ -73,7 +73,7 @@ public:
     /*
      * Adds a new player, connected to given socket
      */
-    void add_player(Socket&& player);
+    void add_player(ServerProtocol&& player);
 
     /*
      * Executes given event, returns update to be sent back to players

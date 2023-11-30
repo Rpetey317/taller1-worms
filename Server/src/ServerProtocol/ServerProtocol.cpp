@@ -63,13 +63,15 @@ bool ServerProtocol::send_Vect2D(const Vect2D& pt) {
 }
 
 
-ServerProtocol::ServerProtocol(Socket&& _cli, const int& _plid):
-        cli(std::move(_cli)), isclosed(false), plid(_plid) {}
+ServerProtocol::ServerProtocol(Socket&& _cli): cli(std::move(_cli)), isclosed(false) {}
+
+ServerProtocol::ServerProtocol(ServerProtocol&& other):
+        cli(std::move(other.cli)), isclosed(other.isclosed) {}
 
 // DD methods for each update type implemented in ServerProtocol_sendUpdate.cpp
 char ServerProtocol::send_update(std::shared_ptr<Update> msg) { return msg->get_sent_by(*this); }
 
-std::shared_ptr<Message> ServerProtocol::recv_update() {
+std::shared_ptr<Message> ServerProtocol::recv_update(const int& plid) {
     char code;
     this->cli.recvall(&code, sizeof(char), &this->isclosed);
     /*

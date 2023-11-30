@@ -14,7 +14,7 @@ void ReceiverThread::run() {
     while (_keep_running) {
         try {
 
-            std::shared_ptr<Message> msg = prot.recv_update();
+            std::shared_ptr<Message> msg = prot.recv_update(this->plid);
             if (msg->is_valid())
                 this->eventq.push(msg);
 
