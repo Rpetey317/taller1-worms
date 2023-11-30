@@ -81,76 +81,76 @@ ui_unirse_a_partida.h: ui/unirse_a_partida.ui
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Generating ui_unirse_a_partida.h"
 	/usr/lib/qt5/bin/uic -o /home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/ui_unirse_a_partida.h /home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/ui/unirse_a_partida.ui
 
-CMakeFiles/qtLauncher.dir/Greeter.o: CMakeFiles/qtLauncher.dir/flags.make
-CMakeFiles/qtLauncher.dir/Greeter.o: Greeter.cpp
-CMakeFiles/qtLauncher.dir/Greeter.o: CMakeFiles/qtLauncher.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/qtLauncher.dir/Greeter.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qtLauncher.dir/Greeter.o -MF CMakeFiles/qtLauncher.dir/Greeter.o.d -o CMakeFiles/qtLauncher.dir/Greeter.o -c /home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/Greeter.cpp
+CMakeFiles/qtLauncher.dir/Greeter.cpp.o: CMakeFiles/qtLauncher.dir/flags.make
+CMakeFiles/qtLauncher.dir/Greeter.cpp.o: Greeter.cpp
+CMakeFiles/qtLauncher.dir/Greeter.cpp.o: CMakeFiles/qtLauncher.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/qtLauncher.dir/Greeter.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qtLauncher.dir/Greeter.cpp.o -MF CMakeFiles/qtLauncher.dir/Greeter.cpp.o.d -o CMakeFiles/qtLauncher.dir/Greeter.cpp.o -c /home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/Greeter.cpp
 
-CMakeFiles/qtLauncher.dir/Greeter.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/qtLauncher.dir/Greeter.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/Greeter.cpp > CMakeFiles/qtLauncher.dir/Greeter.i
+CMakeFiles/qtLauncher.dir/Greeter.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/qtLauncher.dir/Greeter.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/Greeter.cpp > CMakeFiles/qtLauncher.dir/Greeter.cpp.i
 
-CMakeFiles/qtLauncher.dir/Greeter.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/qtLauncher.dir/Greeter.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/Greeter.cpp -o CMakeFiles/qtLauncher.dir/Greeter.s
+CMakeFiles/qtLauncher.dir/Greeter.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/qtLauncher.dir/Greeter.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/Greeter.cpp -o CMakeFiles/qtLauncher.dir/Greeter.cpp.s
 
-CMakeFiles/qtLauncher.dir/main.o: CMakeFiles/qtLauncher.dir/flags.make
-CMakeFiles/qtLauncher.dir/main.o: main.cpp
-CMakeFiles/qtLauncher.dir/main.o: CMakeFiles/qtLauncher.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/qtLauncher.dir/main.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qtLauncher.dir/main.o -MF CMakeFiles/qtLauncher.dir/main.o.d -o CMakeFiles/qtLauncher.dir/main.o -c /home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/main.cpp
+CMakeFiles/qtLauncher.dir/main.cpp.o: CMakeFiles/qtLauncher.dir/flags.make
+CMakeFiles/qtLauncher.dir/main.cpp.o: main.cpp
+CMakeFiles/qtLauncher.dir/main.cpp.o: CMakeFiles/qtLauncher.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/qtLauncher.dir/main.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qtLauncher.dir/main.cpp.o -MF CMakeFiles/qtLauncher.dir/main.cpp.o.d -o CMakeFiles/qtLauncher.dir/main.cpp.o -c /home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/main.cpp
 
-CMakeFiles/qtLauncher.dir/main.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/qtLauncher.dir/main.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/main.cpp > CMakeFiles/qtLauncher.dir/main.i
+CMakeFiles/qtLauncher.dir/main.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/qtLauncher.dir/main.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/main.cpp > CMakeFiles/qtLauncher.dir/main.cpp.i
 
-CMakeFiles/qtLauncher.dir/main.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/qtLauncher.dir/main.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/main.cpp -o CMakeFiles/qtLauncher.dir/main.s
+CMakeFiles/qtLauncher.dir/main.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/qtLauncher.dir/main.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/main.cpp -o CMakeFiles/qtLauncher.dir/main.cpp.s
 
-CMakeFiles/qtLauncher.dir/CreateGame.o: CMakeFiles/qtLauncher.dir/flags.make
-CMakeFiles/qtLauncher.dir/CreateGame.o: CreateGame.cpp
-CMakeFiles/qtLauncher.dir/CreateGame.o: CMakeFiles/qtLauncher.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/qtLauncher.dir/CreateGame.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qtLauncher.dir/CreateGame.o -MF CMakeFiles/qtLauncher.dir/CreateGame.o.d -o CMakeFiles/qtLauncher.dir/CreateGame.o -c /home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/CreateGame.cpp
+CMakeFiles/qtLauncher.dir/CreateGame.cpp.o: CMakeFiles/qtLauncher.dir/flags.make
+CMakeFiles/qtLauncher.dir/CreateGame.cpp.o: CreateGame.cpp
+CMakeFiles/qtLauncher.dir/CreateGame.cpp.o: CMakeFiles/qtLauncher.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/qtLauncher.dir/CreateGame.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qtLauncher.dir/CreateGame.cpp.o -MF CMakeFiles/qtLauncher.dir/CreateGame.cpp.o.d -o CMakeFiles/qtLauncher.dir/CreateGame.cpp.o -c /home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/CreateGame.cpp
 
-CMakeFiles/qtLauncher.dir/CreateGame.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/qtLauncher.dir/CreateGame.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/CreateGame.cpp > CMakeFiles/qtLauncher.dir/CreateGame.i
+CMakeFiles/qtLauncher.dir/CreateGame.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/qtLauncher.dir/CreateGame.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/CreateGame.cpp > CMakeFiles/qtLauncher.dir/CreateGame.cpp.i
 
-CMakeFiles/qtLauncher.dir/CreateGame.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/qtLauncher.dir/CreateGame.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/CreateGame.cpp -o CMakeFiles/qtLauncher.dir/CreateGame.s
+CMakeFiles/qtLauncher.dir/CreateGame.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/qtLauncher.dir/CreateGame.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/CreateGame.cpp -o CMakeFiles/qtLauncher.dir/CreateGame.cpp.s
 
-CMakeFiles/qtLauncher.dir/JoinGame.o: CMakeFiles/qtLauncher.dir/flags.make
-CMakeFiles/qtLauncher.dir/JoinGame.o: JoinGame.cpp
-CMakeFiles/qtLauncher.dir/JoinGame.o: CMakeFiles/qtLauncher.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/qtLauncher.dir/JoinGame.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qtLauncher.dir/JoinGame.o -MF CMakeFiles/qtLauncher.dir/JoinGame.o.d -o CMakeFiles/qtLauncher.dir/JoinGame.o -c /home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/JoinGame.cpp
+CMakeFiles/qtLauncher.dir/JoinGame.cpp.o: CMakeFiles/qtLauncher.dir/flags.make
+CMakeFiles/qtLauncher.dir/JoinGame.cpp.o: JoinGame.cpp
+CMakeFiles/qtLauncher.dir/JoinGame.cpp.o: CMakeFiles/qtLauncher.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/qtLauncher.dir/JoinGame.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/qtLauncher.dir/JoinGame.cpp.o -MF CMakeFiles/qtLauncher.dir/JoinGame.cpp.o.d -o CMakeFiles/qtLauncher.dir/JoinGame.cpp.o -c /home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/JoinGame.cpp
 
-CMakeFiles/qtLauncher.dir/JoinGame.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/qtLauncher.dir/JoinGame.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/JoinGame.cpp > CMakeFiles/qtLauncher.dir/JoinGame.i
+CMakeFiles/qtLauncher.dir/JoinGame.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/qtLauncher.dir/JoinGame.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/JoinGame.cpp > CMakeFiles/qtLauncher.dir/JoinGame.cpp.i
 
-CMakeFiles/qtLauncher.dir/JoinGame.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/qtLauncher.dir/JoinGame.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/JoinGame.cpp -o CMakeFiles/qtLauncher.dir/JoinGame.s
+CMakeFiles/qtLauncher.dir/JoinGame.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/qtLauncher.dir/JoinGame.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher/JoinGame.cpp -o CMakeFiles/qtLauncher.dir/JoinGame.cpp.s
 
 # Object files for target qtLauncher
 qtLauncher_OBJECTS = \
-"CMakeFiles/qtLauncher.dir/Greeter.o" \
-"CMakeFiles/qtLauncher.dir/main.o" \
-"CMakeFiles/qtLauncher.dir/CreateGame.o" \
-"CMakeFiles/qtLauncher.dir/JoinGame.o"
+"CMakeFiles/qtLauncher.dir/Greeter.cpp.o" \
+"CMakeFiles/qtLauncher.dir/main.cpp.o" \
+"CMakeFiles/qtLauncher.dir/CreateGame.cpp.o" \
+"CMakeFiles/qtLauncher.dir/JoinGame.cpp.o"
 
 # External object files for target qtLauncher
 qtLauncher_EXTERNAL_OBJECTS =
 
-qtLauncher: CMakeFiles/qtLauncher.dir/Greeter.o
-qtLauncher: CMakeFiles/qtLauncher.dir/main.o
-qtLauncher: CMakeFiles/qtLauncher.dir/CreateGame.o
-qtLauncher: CMakeFiles/qtLauncher.dir/JoinGame.o
+qtLauncher: CMakeFiles/qtLauncher.dir/Greeter.cpp.o
+qtLauncher: CMakeFiles/qtLauncher.dir/main.cpp.o
+qtLauncher: CMakeFiles/qtLauncher.dir/CreateGame.cpp.o
+qtLauncher: CMakeFiles/qtLauncher.dir/JoinGame.cpp.o
 qtLauncher: CMakeFiles/qtLauncher.dir/build.make
 qtLauncher: /usr/lib/x86_64-linux-gnu/libQt5Widgets.so.5.15.3
 qtLauncher: /usr/lib/x86_64-linux-gnu/libQt5Gui.so.5.15.3

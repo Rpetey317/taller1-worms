@@ -149,7 +149,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=qt5-demo
+CMAKE_PROJECT_NAME:STATIC=qtLauncher
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
@@ -236,6 +236,15 @@ qt5-demo_IS_TOP_LEVEL:STATIC=ON
 
 //Value Computed by CMake
 qt5-demo_SOURCE_DIR:STATIC=/home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher
+
+//Value Computed by CMake
+qtLauncher_BINARY_DIR:STATIC=/home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher
+
+//Value Computed by CMake
+qtLauncher_IS_TOP_LEVEL:STATIC=ON
+
+//Value Computed by CMake
+qtLauncher_SOURCE_DIR:STATIC=/home/mateolardiez/Facultad/Taller1/tpWorms/taller1-worms/Client/src/Launcher
 
 
 ########################

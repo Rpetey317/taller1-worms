@@ -6,7 +6,7 @@
 #include <QWidget>
 #include "ui_super_duper_tuki.h"
 #include <string>
-#include "../DataLoggin/DataLoggin.h"
+#include "DataLoggin/DataLoggin.h"
 
 class Greeter : public QWidget {
 public:

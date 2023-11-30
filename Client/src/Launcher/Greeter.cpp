@@ -50,6 +50,7 @@ void Greeter::createGame() {
         newGame.setModal(true);
         if(newGame.exec() == QDialog::Accepted){
             this->gameName = newGame.getEnteredText();
+            // this->dataLoggin.gameName = this->gameName.toStdString();
             std::cout << "Game created succesfully with name: " << gameName.toStdString() << std::endl;
             
         };

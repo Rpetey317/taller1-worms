@@ -129,65 +129,101 @@ qtLauncher/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/build
 .PHONY : qtLauncher/fast
 
-# target to build an object file
-CreateGame.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/CreateGame.o
+CreateGame.o: CreateGame.cpp.o
 .PHONY : CreateGame.o
 
-# target to preprocess a source file
-CreateGame.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/CreateGame.i
+# target to build an object file
+CreateGame.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/CreateGame.cpp.o
+.PHONY : CreateGame.cpp.o
+
+CreateGame.i: CreateGame.cpp.i
 .PHONY : CreateGame.i
 
-# target to generate assembly for a file
-CreateGame.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/CreateGame.s
+# target to preprocess a source file
+CreateGame.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/CreateGame.cpp.i
+.PHONY : CreateGame.cpp.i
+
+CreateGame.s: CreateGame.cpp.s
 .PHONY : CreateGame.s
 
-# target to build an object file
-Greeter.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/Greeter.o
+# target to generate assembly for a file
+CreateGame.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/CreateGame.cpp.s
+.PHONY : CreateGame.cpp.s
+
+Greeter.o: Greeter.cpp.o
 .PHONY : Greeter.o
 
-# target to preprocess a source file
-Greeter.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/Greeter.i
+# target to build an object file
+Greeter.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/Greeter.cpp.o
+.PHONY : Greeter.cpp.o
+
+Greeter.i: Greeter.cpp.i
 .PHONY : Greeter.i
 
-# target to generate assembly for a file
-Greeter.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/Greeter.s
+# target to preprocess a source file
+Greeter.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/Greeter.cpp.i
+.PHONY : Greeter.cpp.i
+
+Greeter.s: Greeter.cpp.s
 .PHONY : Greeter.s
 
-# target to build an object file
-JoinGame.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/JoinGame.o
+# target to generate assembly for a file
+Greeter.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/Greeter.cpp.s
+.PHONY : Greeter.cpp.s
+
+JoinGame.o: JoinGame.cpp.o
 .PHONY : JoinGame.o
 
-# target to preprocess a source file
-JoinGame.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/JoinGame.i
+# target to build an object file
+JoinGame.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/JoinGame.cpp.o
+.PHONY : JoinGame.cpp.o
+
+JoinGame.i: JoinGame.cpp.i
 .PHONY : JoinGame.i
 
-# target to generate assembly for a file
-JoinGame.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/JoinGame.s
+# target to preprocess a source file
+JoinGame.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/JoinGame.cpp.i
+.PHONY : JoinGame.cpp.i
+
+JoinGame.s: JoinGame.cpp.s
 .PHONY : JoinGame.s
 
-# target to build an object file
-main.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/main.o
+# target to generate assembly for a file
+JoinGame.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/JoinGame.cpp.s
+.PHONY : JoinGame.cpp.s
+
+main.o: main.cpp.o
 .PHONY : main.o
 
-# target to preprocess a source file
-main.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/main.i
+# target to build an object file
+main.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/main.cpp.o
+.PHONY : main.cpp.o
+
+main.i: main.cpp.i
 .PHONY : main.i
 
-# target to generate assembly for a file
-main.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/main.s
+# target to preprocess a source file
+main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/main.cpp.i
+.PHONY : main.cpp.i
+
+main.s: main.cpp.s
 .PHONY : main.s
+
+# target to generate assembly for a file
+main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/main.cpp.s
+.PHONY : main.cpp.s
 
 # Help Target
 help:
