@@ -80,5 +80,5 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/step-3.dir/DependInfo.cmake"
+  "CMakeFiles/qtLauncher.dir/DependInfo.cmake"
   )

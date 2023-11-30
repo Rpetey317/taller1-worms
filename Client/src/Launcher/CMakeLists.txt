@@ -26,7 +26,7 @@ include_directories(${PROJECT_BINARY_DIR})
 
 message("Headers generados: ${UIS_HEADERS}")
 
-add_executable(step-3
+add_executable(qtLauncher
   Greeter.cpp
   main.cpp
   CreateGame.cpp
@@ -34,4 +34,4 @@ add_executable(step-3
   ${UIS_HEADERS})
 
 # Use the Widgets module from Qt 5.
-target_link_libraries(step-3 Qt5::Widgets)
+target_link_libraries(qtLauncher Qt5::Widgets)

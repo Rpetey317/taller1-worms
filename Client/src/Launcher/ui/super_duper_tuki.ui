@@ -32,26 +32,20 @@ background:rgb(255, 102, 0);
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <widget class="QLabel" name="label_2">
-         <property name="styleSheet">
-          <string notr="true"/>
-         </property>
+        <widget class="QLabel" name="label">
          <property name="text">
-          <string>Name:</string>
+          <string>Ready to play Worms?</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="changeName"/>
-       </item>
-       <item>
-        <widget class="QPushButton" name="selectNameButton">
+        <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>Select</string>
+          <string>Choose an option:</string>
          </property>
         </widget>
        </item>
@@ -60,39 +54,28 @@ background:rgb(255, 102, 0);
     </layout>
    </item>
    <item>
-    <widget class="QPushButton" name="randomNameButton">
-     <property name="text">
-      <string>Random Name</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
-      <widget class="QLabel" name="playerName">
-       <property name="text">
-        <string>Your name...</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0">
      <property name="bottomMargin">
       <number>0</number>
      </property>
      <item>
       <widget class="QPushButton" name="createButton">
        <property name="text">
-        <string>Create</string>
+        <string>Create Match</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="joinButton">
        <property name="text">
-        <string>Join</string>
+        <string>Join Match</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="createMapButton">
+       <property name="text">
+        <string>Create Map</string>
        </property>
       </widget>
      </item>

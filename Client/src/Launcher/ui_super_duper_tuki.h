@@ -13,7 +13,6 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
-#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
@@ -24,17 +23,14 @@ class Ui_Greeter
 {
 public:
     QVBoxLayout *verticalLayout;
-    QVBoxLayout *verticalLayout_2;
-    QHBoxLayout *horizontalLayout_2;
-    QLabel *label_2;
-    QLineEdit *changeName;
-    QPushButton *selectNameButton;
-    QPushButton *randomNameButton;
     QHBoxLayout *horizontalLayout_3;
-    QLabel *playerName;
+    QVBoxLayout *verticalLayout_3;
+    QLabel *label;
+    QLabel *label_2;
     QHBoxLayout *horizontalLayout;
     QPushButton *createButton;
     QPushButton *joinButton;
+    QPushButton *createMapButton;
 
     void setupUi(QWidget *Greeter)
     {
@@ -58,43 +54,22 @@ public:
 "}"));
         verticalLayout = new QVBoxLayout(Greeter);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
-        verticalLayout_2 = new QVBoxLayout();
-        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
-        horizontalLayout_2 = new QHBoxLayout();
-        horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
-        label_2 = new QLabel(Greeter);
-        label_2->setObjectName(QString::fromUtf8("label_2"));
-        label_2->setStyleSheet(QString::fromUtf8(""));
-
-        horizontalLayout_2->addWidget(label_2);
-
-        changeName = new QLineEdit(Greeter);
-        changeName->setObjectName(QString::fromUtf8("changeName"));
-
-        horizontalLayout_2->addWidget(changeName);
-
-        selectNameButton = new QPushButton(Greeter);
-        selectNameButton->setObjectName(QString::fromUtf8("selectNameButton"));
-
-        horizontalLayout_2->addWidget(selectNameButton);
-
-
-        verticalLayout_2->addLayout(horizontalLayout_2);
-
-
-        verticalLayout->addLayout(verticalLayout_2);
-
-        randomNameButton = new QPushButton(Greeter);
-        randomNameButton->setObjectName(QString::fromUtf8("randomNameButton"));
-
-        verticalLayout->addWidget(randomNameButton);
-
         horizontalLayout_3 = new QHBoxLayout();
         horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
-        playerName = new QLabel(Greeter);
-        playerName->setObjectName(QString::fromUtf8("playerName"));
+        verticalLayout_3 = new QVBoxLayout();
+        verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
+        label = new QLabel(Greeter);
+        label->setObjectName(QString::fromUtf8("label"));
 
-        horizontalLayout_3->addWidget(playerName);
+        verticalLayout_3->addWidget(label);
+
+        label_2 = new QLabel(Greeter);
+        label_2->setObjectName(QString::fromUtf8("label_2"));
+
+        verticalLayout_3->addWidget(label_2);
+
+
+        horizontalLayout_3->addLayout(verticalLayout_3);
 
 
         verticalLayout->addLayout(horizontalLayout_3);
@@ -112,6 +87,11 @@ public:
 
         horizontalLayout->addWidget(joinButton);
 
+        createMapButton = new QPushButton(Greeter);
+        createMapButton->setObjectName(QString::fromUtf8("createMapButton"));
+
+        horizontalLayout->addWidget(createMapButton);
+
 
         verticalLayout->addLayout(horizontalLayout);
 
@@ -124,12 +104,11 @@ public:
     void retranslateUi(QWidget *Greeter)
     {
         Greeter->setWindowTitle(QCoreApplication::translate("Greeter", "Form", nullptr));
-        label_2->setText(QCoreApplication::translate("Greeter", "Name:", nullptr));
-        selectNameButton->setText(QCoreApplication::translate("Greeter", "Select", nullptr));
-        randomNameButton->setText(QCoreApplication::translate("Greeter", "Random Name", nullptr));
-        playerName->setText(QCoreApplication::translate("Greeter", "Your name...", nullptr));
-        createButton->setText(QCoreApplication::translate("Greeter", "Create", nullptr));
-        joinButton->setText(QCoreApplication::translate("Greeter", "Join", nullptr));
+        label->setText(QCoreApplication::translate("Greeter", "Ready to play Worms?", nullptr));
+        label_2->setText(QCoreApplication::translate("Greeter", "Choose an option:", nullptr));
+        createButton->setText(QCoreApplication::translate("Greeter", "Create Match", nullptr));
+        joinButton->setText(QCoreApplication::translate("Greeter", "Join Match", nullptr));
+        createMapButton->setText(QCoreApplication::translate("Greeter", "Create Map", nullptr));
     } // retranslateUi
 
 };

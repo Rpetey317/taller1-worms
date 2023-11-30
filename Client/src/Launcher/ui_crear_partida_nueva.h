@@ -38,10 +38,10 @@ public:
     {
         if (CreateGame->objectName().isEmpty())
             CreateGame->setObjectName(QString::fromUtf8("CreateGame"));
-        CreateGame->resize(400, 300);
+        CreateGame->resize(329, 239);
         verticalLayoutWidget = new QWidget(CreateGame);
         verticalLayoutWidget->setObjectName(QString::fromUtf8("verticalLayoutWidget"));
-        verticalLayoutWidget->setGeometry(QRect(60, 10, 261, 281));
+        verticalLayoutWidget->setGeometry(QRect(30, 0, 261, 221));
         verticalLayout = new QVBoxLayout(verticalLayoutWidget);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         verticalLayout->setContentsMargins(0, 0, 0, 0);

@@ -117,76 +117,76 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named step-3
+# Target rules for targets named qtLauncher
 
 # Build rule for target.
-step-3: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 step-3
-.PHONY : step-3
+qtLauncher: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 qtLauncher
+.PHONY : qtLauncher
 
 # fast build rule for target.
-step-3/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/step-3.dir/build.make CMakeFiles/step-3.dir/build
-.PHONY : step-3/fast
+qtLauncher/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/build
+.PHONY : qtLauncher/fast
 
 # target to build an object file
 CreateGame.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/step-3.dir/build.make CMakeFiles/step-3.dir/CreateGame.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/CreateGame.o
 .PHONY : CreateGame.o
 
 # target to preprocess a source file
 CreateGame.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/step-3.dir/build.make CMakeFiles/step-3.dir/CreateGame.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/CreateGame.i
 .PHONY : CreateGame.i
 
 # target to generate assembly for a file
 CreateGame.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/step-3.dir/build.make CMakeFiles/step-3.dir/CreateGame.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/CreateGame.s
 .PHONY : CreateGame.s
 
 # target to build an object file
 Greeter.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/step-3.dir/build.make CMakeFiles/step-3.dir/Greeter.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/Greeter.o
 .PHONY : Greeter.o
 
 # target to preprocess a source file
 Greeter.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/step-3.dir/build.make CMakeFiles/step-3.dir/Greeter.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/Greeter.i
 .PHONY : Greeter.i
 
 # target to generate assembly for a file
 Greeter.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/step-3.dir/build.make CMakeFiles/step-3.dir/Greeter.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/Greeter.s
 .PHONY : Greeter.s
 
 # target to build an object file
 JoinGame.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/step-3.dir/build.make CMakeFiles/step-3.dir/JoinGame.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/JoinGame.o
 .PHONY : JoinGame.o
 
 # target to preprocess a source file
 JoinGame.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/step-3.dir/build.make CMakeFiles/step-3.dir/JoinGame.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/JoinGame.i
 .PHONY : JoinGame.i
 
 # target to generate assembly for a file
 JoinGame.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/step-3.dir/build.make CMakeFiles/step-3.dir/JoinGame.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/JoinGame.s
 .PHONY : JoinGame.s
 
 # target to build an object file
 main.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/step-3.dir/build.make CMakeFiles/step-3.dir/main.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/main.o
 .PHONY : main.o
 
 # target to preprocess a source file
 main.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/step-3.dir/build.make CMakeFiles/step-3.dir/main.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/main.i
 .PHONY : main.i
 
 # target to generate assembly for a file
 main.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/step-3.dir/build.make CMakeFiles/step-3.dir/main.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/qtLauncher.dir/build.make CMakeFiles/qtLauncher.dir/main.s
 .PHONY : main.s
 
 # Help Target
@@ -197,7 +197,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... step-3"
+	@echo "... qtLauncher"
 	@echo "... CreateGame.o"
 	@echo "... CreateGame.i"
 	@echo "... CreateGame.s"
