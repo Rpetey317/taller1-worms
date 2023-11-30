@@ -23,7 +23,9 @@ set(SOURCES
   Sources/Greeter.cpp
   Sources/main.cpp
   Sources/CreateGame.cpp
-  Sources/JoinGame.cpp)
+  Sources/JoinGame.cpp
+  DataLoggin/DataLoggin.cpp # Clase que deberia devolver el Qt Launcher
+  )
 
 add_executable(qtLauncher
   ${SOURCES}

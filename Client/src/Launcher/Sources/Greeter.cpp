@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <QPixmap>
 #include <QPalette>
-Greeter::Greeter(QWidget *parent) : QWidget(parent), gameName("") {
+Greeter::Greeter(QWidget *parent) : QWidget(parent), gameName(""), dataLoggin() {
     // Instancio la configuracion generada por el designer y uic
     Ui::Greeter greeter;
     // Configuro este widget para use esa configuracion
@@ -50,7 +50,7 @@ void Greeter::createGame() {
         newGame.setModal(true);
         if(newGame.exec() == QDialog::Accepted){
             this->gameName = newGame.getEnteredText();
-            // this->dataLoggin.gameName = this->gameName.toStdString();
+            this->dataLoggin.gameName = this->gameName.toStdString();
             std::cout << "Game created succesfully with name: " << gameName.toStdString() << std::endl;
             
         };
@@ -61,6 +61,7 @@ void Greeter::joinToGame() {
         joinGame.setModal(true);
         if(joinGame.exec() == QDialog::Accepted){
             this->gameName = joinGame.getEnteredText();
+            this->dataLoggin.gameName = this->gameName.toStdString();
             std::cout << "Joined succesfully to game: " << gameName.toStdString() << std::endl;
         };
 }

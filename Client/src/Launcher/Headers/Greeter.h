@@ -11,7 +11,7 @@
 class Greeter : public QWidget {
 public:
     explicit Greeter(QWidget *parent = 0);
-    // DataLoggin dataLoggin;
+    DataLoggin dataLoggin;
     QString gameName;
     
 private:
