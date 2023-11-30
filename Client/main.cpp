@@ -2,6 +2,8 @@
 
 #include "GameProcessing/GameProcessing.h"
 #include "src/SdlManager/SdlManager.h"
+#include <QApplication>
+#include "src/Launcher/Headers/Greeter.h"
 
 int main(int argc, char* argv[]) {
 
@@ -25,6 +27,19 @@ int main(int argc, char* argv[]) {
 
         const char* hostname = argv[1];
         const char* port = argv[2];
+        
+        // Socket skt(Socket(hostname, port));
+        // ClientProtocol protocol(std::move(this->skt));
+        // Primero deberia crearse el Launcher, que es el que se encarga de crear la partida o unirse a una
+        QApplication app(argc, argv);
+        // Instancio el greeter
+        Greeter greeter;
+        greeter.show();
+        
+        // QString gameName = greeter.gameName;
+        // std::cout << "Game name to join or created: " << gameName.toStdString() << std::endl;
+        // Arranca el loop de la UI
+        app.exec();
 
 
         Queue<Action*> commands(10000);

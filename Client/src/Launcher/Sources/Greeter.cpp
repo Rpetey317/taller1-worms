@@ -6,12 +6,12 @@
 #include <stdlib.h>
 #include <QPixmap>
 #include <QPalette>
-Greeter::Greeter(QWidget *parent) : QWidget(parent), gameName(""), dataLoggin() {
+Greeter::Greeter(QWidget *parent) :QWidget(parent), gameName(""){
     // Instancio la configuracion generada por el designer y uic
     Ui::Greeter greeter;
     // Configuro este widget para use esa configuracion
     greeter.setupUi(this);
-    QPixmap background_image("tuki.png");
+    QPixmap background_image("Images/Launcher/tuki.png");
     background_image = background_image.scaled(this->size(), Qt::IgnoreAspectRatio);
     QPalette palette;
     palette.setBrush(QPalette::Window, background_image);
@@ -50,7 +50,7 @@ void Greeter::createGame() {
         newGame.setModal(true);
         if(newGame.exec() == QDialog::Accepted){
             this->gameName = newGame.getEnteredText();
-            this->dataLoggin.gameName = this->gameName.toStdString();
+            // this->dataLoggin.gameName = this->gameName.toStdString();
             std::cout << "Game created succesfully with name: " << gameName.toStdString() << std::endl;
             
         };
@@ -61,7 +61,7 @@ void Greeter::joinToGame() {
         joinGame.setModal(true);
         if(joinGame.exec() == QDialog::Accepted){
             this->gameName = joinGame.getEnteredText();
-            this->dataLoggin.gameName = this->gameName.toStdString();
+            // this->dataLoggin.gameName = this->gameName.toStdString();
             std::cout << "Joined succesfully to game: " << gameName.toStdString() << std::endl;
         };
 }
