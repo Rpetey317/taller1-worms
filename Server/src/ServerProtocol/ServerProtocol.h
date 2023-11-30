@@ -39,6 +39,14 @@ class ServerProtocol {
     bool send_str(const std::string& str);
     bool send_Vect2D(const Vect2D& pt);
 
+    /*
+     * Primitive type receive methods, to simplify update-specific receive methods
+     * On successful receive return true, false if socket closed
+     */
+    bool recv_char(uint8_t& num);
+    bool recv_short(uint16_t& num);
+    bool recv_long(uint32_t& num);
+    bool recv_str(std::string& str);
 
 public:
     // ========== DD ============ //

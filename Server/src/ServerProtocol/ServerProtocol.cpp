@@ -13,56 +13,6 @@
 // for every. single. constant. in the NetworkProtocol namespace.
 using namespace NetworkProtocol;  // NOLINT
 
-bool ServerProtocol::send_short(const uint16_t& num) {
-    uint16_t nnum = htons(num);
-    this->cli.sendall(&nnum, sizeof(uint16_t), &this->isclosed);
-    if (this->isclosed) {
-        return false;
-    }
-    return true;
-}
-
-bool ServerProtocol::send_long(const uint32_t& num) {
-    uint32_t nnum = htonl(num);
-    this->cli.sendall(&nnum, sizeof(uint32_t), &this->isclosed);
-    if (this->isclosed) {
-        return false;
-    }
-    return true;
-}
-
-bool ServerProtocol::send_char(const uint8_t& num) {
-    this->cli.sendall(&num, 1, &this->isclosed);
-    if (this->isclosed) {
-        return false;
-    }
-    return true;
-}
-
-bool ServerProtocol::send_str(const std::string& str) {
-    strlen_t len = htons(str.length());
-    this->cli.sendall(&len, sizeof(strlen_t), &this->isclosed);
-    if (this->isclosed) {
-        return false;
-    }
-    this->cli.sendall(str.data(), str.length(), &this->isclosed);
-    if (this->isclosed) {
-        return false;
-    }
-    return true;
-}
-
-bool ServerProtocol::send_Vect2D(const Vect2D& pt) {
-    if (!this->send_short(pt.x)) {
-        return false;
-    }
-    if (!this->send_short(pt.y)) {
-        return false;
-    }
-    return true;
-}
-
-
 ServerProtocol::ServerProtocol(Socket&& _cli): cli(std::move(_cli)), isclosed(false) {}
 
 ServerProtocol::ServerProtocol(ServerProtocol&& other):
@@ -74,22 +24,7 @@ char ServerProtocol::send_update(std::shared_ptr<Update> msg) { return msg->get_
 std::shared_ptr<Message> ServerProtocol::recv_update(const int& plid) {
     char code;
     this->cli.recvall(&code, sizeof(char), &this->isclosed);
-    /*
-    // Del multiple-games-feature commit
-    // size_t ServerProtocol::recv_join() {
-    //     size_t game_code;
-    //     this->cli.recvall(&game_code, sizeof(game_code), &this->isclosed);
-    //     if (this->isclosed) {
-    //         return -1;
-    //     }
-    //     return game_code;
-    // }
 
-    // char ServerProtocol::send_PlayerMessageUpdate(const PlayerMessageUpdate& upd) {
-    //     // send code
-    //     msgcode_t code = MSGCODE_PLAYER_MESSAGE;
-    //     this->cli.sendall(&code, sizeof(msgcode_t), &this->isclosed);
-    */
     if (this->isclosed) {
         return std::make_shared<NullMessage>();
     }
