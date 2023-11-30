@@ -1,3 +1,5 @@
+#include "CreateRequest.h"
 #include "GameDataRequest.h"
+#include "JoinRequest.h"
 #include "MapDataRequest.h"
 #include "NullRequest.h"

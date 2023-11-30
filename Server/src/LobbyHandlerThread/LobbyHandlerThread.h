@@ -15,12 +15,15 @@ class LobbyHandlerThread: public Thread {
 
     friend class GameDataRequest;
     friend class MapDataRequest;
+    friend class CreateRequest;
+    friend class JoinRequest;
+    friend class NullRequest;
 
     void send_game_data(GameDataRequest& request);
     void send_map_data(MapDataRequest& request);
+    void join_game(JoinRequest& request);
+    void create_game(CreateRequest& request);
     void process_null_request(NullRequest& request);
-    void join_game();
-    void create_game();
 
 public:
     LobbyHandlerThread(Socket&& peer, LobbyHandler& handler);

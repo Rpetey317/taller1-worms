@@ -17,7 +17,7 @@ private:
 public:
     LobbyHandler();
 
-    bool create_game(const std::string& name);
+    bool create_game(const std::string& game_name, const std::string& map_name);
 
     bool join_player(const std::string& game, ServerProtocol&& player);
 
