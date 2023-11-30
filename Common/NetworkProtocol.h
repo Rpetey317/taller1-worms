@@ -22,11 +22,12 @@ const msgcode_t MSGCODE_PLAYER_AMOUNT = 0x06;
 const msgcode_t MSGCODE_PLAYER_MOVE_RIGHT = 0x07;
 const msgcode_t MSGCODE_PLAYER_MOVE_LEFT = 0x08;
 const msgcode_t MSGCODE_PLAYER_MESSAGE = 0x09;
-const msgcode_t MSGCODE_PLAYER_JUMP_FORWARD = 0x10;
-const msgcode_t MSGCODE_PLAYER_JUMP_BACKWARDS = 0x11;
-const msgcode_t MSGCODE_WORLD_UPD = 0x12;
-const msgcode_t MSGCODE_NULL_ACTION = 0x13;
-
+const msgcode_t MSGCODE_PLAYER_JUMP_FORWARD = 0x0A;
+const msgcode_t MSGCODE_PLAYER_JUMP_BACKWARDS = 0x0B;
+const msgcode_t MSGCODE_WORLD_UPD = 0x0C;
+const msgcode_t MSGCODE_NULL_ACTION = 0x0D;
+// New constant names from here on
+const msgcode_t CLI_JOIN_LOBBY = 0x0E;
 
 // TODO: separar los msgcodes para los que se mandan del server al client y del client al server
 

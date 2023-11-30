@@ -5,7 +5,7 @@
 
 #include "Game.h"
 #include "GameLoopThread.h"
-#include "Socket.h"
+#include "ServerProtocol.h"
 #include "queue.h"
 
 class GameWrapper {
@@ -16,7 +16,7 @@ class GameWrapper {
 public:
     GameWrapper();
 
-    void add_player(Socket&& player);
+    void add_player(ServerProtocol&& player);
 
     ~GameWrapper();
 };

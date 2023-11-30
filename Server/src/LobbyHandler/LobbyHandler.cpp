@@ -15,7 +15,7 @@ bool LobbyHandler::create_game(const std::string& name) {
     return true;
 }
 
-bool LobbyHandler::join_player(const std::string& game, Socket&& player) {
+bool LobbyHandler::join_player(const std::string& game, ServerProtocol&& player) {
     if (games.find(game) == games.end()) {
         return false;
     }

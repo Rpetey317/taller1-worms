@@ -17,7 +17,7 @@ public:
 
     bool create_game(const std::string& name);
 
-    bool join_player(const std::string& game, Socket&& player);
+    bool join_player(const std::string& game, ServerProtocol&& player);
 
     ~LobbyHandler();
 };
