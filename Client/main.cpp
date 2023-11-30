@@ -35,12 +35,13 @@ int main(int argc, char* argv[]) {
         // Instancio el greeter
         Greeter greeter;
         greeter.show();
-        
         // QString gameName = greeter.gameName;
         // std::cout << "Game name to join or created: " << gameName.toStdString() << std::endl;
         // Arranca el loop de la UI
         app.exec();
 
+        QString gameName = greeter.gameName;
+        std::cout << "Game name to join or created: " << gameName.toStdString() << std::endl;        
 
         Queue<Action*> commands(10000);
         Queue<Event*> events(10000);

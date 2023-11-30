@@ -11,11 +11,11 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QComboBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QSpinBox>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
@@ -31,7 +31,7 @@ public:
     QLineEdit *gameName;
     QHBoxLayout *horizontalLayout_3;
     QLabel *label_3;
-    QComboBox *mapCombo;
+    QSpinBox *mapNumber;
     QPushButton *acceptButton;
 
     void setupUi(QWidget *CreateGame)
@@ -67,10 +67,10 @@ public:
 
         horizontalLayout_3->addWidget(label_3);
 
-        mapCombo = new QComboBox(verticalLayoutWidget);
-        mapCombo->setObjectName(QString::fromUtf8("mapCombo"));
+        mapNumber = new QSpinBox(verticalLayoutWidget);
+        mapNumber->setObjectName(QString::fromUtf8("mapNumber"));
 
-        horizontalLayout_3->addWidget(mapCombo);
+        horizontalLayout_3->addWidget(mapNumber);
 
 
         verticalLayout->addLayout(horizontalLayout_3);
@@ -90,7 +90,7 @@ public:
     {
         CreateGame->setWindowTitle(QCoreApplication::translate("CreateGame", "Form", nullptr));
         label->setText(QCoreApplication::translate("CreateGame", "Name", nullptr));
-        label_3->setText(QCoreApplication::translate("CreateGame", "Map", nullptr));
+        label_3->setText(QCoreApplication::translate("CreateGame", "Map number", nullptr));
         acceptButton->setText(QCoreApplication::translate("CreateGame", "Accept", nullptr));
     } // retranslateUi
 
