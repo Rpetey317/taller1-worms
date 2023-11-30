@@ -2,6 +2,7 @@
 #ifndef __LOBBYHANDLER_H__
 #define __LOBBYHANDLER_H__
 
+#include <list>
 #include <map>
 #include <memory>
 #include <string>
@@ -11,6 +12,7 @@
 class LobbyHandler {
 private:
     std::map<std::string, std::unique_ptr<GameWrapper>> games;
+    const std::list<std::string> maps;
 
 public:
     LobbyHandler();
@@ -18,6 +20,9 @@ public:
     bool create_game(const std::string& name);
 
     bool join_player(const std::string& game, ServerProtocol&& player);
+
+    std::list<std::string> get_game_names();
+    std::list<std::string>& get_map_names();
 
     ~LobbyHandler();
 };

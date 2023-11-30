@@ -10,16 +10,20 @@
 #include "thread.h"
 
 class LobbyHandlerThread: public Thread {
-    LobbyHandler handler;
+    LobbyHandler& handler;
     ServerProtocol player;
+
+    friend class GameDataRequest;
+    friend class MapDataRequest;
 
     void send_game_data(GameDataRequest& request);
     void send_map_data(MapDataRequest& request);
+    void process_null_request(NullRequest& request);
     void join_game();
     void create_game();
 
 public:
-    explicit LobbyHandlerThread(Socket&& peer);
+    LobbyHandlerThread(Socket&& peer, LobbyHandler& handler);
 
     void run() override;
 

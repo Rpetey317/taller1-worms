@@ -62,13 +62,51 @@ std::shared_ptr<Message> ServerProtocol::recv_update(const int& plid) {
     }
 }
 
-msgcode_t ServerProtocol::recv_request() {
-    msgcode_t request;
-    this->cli.recvall(&request, sizeof(msgcode_t), &this->isclosed);
+std::unique_ptr<Request> ServerProtocol::recv_request() {
+    char code;
+    this->cli.recvall(&code, sizeof(char), &this->isclosed);
     if (this->isclosed) {
-        return -1;
+        return std::make_unique<NullRequest>();
     }
-    return request;
+
+    if (code == CLI_REQ_GAMES) {
+        return std::make_unique<GameDataRequest>();
+    } else if (code == CLI_REQ_MAPS) {
+        return std::make_unique<MapDataRequest>();
+    } else {
+        return std::make_unique<NullRequest>();
+    }
+}
+
+char ServerProtocol::send_game_data(const std::list<std::string>& names) {
+    if (!this->send_char(SRV_RESP_GAMES))
+        return CLOSED_SKT;
+
+    if (!this->send_short(names.size()))
+        return CLOSED_SKT;
+
+    for (auto& name: names) {
+        // cppcheck-suppress useStlAlgorithm
+        if (!this->send_str(name))
+            return CLOSED_SKT;
+    }
+    return SUCCESS;
+}
+
+char ServerProtocol::send_map_data(const std::list<std::string>& names) {
+    if (!this->send_char(SRV_RESP_MAPS))
+        return CLOSED_SKT;
+
+    if (!this->send_short(names.size()))
+        return CLOSED_SKT;
+
+    for (auto& name: names) {
+        // cppcheck-suppress useStlAlgorithm
+        if (!this->send_str(name)) {
+            return CLOSED_SKT;
+        }
+    }
+    return SUCCESS;
 }
 
 bool ServerProtocol::is_connected() { return !this->isclosed; }

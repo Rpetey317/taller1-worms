@@ -1,11 +1,13 @@
 #ifndef __SERVER_PROTOCOL_H__
 #define __SERVER_PROTOCOL_H__
 
+#include <list>
 #include <memory>
 #include <string>
 
 #include "MessageHeaders.h"
 #include "NetworkProtocol.h"
+#include "RequestHeaders.h"
 #include "Socket.h"
 #include "UpdateHeaders.h"
 #include "Vect2D.h"
@@ -64,6 +66,9 @@ public:
     char send_WorldUpdate(const WorldUpdate& upd);
 
 
+    char send_game_data(const std::list<std::string>& names);
+    char send_map_data(const std::list<std::string>& names);
+
     /*
      * Constructs a new protocol from socket with move semantics
      */
@@ -83,10 +88,7 @@ public:
      */
     std::shared_ptr<Message> recv_update(const int& plid);
 
-    /*
-     * Reads the first request the client sends. Can be CREATE_GAME or JOIN_GAME
-     */
-    msgcode_t recv_request();
+    std::unique_ptr<Request> recv_request();
 
     /*
      * Reads the code of the game the client wants to join

@@ -1,5 +1,6 @@
 #include "LobbyHandler.h"
 
+#include <list>
 #include <memory>
 #include <utility>
 
@@ -21,6 +22,14 @@ bool LobbyHandler::join_player(const std::string& game, ServerProtocol&& player)
     }
     games[game]->add_player(std::move(player));
     return true;
+}
+
+std::list<std::string> LobbyHandler::get_game_names() {
+    std::list<std::string> names;
+    for (auto& game: games) {
+        names.push_back(game.first);
+    }
+    return names;
 }
 
 LobbyHandler::~LobbyHandler() {
