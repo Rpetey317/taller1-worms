@@ -25,6 +25,7 @@ public:
     explicit Greeter(QWidget *parent = 0);
     // DataLoggin dataLoggin;
     QString gameName;
+    int mapNumber;
 };
 
 #endif // GREETER_H

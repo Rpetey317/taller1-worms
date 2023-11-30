@@ -9,6 +9,7 @@ class CreateGame : public QDialog {
 public:
     explicit CreateGame();
     QString getEnteredText() const;
+    int getEnteredMap() const;
 
 private slots:
     void createNewGame();

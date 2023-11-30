@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <stdlib.h>
+#include <qcombobox.h>
+
 CreateGame::CreateGame() {
     // Instancio la configuracion generada por el designer y uic
     Ui::CreateGame greeter;
@@ -16,6 +18,12 @@ QString CreateGame::getEnteredText() const {
     // QString name = inputName->text();
     // std::cout << "New game created: " << name.toStdString() << std::endl;
     return inputName->text();
+}
+
+
+int CreateGame::getEnteredMap() const { 
+    QSpinBox* inputMap = findChild<QSpinBox*>("mapNumber");
+    return inputMap->value();
 }
 
 void CreateGame::createNewGame() {
