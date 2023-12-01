@@ -5,14 +5,12 @@
 
 class DataLoggin {
 
-    public:
+public:
     std::string gameName;
     int mapNumber;
     DataLoggin();
     std::string getGameName();
     ~DataLoggin();
-
-
 };
 
 #endif  // DATALOGGIN_H

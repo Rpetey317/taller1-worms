@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>329</width>
-    <height>239</height>
+    <height>288</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,12 +42,12 @@
       <item>
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>Map number</string>
+         <string>Map name</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QSpinBox" name="mapNumber"/>
+       <widget class="QLineEdit" name="mapName"/>
       </item>
      </layout>
     </item>

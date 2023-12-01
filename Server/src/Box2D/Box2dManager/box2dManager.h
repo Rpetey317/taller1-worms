@@ -22,11 +22,14 @@
 #include "MessageHeaders.h"
 #include "UpdateHeaders.h"
 
-class BoxSimulator {
+class BoxManager {
     std::list<Box2DPlayer> worms;
     std::list<Box2DPlayer>::iterator playing_worm;
+
+    std::list<b2Body*> projectiles;
     BoxWorld world;
 
+    float direction;
     // call to function should be implemented in process 
     // but execution in corresponding class
     void next_turn();
@@ -36,8 +39,9 @@ public:
     std::map<int, Vect2D>* create_position_map(const std::list<Box2DPlayer>& worms);
     Vect2D meter_to_pixel(b2Vec2 meter);
 
-    BoxSimulator();
+    BoxManager();
     bool set_map();
+    void fire_projectile(float angle, float power, float restitution, int category, int mask);
     void add_player(); // should reach agreement whether position is random or sent by server
     std::shared_ptr<WorldUpdate> process(Box2DMsg& update);
 };

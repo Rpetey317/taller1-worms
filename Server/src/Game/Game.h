@@ -29,7 +29,7 @@ class Game {
     int next_free_id;
     Queue<int> box2d_in;
     Queue<std::vector<int>> box2d_out;
-    BoxSimulator box2d;
+    BoxManager box2d;
 
 public:
     // ============ DD ============= //

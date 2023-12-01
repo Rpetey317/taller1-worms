@@ -15,30 +15,27 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
-#include <QtWidgets/QSpinBox>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
 
-class Ui_CreateGame
-{
+class Ui_CreateGame {
 public:
-    QWidget *verticalLayoutWidget;
-    QVBoxLayout *verticalLayout;
-    QHBoxLayout *horizontalLayout;
-    QLabel *label;
-    QLineEdit *gameName;
-    QHBoxLayout *horizontalLayout_3;
-    QLabel *label_3;
-    QSpinBox *mapNumber;
-    QPushButton *acceptButton;
+    QWidget* verticalLayoutWidget;
+    QVBoxLayout* verticalLayout;
+    QHBoxLayout* horizontalLayout;
+    QLabel* label;
+    QLineEdit* gameName;
+    QHBoxLayout* horizontalLayout_3;
+    QLabel* label_3;
+    QLineEdit* mapName;
+    QPushButton* acceptButton;
 
-    void setupUi(QWidget *CreateGame)
-    {
+    void setupUi(QWidget* CreateGame) {
         if (CreateGame->objectName().isEmpty())
             CreateGame->setObjectName(QString::fromUtf8("CreateGame"));
-        CreateGame->resize(329, 239);
+        CreateGame->resize(329, 288);
         verticalLayoutWidget = new QWidget(CreateGame);
         verticalLayoutWidget->setObjectName(QString::fromUtf8("verticalLayoutWidget"));
         verticalLayoutWidget->setGeometry(QRect(30, 0, 261, 221));
@@ -67,10 +64,10 @@ public:
 
         horizontalLayout_3->addWidget(label_3);
 
-        mapNumber = new QSpinBox(verticalLayoutWidget);
-        mapNumber->setObjectName(QString::fromUtf8("mapNumber"));
+        mapName = new QLineEdit(verticalLayoutWidget);
+        mapName->setObjectName(QString::fromUtf8("mapName"));
 
-        horizontalLayout_3->addWidget(mapNumber);
+        horizontalLayout_3->addWidget(mapName);
 
 
         verticalLayout->addLayout(horizontalLayout_3);
@@ -84,22 +81,20 @@ public:
         retranslateUi(CreateGame);
 
         QMetaObject::connectSlotsByName(CreateGame);
-    } // setupUi
+    }  // setupUi
 
-    void retranslateUi(QWidget *CreateGame)
-    {
+    void retranslateUi(QWidget* CreateGame) {
         CreateGame->setWindowTitle(QCoreApplication::translate("CreateGame", "Form", nullptr));
         label->setText(QCoreApplication::translate("CreateGame", "Name", nullptr));
-        label_3->setText(QCoreApplication::translate("CreateGame", "Map number", nullptr));
+        label_3->setText(QCoreApplication::translate("CreateGame", "Map name", nullptr));
         acceptButton->setText(QCoreApplication::translate("CreateGame", "Accept", nullptr));
-    } // retranslateUi
-
+    }  // retranslateUi
 };
 
 namespace Ui {
-    class CreateGame: public Ui_CreateGame {};
-} // namespace Ui
+class CreateGame: public Ui_CreateGame {};
+}  // namespace Ui
 
 QT_END_NAMESPACE
 
-#endif // UI_CREAR_PARTIDA_NUEVA_H
+#endif  // UI_CREAR_PARTIDA_NUEVA_H
