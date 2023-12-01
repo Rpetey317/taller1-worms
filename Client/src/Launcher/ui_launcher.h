@@ -125,7 +125,7 @@ public:
         horizontalLayout->addWidget(joinButton);
 
         pushButton = new QPushButton(Greeter);
-        pushButton->setObjectName(QString::fromUtf8("pushButton"));
+        pushButton->setObjectName(QString::fromUtf8("createMapButton"));
         QPalette palette4;
         palette4.setBrush(QPalette::Active, QPalette::Button, brush5);
         palette4.setBrush(QPalette::Active, QPalette::Base, brush5);

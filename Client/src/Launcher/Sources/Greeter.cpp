@@ -61,12 +61,11 @@ void Greeter::joinToGame() {
 
 
 void Greeter::createMap() {
-    // CreateMap createMap;
-    // createMap.setModal(true);
-    // if(createMap.exec() == QDialog::Accepted){
-    //     this->mapNumber = createMap.getEnteredMap();
-    //     std::cout << "Map created succesfully with number: " << mapNumber << std::endl;
-    // };
+    CreateMap createMap;
+    createMap.setModal(true);
+    if(createMap.exec() == QDialog::Accepted){
+        std::cout << "Map created succesfully with name: " << std::endl;
+    };
 }
 
 void Greeter::connectEvents() {

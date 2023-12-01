@@ -11,8 +11,8 @@ Final group Project of Programming Workshop from University of Buenos Aires (UBA
 | Padrón | Alumnos                  |
 |--------|--------------------------|
 | ------ | Bohorquez, Ruben         | 
-|  ----- | Belforte, Paolo          |
-| ------ | Pujato, Inaki            |
+| ------ | Belforte, Paolo          |
+| 109131 | Pujato, Inaki            |
 | 107992 | Lardiez, Mateo           |
 
 
