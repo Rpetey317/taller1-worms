@@ -13,7 +13,7 @@ CreateGame::CreateGame() {
     connectEvents();
 }
 
-QString CreateGame::getEnteredText() const { 
+QString CreateGame::getEnteredGameName() const { 
     QLineEdit* inputName = findChild<QLineEdit*>("gameName");
     // QString name = inputName->text();
     // std::cout << "New game created: " << name.toStdString() << std::endl;
@@ -21,9 +21,9 @@ QString CreateGame::getEnteredText() const {
 }
 
 
-int CreateGame::getEnteredMap() const { 
-    QSpinBox* inputMap = findChild<QSpinBox*>("mapNumber");
-    return inputMap->value();
+QString CreateGame::getEnteredMapName() const { 
+    QLineEdit* inputMap = findChild<QLineEdit*>("mapName");
+    return inputMap->text();
 }
 
 void CreateGame::createNewGame() {

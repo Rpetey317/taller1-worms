@@ -37,10 +37,10 @@ void Greeter::createGame() {
         CreateGame newGame;
         newGame.setModal(true);
         if(newGame.exec() == QDialog::Accepted){
-            this->gameName = newGame.getEnteredText();
-            this->mapNumber = newGame.getEnteredMap();
+            this->gameName = newGame.getEnteredGameName();
+            this->mapName = newGame.getEnteredMapName();
             // this->dataLoggin.gameName = this->gameName.toStdString();
-            std::cout << "Game created succesfully with name: " << gameName.toStdString() << " and map number: " << mapNumber << std::endl;
+            std::cout << "Game created succesfully with name: " << gameName.toStdString() << " and map name: " << mapName.toStdString() << std::endl;
             close();
         };
 }

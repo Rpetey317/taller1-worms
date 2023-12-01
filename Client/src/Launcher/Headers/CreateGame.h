@@ -8,8 +8,8 @@
 class CreateGame : public QDialog {
 public:
     explicit CreateGame();
-    QString getEnteredText() const;
-    int getEnteredMap() const;
+    QString getEnteredGameName() const;
+    QString getEnteredMapName() const;
 
 private slots:
     void createNewGame();
