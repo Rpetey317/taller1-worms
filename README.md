@@ -13,7 +13,7 @@ Final group Project of Programming Workshop from University of Buenos Aires (UBA
 | ------ | Bohorquez, Ruben         | 
 |  ----- | Belforte, Paolo          |
 | ------ | Pujato, Inaki            |
-| ------ | Lardiez, Mateo           |
+| 107992 | Lardiez, Mateo           |
 
 
 # Tabla de Contenidos
