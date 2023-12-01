@@ -6,6 +6,7 @@
 #include "CreateGame.h"
 #include "CreateMap.h"
 #include "JoinGame.h"
+#include "StartGame.h"
 // #include "../ui_super_duper_tuki.h"
 #include <string>
 

@@ -73,7 +73,20 @@ std::unique_ptr<Request> ServerProtocol::recv_request() {
         return std::make_unique<GameDataRequest>();
     } else if (code == CLI_REQ_MAPS) {
         return std::make_unique<MapDataRequest>();
-    } else {
+    } else if (code == CLI_REQ_CREATE) {
+        std::string game_name;
+        std::string map_name;
+        if (!this->recv_str(game_name) || !this->recv_str(map_name)) {
+            return std::make_unique<NullRequest>();
+        }
+        return std::make_unique<CreateRequest>(game_name, map_name);
+    } else if (code == CLI_REQ_JOIN) {
+        std::string game_name;
+        if (!this->recv_str(game_name)) {
+            return std::make_unique<NullRequest>();
+        }
+        return std::make_unique<JoinRequest>(game_name);
+    }  else {
         return std::make_unique<NullRequest>();
     }
 }

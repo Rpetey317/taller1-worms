@@ -201,6 +201,51 @@ char ClientProtocol::send_Shoot(Shoot action) {
     return SUCCESS;
 }
 
+std::list<std::string> ClientProtocol::recv_games_info() {
+
+}
+
+std::list<std::string> ClientProtocol::recv_maps_info() {
+
+}
+
+char ClientProtocol::send_start() {
+    if (!this->send_char(CLI_REQ_START)) {
+        return CLOSED_SKT;
+    }
+
+    return SUCCESS;
+}
+
+char ClientProtocol::create_new_game(std::string& game_name, std::string& map_name) {
+    if (!this->send_char(CLI_REQ_CREATE)) {
+        return CLOSED_SKT;
+    }
+
+    if (!this->send_str(game_name)) {
+        return CLOSED_SKT;
+    }
+
+    if (!this->send_str(map_name)) {
+        return CLOSED_SKT;
+    }
+
+    return SUCCESS;
+}
+
+char ClientProtocol::join_game(std::string& game_name) {
+    if (!this->send_char(CLI_REQ_JOIN)) {
+        return CLOSED_SKT;
+    }
+
+    if (!this->send_str(game_name)) {
+        return CLOSED_SKT;
+    }
+
+    return SUCCESS;
+}
+
+
 
 void ClientProtocol::send_code_game(size_t code) {
     // Send code game to join
@@ -251,17 +296,6 @@ int ClientProtocol::recv_amount_players() {
     return (int)playercount;
 }
 
-
-// uint8_t ClientProtocol::receive_gameupdate() {
-//     bool isclosed = false;
-//     uint8_t response;
-//     int sz = this->skt.recvall(&response, sizeof(uint8_t), &isclosed);
-//     if (sz == 0) {
-//         throw std::runtime_error("Fallo. No se puede leer retorno de server");
-//     }
-
-//     return response;
-// }
 
 void ClientProtocol::close() {
     if (this->isclosed) {

@@ -42,8 +42,14 @@ void Greeter::createGame() {
         this->gameName = newGame.getEnteredGameName();
         this->mapName = newGame.getEnteredMapName();
         // this->dataLoggin.gameName = this->gameName.toStdString();
-        std::cout << "Game created succesfully with name: " << gameName.toStdString()
-                  << " and map name: " << mapName.toStdString() << std::endl;
+        // std::cout << "Game created succesfully with name: " << gameName.toStdString()
+        //           << " and map name: " << mapName.toStdString() << std::endl;
+
+        this.protocol.create_new_game(this->gameName.toStdString(), this->mapName.toStdString());
+
+        //Crear otro QDialog que espere a un accept
+
+
         close();
     };
 }

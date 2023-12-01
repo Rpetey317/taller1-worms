@@ -5,6 +5,7 @@
 #include <utility>
 #include <variant>
 #include <vector>
+#include <list>
 
 #include "../Action/ActionHeaders.h"
 #include "../Event/EventHeaders.h"
@@ -57,6 +58,12 @@ public:
     char send_Jump(Jump action);
     char send_NullAction(NullAction action);
     char send_Shoot(Shoot action);
+
+    std::list<std::string> recv_games_info();
+    std::list<std::string> recv_maps_info();
+    char send_start();
+    char create_new_game(std::string& game_name, std::string& map_name);
+    char join_game(std::string& game_name);
 
     /*
         Sends code of match game
