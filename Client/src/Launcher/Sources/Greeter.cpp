@@ -41,6 +41,7 @@ void Greeter::createGame() {
             this->mapNumber = newGame.getEnteredMap();
             // this->dataLoggin.gameName = this->gameName.toStdString();
             std::cout << "Game created succesfully with name: " << gameName.toStdString() << " and map number: " << mapNumber << std::endl;
+            close();
         };
 }
 
@@ -51,6 +52,7 @@ void Greeter::joinToGame() {
             this->gameName = joinGame.getEnteredText();
             // this->dataLoggin.gameName = this->gameName.toStdString();
             std::cout << "Joined succesfully to game: " << gameName.toStdString() << std::endl;
+            close();
         };
 }
 

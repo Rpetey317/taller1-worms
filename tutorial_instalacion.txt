@@ -32,4 +32,4 @@ Luego, ir a carpeta Images y hacer unzip de los 2 zip
 
 INSTALACION PARA QT:
 
-suda apt-install qt5-default
+sudo apt-install qt5-default
