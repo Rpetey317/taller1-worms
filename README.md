@@ -99,22 +99,32 @@ Luego crear la carpeta build y ejecutar el CMake:
 
 Esto creara los archivos ejecutables server y client.
 
-Para comenzar a jugar
-
-
 # Guia de Usuario
 
 ## Formas de Ejecucion
 
 ### Server
 
-Localizarse 
+En una terminal, localizarse en el directorio build, creado anteriormente, ingresa el comando:
+
+- ./server <port number> . Como por ejemplo ./server 8080
 
 ### Cliente
+
+En otra terminal y parandote en el directorio build, ingrese el comando:
+
+- ./client 127.0.0.1 <port number>. Como por ejemplo ./client 127.0.0.1 8080. Ambos deben tener el mismo port number.
+
+Al poner el mismo numero de puerto, el cliente se conecta al server, para luego crear o unirse a una partida.
 
 # Como Jugar
 
 ## Movimientos
+
+## Launcher
+
+Al conectarse el cliente con el servidor, se ejecuta el qt launcher, el cual le permite al usuario elegir unirse a una partida, 
+crear una partida, o crear un nuevo mapa, como se puede ver en la siguiente imagen. NO OLVIDARSE DE INGRESAR IMAGEN
 
 ## Crear Partida
 
