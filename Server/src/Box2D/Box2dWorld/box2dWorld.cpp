@@ -151,4 +151,24 @@ bool BoxWorld::set_map(std::vector<Tile> map) {
     return true;
 }
 
+b2Body* BoxWorld::create_projectile(float x, float y, float restitution, float direction, int category, int mask) {
+    b2BodyDef myBodyDef;
+    myBodyDef.type = b2_dynamicBody;
+    b2Vec2 pos = b2Vec2(x,y) + b2Vec2(0.12f - 0.24f*direction, 0.15f);
+    myBodyDef.position.Set(pos.x, pos.y);
+    myBodyDef.position.Set(pos.x, pos.y);
+    b2Body* projectile = world->CreateBody(&myBodyDef);
 
+    b2CircleShape circleShape;
+    circleShape.m_p.Set(0.0f, 0.0f); //position, relative to body position
+    circleShape.m_radius = 0.1f; //radius
+    b2FixtureDef myFixtureDef;
+    myFixtureDef.shape = &circleShape; //this is a pointer to the shape above
+    myFixtureDef.density = 0.001f;
+    myFixtureDef.restitution = restitution;
+    myFixtureDef.filter.categoryBits = category;
+    myFixtureDef.filter.maskBits = mask;
+    projectile->CreateFixture(&myFixtureDef); //add a fixture to the body
+
+    return projectile;
+}

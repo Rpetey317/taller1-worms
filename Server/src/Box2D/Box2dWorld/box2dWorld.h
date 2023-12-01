@@ -14,11 +14,12 @@
 #define WORM_HALF_HEIGHT 0.15f
 
 class BoxWorld {
-    friend class BoxSimulator;
+    friend class BoxManager;
     BoxWorld();
     b2World* world;
     void initialize_world();
     b2Body* create_worm(float x, float y);
+    b2Body* create_projectile(float x, float y, float restitution, float direction, int category, int mask);
     void create_ground(b2Vec2 lower_l, b2Vec2 lower_r, b2Vec2 upper_l, b2Vec2 upper_r);
     void create_wall(b2Vec2 start, b2Vec2 end);
     void create_long_beam(b2Vec2 start, float angle);
