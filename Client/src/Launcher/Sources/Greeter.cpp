@@ -13,7 +13,7 @@ Greeter::Greeter(QWidget *parent) :QWidget(parent), gameName(""){
     Ui::Greeter greeter;
     // Configuro este widget para use esa configuracion
     greeter.setupUi(this);
-    QPixmap background_image("Images/Launcher/tuki.png");
+    QPixmap background_image("../Images/Launcher/tuki.png");
     background_image = background_image.scaled(this->size(), Qt::IgnoreAspectRatio);
     QPalette palette;
     palette.setBrush(QPalette::Window, background_image);
