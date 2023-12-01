@@ -40,6 +40,9 @@ std::list<std::string> LobbyHandler::get_game_names() {
     return names;
 }
 
+std::list<std::string> LobbyHandler::get_map_names() { return dummyList; }
+
+
 LobbyHandler::~LobbyHandler() {
     for (auto& game: games) {
         game.second->~GameWrapper();

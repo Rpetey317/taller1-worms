@@ -17,14 +17,12 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_CreateMap
-{
+class Ui_CreateMap {
 public:
-    QLabel *label;
-    QPushButton *pushButton;
+    QLabel* label;
+    QPushButton* pushButton;
 
-    void setupUi(QWidget *CreateMap)
-    {
+    void setupUi(QWidget* CreateMap) {
         if (CreateMap->objectName().isEmpty())
             CreateMap->setObjectName(QString::fromUtf8("CreateMap"));
         CreateMap->resize(338, 257);
@@ -38,21 +36,20 @@ public:
         retranslateUi(CreateMap);
 
         QMetaObject::connectSlotsByName(CreateMap);
-    } // setupUi
+    }  // setupUi
 
-    void retranslateUi(QWidget *CreateMap)
-    {
+    void retranslateUi(QWidget* CreateMap) {
         CreateMap->setWindowTitle(QCoreApplication::translate("CreateMap", "CreateMap", nullptr));
-        label->setText(QCoreApplication::translate("CreateMap", "Aca deberia delegar a SDL para que cree el mapa", nullptr));
+        label->setText(QCoreApplication::translate(
+                "CreateMap", "Aca deberia delegar a SDL para que cree el mapa", nullptr));
         pushButton->setText(QCoreApplication::translate("CreateMap", "Create", nullptr));
-    } // retranslateUi
-
+    }  // retranslateUi
 };
 
 namespace Ui {
-    class CreateMap: public Ui_CreateMap {};
-} // namespace Ui
+class CreateMap: public Ui_CreateMap {};
+}  // namespace Ui
 
 QT_END_NAMESPACE
 
-#endif // UI_CREATE_MAP_H
+#endif  // UI_CREATE_MAP_H

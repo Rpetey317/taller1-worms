@@ -181,7 +181,7 @@ char ClientProtocol::send_NullAction(NullAction action) {
     return SUCCESS;
 }
 
-char ClientProtocol::send_Shoot(Shoot action) { 
+char ClientProtocol::send_Shoot(Shoot action) {
     if (!this->send_char(MSGCODE_SHOOT)) {
         return CLOSED_SKT;
     }

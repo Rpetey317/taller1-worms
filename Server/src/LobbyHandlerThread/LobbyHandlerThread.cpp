@@ -9,7 +9,7 @@
 #include "ServerProtocol.h"
 
 LobbyHandlerThread::LobbyHandlerThread(Socket&& peer, LobbyHandler& _handler):
-        player(std::move(peer)), handler(_handler) {}
+        handler(_handler), player(std::move(peer)) {}
 
 void LobbyHandlerThread::send_game_data(GameDataRequest& request) {
     std::list<std::string> names = handler.get_game_names();
@@ -17,7 +17,7 @@ void LobbyHandlerThread::send_game_data(GameDataRequest& request) {
 }
 
 void LobbyHandlerThread::send_map_data(MapDataRequest& request) {
-    std::list<std::string>& names = handler.get_map_names();
+    std::list<std::string> names = handler.get_map_names();
     player.send_map_data(names);
 }
 
@@ -57,3 +57,10 @@ void LobbyHandlerThread::run() {
 }
 
 bool LobbyHandlerThread::is_dead() { return !_keep_running; }
+
+void LobbyHandlerThread::stop() {
+    player.close();
+    _keep_running = false;
+}
+
+LobbyHandlerThread::~LobbyHandlerThread() {}

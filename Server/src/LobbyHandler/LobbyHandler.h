@@ -13,6 +13,7 @@ class LobbyHandler {
 private:
     std::map<std::string, std::unique_ptr<GameWrapper>> games;
     const std::list<std::string> maps;
+    std::list<std::string> dummyList = {"a", "b", "c", "d", "e"};
 
 public:
     LobbyHandler();
@@ -24,7 +25,7 @@ public:
     bool join_player(const std::string& game, ServerProtocol&& player);
 
     std::list<std::string> get_game_names();
-    std::list<std::string>& get_map_names();
+    std::list<std::string> get_map_names();
 
     ~LobbyHandler();
 };
