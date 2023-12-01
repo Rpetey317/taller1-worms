@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
         ClientProtocol protocol(std::move(skt));
         // Primero deberia crearse el Launcher, que es el que se encarga de crear la partida o
         // unirse a una
-        QApplication app(argc, argv);
+        /*QApplication app(argc, argv);
         // Instancio el greeter
         Greeter greeter(0, protocol);
         greeter.show();
@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
         app.exec();
 
         QString gameName = greeter.gameName;
-        std::cout << "Game name to join or created: " << gameName.toStdString() << std::endl;
+        std::cout << "Game name to join or created: " << gameName.toStdString() << std::endl;*/
 
         Queue<std::shared_ptr<Action>> commands(10000);
         Queue<std::shared_ptr<Event>> events(10000);

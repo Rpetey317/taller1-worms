@@ -29,7 +29,7 @@ public:
     bool is_charging;
     int attack_power;
     int worm_id;
-    explicit SdlWorm(Renderer& renderer, SdlWormTextureManager& texture_manager, SdlSoundManager& sound_manager, int x_pos, int y_pos, int worm_id, int player_id, int health);
+    explicit SdlWorm(SdlCamera& camera, Renderer& renderer, SdlWormTextureManager& texture_manager, SdlSoundManager& sound_manager, int x_pos, int y_pos, int worm_id, int player_id, int health);
     bool next_animation();
     void change_state(std::string state);
     void play_sound(std::string sound_to_play);
@@ -47,6 +47,7 @@ public:
     bool is_animation_playing;
 private:
     void set_color();
+    SdlCamera &camera;
     Renderer &renderer;
     SdlWormTextureManager& texture_manager;
     SdlSoundManager& sound_manager;

@@ -1,13 +1,14 @@
 #include "SdlMap.h"
 
-SdlMap::SdlMap(std::vector<Tile> map, SdlTexturesManager& textures_manager) : map(map), textures_manager(textures_manager) {}
+SdlMap::SdlMap(SdlCamera& camera, std::vector<Tile> map, SdlTexturesManager& textures_manager) : camera(camera), map(map), textures_manager(textures_manager) {}
 
 
 void SdlMap::draw_map() {
         textures_manager.draw_background();
     for (auto& tile : map) 
-        if (tile.type != 2)
-            textures_manager.draw(tile);
+        if (tile.type != 2) {
+            textures_manager.draw(tile, camera.get_x(), camera.get_y());
+        }
         
 }
 

@@ -15,6 +15,7 @@ SdlManager::SdlManager(Queue<std::shared_ptr<Action>>& outgoing, Queue<std::shar
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
     this->id_of_player = id_of_player;
     this->id_of_player_turn = 0;
+    id_worm_turn = 0;
     // Initialize SDL_ttf library
     SDLTTF ttf;
 }
@@ -25,7 +26,7 @@ bool SdlManager::event_handler() {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
-            worms[id_of_player]->destroy();
+            //worms[id_worm_turn]->destroy();
             return false;
         } else if (event.type == SDL_KEYDOWN) {
             if (id_of_player_turn != id_of_player || worms[id_worm_turn]->is_animation_playing)
@@ -33,19 +34,19 @@ bool SdlManager::event_handler() {
 
             switch (event.key.keysym.sym) {
                 case SDLK_ESCAPE: {
-                    worms[id_worm_turn]->destroy();
+                    //worms[id_worm_turn]->destroy();
                     //commands.push(0);
                     return false;
                 }
                 case SDLK_RIGHT: {
-                    worms[id_of_player]->change_state("WALK");
-                    worms[id_of_player]->flip = SDL_FLIP_HORIZONTAL;
+                    worms[id_worm_turn]->change_state("WALK");
+                    worms[id_worm_turn]->flip = SDL_FLIP_HORIZONTAL;
                     outgoing.push(std::make_shared<Move>(true));
                     break;
                 }
                 case SDLK_LEFT: {
-                    worms[id_of_player]->change_state("WALK");
-                    worms[id_of_player]->flip = SDL_FLIP_NONE;
+                    worms[id_worm_turn]->change_state("WALK");
+                    worms[id_worm_turn]->flip = SDL_FLIP_NONE;
                     outgoing.push(std::make_shared<Move>(false));
                     break;
                 }
@@ -205,6 +206,8 @@ bool SdlManager::event_handler() {
 
         }
     }
+    camera.focus_object(worms[id_worm_turn]->x_pos, worms[id_worm_turn]->y_pos);
+
     return true;
 }
 
@@ -218,8 +221,8 @@ bool SdlManager::main_loop(Renderer& renderer, SdlMap& map, SdlSoundManager& sou
     return keep_playing;
 }
 void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager& sound_manager, SdlWormTextureManager& worm_texture_manager) {
-    std::shared_ptr<Event> val;
-    bool there_is_element = ingoing.try_pop(val);
+    std::shared_ptr<Event> event;
+    bool there_is_element = ingoing.try_pop(event);
     // LAS POSICIONES DE TODOS LOS GUSANOS, EL ID DE TODOS LOS GUSANOS, Y EL ESTADO EN EL QUE ESTAN LOS GUSANOS
     // ESTADOS -> MOVIENDOSE, HACIENDO NADA, CAYENDO, LLEVANDO UNA DE 10 ARMAS
 
@@ -228,8 +231,7 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
     map.draw_map();
     
     if (there_is_element) {
-        std::map<int, Vect2D> positions = val->get_worm_positions();
-        
+        std::map<int, Vect2D> positions = event->get_worm_positions();
         for (auto& worm : worms) {
             if (!positions.empty()) {
                 //el id de gusano =/= id de jugador controla al gusano
@@ -268,10 +270,11 @@ void SdlManager::run(std::string background_type, std::string selected_map) {
                   SDL_WINDOW_RESIZABLE);
 
     Renderer renderer(window, -1, SDL_RENDERER_SOFTWARE);
+    camera.set_window(&window);
     
     SdlTexturesManager textures_manager(renderer, window, background_type);
     CommonMapParser parser;
-    SdlMap map(parser.get_map(selected_map), textures_manager);
+    SdlMap map(camera, parser.get_map(selected_map), textures_manager);
     SdlSoundManager sound_manager;
     SdlWormTextureManager worm_texture_manager(renderer);
 
@@ -279,9 +282,10 @@ void SdlManager::run(std::string background_type, std::string selected_map) {
     std::vector<Tile> worms_positions = map.get_worms_positions();
     int i = 0;
     for (auto worm : worms_positions) {//me deberian pasar tambien la vida de los gusanitos
-        worms[i] = new SdlWorm(renderer, worm_texture_manager, sound_manager, worm.pos_x, worm.pos_y, i, i%2, 100);//hago este %2 para probar distintos id de jugadores
+        worms[i] = new SdlWorm(camera, renderer, worm_texture_manager, sound_manager, worm.pos_x, worm.pos_y, i, i%2, 100);//hago este %2 para probar distintos id de jugadores
         i++;
     }
+
     while (is_running) {
         uint32_t frame_start;
         uint32_t frame_time;
