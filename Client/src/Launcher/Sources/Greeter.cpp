@@ -45,12 +45,20 @@ void Greeter::createGame() {
         // std::cout << "Game created succesfully with name: " << gameName.toStdString()
         //           << " and map name: " << mapName.toStdString() << std::endl;
 
-        this.protocol.create_new_game(this->gameName.toStdString(), this->mapName.toStdString());
+        std::string gameNameString(this->gameName.toStdString());
+        std::string mapNameString(this->mapName.toStdString());
+
+        this->protocol.create_new_game(gameNameString, mapNameString);
 
         //Crear otro QDialog que espere a un accept
+        StartGame startGame;
+        startGame.setModal(true);
+        if (startGame.exec() == QDialog::Accepted) {
+            std::cout << "Game started succesfully with name: " << gameName.toStdString()
+                      << " and map name: " << mapName.toStdString() << std::endl;
+            close();
+        }
 
-
-        close();
     };
 }
 

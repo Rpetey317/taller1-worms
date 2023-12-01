@@ -201,13 +201,13 @@ char ClientProtocol::send_Shoot(Shoot action) {
     return SUCCESS;
 }
 
-std::list<std::string> ClientProtocol::recv_games_info() {
+// std::list<std::string> ClientProtocol::recv_games_info() {
 
-}
+// }
 
-std::list<std::string> ClientProtocol::recv_maps_info() {
+// std::list<std::string> ClientProtocol::recv_maps_info() {
 
-}
+// }
 
 char ClientProtocol::send_start() {
     if (!this->send_char(CLI_REQ_START)) {
@@ -217,7 +217,7 @@ char ClientProtocol::send_start() {
     return SUCCESS;
 }
 
-char ClientProtocol::create_new_game(std::string& game_name, std::string& map_name) {
+char ClientProtocol::create_new_game( std::string& game_name, std::string& map_name) {
     if (!this->send_char(CLI_REQ_CREATE)) {
         return CLOSED_SKT;
     }
