@@ -1,6 +1,13 @@
 
 #include "SdlManager.h"
 #define FPS 30
+
+void SdlManager::cheat_set_life_of_all_worms_to(int new_health) {
+    for (auto& worm: worms) {
+        worm.second->set_health(new_health);
+    }
+}
+
 SdlManager::SdlManager(Queue<std::shared_ptr<Action>>& outgoing, Queue<std::shared_ptr<Event>>& ingoing, int id_of_player):
         outgoing(outgoing), ingoing(ingoing) {
     // Initialize SDL library
@@ -52,6 +59,18 @@ bool SdlManager::event_handler() {
                     if (!worms[id_worm_turn]->is_in_gun_state())
                         break;
                     worms[id_worm_turn]->change_angle(-2);
+                    break;
+                }
+                case SDLK_F1: {    //recargar balas
+                    worms[id_worm_turn]->recharge_ammo();
+                    break;
+                }
+                case SDLK_F2: {    // setear vida en 100 a todos los gusanos
+                    cheat_set_life_of_all_worms_to(100);
+                    break;
+                }
+                case SDLK_F3: {    // setear vida en 1 a todos los gusanos
+                    cheat_set_life_of_all_worms_to(1);
                     break;
                 }
                 break;
