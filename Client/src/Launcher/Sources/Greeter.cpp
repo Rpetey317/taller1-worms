@@ -6,8 +6,10 @@
 #include <stdlib.h>
 #include <QPixmap>
 #include <QPalette>
+
 Greeter::Greeter(QWidget *parent) :QWidget(parent), gameName(""){
     // Instancio la configuracion generada por el designer y uic
+    // Ui::Greeter greeter;
     Ui::Greeter greeter;
     // Configuro este widget para use esa configuracion
     greeter.setupUi(this);
@@ -19,31 +21,17 @@ Greeter::Greeter(QWidget *parent) :QWidget(parent), gameName(""){
     connectEvents();
 }
 
-void Greeter::updateGreetings() {
-    /**
-     * findChild es un metodo de qObject que permite buscar un widget hijo
-     * segun su nombre. Si observamos el codigo generado en ui_Greeter
-     * cada uno de los objetos recibe un nombre mediante la funcion
-     * setObjectName(QString nombre)
-     **/
-    QLineEdit* inputName = findChild<QLineEdit*>("changeName");
-    QLabel* labelOut = findChild<QLabel*>("playerName");
-    QString name = inputName->text();
-    QString greetings = QString("Your name is: %1").arg(name);
-    labelOut->setText(greetings);
-}
+// void Greeter::updateNameRandom() {
+//     QLabel* labelOut = findChild<QLabel*>("playerName");
 
-void Greeter::updateNameRandom() {
-    QLabel* labelOut = findChild<QLabel*>("playerName");
+//     QList<QString> names = {"gusanardo", "gusaman", "gusanito", "gusano bostero", "gusano gallina"};
+//     int randomIndex = rand() % names.size();
 
-    QList<QString> names = {"gusanardo", "gusaman", "gusanito", "gusano bostero", "gusano gallina"};
-    int randomIndex = rand() % names.size();
+//     QString name = names[randomIndex];
+//     QString greetings = QString("Your name is: %1").arg(name);
 
-    QString name = names[randomIndex];
-    QString greetings = QString("Your name is: %1").arg(name);
-
-    labelOut->setText(greetings);
-}
+//     labelOut->setText(greetings);
+// }
 
 void Greeter::createGame() {
         CreateGame newGame;
@@ -67,13 +55,17 @@ void Greeter::joinToGame() {
 }
 
 
+void Greeter::createMap() {
+        // CreateMap createMap;
+        // createMap.setModal(true);
+        // if(createMap.exec() == QDialog::Accepted){
+        //     this->mapNumber = createMap.getEnteredMap();
+        //     std::cout << "Map created succesfully with number: " << mapNumber << std::endl;
+        // };
+}
+
 void Greeter::connectEvents() {
     // Conecto el evento del boton
-    QPushButton* button_select_name = findChild<QPushButton*>("selectNameButton");
-    QObject::connect(button_select_name, &QPushButton::clicked,
-                     this, &Greeter::updateGreetings);
-    QPushButton *button_random_name = findChild<QPushButton*>("randomNameButton");
-    QObject::connect(button_random_name, &QPushButton::clicked, this, &Greeter::updateNameRandom);
 
     QPushButton *button_create_game = findChild<QPushButton*>("createButton");
     QObject::connect(button_create_game, &QPushButton::clicked, this, &Greeter::createGame);
@@ -81,4 +73,6 @@ void Greeter::connectEvents() {
     QPushButton *button_join_game = findChild<QPushButton*>("joinButton");
     QObject::connect(button_join_game, &QPushButton::clicked, this, &Greeter::joinToGame);
 
+    QPushButton *button_create_map = findChild<QPushButton*>("createMapButton");
+    QObject::connect(button_create_map, &QPushButton::clicked, this, &Greeter::createMap);
 }
