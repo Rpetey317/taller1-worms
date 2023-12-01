@@ -20,17 +20,15 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_JoinGame
-{
+class Ui_JoinGame {
 public:
-    QVBoxLayout *verticalLayout;
-    QHBoxLayout *horizontalLayout;
-    QLabel *label;
-    QLineEdit *gameName;
-    QPushButton *acceptButton;
+    QVBoxLayout* verticalLayout;
+    QHBoxLayout* horizontalLayout;
+    QLabel* label;
+    QLineEdit* gameName;
+    QPushButton* acceptButton;
 
-    void setupUi(QWidget *JoinGame)
-    {
+    void setupUi(QWidget* JoinGame) {
         if (JoinGame->objectName().isEmpty())
             JoinGame->setObjectName(QString::fromUtf8("JoinGame"));
         JoinGame->resize(252, 224);
@@ -60,21 +58,19 @@ public:
         retranslateUi(JoinGame);
 
         QMetaObject::connectSlotsByName(JoinGame);
-    } // setupUi
+    }  // setupUi
 
-    void retranslateUi(QWidget *JoinGame)
-    {
+    void retranslateUi(QWidget* JoinGame) {
         JoinGame->setWindowTitle(QCoreApplication::translate("JoinGame", "JoinGame", nullptr));
         label->setText(QCoreApplication::translate("JoinGame", "Name of Game", nullptr));
         acceptButton->setText(QCoreApplication::translate("JoinGame", "Accept", nullptr));
-    } // retranslateUi
-
+    }  // retranslateUi
 };
 
 namespace Ui {
-    class JoinGame: public Ui_JoinGame {};
-} // namespace Ui
+class JoinGame: public Ui_JoinGame {};
+}  // namespace Ui
 
 QT_END_NAMESPACE
 
-#endif // UI_UNIRSE_A_PARTIDA_H
+#endif  // UI_UNIRSE_A_PARTIDA_H

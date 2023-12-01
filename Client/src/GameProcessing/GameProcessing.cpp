@@ -35,8 +35,7 @@ using NetworkProtocol::msgcode_t;
 //         receiverTh(incomingq, protocol),  // pass the expected arguments to the constructor
 //         senderTh(outgoingq, protocol),
 //         id(0) {}
-GameProcessing::GameProcessing(ClientProtocol& protocol,
-                               Queue<std::shared_ptr<Action>>& commands,
+GameProcessing::GameProcessing(ClientProtocol& protocol, Queue<std::shared_ptr<Action>>& commands,
                                Queue<std::shared_ptr<Event>>& events):
         protocol(protocol),
 
