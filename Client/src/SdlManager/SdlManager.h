@@ -35,6 +35,7 @@ private:
     int id_worm_turn;
     int id_of_player;
     SdlCamera camera;
+    bool is_moving_camera;
     
     void cheat_set_life_of_all_worms_to(int new_health);
     bool event_handler();

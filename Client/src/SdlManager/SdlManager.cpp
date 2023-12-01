@@ -16,6 +16,7 @@ SdlManager::SdlManager(Queue<std::shared_ptr<Action>>& outgoing, Queue<std::shar
     this->id_of_player = id_of_player;
     this->id_of_player_turn = 0;
     id_worm_turn = 0;
+    is_moving_camera = false;
     // Initialize SDL_ttf library
     SDLTTF ttf;
 }
@@ -73,6 +74,15 @@ bool SdlManager::event_handler() {
                 case SDLK_F3: {    // setear vida en 1 a todos los gusanos
                     cheat_set_life_of_all_worms_to(1);
                     break;
+                }
+                case SDLK_SPACE: {
+                    if (!worms[id_worm_turn]->is_in_gun_state())
+                        break;
+                    if (!worms[id_worm_turn]->has_ammo())
+                        break;
+                    //ACA SETEO GUSANO EN "CARGANDO ARMA", Y A CADA TICK LE SUMO UNO EL PODER
+                    worms[id_worm_turn]->play_sound("CHARGE");
+                    worms[id_worm_turn]->is_charging = true;
                 }
                 break;
                 
@@ -155,37 +165,7 @@ bool SdlManager::event_handler() {
                     outgoing.push(std::make_shared<Jump>(false));
                     break;
                 }
-                default: {
-
-                    break;
-                }
-
-            }
-        } else if(event.type == SDL_MOUSEBUTTONDOWN) {
-            if (id_of_player_turn != id_of_player || worms[id_worm_turn]->is_animation_playing)
-                return true;
-            switch(event.button.button) {
-                
-                case SDL_BUTTON_LEFT : {
-                    if (!worms[id_worm_turn]->is_in_gun_state())
-                        break;
-                    if (!worms[id_worm_turn]->has_ammo())
-                        break;
-                    //ACA SETEO GUSANO EN "CARGANDO ARMA", Y A CADA TICK LE SUMO UNO EL PODER
-                    worms[id_worm_turn]->play_sound("CHARGE");
-                    worms[id_worm_turn]->is_charging = true;
-                    break;
-                } 
-                default: {
-                    break;
-                }
-            }
-
-        } else if (event.type == SDL_MOUSEBUTTONUP) {
-            if (id_of_player_turn != id_of_player || worms[id_worm_turn]->is_animation_playing)
-                return true;
-            switch(event.button.button) {
-                case SDL_BUTTON_LEFT : {
+                case SDLK_SPACE: {
                     if (!worms[id_worm_turn]->has_ammo())
                         break;
                     worms[id_worm_turn]->reduce_ammo();
@@ -199,6 +179,31 @@ bool SdlManager::event_handler() {
                     break;
                 }
                 default: {
+
+                    break;
+                }
+
+            }
+        } else if(event.type == SDL_MOUSEBUTTONDOWN) {
+
+            switch(event.button.button) {
+                
+                case SDL_BUTTON_LEFT : {
+                    is_moving_camera = true;
+                    break;
+                } 
+                default: {
+                    break;
+                }
+            }
+
+        } else if (event.type == SDL_MOUSEBUTTONUP) {
+            switch(event.button.button) {
+                case SDL_BUTTON_LEFT : {
+                    is_moving_camera = false;
+                    break;
+                }
+                default: {
                     break;
                 }
                 
@@ -206,7 +211,15 @@ bool SdlManager::event_handler() {
 
         }
     }
-    camera.focus_object(worms[id_worm_turn]->x_pos, worms[id_worm_turn]->y_pos);
+
+    if (!is_moving_camera) {
+        camera.focus_object(worms[id_worm_turn]->x_pos, worms[id_worm_turn]->y_pos);
+    } else {
+        int x_pos;
+        int y_pos;
+        SDL_GetMouseState(&x_pos, &y_pos);
+        camera.focus_object(x_pos - camera.get_width(), y_pos - camera.get_height());
+    }
 
     return true;
 }

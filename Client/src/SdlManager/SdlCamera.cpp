@@ -27,3 +27,11 @@ int SdlCamera::get_x() {
 int SdlCamera::get_y() {
         return camera.GetY();
 }
+
+int SdlCamera::get_height() {
+        return camera.GetH();
+}
+
+int SdlCamera::get_width() {
+        return camera.GetW();
+}

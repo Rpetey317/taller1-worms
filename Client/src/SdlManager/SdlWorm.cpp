@@ -46,7 +46,6 @@ void SdlWorm::render_same() {
 void SdlWorm::render_new(Vect2D position) {
     x_pos = position.x;
     y_pos = position.y;
-    std::cout << "X_POS: " << x_pos << "Y_POS: " << y_pos << std::endl;;
     if (is_animation_playing) {
         texture_manager.render(worm_state, animation_phase, position.x - camera.get_x(), position.y - camera.get_y(), flip);
     } else {

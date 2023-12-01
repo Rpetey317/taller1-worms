@@ -12,6 +12,8 @@ class SdlCamera {
                 int get_x();
                 int get_y();
                 void set_window(Window *window);
+                int get_width();
+                int get_height();
 
         private:
                 Rect camera;
