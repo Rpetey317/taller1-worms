@@ -32,6 +32,8 @@ public:
 
     void stop() override;
 
+    bool is_dead();
+
     ~LobbyHandlerThread();
 };
 

@@ -19,6 +19,8 @@ public:
 
     bool create_game(const std::string& game_name, const std::string& map_name);
 
+    void start_game(const std::string& game_name);
+
     bool join_player(const std::string& game, ServerProtocol&& player);
 
     std::list<std::string> get_game_names();

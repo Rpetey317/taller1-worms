@@ -18,6 +18,8 @@ public:
 
     void add_player(ServerProtocol&& player);
 
+    void start();
+
     ~GameWrapper();
 };
 

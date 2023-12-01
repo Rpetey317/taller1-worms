@@ -90,6 +90,8 @@ public:
 
     std::unique_ptr<Request> recv_request();
 
+    bool recv_game_start();
+
     /*
      * Reads the code of the game the client wants to join
      */

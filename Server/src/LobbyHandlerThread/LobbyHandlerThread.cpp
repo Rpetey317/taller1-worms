@@ -22,17 +22,21 @@ void LobbyHandlerThread::send_map_data(MapDataRequest& request) {
 }
 
 void LobbyHandlerThread::join_game(JoinRequest& request) {
-    _keep_running = false;
     std::string& game_name = request.get_name();
     handler.join_player(game_name, std::move(player));
+    _keep_running = false;
 }
 
 void LobbyHandlerThread::create_game(CreateRequest& request) {
-    _keep_running = false;
     std::string& game_name = request.get_game_name();
     std::string& map_name = request.get_map_name();
     handler.create_game(game_name, map_name);
     handler.join_player(game_name, std::move(player));
+
+    if (player.recv_game_start())
+        handler.start_game(game_name);
+
+    _keep_running = false;
 }
 
 void LobbyHandlerThread::process_null_request(NullRequest& request) { _keep_running = false; }
@@ -51,3 +55,5 @@ void LobbyHandlerThread::run() {
         }
     }
 }
+
+bool LobbyHandlerThread::is_dead() { return !_keep_running; }

@@ -2,11 +2,11 @@
 #define __ACCEPTERTHREAD_H__
 
 #include <list>
-#include <mutex>
-#include <string>
+#include <memory>
 
 #include "Game.h"
-// #include "GamesHandler.h"
+#include "LobbyHandler.h"
+#include "LobbyHandlerThread.h"
 #include "Message.h"
 #include "Socket.h"
 #include "queue.h"
@@ -17,14 +17,17 @@
  */
 class ServerAccepterThread: public Thread {
     Socket acc;
-    Game& lobby;
+    LobbyHandler& handler;
+    std::list<std::unique_ptr<LobbyHandlerThread>> connecting_players;
+
+    void reap_players();
 
 public:
     /*
      * Creates new accepter thread, listening for connections in acc.
      * and adding any new players to lobby
      */
-    ServerAccepterThread(Socket&& acc, Game& players);
+    ServerAccepterThread(Socket&& acc, LobbyHandler& lobby);
     // ServerAccepterThread(Socket&& acc);
 
     /*

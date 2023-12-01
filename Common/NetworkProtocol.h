@@ -32,9 +32,10 @@ const msgcode_t CLI_REQ_JOIN = 0x0E;
 const msgcode_t CLI_REQ_GAMES = 0x0F;
 const msgcode_t CLI_REQ_MAPS = 0x10;
 const msgcode_t CLI_REQ_CREATE = 0x11;
+const msgcode_t CLI_REQ_START = 0x12;
 
-const msgcode_t SRV_RESP_GAMES = 0x12;
-const msgcode_t SRV_RESP_MAPS = 0x13;
+const msgcode_t SRV_RESP_GAMES = 0x20;
+const msgcode_t SRV_RESP_MAPS = 0x21;
 
 // TODO: separar los msgcodes para los que se mandan del server al client y del client al server
 

@@ -78,6 +78,18 @@ std::unique_ptr<Request> ServerProtocol::recv_request() {
     }
 }
 
+bool ServerProtocol::recv_game_start() {
+    char code;
+    this->cli.recvall(&code, sizeof(char), &this->isclosed);
+    if (this->isclosed) {
+        return false;
+    }
+
+    if (code == CLI_REQ_START)
+        return true;
+    return false;
+}
+
 char ServerProtocol::send_game_data(const std::list<std::string>& names) {
     if (!this->send_char(SRV_RESP_GAMES))
         return CLOSED_SKT;
