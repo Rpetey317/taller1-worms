@@ -7,7 +7,7 @@
 #include <QPixmap>
 #include <QPalette>
 
-Greeter::Greeter(QWidget *parent) :QWidget(parent), gameName(""){
+Greeter::Greeter(QWidget *parent, ClientProtocol &protocol) :QWidget(parent), protocol(protocol), gameName(""){
     // Instancio la configuracion generada por el designer y uic
     // Ui::Greeter greeter;
     Ui::Greeter greeter;

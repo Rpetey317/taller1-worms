@@ -24,20 +24,21 @@ using NetworkProtocol::MSGCODE_PLAYER_AMOUNT;
 using NetworkProtocol::MSGCODE_PLAYER_MESSAGE;
 using NetworkProtocol::msgcode_t;
 
-// GameProcessing::GameProcessing(const char* hostname, const char* port):
+// GameProcessing::GameProcessing(const char* hostname, const char* port,
+//                                Queue<std::shared_ptr<Action>>& commands,
+//                                Queue<std::shared_ptr<Event>>& events):
 //         skt(Socket(hostname, port)),
 //         protocol(std::move(this->skt)),
-//         incomingq(10000),
-//         outgoingq(10000),
+
+//         outgoingq(commands),
+//         incomingq(events),
 //         receiverTh(incomingq, protocol),  // pass the expected arguments to the constructor
 //         senderTh(outgoingq, protocol),
 //         id(0) {}
-
-GameProcessing::GameProcessing(const char* hostname, const char* port,
+GameProcessing::GameProcessing(ClientProtocol& protocol,
                                Queue<std::shared_ptr<Action>>& commands,
                                Queue<std::shared_ptr<Event>>& events):
-        skt(Socket(hostname, port)),
-        protocol(std::move(this->skt)),
+        protocol(protocol),
 
         outgoingq(commands),
         incomingq(events),

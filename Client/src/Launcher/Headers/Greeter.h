@@ -14,7 +14,7 @@ class Greeter : public QWidget {
     
 private:
     // Ui::Greeter *ui;
-    // ClientProtocol &protocol;
+    ClientProtocol &protocol;
     void connectEvents();
     // void updateNameRandom();
     void createGame();
@@ -23,7 +23,7 @@ private:
     // ~Greeter();
 
 public:
-    explicit Greeter(QWidget *parent = 0);
+    explicit Greeter(QWidget *parent, ClientProtocol &protocol);
     // DataLoggin dataLoggin;
     QString gameName;
     int mapNumber;
