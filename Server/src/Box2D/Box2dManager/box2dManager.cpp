@@ -11,16 +11,18 @@
 #define COMMAND_JUMP 3
 #define COMMAND_NEXT 4
 
-Vect2D BoxSimulator::meter_to_pixel(b2Vec2 meter) { 
+#define LEFT 1
+#define RIGHT 0
+
+Vect2D BoxManager::meter_to_pixel(b2Vec2 meter) { 
     return Vect2D(static_cast<int>((meter.x-0.12f) * 100.0f), static_cast<int>(5000.00f - ((0.245+meter.y) * 100.0f)));
 }
 
-
-BoxSimulator::BoxSimulator(): world() {
+BoxManager::BoxManager(): world() {
     set_map();
 }
 
-void BoxSimulator::add_player() {
+void BoxManager::add_player() {
     float x = 0.5f;
     float y = 49.5f;
     worms.push_back(Box2DPlayer(worms.size(), world.create_worm(x, y)));
@@ -28,18 +30,18 @@ void BoxSimulator::add_player() {
         playing_worm = worms.begin();
 }
 
-void BoxSimulator::next_turn() {
+void BoxManager::next_turn() {
     if(++playing_worm == worms.end())
         playing_worm = worms.begin();
 }
 
 // should later introduce to recive the map position automatically
-bool BoxSimulator::set_map() {
+bool BoxManager::set_map() {
     CommonMapParser parser;
     return world.set_map(parser.get_map("../maps/mapita.txt"));
 }
 #include <iostream>
-std::map<int, Vect2D>* BoxSimulator::create_position_map(const std::list<Box2DPlayer>& worms) {
+std::map<int, Vect2D>* BoxManager::create_position_map(const std::list<Box2DPlayer>& worms) {
     std::map<int, Vect2D>* positions = new std::map<int, Vect2D>();
     for (auto worm : worms) {
         b2Body* body = worm.get_body(); // Obtener el cuerpo
@@ -51,7 +53,7 @@ std::map<int, Vect2D>* BoxSimulator::create_position_map(const std::list<Box2DPl
     return positions;
 }
 
-std::shared_ptr<WorldUpdate> BoxSimulator::process(Box2DMsg& update) {
+std::shared_ptr<WorldUpdate> BoxManager::process(Box2DMsg& update) {
     b2Body* current = (*playing_worm).get_body();
     int current_command = update.get_cmd();        
     b2Vec2 vel = current->GetLinearVelocity();  // vector vel del gusano
@@ -60,9 +62,11 @@ std::shared_ptr<WorldUpdate> BoxSimulator::process(Box2DMsg& update) {
     switch (current_command) {
         case COMMAND_LEFT:
             vel.x = -1.0f;  // modifico componente en x
+            direction = LEFT;
             break;
         case COMMAND_RIGHT:
             vel.x = 1.0f;
+            direction = RIGHT;
             break;
         case COMMAND_STOP:
             vel.x = 0.0f;
@@ -84,6 +88,21 @@ std::shared_ptr<WorldUpdate> BoxSimulator::process(Box2DMsg& update) {
     return std::make_shared<WorldUpdate>(create_position_map(worms)); // TODO: ver que devolver
 }
 
-void BoxSimulator::player_shoot(float angle, float power) {
+/*  
+  Power should be a float that goes from 0 to 1 to represent the proportion of power induced
+  by the player to the shot. Angle represents the angle in degrees relative to the floor the 
+  player aims.
+*/
+void BoxManager::fire_projectile(float angle, float power, float restitution, int category, int mask) {
+    b2Body* projectile = world.create_projectile(playing_worm->get_body()->GetPosition().x, playing_worm->get_body()->GetPosition().y, restitution, this->direction, category, mask);
+    b2Vec2 Vector = b2Vec2( (power*0.001f)*cos(angle*DEGTORAD), (power*0.001f)*sin(angle*DEGTORAD) );
+    if(direction == LEFT)
+        Vector.x = -Vector.x;
+    projectile->ApplyLinearImpulseToCenter( Vector , true );
+    projectile->SetBullet(true);
+    projectiles.push_back(projectile);  
+}
+
+void BoxManager::player_shoot(float angle, float power) {
     // To implement
 }
