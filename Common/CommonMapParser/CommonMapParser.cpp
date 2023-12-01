@@ -9,6 +9,7 @@
  *  tipo_viga(1) angulo(3) posicion_x(4) posicion_y(4)
  *   0 -> viga corta
  *   1 -> viga larga
+ *   2 -> un gusanito, el angulo se va a ignorar para este
  *   proporciones viga: alto -> 19 pixeles. ancho -> 64 pixeles para viga corta, 128 pixeles para
  * viga larga
  *

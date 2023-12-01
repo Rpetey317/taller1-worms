@@ -4,6 +4,10 @@ project(Worms)
 
 set(CMAKE_CXX_STANDARD 17)
 
+
+
+# find_package(Qt5Widgets COMPONENTS Widgets REQUIRED) # Para Qt
+
 # Box2D---------------------------------------------------------------------------------------------------------------------
 add_subdirectory("./libs/box2d")
 include_directories(${PROJECT_SOURCE_DIR}/libs/box2d)
@@ -68,6 +72,9 @@ target_include_directories(mycpps PUBLIC "Client/src/SdlManager/SDL2pp")
 target_link_libraries(mycpps PUBLIC SDL2pp)
 
 
+# add_subdirectory("Client/src/Launcher")
+# include_directories(${PROJECT_SOURCE_DIR}/Client/src/Launcher)
+# target_link_libraries(qtLauncher Qt5::Widgets)
 
 
 # EJECUTABLES---------------------------------------------------------------------------------------------------------------------

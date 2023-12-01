@@ -31,8 +31,9 @@ private:
     Queue<std::shared_ptr<Event>>& ingoing;  
     std::map<int, SdlWorm*> worms;
     int id_of_player_turn;
+    int id_worm_turn;
     int id_of_player;
-
+    void cheat_set_life_of_all_worms_to(int new_health);
     bool event_handler();
     bool main_loop(Renderer& renderer, SdlMap& map, SdlSoundManager& sound_manager, SdlWormTextureManager& worm_texture_manager);
     void update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager& sound_manager, SdlWormTextureManager& worm_texture_manager);
