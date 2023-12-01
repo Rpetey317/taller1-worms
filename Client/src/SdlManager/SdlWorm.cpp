@@ -1,5 +1,32 @@
 #include "SdlWorm.h"
 #include <tgmath.h>
+
+
+void SdlWorm::set_health(int new_health) {
+    
+    if (new_health >= initial_health) {
+        health = initial_health;
+        return;
+    }
+    health = new_health;
+
+}
+
+void SdlWorm::recharge_ammo() {
+    std::cout << "RECARGANDO BALAS" << std::endl;
+    gun_ammo["BANANA"] = -1;
+    gun_ammo["BAZOOKA"] = -1;
+    gun_ammo["BEISBOLL"] = -1;
+    gun_ammo["TELEPORT"] = -1;
+
+    gun_ammo["MORTAR"] = 10;
+    gun_ammo["GREEN_GRENADE"] = 5;
+    gun_ammo["HOLY_GRENADE"] = 2;
+    gun_ammo["DYNAMITE"] = 5;
+    gun_ammo["RED_GRENADE"] = 10;
+    gun_ammo["AIR_STRIKE"] = 2;
+}
+
 void SdlWorm::render_same() {
     texture_manager.render(worm_state, animation_phase, x_pos, y_pos, flip);
     health_bar.SetX(x_pos);
@@ -118,6 +145,7 @@ SdlWorm::SdlWorm(Renderer& renderer, SdlWormTextureManager& texture_manager, Sdl
     attack_power = 0;
     is_animation_playing = false;
     this->health = health;
+    initial_health = health;
     health_bar.SetH(10);
     health_bar.SetW(health/2);
     health_bar_delim.SetH(12);
@@ -138,17 +166,9 @@ SdlWorm::SdlWorm(Renderer& renderer, SdlWormTextureManager& texture_manager, Sdl
     worm_states["TELEPORT"] = new SdlWormStateTeleport();
     worm_states["WALK"] = new SdlWormStateWalk();
 
-    gun_ammo["BANANA"] = -1;
-    gun_ammo["BAZOOKA"] = -1;
-    gun_ammo["BEISBOLL"] = -1;
-    gun_ammo["TELEPORT"] = -1;
+    
 
-    gun_ammo["MORTAR"] = 10;
-    gun_ammo["GREEN_GRENADE"] = 5;
-    gun_ammo["HOLY_GRENADE"] = 2;
-    gun_ammo["DYNAMITE"] = 5;
-    gun_ammo["RED_GRENADE"] = 10;
-    gun_ammo["AIR_STRIKE"] = 2;
+    recharge_ammo();
 
     worm_state = worm_states["STILL"];
 }

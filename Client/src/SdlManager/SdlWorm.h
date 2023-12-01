@@ -42,6 +42,8 @@ public:
     bool reduce_ammo();
     bool has_ammo();
     void play_animation();
+    void recharge_ammo();
+    void set_health(int ammount_to_heal);
     bool is_animation_playing;
 private:
     void set_color();
@@ -52,6 +54,7 @@ private:
     int angle;
     int animation_phase;
     int health;
+    int initial_health;
     Color color;
     Color delim_color;
     Rect health_bar;
