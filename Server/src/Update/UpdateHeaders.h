@@ -5,5 +5,6 @@
 #include "PlayerDisconnectedUpdate/PlayerDisconnectedUpdate.h"
 #include "TurnChange/TurnChange.h"
 #include "WorldUpdate/WorldUpdate.h"
+#include "TimerUpdate/TimerUpdate.h"
 
 #include "Update.h"

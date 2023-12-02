@@ -55,6 +55,7 @@ public:
     char send_PlayerMessageUpdate(const ChatUpdate& upd);
     char send_NullUpdate(const NullUpdate& upd);
     char send_WorldUpdate(const WorldUpdate& upd);
+    char send_TimerUpdate(const TimerUpdate& upd);
 
 
     /*

@@ -6,6 +6,7 @@
 #include <mutex>
 #include <string>
 #include <vector>
+#include <chrono>
 
 #include "../Box2D/Box2dManager/box2dManager.h"
 
@@ -29,6 +30,8 @@ class Game {
     int next_free_id;
     Queue<int> box2d_in;
     Queue<std::vector<int>> box2d_out;
+    std::chrono::steady_clock::time_point turn_start;
+    int turn_time;
     BoxManager box2d;
 
 public:
@@ -63,6 +66,7 @@ public:
 
     std::shared_ptr<Update> process_box2d(Box2DMsg& event);
 
+    std::shared_ptr<Update> process_timer(RunTimer& event);
 
     /*
      * Creates new handler, adding players (recievers) to given list

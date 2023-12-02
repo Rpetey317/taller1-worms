@@ -11,6 +11,7 @@ typedef uint8_t input_t;
 typedef uint8_t msgcode_t;
 typedef uint8_t playerid_t;
 typedef uint8_t amount_players_t;
+typedef uint8_t time_t;
 
 // const msgcode_t MSGCODE_CREATE_GAME = 0x01;
 // const msgcode_t MSGCODE_PLAYER_CONNECT_TO_GAME = 0x02;
@@ -32,6 +33,7 @@ const msgcode_t MSGCODE_SHOOT = 0x14;
 
 // TODO: delete
 const msgcode_t MSGCODE_BOX2D = 0xFF;
+const msgcode_t SRV_TIMER_UPD = 0xA0;
 
 const int ERROR = -1;
 }  // namespace NetworkProtocol

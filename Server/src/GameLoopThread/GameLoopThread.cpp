@@ -30,6 +30,7 @@ void GameLoopThread::run() {
             game.broadcast(update);
             // delete update;
         }
+        game.execute(std::make_shared<RunTimer>(0));
 
         // Take time elapsed
         auto end_time = std::chrono::steady_clock::now();

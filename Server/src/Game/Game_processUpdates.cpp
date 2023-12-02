@@ -1,5 +1,6 @@
 #include <iterator>
 #include <memory>
+#include <chrono>
 
 #include "Game.h"
 
@@ -50,7 +51,26 @@ std::shared_ptr<Update> Game::process_TurnAdvance(TurnAdvance& event) {
         return std::make_shared<NullUpdate>();
     }
     this->curr_pl = new_curr_pl;
+    this->turn_start = std::chrono::steady_clock::now();
+    std::cout << "New turn!" << std::endl;
     return std::make_shared<TurnChange>(new_curr_pl->first);
+}
+
+std::shared_ptr<Update> Game::process_timer(RunTimer& event) {
+    auto now = std::chrono::steady_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(now - this->turn_start);
+    std::cout << "Time left: " << turn_time - elapsed.count() << std::endl;
+    if (elapsed.count() >= this->turn_time) {
+        std::cout << "Time's up!" << std::endl;
+        auto new_curr_pl = this->curr_pl == this->players.end() ? this->players.begin() : std::next(this->curr_pl);
+        if (new_curr_pl != this->players.end()) {
+            this->eventq.push(std::make_shared<TurnAdvance>(SERVER_ID, new_curr_pl));
+            std::cout << "Update pushed!" << std::endl;
+            return std::make_shared<TimerUpdate>(turn_time - elapsed.count(), new_curr_pl->first);
+        }
+    }
+
+    return std::make_shared<TimerUpdate>(turn_time - elapsed.count(), this->curr_pl->first);
 }
 
 std::shared_ptr<Update> Game::process_box2d(Box2DMsg& event) {
