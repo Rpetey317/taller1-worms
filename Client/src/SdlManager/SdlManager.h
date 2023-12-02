@@ -33,10 +33,13 @@ private:
     int id_of_player_turn;
     int id_worm_turn;
     int id_of_player;
+    bool is_animation_playing;
     SdlCamera camera;
     bool is_moving_camera;
+    std::string last_projectile_used;
+    bool is_projectile_flying;
     
-    void init_projectiles(SdlProjectilesTextureManager& projectiles_texture_manager);
+    void init_projectiles(SdlProjectilesTextureManager& projectiles_texture_manager, SdlCamera& camera);
     void cheat_set_life_of_all_worms_to(int new_health);
     bool event_handler();
     bool main_loop(Renderer& renderer, SdlMap& map, SdlSoundManager& sound_manager, SdlWormTextureManager& worm_texture_manager);

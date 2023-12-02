@@ -17,6 +17,8 @@ SdlManager::SdlManager(Queue<std::shared_ptr<Action>>& outgoing, Queue<std::shar
     this->id_of_player_turn = 0;
     id_worm_turn = 0;
     is_moving_camera = false;
+    is_projectile_flying = false;
+    is_animation_playing = false;
     // Initialize SDL_ttf library
     SDLTTF ttf;
 }
@@ -191,7 +193,10 @@ bool SdlManager::event_handler() {
                 case SDL_BUTTON_LEFT : {
                     is_moving_camera = true;
                     break;
-                } 
+                }
+
+                
+
                 default: {
                     break;
                 }
@@ -213,7 +218,12 @@ bool SdlManager::event_handler() {
     }
 
     if (!is_moving_camera) {
-        camera.focus_object(worms[id_worm_turn]->x_pos, worms[id_worm_turn]->y_pos);
+        if (is_projectile_flying) {
+            camera.focus_object(projectiles[last_projectile_used]->get_pos_x(), projectiles[last_projectile_used]->get_pos_y());
+        } else {
+            camera.focus_object(worms[id_worm_turn]->x_pos, worms[id_worm_turn]->y_pos);
+
+        }
     } else {
         int x_pos;
         int y_pos;
@@ -258,10 +268,12 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
         }
 
         /*if (event->es_un_disparo()) {
-            projectiles[event->dame_arma()]->render(event->dame_posicion(), event->dame_angulo());
+            last_projectile_used = event->dame_arma();
+            is_projectile_flying = true;
+            projectiles[last_projectile_used]->render(event->dame_posicion(), event->dame_angulo());
         }
         if (event->exploto_bala()) {
-            projectiles[event->dame_arma()]->play_animation();  //animacion de explosion
+            is_animation_playing = true;
         }
 
         if (event->es_id()) {
@@ -279,18 +291,24 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
         }
     }
 
+    if (is_animation_playing) {
+        projectiles[last_projectile_used]->play_animation(&is_animation_playing);
+        if (!is_animation_playing)
+            is_projectile_flying = false;
+    }
+
     renderer.Present();
 }
 
-void SdlManager::init_projectiles(SdlProjectilesTextureManager& projectiles_texture_manager) {
-    /*projectiles["BAZOOKA"] = new SdlProjectile(projectiles_texture_manager);
-    projectiles["DYNAMITE"] = new SdlProjectile(projectiles_texture_manager);
-    projectiles["HOLY_GRENADE"] = new SdlProjectile(projectiles_texture_manager);
-    projectiles["RED_GRENADE"] = new SdlProjectile(projectiles_texture_manager);
-    projectiles["GREEN_GRENADE"] = new SdlProjectile(projectiles_texture_manager);
-    projectiles["MORTAR"] = new SdlProjectile(projectiles_texture_manager);
-    projectiles["AIR_STRIKE"] = new SdlProjectile(projectiles_texture_manager);
-    projectiles["BANANA"] = new SdlProjectile(projectiles_texture_manager);*/
+void SdlManager::init_projectiles(SdlProjectilesTextureManager& projectiles_texture_manager, SdlCamera& camera) {
+    projectiles["BAZOOKA"] = new SdlBazookaProjectile(projectiles_texture_manager, camera);
+    projectiles["DYNAMITE"] = new SdlDynamiteProjectile(projectiles_texture_manager, camera);
+    projectiles["HOLY_GRENADE"] = new SdlHolyGrenadeProjectile(projectiles_texture_manager, camera);
+    projectiles["RED_GRENADE"] = new SdlRedGrenadeProjectile(projectiles_texture_manager, camera);
+    projectiles["GREEN_GRENADE"] = new SdlGreenGrenadeProjectile(projectiles_texture_manager, camera);
+    projectiles["MORTAR"] = new SdlMortarProjectile(projectiles_texture_manager, camera);
+    projectiles["AIR_STRIKE"] = new SdlAirStrikeProjectile(projectiles_texture_manager, camera);
+    projectiles["BANANA"] = new SdlBananaProjectile(projectiles_texture_manager, camera);
 }
 
 void SdlManager::run(std::string background_type, std::string selected_map) {
@@ -314,7 +332,7 @@ void SdlManager::run(std::string background_type, std::string selected_map) {
     SdlSoundManager sound_manager;
     SdlWormTextureManager worm_texture_manager(renderer);
     SdlProjectilesTextureManager projectiles_texture_manager(renderer);
-    init_projectiles(projectiles_texture_manager);
+    init_projectiles(projectiles_texture_manager, camera);
     //aca creo los gusanos, pero deberia recibir como son los equipos y sus id
     std::vector<Tile> worms_positions = map.get_worms_positions();
     int i = 0;
