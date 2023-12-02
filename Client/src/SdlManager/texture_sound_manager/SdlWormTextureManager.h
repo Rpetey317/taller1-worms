@@ -2,7 +2,7 @@
 #pragma once
 #include <map>
 #include <SDL2pp/SDL2pp.hh>
-#include "SdlWormState.h"
+#include "../states/SdlWormState.h"
 
 using namespace SDL2pp;  // NOLINT
 

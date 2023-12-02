@@ -1,4 +1,4 @@
-#include "SdlTexturesManager.h"
+#include "SdlMapTexturesManager.h"
 
 void SdlTexturesManager::draw_background() {
     SDL_Rect src,dest;

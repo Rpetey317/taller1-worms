@@ -245,16 +245,31 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
     
     if (there_is_element) {
         std::map<int, Vect2D> positions = event->get_worm_positions();
+        
         for (auto& worm : worms) {
             if (!positions.empty()) {
                 //el id de gusano =/= id de jugador controla al gusano
-                worm.second->render_new(positions[worm.second->worm_id]);
+                worm.second->render_new(positions[worm.second->worm_id]);//deberia obtener el estado aca y se lo paso
             } else {
                 worm.second->render_same();
             }
             worm.second->next_animation();
             worm.second->apply();
         }
+
+        /*if (event->es_un_disparo()) {
+            projectiles[event->dame_arma()]->render(event->dame_posicion(), event->dame_angulo());
+        }
+        if (event->exploto_bala()) {
+            projectiles[event->dame_arma()]->play_animation();  //animacion de explosion
+        }
+
+        if (event->es_id()) {
+            id_worm_turn = event->dame_id();
+            id_of_player_turn = worms[id_worm_turn]->player_id;
+        }*/
+
+
     } else {  //SI NO RECIBO NADA, SEGUI EJECUTANDO LA ANTERIOR ANIMACION Y QUEDATE EN EL MISMO LUGAR
 
         for (auto& worm : worms) {
@@ -264,10 +279,18 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
         }
     }
 
-    id_of_player_turn = 0;//ESTO LO RECIBIRIA CON EL RESTO DE COSAS :)
-    id_worm_turn = 0;   //ESTO LO RECIBIRIA JUNTO CON EL ID_OF_PLAYER_TURN
-
     renderer.Present();
+}
+
+void SdlManager::init_projectiles(SdlProjectilesTextureManager& projectiles_texture_manager) {
+    /*projectiles["BAZOOKA"] = new SdlProjectile(projectiles_texture_manager);
+    projectiles["DYNAMITE"] = new SdlProjectile(projectiles_texture_manager);
+    projectiles["HOLY_GRENADE"] = new SdlProjectile(projectiles_texture_manager);
+    projectiles["RED_GRENADE"] = new SdlProjectile(projectiles_texture_manager);
+    projectiles["GREEN_GRENADE"] = new SdlProjectile(projectiles_texture_manager);
+    projectiles["MORTAR"] = new SdlProjectile(projectiles_texture_manager);
+    projectiles["AIR_STRIKE"] = new SdlProjectile(projectiles_texture_manager);
+    projectiles["BANANA"] = new SdlProjectile(projectiles_texture_manager);*/
 }
 
 void SdlManager::run(std::string background_type, std::string selected_map) {
@@ -290,7 +313,8 @@ void SdlManager::run(std::string background_type, std::string selected_map) {
     SdlMap map(camera, parser.get_map(selected_map), textures_manager);
     SdlSoundManager sound_manager;
     SdlWormTextureManager worm_texture_manager(renderer);
-
+    SdlProjectilesTextureManager projectiles_texture_manager(renderer);
+    init_projectiles(projectiles_texture_manager);
     //aca creo los gusanos, pero deberia recibir como son los equipos y sus id
     std::vector<Tile> worms_positions = map.get_worms_positions();
     int i = 0;

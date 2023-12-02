@@ -2,8 +2,7 @@
 #include <SDL2pp/SDL2pp.hh>
 
 
-#include "SdlTexturesManager.h"
-
+#include "texture_sound_manager/SdlMapTexturesManager.h"
 
 using namespace SDL2pp;  // NOLINT
 
