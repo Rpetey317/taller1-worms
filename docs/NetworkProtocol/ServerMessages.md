@@ -117,7 +117,7 @@ A packet with the proyectile position, type and angle
 The packet structure is
 
 ```
-<cd> <id> <type_proyectile> <x> <y> <angle>
+<cd> <id> <type_proyectile> <x> <y> <angle> <exploded>
 ```
 
 - `<cd>` is the associated code
@@ -125,3 +125,4 @@ The packet structure is
 - `<type_proyectile>` is a string of the type of proyectile
 - `<x> <y>` are the x and y coordinates in `point_t` of a player
 - `<angle>` is an int of the angle of the shooting
+- `<exploded>` is an int that defines if the proyectile exploded (being the int = 1) or if it did not exploded (being the int = 0)

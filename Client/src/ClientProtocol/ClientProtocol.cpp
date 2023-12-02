@@ -158,7 +158,16 @@ std::shared_ptr<Event> ClientProtocol::recv_proyectile_update() {
         return std::make_shared<NullEvent>(-1);
     }
     Vect2D position(Vect2D(ntohs(x), ntohs(y)));
-    return std::make_shared<ProyectileUpdate>((int)player_id, type_proyectile, position, (int)angle);
+
+    uint8_t exploded;
+    this->skt.recvall(&exploded, sizeof(uint8_t), &this->isclosed);
+    if (this->isclosed) {
+        return std::make_shared<NullEvent>(-1);
+    }
+    if (exploded == 1)
+        return std::make_shared<ProyectileUpdate>((int)player_id, type_proyectile, position, (int)angle, true);
+    
+    return std::make_shared<ProyectileUpdate>((int)player_id, type_proyectile, position, (int)angle, false);
 }
 
 ClientProtocol::ClientProtocol(Socket skt): skt(std::move(skt)), isclosed(false) {}

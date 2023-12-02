@@ -34,6 +34,10 @@ public:
 
     virtual int get_angle() {return 0;};
 
+    virtual Vect2D get_position() {return Vect2D(0,0);};
+
+    virtual bool got_exploded() {return false;};
+
     virtual ~Event() = default;
 };
 
