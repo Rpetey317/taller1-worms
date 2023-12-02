@@ -17,4 +17,4 @@ public:
     int get_plid() const;
 };
 
-#endif // !__TIMERUPDATE_H__
+#endif  // !__TIMERUPDATE_H__

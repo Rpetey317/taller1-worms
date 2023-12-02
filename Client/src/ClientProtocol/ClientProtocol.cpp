@@ -172,7 +172,7 @@ std::shared_ptr<Event> ClientProtocol::recv_proyectile_update() {
                                               false);
 }
 
-std::shared_ptr<Event> ClientProtocol::recv_timer() { 
+std::shared_ptr<Event> ClientProtocol::recv_timer() {
     playerid_t player_id = this->recv_player_id();
     uint8_t duration;
     this->skt.recvall(&duration, sizeof(uint8_t), &this->isclosed);

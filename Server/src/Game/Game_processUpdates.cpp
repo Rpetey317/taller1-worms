@@ -1,6 +1,6 @@
+#include <chrono>
 #include <iterator>
 #include <memory>
-#include <chrono>
 
 #include "Game.h"
 
@@ -60,7 +60,8 @@ std::shared_ptr<Update> Game::process_timer(RunTimer& event) {
     auto now = std::chrono::steady_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(now - this->turn_start);
     if (elapsed.count() >= this->turn_time) {
-        auto new_curr_pl = this->curr_pl == this->players.end() ? this->players.begin() : std::next(this->curr_pl);
+        auto new_curr_pl = this->curr_pl == this->players.end() ? this->players.begin() :
+                                                                  std::next(this->curr_pl);
         if (new_curr_pl != this->players.end()) {
             this->eventq.push(std::make_shared<TurnAdvance>(SERVER_ID, new_curr_pl));
             return std::make_shared<TimerUpdate>(turn_time - elapsed.count(), new_curr_pl->first);
