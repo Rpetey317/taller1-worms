@@ -8,7 +8,7 @@
 
 class CreateMap: public QDialog {
 public:
-    explicit CreateMap();
+    CreateMap();
     // QString getEnteredText() const;
 
 private slots:

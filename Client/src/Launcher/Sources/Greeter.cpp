@@ -45,7 +45,7 @@ void Greeter::createGame() {
         std::cout << "Game created succesfully with name: " << gameName.toStdString()
                   << " and map name: " << mapName.toStdString() << std::endl;
         close();
-    };
+    }
 }
 
 void Greeter::joinToGame() {
@@ -56,16 +56,16 @@ void Greeter::joinToGame() {
         // this->dataLoggin.gameName = this->gameName.toStdString();
         std::cout << "Joined succesfully to game: " << gameName.toStdString() << std::endl;
         close();
-    };
+    }
 }
 
 
 void Greeter::createMap() {
     CreateMap createMap;
     createMap.setModal(true);
-    if(createMap.exec() == QDialog::Accepted){
+    if (createMap.exec() == QDialog::Accepted) {
         std::cout << "Map created succesfully with name: " << std::endl;
-    };
+    }
 }
 
 void Greeter::connectEvents() {

@@ -123,7 +123,7 @@ std::shared_ptr<Event> ClientProtocol::recv_map_update() {
     return std::make_shared<MapUpdate>(worm_positions);
 }
 
-std::shared_ptr<Event> ClientProtocol::recv_player_position() { 
+std::shared_ptr<Event> ClientProtocol::recv_player_position() {
     playerid_t player_id = this->recv_player_id();
     uint16_t x;
     this->skt.recvall(&x, sizeof(uint16_t), &this->isclosed);
@@ -139,7 +139,7 @@ std::shared_ptr<Event> ClientProtocol::recv_player_position() {
     return std::make_shared<PlayerPosition>((int)player_id, position);
 }
 
-std::shared_ptr<Event> ClientProtocol::recv_proyectile_update() { 
+std::shared_ptr<Event> ClientProtocol::recv_proyectile_update() {
     playerid_t player_id = this->recv_player_id();
     std::string type_proyectile = this->recv_msg();
     uint16_t x;
@@ -165,9 +165,11 @@ std::shared_ptr<Event> ClientProtocol::recv_proyectile_update() {
         return std::make_shared<NullEvent>(-1);
     }
     if (exploded == 1)
-        return std::make_shared<ProyectileUpdate>((int)player_id, type_proyectile, position, (int)angle, true);
-    
-    return std::make_shared<ProyectileUpdate>((int)player_id, type_proyectile, position, (int)angle, false);
+        return std::make_shared<ProyectileUpdate>((int)player_id, type_proyectile, position,
+                                                  (int)angle, true);
+
+    return std::make_shared<ProyectileUpdate>((int)player_id, type_proyectile, position, (int)angle,
+                                              false);
 }
 
 ClientProtocol::ClientProtocol(Socket skt): skt(std::move(skt)), isclosed(false) {}
@@ -228,7 +230,7 @@ char ClientProtocol::send_NullAction(NullAction action) {
     return SUCCESS;
 }
 
-char ClientProtocol::send_Shoot(Shoot action) { 
+char ClientProtocol::send_Shoot(Shoot action) {
     if (!this->send_char(MSGCODE_SHOOT)) {
         return CLOSED_SKT;
     }

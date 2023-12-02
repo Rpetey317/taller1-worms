@@ -4,8 +4,13 @@
 
 #include "../EventProcessor/EventProcessor.h"
 
-ProyectileUpdate::ProyectileUpdate(const int& player_id, std::string type, Vect2D position, int angle, bool exploded):
-        Event(player_id), type_proyectile(type), position(position), angle(angle), exploded(exploded) {}
+ProyectileUpdate::ProyectileUpdate(const int& player_id, const std::string& type, Vect2D position,
+                                   int angle, bool exploded):
+        Event(player_id),
+        type_proyectile(type),
+        position(position),
+        angle(angle),
+        exploded(exploded) {}
 
 void ProyectileUpdate::get_processed_by(EventProcessor& eventProcessor) {
     eventProcessor.proccess_proyectile_update(*this);

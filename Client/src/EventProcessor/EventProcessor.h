@@ -27,7 +27,7 @@ public:
     void process_player_position(PlayerPosition& event);
 
     void process_map_update(MapUpdate& event);
-    
+
     void proccess_proyectile_update(ProyectileUpdate& event);
 
     void proccess_event(std::shared_ptr<Event> event);

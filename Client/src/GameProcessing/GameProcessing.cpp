@@ -155,11 +155,6 @@ void GameProcessing::run() {
 
     // Creo los threads sender y receiver pasandoles el protocolo y los corro
 
-    const std::map<std::string, int> lut{
-            {CREATE_STR, CREATE}, {JOIN_STR, JOIN}, {CHAT_STR, CHAT},
-            {READ_STR, READ},     {EXIT_STR, EXIT}, {NOCMD_STR, NOCMD},
-    };
-
     std::shared_ptr<Event> ack_update =
             this->protocol.recv_update();  // Va a ser player connected. Me devuelve mi id
     std::shared_ptr<PlayerConnected> connected =
@@ -172,40 +167,6 @@ void GameProcessing::run() {
 
     this->receiverTh.start();
     this->senderTh.start();
-
-    // bool playing = true;
-    // std::string command;
-    // while (playing) {
-    //     std::cout << "holi" << std::endl;
-    //     /*
-    //         Las acciones del cliente ya las poppea y envia el sender thread ya que le paso la
-    //        outgoingq de commands como parametro. Asi estaria bien o se deben poppear en este
-    //        while y luego mandarlas a la queue del sender?
-    //     */
-    //     // Si hacemos una queue distinta:
-    //     Action* action;
-    //     bool popped_action = this->actions.try_pop(action);
-    //     if (popped_action) {
-    //         // std::cout << "Poppea action" << std::endl;
-    //         this->outgoingq.push(action);
-    //     }
-
-    //     // Para actualizar SDL. El evento deberia ser de PlayerPosition. Esto lo habia hecho yo?
-    //     std::list<Event*> update_list;
-
-    //     bool popped_event = false;
-    //     do {
-    //         Event* upd;
-    //         popped_event = this->incomingq.try_pop(upd);
-    //         if (popped_event)
-    //             update_list.push_back(upd);
-    //     } while (popped_event);
-
-    //     for (auto upd: update_list) {
-    //         //std::cout << "Popped an event" << std::endl;
-    //         this->eventProcessor.proccess_event(upd);
-    //     }
-    // }
 }
 
 int GameProcessing::get_id() { return this->id; }

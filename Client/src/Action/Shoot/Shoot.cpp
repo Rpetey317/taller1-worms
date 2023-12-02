@@ -3,7 +3,7 @@
 #include "../../ClientProtocol/ClientProtocol.h"
 
 
-Shoot::Shoot(int weapon, int power, int angle) {}
+Shoot::Shoot(int weapon, int power, int angle): weapon(weapon), power(power), angle(angle) {}
 
 int Shoot::get_weapon() { return this->weapon; }
 

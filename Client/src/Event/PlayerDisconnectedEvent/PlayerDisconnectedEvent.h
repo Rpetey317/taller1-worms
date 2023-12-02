@@ -15,7 +15,6 @@ public:
     explicit PlayerDisconnected(const int& player_id);
 
     void get_processed_by(EventProcessor& eventProcessor) override;
-
 };
 
 #endif  // PLAYERDISCONNECTEDEVENT_H_

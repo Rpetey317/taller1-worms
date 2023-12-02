@@ -21,7 +21,6 @@ public:
     std::map<int, Vect2D> get_worm_positions() override;
 
     std::map<int, Worm> get_worms() override;
-
 };
 
 #endif  // MAPUPDATE_H

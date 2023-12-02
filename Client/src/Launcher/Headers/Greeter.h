@@ -4,13 +4,12 @@
 #include <QWidget>
 
 #include "CreateGame.h"
-#include "JoinGame.h"
 #include "CreateMap.h"
+#include "JoinGame.h"
 // #include "../ui_super_duper_tuki.h"
 #include <string>
 
 #include "../../ClientProtocol/ClientProtocol.h"
-#include "../DataLoggin/DataLoggin.h"
 #include "../ui_launcher.h"
 
 class Greeter: public QWidget {

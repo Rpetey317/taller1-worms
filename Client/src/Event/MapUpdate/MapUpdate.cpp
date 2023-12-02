@@ -20,4 +20,3 @@ std::map<int, Vect2D> MapUpdate::get_worm_positions() {
 }
 
 std::map<int, Worm> MapUpdate::get_worms() { return this->worms; }
-

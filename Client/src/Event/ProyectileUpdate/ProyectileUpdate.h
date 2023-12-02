@@ -11,14 +11,15 @@
 
 
 class ProyectileUpdate: public Event {
-    // private:
+private:
     std::string type_proyectile;
     Vect2D position;
     int angle;
     bool exploded;
 
 public:
-    ProyectileUpdate(const int& player_id, std::string type, Vect2D position, int angle, bool exploded);
+    ProyectileUpdate(const int& player_id, const std::string& type, Vect2D position, int angle,
+                     bool exploded);
 
     void get_processed_by(EventProcessor& eventProcessor) override;
 
