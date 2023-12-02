@@ -90,6 +90,8 @@ public:
      */
     void broadcast(std::shared_ptr<Update> update);
 
+    void reset_timer();
+
     /*
      * Closes lobby and frees all resources
      */

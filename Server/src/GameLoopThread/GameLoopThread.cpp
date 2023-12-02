@@ -10,6 +10,7 @@ GameLoopThread::GameLoopThread(Queue<std::shared_ptr<Message>>& _eventq, Game& _
         eventq(_eventq), game(_game) {}
 
 void GameLoopThread::run() {
+    game.reset_timer();
     while (_keep_running) {
         std::list<std::shared_ptr<Message>> event_list;
         auto start_time = std::chrono::steady_clock::now();

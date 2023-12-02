@@ -41,6 +41,8 @@ void Game::broadcast(std::shared_ptr<Update> update) {
 
 int Game::count() { return plcount; }
 
+void Game::reset_timer() { turn_start = std::chrono::steady_clock::now(); }
+
 void Game::close() {
     for (auto pl = this->players.begin(); pl != this->players.end(); pl++)
         delete (*pl).second.release();
