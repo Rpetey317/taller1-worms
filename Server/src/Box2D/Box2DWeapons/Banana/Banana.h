@@ -4,7 +4,7 @@
 #include "../Weapons.h"
 
 class Banana : public B2dWeapon {
-    BoxManager* box_manager;
+    class BoxManager* box_manager;
 public:
     explicit Banana(BoxManager* box_manager);
 

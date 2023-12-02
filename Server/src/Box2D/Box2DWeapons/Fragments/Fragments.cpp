@@ -1,4 +1,5 @@
 #include "Fragments.h"
+#include "../../Box2dManager/box2dManager.h"
 
 Fragments::Fragments(BoxManager* box_manager) {
     this->box_manager = box_manager;

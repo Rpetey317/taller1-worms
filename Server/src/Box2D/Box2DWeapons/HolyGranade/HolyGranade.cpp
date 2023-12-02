@@ -1,4 +1,5 @@
 #include "HolyGranade.h"
+#include "../../Box2dManager/box2dManager.h"
 
 HolyGranade::HolyGranade(BoxManager* box_manager) {
     this->box_manager = box_manager;

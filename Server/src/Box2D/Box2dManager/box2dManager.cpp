@@ -1,5 +1,6 @@
 #include "box2dManager.h"
 #include "Vect2D.h"
+#include <iostream>
 
 #define DEGTORAD -0.0174532925199432957f
 #define RADTODEG 57.295779513082320876f
@@ -25,7 +26,8 @@ BoxManager::BoxManager(): world() {
 void BoxManager::add_player() {
     float x = 0.5f;
     float y = 49.5f;
-    worms.push_back(Box2DPlayer(worms.size(), world.create_worm(x, y)));
+    b2Body* worm = world.create_worm(x, y);
+    worms.push_back(Box2DPlayer(worms.size(), worm));
     if(worms.size() == 1)
         playing_worm = worms.begin();
 }
@@ -40,7 +42,7 @@ bool BoxManager::set_map() {
     CommonMapParser parser;
     return world.set_map(parser.get_map("../maps/mapita.txt"));
 }
-#include <iostream>
+
 std::map<int, Vect2D>* BoxManager::create_position_map(const std::list<Box2DPlayer>& worms) {
     std::map<int, Vect2D>* positions = new std::map<int, Vect2D>();
     for (auto worm : worms) {
