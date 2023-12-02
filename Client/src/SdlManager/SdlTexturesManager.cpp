@@ -15,18 +15,18 @@ SdlTexturesManager::SdlTexturesManager(Renderer& renderer, Window& window, std::
     src.h = dest.h = 19;
 }
 
-void SdlTexturesManager::draw(Tile& tile) {
+void SdlTexturesManager::draw(Tile& tile, int camera_x, int camera_y) {
     switch (tile.type) {
         case '0':
             src.w = dest.w = 64;
-            dest.x = tile.pos_x;
-            dest.y = tile.pos_y;
+            dest.x = tile.pos_x - camera_x;
+            dest.y = tile.pos_y - camera_y;
             renderer.Copy(small_bridge, src, dest, tile.angle, NullOpt, 0);
             break;
         case '1':
             src.w = dest.w = 128;
-            dest.x = tile.pos_x;
-            dest.y = tile.pos_y;
+            dest.x = tile.pos_x - camera_x;
+            dest.y = tile.pos_y - camera_y; 
             renderer.Copy(large_bridge, src, dest, tile.angle, NullOpt, 0);
             break;
         default:

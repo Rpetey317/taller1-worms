@@ -20,3 +20,4 @@
 #include "SdlWormStateMortar.cpp"
 #include "SdlWormStateRedGrenade.cpp"
 #include "SdlWormStateTeleport.cpp"
+#include "SdlCamera.cpp"

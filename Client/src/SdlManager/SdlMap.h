@@ -9,12 +9,13 @@ using namespace SDL2pp;  // NOLINT
 
 class SdlMap {
 public:
-    SdlMap(std::vector<Tile> map, SdlTexturesManager& textures_manager);
+    SdlMap(SdlCamera& camera, std::vector<Tile> map, SdlTexturesManager& textures_manager);
 
     void draw_map();
     std::vector<Tile> get_worms_positions();
 
 private:
+    SdlCamera &camera;
     std::vector<Tile> map;
     SdlTexturesManager& textures_manager;
     int get_amount_of_worms();
