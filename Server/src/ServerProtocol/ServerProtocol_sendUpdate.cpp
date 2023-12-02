@@ -103,3 +103,22 @@ char ServerProtocol::send_WorldUpdate(const WorldUpdate& upd) {
     }
     return SUCCESS;
 }
+
+char ServerProtocol::send_TimerUpdate(const TimerUpdate& upd) {
+    // send code
+    if (!this->send_char(SRV_TIMER_UPD)) {
+        return CLOSED_SKT;
+    }
+
+    // send id of player w/ turn
+    if (!this->send_char(upd.get_plid())) {
+        return CLOSED_SKT;
+    }
+
+    // send time
+    if (!this->send_char(upd.get_time_left())) {
+        return CLOSED_SKT;
+    }
+
+    return SUCCESS;
+}

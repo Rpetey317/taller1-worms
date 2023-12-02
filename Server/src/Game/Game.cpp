@@ -6,6 +6,8 @@
 #include "ReceiverThread.h"
 #include "SenderThread.h"
 
+int ttime = 5;
+
 Game::Game(Queue<std::shared_ptr<Message>>& _eventq):
         plcount(0),
         eventq(_eventq),
@@ -13,6 +15,8 @@ Game::Game(Queue<std::shared_ptr<Message>>& _eventq):
         next_free_id(0),
         box2d_in(10000),
         box2d_out(10000),
+        turn_start(std::chrono::steady_clock::now()),
+        turn_time(ttime),
         box2d() {
     curr_pl = this->players.begin();
 }
