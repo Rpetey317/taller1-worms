@@ -27,3 +27,22 @@ bool SdlWormStateAirStrike::reduce_ammo(std::map<std::string, int>& gun_ammo) {
     return true;
 }
 
+void SdlWormStateAirStrike::render_ammo(Renderer& renderer, int ammount_of_ammo, int camera_x, int camera_y) {
+    Rect dest;
+    Color color;
+    color.SetBlue(255);
+    color.SetGreen(153);
+    color.SetRed(153);
+    for (int i = 0; i < ammount_of_ammo; i++) {
+        dest.SetX(camera_x + i*AMMO_RENDER_SEPARATION);
+        dest.SetY(camera_y);
+        dest.SetW(AMMO_RENDER_WIDTH);
+        dest.SetH(AMMO_RENDER_HEIGHT);
+        renderer.SetDrawColor(color);
+        renderer.FillRect(dest);
+    }
+}
+
+std::string SdlWormStateAirStrike::get_name() {
+    return "AIR_STRIKE";
+}

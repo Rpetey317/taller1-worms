@@ -13,7 +13,8 @@ void SdlWorm::set_health(int new_health) {
 }
 
 void SdlWorm::recharge_ammo() {
-    std::cout << "RECARGANDO BALAS" << std::endl;
+
+    gun_ammo["NULL"] = 0;
     gun_ammo["BANANA"] = -1;
     gun_ammo["BAZOOKA"] = -1;
     gun_ammo["BEISBOLL"] = -1;
@@ -27,8 +28,7 @@ void SdlWorm::recharge_ammo() {
     gun_ammo["AIR_STRIKE"] = 2;
 }
 
-void SdlWorm::render_same() {
-    texture_manager.render(worm_state, animation_phase, x_pos - camera.get_x(), y_pos - camera.get_y(), flip);
+void SdlWorm::render_health_bar() {
     health_bar.SetX(x_pos - camera.get_x());
     health_bar.SetY(y_pos - 10 - camera.get_y());
     health_bar.SetW(health/2);
@@ -40,7 +40,12 @@ void SdlWorm::render_same() {
     renderer.DrawRect(health_bar_delim);
     renderer.SetDrawColor(color);
     renderer.FillRect(health_bar);
+}
 
+void SdlWorm::render_same() {
+    texture_manager.render(worm_state, animation_phase, x_pos - camera.get_x(), y_pos - camera.get_y(), flip);
+    render_health_bar();
+    worm_state->render_ammo(renderer, gun_ammo[worm_state->get_name()], 0,0);
 }
 
 void SdlWorm::render_new(Vect2D position) {
@@ -51,18 +56,9 @@ void SdlWorm::render_new(Vect2D position) {
     } else {
         texture_manager.render(worm_state, animation_phase, position.x - camera.get_x(), position.y - camera.get_y(), flip);
     }
-    health_bar.SetX(x_pos - camera.get_x());
-    health_bar.SetY(y_pos - 10 - camera.get_y());
-    health_bar.SetW(health/2);
 
-    health_bar_delim.SetX(x_pos -1 - camera.get_x());
-    health_bar_delim.SetY(y_pos - 11 - camera.get_y());
-    health_bar_delim.SetW((health/2)+2);
-    renderer.SetDrawColor(delim_color);
-    renderer.DrawRect(health_bar_delim);
-    renderer.SetDrawColor(color);
-    renderer.FillRect(health_bar);
-    
+    render_health_bar();
+    worm_state->render_ammo(renderer, gun_ammo[worm_state->get_name()], camera.get_x(), camera.get_y());
 }
 
 void SdlWorm::apply() {
