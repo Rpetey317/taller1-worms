@@ -22,7 +22,6 @@ public:
 
     std::map<int, Worm> get_worms() override;
 
-    bool is_new_player() override;
 };
 
 #endif  // MAPUPDATE_H
