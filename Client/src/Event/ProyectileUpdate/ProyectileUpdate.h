@@ -18,7 +18,7 @@ class ProyectileUpdate: public Event {
 
 
 public:
-    ProyectileUpdate(const int& player_id, Vect2D position);
+    ProyectileUpdate(const int& player_id, std::string type, Vect2D position, int angle);
 
     void get_processed_by(EventProcessor& eventProcessor) override;
 

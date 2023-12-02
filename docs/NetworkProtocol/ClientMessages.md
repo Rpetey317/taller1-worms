@@ -46,3 +46,16 @@ The format of this action is:
  Where:
 
 - `<cd>` is the message code of the null action (0x13)
+
+# Shoot
+The format of this action is:
+ ```
+ <cd> <weapon> <power> <angle>
+ ```
+ Where:
+
+- `<cd>` is the message code of the null action
+- `<weapon>` is an int that defines the type of weapon
+- `<power>` is an int that defines the type of power of the shooting
+- `<angle>` is an int that defines the type of angle of the shooting
+

@@ -27,6 +27,8 @@ const msgcode_t MSGCODE_PLAYER_JUMP_BACKWARDS = 0x11;
 const msgcode_t MSGCODE_WORLD_UPD = 0x12;
 const msgcode_t MSGCODE_NULL_ACTION = 0x13;
 const msgcode_t MSGCODE_SHOOT = 0x14;
+const msgcode_t MSGCODE_PLAYER_POSITION = 0x15;
+const msgcode_t MSGCODE_PROYECTILE_UPDATE = 0x16;
 
 // TODO: separar los msgcodes para los que se mandan del server al client y del client al server
 

@@ -123,6 +123,44 @@ std::shared_ptr<Event> ClientProtocol::recv_map_update() {
     return std::make_shared<MapUpdate>(worm_positions);
 }
 
+std::shared_ptr<Event> ClientProtocol::recv_player_position() { 
+    playerid_t player_id = this->recv_player_id();
+    uint16_t x;
+    this->skt.recvall(&x, sizeof(uint16_t), &this->isclosed);
+    if (this->isclosed) {
+        return std::make_shared<NullEvent>(-1);
+    }
+    uint16_t y;
+    this->skt.recvall(&y, sizeof(uint16_t), &this->isclosed);
+    if (this->isclosed) {
+        return std::make_shared<NullEvent>(-1);
+    }
+    Vect2D position(Vect2D(ntohs(x), ntohs(y)));
+    return std::make_shared<PlayerPosition>((int)player_id, position);
+}
+
+std::shared_ptr<Event> ClientProtocol::recv_proyectile_update() { 
+    playerid_t player_id = this->recv_player_id();
+    std::string type_proyectile = this->recv_msg();
+    uint16_t x;
+    this->skt.recvall(&x, sizeof(uint16_t), &this->isclosed);
+    if (this->isclosed) {
+        return std::make_shared<NullEvent>(-1);
+    }
+    uint16_t y;
+    this->skt.recvall(&y, sizeof(uint16_t), &this->isclosed);
+    if (this->isclosed) {
+        return std::make_shared<NullEvent>(-1);
+    }
+    uint8_t angle;
+    this->skt.recvall(&angle, sizeof(uint8_t), &this->isclosed);
+    if (this->isclosed) {
+        return std::make_shared<NullEvent>(-1);
+    }
+    Vect2D position(Vect2D(ntohs(x), ntohs(y)));
+    return std::make_shared<ProyectileUpdate>((int)player_id, type_proyectile, position, (int)angle);
+}
+
 ClientProtocol::ClientProtocol(Socket skt): skt(std::move(skt)), isclosed(false) {}
 
 playerid_t ClientProtocol::recv_player_id() {
@@ -227,6 +265,10 @@ std::shared_ptr<Event> ClientProtocol::recv_update() {
             return this->recv_player_disconnected();
         case MSGCODE_TURN_UPDATE:
             return this->recv_turn_update();
+        case MSGCODE_PLAYER_POSITION:
+            return this->recv_player_position();
+        case MSGCODE_PROYECTILE_UPDATE:
+            return this->recv_proyectile_update();
         default:
             return std::make_shared<NullEvent>(-1);
     }
