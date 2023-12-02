@@ -17,7 +17,7 @@ void SdlCamera::focus_object(int x, int y) {
 }
 
 void SdlCamera::update_position() {
-
+        
 }
 
 int SdlCamera::get_x() {

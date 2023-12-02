@@ -27,3 +27,23 @@ bool SdlWormStateDynamite::reduce_ammo(std::map<std::string, int>& gun_ammo) {
     gun_ammo["DYNAMITE"] = gun_ammo["DYNAMITE"] -1;
     return true;
 }
+
+void SdlWormStateDynamite::render_ammo(Renderer& renderer, int ammount_of_ammo, int position_x, int position_y) {
+    Rect dest;
+    Color color;
+    color.SetBlue(0);
+    color.SetGreen(0);
+    color.SetRed(153);
+    for (int i = 0; i < ammount_of_ammo; i++) {
+        dest.SetX(position_x + i*AMMO_RENDER_SEPARATION);
+        dest.SetY(position_y);
+        dest.SetW(AMMO_RENDER_WIDTH);
+        dest.SetH(AMMO_RENDER_HEIGHT);
+        renderer.SetDrawColor(color);
+        renderer.FillRect(dest);
+    }
+}
+
+std::string SdlWormStateDynamite::get_name() {
+    return "DYNAMITE";
+}
