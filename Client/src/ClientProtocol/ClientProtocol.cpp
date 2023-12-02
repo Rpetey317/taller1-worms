@@ -172,6 +172,16 @@ std::shared_ptr<Event> ClientProtocol::recv_proyectile_update() {
                                               false);
 }
 
+std::shared_ptr<Event> ClientProtocol::recv_timer() { 
+    playerid_t player_id = this->recv_player_id();
+    uint8_t duration;
+    this->skt.recvall(&duration, sizeof(uint8_t), &this->isclosed);
+    if (this->isclosed) {
+        return std::make_shared<NullEvent>(-1);
+    }
+    return std::make_shared<Timer>((int)player_id, (int)duration);
+}
+
 ClientProtocol::ClientProtocol(Socket skt): skt(std::move(skt)), isclosed(false) {}
 
 playerid_t ClientProtocol::recv_player_id() {
@@ -280,6 +290,8 @@ std::shared_ptr<Event> ClientProtocol::recv_update() {
             return this->recv_player_position();
         case MSGCODE_PROYECTILE_UPDATE:
             return this->recv_proyectile_update();
+        case MSGCODE_TIMER:
+            return this->recv_timer();
         default:
             return std::make_shared<NullEvent>(-1);
     }

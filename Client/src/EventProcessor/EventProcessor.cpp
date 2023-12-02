@@ -40,6 +40,8 @@ void EventProcessor::process_map_update(MapUpdate& event) {
 
 void EventProcessor::proccess_proyectile_update(ProyectileUpdate& event) {}
 
+void EventProcessor::process_timer(Timer& event) {}
+
 void EventProcessor::proccess_event(std::shared_ptr<Event> event) {
     event->get_processed_by(*this);
 }

@@ -6,5 +6,6 @@
 #include "PlayerPosition/PlayerPosition.h"
 #include "ProyectileUpdate/ProyectileUpdate.h"
 #include "TurnUpdate/TurnUpdate.h"
+#include "Timer/Timer.h"
 
 #include "Event.h"

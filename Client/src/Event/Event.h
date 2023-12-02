@@ -38,6 +38,8 @@ public:
 
     virtual bool got_exploded() { return false; }
 
+    virtual int get_duration() { return 0; };
+
     virtual ~Event() = default;
 };
 

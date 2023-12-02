@@ -30,6 +30,8 @@ public:
 
     void proccess_proyectile_update(ProyectileUpdate& event);
 
+    void process_timer(Timer& event);
+
     void proccess_event(std::shared_ptr<Event> event);
 
 
