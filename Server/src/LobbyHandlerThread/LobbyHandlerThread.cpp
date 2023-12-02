@@ -5,6 +5,8 @@
 #include <string>
 #include <utility>
 
+#include <iostream>
+
 #include "LibError.h"
 #include "ServerProtocol.h"
 
@@ -23,6 +25,7 @@ void LobbyHandlerThread::send_map_data(MapDataRequest& request) {
 
 void LobbyHandlerThread::join_game(JoinRequest& request) {
     std::string& game_name = request.get_name();
+    std::cout << "Joining player to game " << game_name << std::endl;
     handler.join_player(game_name, std::move(player));
     _keep_running = false;
 }
@@ -30,6 +33,7 @@ void LobbyHandlerThread::join_game(JoinRequest& request) {
 void LobbyHandlerThread::create_game(CreateRequest& request) {
     std::string& game_name = request.get_game_name();
     std::string& map_name = request.get_map_name();
+    std::cout << "Creating game " << game_name << " with map " << map_name << std::endl;
     handler.create_game(game_name, map_name);
     handler.join_player(game_name, std::move(player));
 
@@ -59,7 +63,8 @@ void LobbyHandlerThread::run() {
 bool LobbyHandlerThread::is_dead() { return !_keep_running; }
 
 void LobbyHandlerThread::stop() {
-    player.close();
+    if(_keep_running)
+        player.close();
     _keep_running = false;
 }
 

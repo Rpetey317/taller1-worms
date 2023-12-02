@@ -68,7 +68,9 @@ void Greeter::joinToGame() {
     if (joinGame.exec() == QDialog::Accepted) {
         this->gameName = joinGame.getEnteredText();
         // this->dataLoggin.gameName = this->gameName.toStdString();
-        std::cout << "Joined succesfully to game: " << gameName.toStdString() << std::endl;
+        // std::cout << "Joined succesfully to game: " << gameName.toStdString() << std::endl;
+        std::string gameNameString(this->gameName.toStdString());
+        this->protocol.join_game(gameNameString);
         close();
     };
 }
