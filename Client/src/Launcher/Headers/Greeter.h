@@ -1,20 +1,23 @@
 #ifndef GREETER_H
 #define GREETER_H
 
-#include "JoinGame.h"
-#include "CreateGame.h"
 #include <QWidget>
-// #include "../ui_super_duper_tuki.h"
-#include "../ui_launcher.h"
-#include <string>
-#include "../DataLoggin/DataLoggin.h"
-#include "../../ClientProtocol/ClientProtocol.h"
 
-class Greeter : public QWidget {
-    
+#include "CreateGame.h"
+#include "JoinGame.h"
+#include "CreateMap.h"
+// #include "../ui_super_duper_tuki.h"
+#include <string>
+
+#include "../../ClientProtocol/ClientProtocol.h"
+#include "../DataLoggin/DataLoggin.h"
+#include "../ui_launcher.h"
+
+class Greeter: public QWidget {
+
 private:
     // Ui::Greeter *ui;
-    ClientProtocol &protocol;
+    ClientProtocol& protocol;
     void connectEvents();
     // void updateNameRandom();
     void createGame();
@@ -23,10 +26,10 @@ private:
     // ~Greeter();
 
 public:
-    explicit Greeter(QWidget *parent, ClientProtocol &protocol);
+    explicit Greeter(QWidget* parent, ClientProtocol& protocol);
     // DataLoggin dataLoggin;
     QString gameName;
     QString mapName;
 };
 
-#endif // GREETER_H
+#endif  // GREETER_H

@@ -5,5 +5,6 @@
 #include "PlayerMessageEvent/PlayerMessageEvent.h"
 #include "PlayerPosition/PlayerPosition.h"
 #include "TurnUpdate/TurnUpdate.h"
+#include "ProyectileUpdate/ProyectileUpdate.h"
 
 #include "Event.h"

@@ -8,7 +8,7 @@ class SdlTexturesManager {
 
         public:
                 SdlTexturesManager(Renderer& renderer, Window& window, std::string background_type);
-                void draw(Tile& tile);
+                void draw(Tile& tile, int camera_x, int camera_y);
                 void draw_background();
 
         private:

@@ -181,6 +181,26 @@ char ClientProtocol::send_NullAction(NullAction action) {
     return SUCCESS;
 }
 
+char ClientProtocol::send_Shoot(Shoot action) { 
+    if (!this->send_char(MSGCODE_SHOOT)) {
+        return CLOSED_SKT;
+    }
+
+    if (!this->send_char(action.get_weapon())) {
+        return CLOSED_SKT;
+    }
+
+    if (!this->send_char(action.get_power())) {
+        return CLOSED_SKT;
+    }
+
+    if (!this->send_char(action.get_angle())) {
+        return CLOSED_SKT;
+    }
+
+    return SUCCESS;
+}
+
 
 void ClientProtocol::send_code_game(size_t code) {
     // Send code game to join

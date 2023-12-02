@@ -29,7 +29,7 @@ public:
     bool is_charging;
     int attack_power;
     int worm_id;
-    explicit SdlWorm(Renderer& renderer, SdlWormTextureManager& texture_manager, SdlSoundManager& sound_manager, int x_pos, int y_pos, int worm_id, int player_id, int health);
+    explicit SdlWorm(SdlCamera& camera, Renderer& renderer, SdlWormTextureManager& texture_manager, SdlSoundManager& sound_manager, int x_pos, int y_pos, int worm_id, int player_id, int health);
     bool next_animation();
     void change_state(std::string state);
     void play_sound(std::string sound_to_play);
@@ -46,7 +46,7 @@ public:
     void set_health(int ammount_to_heal);
     bool is_animation_playing;
 private:
-    void set_color();
+    SdlCamera &camera;
     Renderer &renderer;
     SdlWormTextureManager& texture_manager;
     SdlSoundManager& sound_manager;
@@ -55,10 +55,15 @@ private:
     int animation_phase;
     int health;
     int initial_health;
+    // ESTOS CONVERTIRLOS EN ALGO TIPO "SdlHealthComponent"
     Color color;
     Color delim_color;
     Rect health_bar;
     Rect health_bar_delim;
+    void set_color();
+    void render_health_bar();
+    //
+
     SdlWormState *worm_state;
     std::map<std::string, SdlWormState*> worm_states;
     std::map<std::string, int> gun_ammo;

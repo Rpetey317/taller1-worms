@@ -12,9 +12,7 @@ std::map<int, Vect2D>::const_iterator WorldUpdate::begin() const {
     return this->positions->begin();
 }
 
-std::map<int, Vect2D>::const_iterator WorldUpdate::end() const {
-    return this->positions->end();
-}
+std::map<int, Vect2D>::const_iterator WorldUpdate::end() const { return this->positions->end(); }
 
 int WorldUpdate::get_plcount() const { return this->positions->size(); }
 

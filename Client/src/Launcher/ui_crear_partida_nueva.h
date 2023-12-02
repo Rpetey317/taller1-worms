@@ -20,21 +20,19 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_CreateGame
-{
+class Ui_CreateGame {
 public:
-    QWidget *verticalLayoutWidget;
-    QVBoxLayout *verticalLayout;
-    QHBoxLayout *horizontalLayout;
-    QLabel *label;
-    QLineEdit *gameName;
-    QHBoxLayout *horizontalLayout_3;
-    QLabel *label_3;
-    QLineEdit *mapName;
-    QPushButton *acceptButton;
+    QWidget* verticalLayoutWidget;
+    QVBoxLayout* verticalLayout;
+    QHBoxLayout* horizontalLayout;
+    QLabel* label;
+    QLineEdit* gameName;
+    QHBoxLayout* horizontalLayout_3;
+    QLabel* label_3;
+    QLineEdit* mapName;
+    QPushButton* acceptButton;
 
-    void setupUi(QWidget *CreateGame)
-    {
+    void setupUi(QWidget* CreateGame) {
         if (CreateGame->objectName().isEmpty())
             CreateGame->setObjectName(QString::fromUtf8("CreateGame"));
         CreateGame->resize(329, 288);
@@ -83,22 +81,20 @@ public:
         retranslateUi(CreateGame);
 
         QMetaObject::connectSlotsByName(CreateGame);
-    } // setupUi
+    }  // setupUi
 
-    void retranslateUi(QWidget *CreateGame)
-    {
+    void retranslateUi(QWidget* CreateGame) {
         CreateGame->setWindowTitle(QCoreApplication::translate("CreateGame", "Form", nullptr));
         label->setText(QCoreApplication::translate("CreateGame", "Name", nullptr));
         label_3->setText(QCoreApplication::translate("CreateGame", "Map name", nullptr));
         acceptButton->setText(QCoreApplication::translate("CreateGame", "Accept", nullptr));
-    } // retranslateUi
-
+    }  // retranslateUi
 };
 
 namespace Ui {
-    class CreateGame: public Ui_CreateGame {};
-} // namespace Ui
+class CreateGame: public Ui_CreateGame {};
+}  // namespace Ui
 
 QT_END_NAMESPACE
 
-#endif // UI_CREAR_PARTIDA_NUEVA_H
+#endif  // UI_CREAR_PARTIDA_NUEVA_H

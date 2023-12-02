@@ -36,3 +36,23 @@ bool SdlWormStateGreenGrenade::reduce_ammo(std::map<std::string, int>& gun_ammo)
     
     return true;
 }
+
+void SdlWormStateGreenGrenade::render_ammo(Renderer& renderer, int ammount_of_ammo, int camera_x, int camera_y) {
+    Rect dest;
+    Color color;
+    color.SetBlue(0);
+    color.SetGreen(102);
+    color.SetRed(0);
+    for (int i = 0; i < ammount_of_ammo; i++) {
+        dest.SetX(camera_x + i*AMMO_RENDER_SEPARATION);
+        dest.SetY(camera_y);
+        dest.SetW(AMMO_RENDER_WIDTH);
+        dest.SetH(AMMO_RENDER_HEIGHT);
+        renderer.SetDrawColor(color);
+        renderer.FillRect(dest);
+    }
+}
+
+std::string SdlWormStateGreenGrenade::get_name() {
+    return "GREEN_GRENADE";
+}

@@ -2,8 +2,9 @@
 // Cargo el archivo generado por uic, leer el CMakelist.txt para mas info
 
 #include <iostream>
-#include <stdlib.h>
+
 #include <qcombobox.h>
+#include <stdlib.h>
 
 CreateGame::CreateGame() {
     // Instancio la configuracion generada por el designer y uic
@@ -13,7 +14,7 @@ CreateGame::CreateGame() {
     connectEvents();
 }
 
-QString CreateGame::getEnteredGameName() const { 
+QString CreateGame::getEnteredGameName() const {
     QLineEdit* inputName = findChild<QLineEdit*>("gameName");
     // QString name = inputName->text();
     // std::cout << "New game created: " << name.toStdString() << std::endl;
@@ -21,7 +22,7 @@ QString CreateGame::getEnteredGameName() const {
 }
 
 
-QString CreateGame::getEnteredMapName() const { 
+QString CreateGame::getEnteredMapName() const {
     QLineEdit* inputMap = findChild<QLineEdit*>("mapName");
     return inputMap->text();
 }
@@ -33,6 +34,5 @@ void CreateGame::createNewGame() {
 
 void CreateGame::connectEvents() {
     QPushButton* button_create_game = findChild<QPushButton*>("acceptButton");
-    QObject::connect(button_create_game, &QPushButton::clicked,
-                     this, &CreateGame::createNewGame);
+    QObject::connect(button_create_game, &QPushButton::clicked, this, &CreateGame::createNewGame);
 }
