@@ -30,6 +30,10 @@ public:
 
     virtual bool is_new_player() = 0;
 
+    virtual std::string get_type_proyectile() {return "NULL";};
+
+    virtual int get_angle() {return 0;};
+
     virtual ~Event() = default;
 };
 
