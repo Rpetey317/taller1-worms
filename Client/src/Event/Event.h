@@ -40,6 +40,8 @@ public:
 
     virtual int get_duration() { return 0; } // 
 
+    virtual int get_player_turn() { return -1; }
+
     virtual ~Event() = default;
 };
 
