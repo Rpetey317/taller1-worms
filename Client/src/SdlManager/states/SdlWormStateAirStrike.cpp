@@ -46,3 +46,7 @@ void SdlWormStateAirStrike::render_ammo(Renderer& renderer, int ammount_of_ammo,
 std::string SdlWormStateAirStrike::get_name() {
     return "AIR_STRIKE";
 }
+
+int SdlWormStateAirStrike::projectile_id() {
+    return 0x0009;
+}

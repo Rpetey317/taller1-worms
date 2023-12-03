@@ -55,3 +55,7 @@ void SdlWormStateMortar::render_ammo(Renderer& renderer, int ammount_of_ammo, in
 std::string SdlWormStateMortar::get_name() {
     return "MORTAR";
 }
+
+int SdlWormStateMortar::projectile_id() {
+    return 0x0004;
+}

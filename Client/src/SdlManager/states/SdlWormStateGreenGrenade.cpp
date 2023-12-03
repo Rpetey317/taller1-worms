@@ -56,3 +56,6 @@ void SdlWormStateGreenGrenade::render_ammo(Renderer& renderer, int ammount_of_am
 std::string SdlWormStateGreenGrenade::get_name() {
     return "GREEN_GRENADE";
 }
+int SdlWormStateGreenGrenade::projectile_id() {
+    return 0x0005;
+}

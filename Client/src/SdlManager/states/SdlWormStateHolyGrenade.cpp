@@ -57,3 +57,7 @@ void SdlWormStateHolyGrenade::render_ammo(Renderer& renderer, int ammount_of_amm
 std::string SdlWormStateHolyGrenade::get_name() {
     return "HOLY_GRENADE";
 }
+
+int SdlWormStateHolyGrenade::projectile_id() {
+    return 0x0008;
+}

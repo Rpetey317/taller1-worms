@@ -173,7 +173,7 @@ bool SdlManager::event_handler() {
                     worms[id_worm_turn]->reduce_ammo();
                     worms[id_worm_turn]->play_animation();
                     worms[id_worm_turn]->play_sound("THROWING");
-                    
+                    outgoing.push(std::make_shared<Shoot>(worms[id_worm_turn]->projectile_id(), worms[id_worm_turn]->attack_power, worms[id_worm_turn]->angle));
                     worms[id_worm_turn]->is_charging = false;
                     worms[id_worm_turn]->attack_power = 0; //en vez de worms[0], deberiamos hacer worms[jugador_en_turno], osea voy a necesitar 2 variables mas
                     // uno es la variable del id jugador de este cliente, otro la variable del id jugador en turno :)
@@ -254,29 +254,30 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
     map.draw_map();
     
     if (there_is_element) {
-        std::map<int, Vect2D> positions = event->get_worm_positions();
-        
+        //std::map<int, Vect2D> positions = event->get_worm_positions();
+        std::map<int, Worm> server_worms = event->get_worms();
         for (auto& worm : worms) {
-            if (!positions.empty()) {
+            if (!server_worms.empty()) {
                 //el id de gusano =/= id de jugador controla al gusano
-                worm.second->render_new(positions[worm.second->worm_id]);//deberia obtener el estado aca y se lo paso
+                worm.second->render_new(server_worms[worm.second->worm_id].position, server_worms[worm.second->worm_id].state);//deberia obtener el estado aca y se lo paso
             } else {
                 worm.second->render_same();
             }
             worm.second->next_animation();
             worm.second->apply();
         }
-
-        /*if (event->es_un_disparo()) {
-            last_projectile_used = event->dame_arma();
+        
+        if (event->get_type_proyectile() != "NULL") {
+            std::cout << "DALE DALE BOCA" << std::endl;
+            last_projectile_used = event->get_type_proyectile();
             is_projectile_flying = true;
-            projectiles[last_projectile_used]->render(event->dame_posicion(), event->dame_angulo());
+            projectiles[last_projectile_used]->render(event->get_proyectile_position().x, event->get_proyectile_position().y, event->get_proyectile_angle());
         }
-        if (event->exploto_bala()) {
+        if (event->proyectile_got_exploded()) {
             is_animation_playing = true;
         }
 
-        if (event->es_id()) {
+        /*if (event->es_id()) {
             id_worm_turn = event->dame_id();
             id_of_player_turn = worms[id_worm_turn]->player_id;
         }*/

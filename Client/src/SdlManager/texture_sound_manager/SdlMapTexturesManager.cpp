@@ -103,7 +103,6 @@ void SdlTexturesManager::draw(Tile& tile, int camera_x, int camera_y) {
             src.h = dest.h = 19;
             dest.x = tile.pos_x - camera_x;
             dest.y = tile.pos_y - camera_y; 
-            std::cout << dest.x  << "  "<< dest.y << std::endl;
             renderer.Copy(large_bridge, src, dest, tile.angle, NullOpt, 0);
             break;
         default:

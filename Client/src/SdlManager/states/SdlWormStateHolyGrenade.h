@@ -16,4 +16,5 @@ class SdlWormStateHolyGrenade : public SdlWormState {
                 bool has_ammo(std::map<std::string, int>& gun_ammo) override;
                 void render_ammo(Renderer& renderer, int ammount_of_bullets, int camera_x, int camera_y) override;
                 std::string get_name() override;
+                int projectile_id() override;
 };

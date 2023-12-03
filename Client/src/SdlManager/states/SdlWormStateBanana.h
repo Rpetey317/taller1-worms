@@ -14,4 +14,5 @@ class SdlWormStateBanana : public SdlWormState {
                 bool is_in_gun_state() override;   
                 bool reduce_ammo(std::map<std::string, int>& gun_ammo) override;
                 bool has_ammo(std::map<std::string, int>& gun_ammo) override;
+                int projectile_id() override;
 };
