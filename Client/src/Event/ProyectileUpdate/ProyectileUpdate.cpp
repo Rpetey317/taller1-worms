@@ -18,8 +18,8 @@ void ProyectileUpdate::get_processed_by(EventProcessor& eventProcessor) {
 
 std::string ProyectileUpdate::get_type_proyectile() { return this->type_proyectile; }
 
-int ProyectileUpdate::get_angle() { return this->angle; }
+int ProyectileUpdate::get_proyectile_angle() { return this->angle; }
 
-Vect2D ProyectileUpdate::get_position() { return this->position; }
+Vect2D ProyectileUpdate::get_proyectile_position() { return this->position; }
 
-bool ProyectileUpdate::got_exploded() { return this->exploded; }
+bool ProyectileUpdate::proyectile_got_exploded() { return this->exploded; }

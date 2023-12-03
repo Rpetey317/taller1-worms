@@ -25,11 +25,11 @@ public:
 
     std::string get_type_proyectile() override;
 
-    int get_angle() override;
+    int get_proyectile_angle() override;
 
-    Vect2D get_position() override;
+    Vect2D get_proyectile_position() override;
 
-    bool got_exploded() override;
+    bool proyectile_got_exploded() override;
 };
 
 #endif  // PROYECTILEUPDATE_H_

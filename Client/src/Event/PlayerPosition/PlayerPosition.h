@@ -19,7 +19,7 @@ public:
 
     void get_processed_by(EventProcessor& eventProcessor) override;
 
-    Vect2D get_position() override;
+    // Vect2D get_position() override;  // No se envia nunca este evento
 };
 
 #endif  // PLAYERPOSITION_H_

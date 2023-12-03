@@ -15,12 +15,12 @@ class EventProcessor;
 
 class Event {
 protected:
-    int id;
+    int player_id;
 
-    explicit Event(const int& _id): id(_id) {}
+    explicit Event(const int& _id): player_id(_id) {}
 
 public:
-    int get_id() { return this->id; }
+    int get_id() { return this->player_id; } 
 
     virtual void get_processed_by(EventProcessor& eventProcessor) = 0;
 
@@ -32,13 +32,13 @@ public:
 
     virtual std::string get_type_proyectile() { return "NULL"; }
 
-    virtual int get_angle() { return 0; }
+    virtual int get_proyectile_angle() { return 0; }
 
-    virtual Vect2D get_position() { return Vect2D(0, 0); }
+    virtual Vect2D get_proyectile_position() { return Vect2D(0, 0); }
 
-    virtual bool got_exploded() { return false; }
+    virtual bool proyectile_got_exploded() { return false; }
 
-    virtual int get_duration() { return 0; }
+    virtual int get_duration() { return 0; } // 
 
     virtual ~Event() = default;
 };
