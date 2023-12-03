@@ -4,9 +4,8 @@
 #include <QWidget>
 
 #include "CreateGame.h"
-#include "CreateMap.h"
+// #include "CreateMap.h"
 #include "JoinGame.h"
-// #include "../ui_super_duper_tuki.h"
 #include <string>
 
 #include "../../ClientProtocol/ClientProtocol.h"

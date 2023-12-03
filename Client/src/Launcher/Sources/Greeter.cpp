@@ -60,13 +60,13 @@ void Greeter::joinToGame() {
 }
 
 
-void Greeter::createMap() {
-    CreateMap createMap;
-    createMap.setModal(true);
-    if (createMap.exec() == QDialog::Accepted) {
-        std::cout << "Map created succesfully with name: " << std::endl;
-    }
-}
+// void Greeter::createMap() {
+//     CreateMap createMap;
+//     createMap.setModal(true);
+//     if (createMap.exec() == QDialog::Accepted) {
+//         std::cout << "Map created succesfully with name: " << std::endl;
+//     }
+// }
 
 void Greeter::connectEvents() {
     // Conecto el evento del boton
@@ -77,6 +77,6 @@ void Greeter::connectEvents() {
     QPushButton* button_join_game = findChild<QPushButton*>("joinButton");
     QObject::connect(button_join_game, &QPushButton::clicked, this, &Greeter::joinToGame);
 
-    QPushButton* button_create_map = findChild<QPushButton*>("createMapButton");
-    QObject::connect(button_create_map, &QPushButton::clicked, this, &Greeter::createMap);
+    // QPushButton* button_create_map = findChild<QPushButton*>("createMapButton");
+    // QObject::connect(button_create_map, &QPushButton::clicked, this, &Greeter::createMap);
 }

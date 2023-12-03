@@ -19,18 +19,19 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_Greeter {
+class Ui_Greeter
+{
 public:
-    QVBoxLayout* verticalLayout_2;
-    QVBoxLayout* verticalLayout;
-    QLabel* label;
-    QLabel* label_2;
-    QHBoxLayout* horizontalLayout;
-    QPushButton* createButton;
-    QPushButton* joinButton;
-    QPushButton* pushButton;
+    QVBoxLayout *verticalLayout_2;
+    QVBoxLayout *verticalLayout;
+    QLabel *label;
+    QLabel *label_2;
+    QHBoxLayout *horizontalLayout;
+    QPushButton *createButton;
+    QPushButton *joinButton;
 
-    void setupUi(QWidget* Greeter) {
+    void setupUi(QWidget *Greeter)
+    {
         if (Greeter->objectName().isEmpty())
             Greeter->setObjectName(QString::fromUtf8("Greeter"));
         Greeter->resize(441, 362);
@@ -124,34 +125,6 @@ public:
 
         horizontalLayout->addWidget(joinButton);
 
-        pushButton = new QPushButton(Greeter);
-        pushButton->setObjectName(QString::fromUtf8("createMapButton"));
-        QPalette palette4;
-        palette4.setBrush(QPalette::Active, QPalette::Button, brush5);
-        palette4.setBrush(QPalette::Active, QPalette::Base, brush5);
-        palette4.setBrush(QPalette::Active, QPalette::Window, brush5);
-        QBrush brush6(QColor(53, 132, 228, 255));
-        brush6.setStyle(Qt::SolidPattern);
-        palette4.setBrush(QPalette::Active, QPalette::Highlight, brush6);
-        QBrush brush7(QColor(224, 27, 36, 255));
-        brush7.setStyle(Qt::SolidPattern);
-        palette4.setBrush(QPalette::Active, QPalette::Link, brush7);
-        palette4.setBrush(QPalette::Inactive, QPalette::Button, brush5);
-        palette4.setBrush(QPalette::Inactive, QPalette::Base, brush5);
-        palette4.setBrush(QPalette::Inactive, QPalette::Window, brush5);
-        palette4.setBrush(QPalette::Inactive, QPalette::Highlight, brush6);
-        palette4.setBrush(QPalette::Inactive, QPalette::Link, brush7);
-        palette4.setBrush(QPalette::Disabled, QPalette::Button, brush5);
-        palette4.setBrush(QPalette::Disabled, QPalette::Base, brush5);
-        palette4.setBrush(QPalette::Disabled, QPalette::Window, brush5);
-        QBrush brush8(QColor(145, 145, 145, 255));
-        brush8.setStyle(Qt::SolidPattern);
-        palette4.setBrush(QPalette::Disabled, QPalette::Highlight, brush8);
-        palette4.setBrush(QPalette::Disabled, QPalette::Link, brush7);
-        pushButton->setPalette(palette4);
-
-        horizontalLayout->addWidget(pushButton);
-
 
         verticalLayout_2->addLayout(horizontalLayout);
 
@@ -159,22 +132,23 @@ public:
         retranslateUi(Greeter);
 
         QMetaObject::connectSlotsByName(Greeter);
-    }  // setupUi
+    } // setupUi
 
-    void retranslateUi(QWidget* Greeter) {
+    void retranslateUi(QWidget *Greeter)
+    {
         Greeter->setWindowTitle(QCoreApplication::translate("Greeter", "Greeter", nullptr));
         label->setText(QCoreApplication::translate("Greeter", "Ready to play WORMS?", nullptr));
         label_2->setText(QCoreApplication::translate("Greeter", "Choose an option:", nullptr));
         createButton->setText(QCoreApplication::translate("Greeter", "Create Match", nullptr));
         joinButton->setText(QCoreApplication::translate("Greeter", "Join Match", nullptr));
-        pushButton->setText(QCoreApplication::translate("Greeter", "Create Map", nullptr));
-    }  // retranslateUi
+    } // retranslateUi
+
 };
 
 namespace Ui {
-class Greeter: public Ui_Greeter {};
-}  // namespace Ui
+    class Greeter: public Ui_Greeter {};
+} // namespace Ui
 
 QT_END_NAMESPACE
 
-#endif  // UI_LAUNCHER_H
+#endif // UI_LAUNCHER_H
