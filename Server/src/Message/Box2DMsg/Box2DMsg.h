@@ -18,7 +18,7 @@ public:
 
     int& get_cmd();
 
-    virtual void get_processed_box2d(BoxManager& box2d) = 0;
+    // virtual void get_processed_box2d(BoxManager& box2d) = 0;
 
     ~Box2DMsg() override = default;
 };

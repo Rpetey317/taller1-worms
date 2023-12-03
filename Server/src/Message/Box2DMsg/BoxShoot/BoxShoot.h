@@ -11,7 +11,7 @@ class BoxShoot : public Box2DMsg {
 public:
     BoxShoot(int plid, int weapon_id, int power, int angle);
 
-    void get_processed_box2d(BoxManager& box2d) override;
+    // void get_processed_box2d(BoxManager& box2d) override;
 
     int get_weapon_id() const;
     int get_power() const;

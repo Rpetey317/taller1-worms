@@ -13,7 +13,7 @@ public:
     static std::shared_ptr<Message> move_right(int id);
     static std::shared_ptr<Message> move_left(int id);
 
-    void get_processed_box2d(BoxManager& box2d) override;
+    // void get_processed_box2d(BoxManager& box2d) override;
 
     bool is_right() const;
 };

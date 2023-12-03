@@ -117,6 +117,7 @@ std::shared_ptr<Message> ServerProtocol::recv_update() {
     } else {
         return std::make_shared<NullMessage>();
     }
+    return std::make_shared<NullMessage>(); // del this
 }
 
 msgcode_t ServerProtocol::recv_request() {
@@ -134,7 +135,7 @@ void ServerProtocol::close() {
     if (this->isclosed)
         return;
 
+    this->isclosed = true;
     this->cli.shutdown(2);
     this->cli.close();
-    this->isclosed = true;
 }
