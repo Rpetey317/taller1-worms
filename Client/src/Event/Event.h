@@ -15,12 +15,12 @@ class EventProcessor;
 
 class Event {
 protected:
-    int worm_id;
+    int id;
 
-    explicit Event(const int& _id): worm_id(_id) {}
+    explicit Event(const int& _id): id(_id) {}
 
 public:
-    int get_id() { return this->worm_id; } 
+    int get_id() { return this->id; } 
 
     virtual void get_processed_by(EventProcessor& eventProcessor) = 0;
 

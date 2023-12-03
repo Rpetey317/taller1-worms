@@ -121,7 +121,7 @@ Al poner el mismo numero de puerto, el cliente se conecta al server, para luego 
 ## Launcher
 
 Al conectarse el cliente con el servidor, se ejecuta el qt launcher, el cual le permite al usuario elegir unirse a una partida, 
-crear una partida, o crear un nuevo mapa, como se puede ver en la siguiente imagen. NO OLVIDARSE DE INGRESAR IMAGEN
+o crear una partida, como se puede ver en la siguiente imagen. NO OLVIDARSE DE INGRESAR IMAGEN
 
 ## Crear Partida
 

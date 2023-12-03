@@ -2,7 +2,7 @@
 
 #include "../EventProcessor/EventProcessor.h"
 
-MapUpdate::MapUpdate(const std::map<int, Worm>& worms): Event(100), worms(worms) {}
+MapUpdate::MapUpdate(const std::map<int, Worm>& worms): Event(0), worms(worms) {}
 
 void MapUpdate::get_processed_by(EventProcessor& eventProcessor) {
     eventProcessor.process_map_update(*this);
