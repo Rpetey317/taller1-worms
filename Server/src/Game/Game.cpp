@@ -7,6 +7,7 @@
 #include "SenderThread.h"
 
 int ttime = 5;
+int wct = 4;
 
 Game::Game(Queue<std::shared_ptr<Message>>& _eventq):
         plcount(0),
@@ -17,6 +18,8 @@ Game::Game(Queue<std::shared_ptr<Message>>& _eventq):
         box2d_out(10000),
         turn_start(std::chrono::steady_clock::now()),
         turn_time(ttime),
+        worm_count(wct),
+        current_worm(std::make_pair(0, 0)),
         box2d() {
     curr_pl = this->players.begin();
 }

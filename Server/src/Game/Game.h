@@ -33,6 +33,8 @@ class Game {
     Queue<std::vector<int>> box2d_out;
     std::chrono::steady_clock::time_point turn_start;
     int turn_time;
+    int worm_count;
+    std::pair<int, int> current_worm;
     BoxManager box2d;
 
 public:

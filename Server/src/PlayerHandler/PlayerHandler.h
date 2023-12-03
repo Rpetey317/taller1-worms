@@ -17,6 +17,8 @@ class PlayerHandler {
     SenderThread send_th;
     ReceiverThread recv_th;
     const int id;
+    std::list<int> assigned_worms;
+    std::list<int>::iterator last_worm_used;
 
 public:
     /*
@@ -41,6 +43,16 @@ public:
      * Sends a message back to client
      */
     void send(std::shared_ptr<Update> msg);
+
+    /*
+     * Advances to next worm
+     */
+    void advance_worm();
+
+    /*
+     * Gets worm ID of next worm to use
+     */
+    int get_current_worm();
 
     /*
      * Stops associated threads and frees all resources
