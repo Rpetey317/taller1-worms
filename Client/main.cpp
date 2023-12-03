@@ -63,7 +63,7 @@ int main(int argc, char* argv[]) {
 
         client.run();
 
-        SdlManager manager(commands, events, 0);
+        SdlManager manager(commands, events, 1);
         manager.run("../Images/TerrainSprites/back1.png", "../maps/mapita.txt");
         std::cout << "CERRANDO SDL" << std::endl;
 

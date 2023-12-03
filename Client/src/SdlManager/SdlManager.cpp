@@ -14,8 +14,8 @@ SdlManager::SdlManager(Queue<std::shared_ptr<Action>>& outgoing, Queue<std::shar
     // SDL sdl(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
     this->id_of_player = id_of_player;
-    this->id_of_player_turn = 0;
-    id_worm_turn = 0;
+    this->id_of_player_turn = 1;
+    id_worm_turn = 1;
     is_moving_camera = false;
     is_projectile_flying = false;
     is_animation_playing = false;
@@ -194,9 +194,6 @@ bool SdlManager::event_handler() {
                     is_moving_camera = true;
                     break;
                 }
-
-                
-
                 default: {
                     break;
                 }
@@ -268,7 +265,6 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
         }
         
         if (event->get_type_proyectile() != "NULL") {
-            std::cout << "DALE DALE BOCA" << std::endl;
             last_projectile_used = event->get_type_proyectile();
             is_projectile_flying = true;
             projectiles[last_projectile_used]->render(event->get_proyectile_position().x, event->get_proyectile_position().y, event->get_proyectile_angle());
@@ -277,10 +273,14 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
             is_animation_playing = true;
         }
 
-        /*if (event->es_id()) {
-            id_worm_turn = event->dame_id();
+        if (event->get_id() != 0) {
+            id_worm_turn = event->get_id();
+            std::cout << "ID DE GUSANITO:" << id_worm_turn << std::endl;
             id_of_player_turn = worms[id_worm_turn]->player_id;
-        }*/
+        }
+        
+        //std::cout << "WORM ID: " <<id_worm_turn << std::endl;
+        //id_of_player_turn = worms[id_worm_turn]->player_id;
 
 
     } else {  //SI NO RECIBO NADA, SEGUI EJECUTANDO LA ANTERIOR ANIMACION Y QUEDATE EN EL MISMO LUGAR
@@ -338,7 +338,7 @@ void SdlManager::run(std::string background_type, std::string selected_map) {
     std::vector<Tile> worms_positions = map.get_worms_positions();
     int i = 0;
     for (auto worm : worms_positions) {//me deberian pasar tambien la vida de los gusanitos
-        worms[i] = new SdlWorm(camera, renderer, worm_texture_manager, sound_manager, worm.pos_x, worm.pos_y, i, i%2, 100);//hago este %2 para probar distintos id de jugadores
+        worms[i] = new SdlWorm(camera, renderer, worm_texture_manager, sound_manager, worm.pos_x, worm.pos_y, i, i%3, 100);//hago este %2 para probar distintos id de jugadores
         i++;
     }
 
