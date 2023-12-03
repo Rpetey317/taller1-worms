@@ -49,7 +49,7 @@ std::vector<Tile> CommonMapParser::get_map(std::string file_name) {
 
     for (YAML::const_iterator it = worms_spawnpoints.begin(); it != worms_spawnpoints.end(); ++it) {
         const YAML::Node& worm_spawnpoint = *it;
-
+        std::cout << "dale man" << std::endl;
         x = worm_spawnpoint["pos_x"].as<int>();
         y = worm_spawnpoint["pos_y"].as<int>();
         angle = worm_spawnpoint["angle"].as<int>();

@@ -125,10 +125,11 @@ int SdlMap::get_amount_of_worms() {
 }
 
 std::vector<Tile> SdlMap::get_worms_positions() {
-    std::vector<Tile> worms_positions(get_amount_of_worms());
+    std::vector<Tile> worms_positions;
     for (auto& tile: map) {
-        if (tile.type == WORM_TYPE) 
+        if (tile.type == WORM_TYPE) {
             worms_positions.emplace_back(tile);
+        }
     }
     return worms_positions;
 }
