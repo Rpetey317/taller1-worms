@@ -25,7 +25,6 @@ void Game::add_player(Socket&& peer) {
     PlayerHandler* new_player = new PlayerHandler(std::move(peer), this->eventq, ++next_free_id);
     this->players.insert(std::make_pair(next_free_id, std::unique_ptr<PlayerHandler>(new_player)));
     new_player->start();
-    box2d.add_player();
 }
 
 // DD methods implemented in Game_processUpdate.cpp

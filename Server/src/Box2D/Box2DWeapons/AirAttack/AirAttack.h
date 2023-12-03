@@ -4,7 +4,7 @@
 #include "../Weapons.h"
 
 class AirAttack : public B2dWeapon {
-    BoxManager* box_manager;
+    class BoxManager* box_manager;
 public:
     explicit AirAttack(BoxManager* box_manager);
 

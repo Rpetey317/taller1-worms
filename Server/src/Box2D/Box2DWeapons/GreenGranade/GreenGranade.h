@@ -4,7 +4,7 @@
 #include "../Weapons.h"
 
 class GreenGranade : public B2dWeapon {
-    BoxManager* box_manager;
+    class BoxManager* box_manager;
 public:
     explicit GreenGranade(BoxManager* box_manager);
 

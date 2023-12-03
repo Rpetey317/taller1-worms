@@ -290,7 +290,7 @@ std::shared_ptr<Event> ClientProtocol::recv_update() {
             return this->recv_player_position();
         case MSGCODE_PROYECTILE_UPDATE:
             return this->recv_proyectile_update();
-        case MSGCODE_TIMER:
+        case SRV_TIMER_UPD:
             return this->recv_timer();
         default:
             return std::make_shared<NullEvent>(0);

@@ -33,7 +33,7 @@ class BoxManager {
     // call to function should be implemented in process 
     // but execution in corresponding class
     void next_turn();
-    void player_shoot(float angle, float power);
+    void player_shoot(float angle, float power, int type);
 public:
 
     std::map<int, Vect2D>* create_position_map(const std::list<Box2DPlayer>& worms);

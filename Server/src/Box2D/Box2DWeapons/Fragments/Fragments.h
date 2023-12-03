@@ -4,7 +4,7 @@
 #include "../Weapons.h"
 
 class Fragments : public B2dWeapon {
-    BoxManager* box_manager;
+    class BoxManager* box_manager;
 public:
     explicit Fragments(BoxManager* box_manager);
 
