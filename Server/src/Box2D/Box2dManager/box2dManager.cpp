@@ -83,9 +83,13 @@ std::shared_ptr<WorldUpdate> BoxManager::process(Box2DMsg& update) {
             this->next_turn();
             break;
         
-        case COMMAND_FIRE:
+        // case COMMAND_FIRE:
             // this->player_shoot(update.get_angle(), update.get_power(), update.get_type());
-            break;
+            // break; 
+        
+        // case COMMAND_SPECIAL_SHOOT:
+        //     this->player_special_shoot(update.get_position(), update.get_type());
+        //     break;
 
         default:
             vel.x = 0.0f;
@@ -134,12 +138,21 @@ void BoxManager::player_shoot(float angle, float power, int type) {
         case DYNAMITE:
             // Dynamite(this).fire(angle, power);
             break;
-        case AIR_STRIKE:
-            // AirAttack(this).fire(angle, power);
-            break;
-        case TELEPORT:
-            // Teleport(this).fire(angle, power);
+        case BASEBALL_BAT:
+            // BaseballBat(this).fire(angle, power);
             break;
         
     }
 }
+
+
+// BoxManager::player_special_shoot(update.get_position(), update.get_type()) {
+//     switch(type){
+//         case AIR_STRIKE:
+//             AirAttack(this).fire(angle, power);
+//             break;
+//         case TELEPORT:
+//             Teleport(this).fire(angle, power);
+//             break;
+//     }
+// }
