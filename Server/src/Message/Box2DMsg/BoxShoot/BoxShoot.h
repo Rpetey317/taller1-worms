@@ -3,7 +3,7 @@
 
 #include "../Box2DMsg.h"
 
-class BoxShoot : public Box2DMsg {
+class BoxShoot: public Box2DMsg {
     int weapon_id;
     int power;
     int angle;
@@ -18,4 +18,4 @@ public:
     int get_angle() const;
 };
 
-#endif // !__BOXSHOOT_H__
+#endif  // !__BOXSHOOT_H__

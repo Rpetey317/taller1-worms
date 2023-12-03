@@ -1,6 +1,7 @@
 #include "BoxJump.h"
 
 #include <memory>
+#include <utility>
 
 #include "Box2dManager/box2dManager.h"
 
@@ -14,7 +15,4 @@ std::shared_ptr<Message> BoxJump::jump_bw(int id) {
     return std::shared_ptr<Message>(new BoxJump(false, id));
 }
 
-bool BoxJump::is_forward() const {
-    return this->forward;
-}
-
+bool BoxJump::is_forward() const { return this->forward; }

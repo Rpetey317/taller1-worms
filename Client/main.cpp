@@ -1,11 +1,13 @@
 #include <QApplication>
 #include <iostream>
-#include <string.h>
 #include <string>
+
+#include <string.h>
+
 #include "GameProcessing/GameProcessing.h"
 #include "src/Launcher/Headers/Greeter.h"
-#include "src/SdlManager/SdlManager.h"
 #include "src/SdlManager/Editor.h"
+#include "src/SdlManager/SdlManager.h"
 
 int main(int argc, char* argv[]) {
 
@@ -22,13 +24,13 @@ int main(int argc, char* argv[]) {
     try {
         int ret = -1;
 
-        if (argc == 2) {    
+        if (argc == 2) {
             std::string map_name(argv[1]);
             MapEditor editor(map_name);
             editor.run();
             return 0;
-            
-            
+
+
             return ret;
         }
 

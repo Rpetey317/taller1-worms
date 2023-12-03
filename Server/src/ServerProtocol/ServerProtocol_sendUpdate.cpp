@@ -107,7 +107,7 @@ char ServerProtocol::send_WorldUpdate(const WorldUpdate& upd) {
 char ServerProtocol::send_TimerUpdate(const TimerUpdate& upd) {
     // send code
     std::cout << "Sending: " << upd.get_time_left() << " seconds left, for player "
-        << upd.get_plid() << std::endl;
+              << upd.get_plid() << std::endl;
     if (!this->send_char(SRV_TIMER_UPD)) {
         return CLOSED_SKT;
     }

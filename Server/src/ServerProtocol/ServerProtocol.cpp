@@ -117,7 +117,7 @@ std::shared_ptr<Message> ServerProtocol::recv_update() {
     } else {
         return std::make_shared<NullMessage>();
     }
-    return std::make_shared<NullMessage>(); // del this
+    return std::make_shared<NullMessage>();  // del this
 }
 
 msgcode_t ServerProtocol::recv_request() {
