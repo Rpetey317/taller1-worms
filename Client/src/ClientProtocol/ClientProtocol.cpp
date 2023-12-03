@@ -95,7 +95,7 @@ std::shared_ptr<Event> ClientProtocol::recv_map_update() {
     amount_players_t amount_players;
     this->skt.recvall(&amount_players, sizeof(amount_players_t), &this->isclosed);
     if (this->isclosed) {
-        return std::make_shared<NullEvent>(-1);
+        return std::make_shared<NullEvent>(0);
     }
     // Receive players positions
     std::map<int, Worm> worm_positions;
@@ -104,17 +104,17 @@ std::shared_ptr<Event> ClientProtocol::recv_map_update() {
         playerid_t player_id;
         this->skt.recvall(&player_id, sizeof(playerid_t), &this->isclosed);
         if (this->isclosed) {
-            return std::make_shared<NullEvent>(-1);
+            return std::make_shared<NullEvent>(0);
         }
         uint16_t x;
         this->skt.recvall(&x, sizeof(uint16_t), &this->isclosed);
         if (this->isclosed) {
-            return std::make_shared<NullEvent>(-1);
+            return std::make_shared<NullEvent>(0);
         }
         uint16_t y;
         this->skt.recvall(&y, sizeof(uint16_t), &this->isclosed);
         if (this->isclosed) {
-            return std::make_shared<NullEvent>(-1);
+            return std::make_shared<NullEvent>(0);
         }
         Vect2D position(Vect2D(ntohs(x), ntohs(y)));
         Worm worm(position, (int)player_id);
@@ -128,12 +128,12 @@ std::shared_ptr<Event> ClientProtocol::recv_player_position() {
     uint16_t x;
     this->skt.recvall(&x, sizeof(uint16_t), &this->isclosed);
     if (this->isclosed) {
-        return std::make_shared<NullEvent>(-1);
+        return std::make_shared<NullEvent>(0);
     }
     uint16_t y;
     this->skt.recvall(&y, sizeof(uint16_t), &this->isclosed);
     if (this->isclosed) {
-        return std::make_shared<NullEvent>(-1);
+        return std::make_shared<NullEvent>(0);
     }
     Vect2D position(Vect2D(ntohs(x), ntohs(y)));
     return std::make_shared<PlayerPosition>((int)player_id, position);
@@ -145,24 +145,24 @@ std::shared_ptr<Event> ClientProtocol::recv_proyectile_update() {
     uint16_t x;
     this->skt.recvall(&x, sizeof(uint16_t), &this->isclosed);
     if (this->isclosed) {
-        return std::make_shared<NullEvent>(-1);
+        return std::make_shared<NullEvent>(0);
     }
     uint16_t y;
     this->skt.recvall(&y, sizeof(uint16_t), &this->isclosed);
     if (this->isclosed) {
-        return std::make_shared<NullEvent>(-1);
+        return std::make_shared<NullEvent>(0);
     }
     uint8_t angle;
     this->skt.recvall(&angle, sizeof(uint8_t), &this->isclosed);
     if (this->isclosed) {
-        return std::make_shared<NullEvent>(-1);
+        return std::make_shared<NullEvent>(0);
     }
     Vect2D position(Vect2D(ntohs(x), ntohs(y)));
 
     uint8_t exploded;
     this->skt.recvall(&exploded, sizeof(uint8_t), &this->isclosed);
     if (this->isclosed) {
-        return std::make_shared<NullEvent>(-1);
+        return std::make_shared<NullEvent>(0);
     }
     if (exploded == 1)
         return std::make_shared<ProyectileUpdate>((int)player_id, type_proyectile, position,
@@ -177,7 +177,7 @@ std::shared_ptr<Event> ClientProtocol::recv_timer() {
     uint8_t duration;
     this->skt.recvall(&duration, sizeof(uint8_t), &this->isclosed);
     if (this->isclosed) {
-        return std::make_shared<NullEvent>(-1);
+        return std::make_shared<NullEvent>(0);
     }
     return std::make_shared<Timer>((int)player_id, (int)duration);
 }
@@ -189,7 +189,7 @@ playerid_t ClientProtocol::recv_player_id() {
 
     this->skt.recvall(&id, sizeof(playerid_t), &this->isclosed);
     if (this->isclosed) {
-        return -1;
+        return 0;
     }
     return id;
 }
@@ -293,7 +293,7 @@ std::shared_ptr<Event> ClientProtocol::recv_update() {
         case MSGCODE_TIMER:
             return this->recv_timer();
         default:
-            return std::make_shared<NullEvent>(-1);
+            return std::make_shared<NullEvent>(0);
     }
 }
 
