@@ -23,6 +23,7 @@
  */
 class Game {
     std::map<int, std::unique_ptr<PlayerHandler>> players;
+    std::mutex plmtx;
     std::atomic<int> plcount;
     Queue<std::shared_ptr<Message>>& eventq;
     std::map<int, std::unique_ptr<PlayerHandler>>::iterator curr_pl;

@@ -57,7 +57,7 @@ bool PlayerHandler::is_connected() { return prot.is_connected(); }
 void PlayerHandler::send(std::shared_ptr<Update> msg) { sendq.push(msg); }
 
 PlayerHandler::~PlayerHandler() {
-    prot.close();
+    // prot.close();
 
     send_th.end();
     send_th.join();

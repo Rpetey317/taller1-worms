@@ -22,6 +22,7 @@ Game::Game(Queue<std::shared_ptr<Message>>& _eventq):
 }
 
 void Game::add_player(Socket&& peer) {
+    std::lock_guard<std::mutex> lock(this->plmtx);
     PlayerHandler* new_player = new PlayerHandler(std::move(peer), this->eventq, ++next_free_id);
     this->players.insert(std::make_pair(next_free_id, std::unique_ptr<PlayerHandler>(new_player)));
     new_player->start();
@@ -33,6 +34,7 @@ std::shared_ptr<Update> Game::execute(std::shared_ptr<Message> event) {
 }
 
 void Game::broadcast(std::shared_ptr<Update> update) {
+    std::lock_guard<std::mutex> lock(this->plmtx);
     for (auto pl = this->players.begin(); pl != this->players.end(); pl++) {
         (*pl).second->send(update);
     }

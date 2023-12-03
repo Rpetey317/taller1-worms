@@ -5,6 +5,7 @@
 #include "Game.h"
 
 std::shared_ptr<Update> Game::process_disconnect(PlayerDisconnectedMessage& event) {
+    std::lock_guard<std::mutex> lock(this->plmtx);
     int disconnected_id = event.get_id();
     if (this->curr_pl->first == disconnected_id) {
         auto nx_pl = std::next(this->curr_pl);
@@ -22,6 +23,7 @@ std::shared_ptr<Update> Game::process_disconnect(PlayerDisconnectedMessage& even
 }
 
 std::shared_ptr<Update> Game::process_new_connect(PlayerConnectedMessage& event) {
+    std::lock_guard<std::mutex> lock(this->plmtx);
     plcount++;
     std::cout << "New player connected. Now online: " << plcount << " players." << std::endl;
 
@@ -45,6 +47,7 @@ std::shared_ptr<Update> Game::process_NullUpdate(NullMessage& event) {
 }
 
 std::shared_ptr<Update> Game::process_TurnAdvance(TurnAdvance& event) {
+    std::lock_guard<std::mutex> lock(this->plmtx);
     auto new_curr_pl = event.get_new_pl();
 
     if (new_curr_pl == this->players.end()) {
@@ -57,6 +60,7 @@ std::shared_ptr<Update> Game::process_TurnAdvance(TurnAdvance& event) {
 }
 
 std::shared_ptr<Update> Game::process_timer(RunTimer& event) {
+    std::lock_guard<std::mutex> lock(this->plmtx);
     auto now = std::chrono::steady_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(now - this->turn_start);
     if (elapsed.count() >= this->turn_time) {
