@@ -11,6 +11,11 @@ void SdlCamera::set_window(Window* window) {
         camera.SetH(window->GetHeight()/2);
 }
 
+void SdlCamera::move(int x, int y) {
+        camera.SetX(camera.GetX() + x);
+        camera.SetY(camera.GetY() + y);
+}
+
 void SdlCamera::focus_object(int x, int y) {
         camera.SetX(x - camera.GetW());
         camera.SetY(y - camera.GetH());

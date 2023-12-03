@@ -5,6 +5,7 @@
 #include "../states/common_states.h"
 #include "../texture_sound_manager/SdlSoundManager.h"
 #include "../texture_sound_manager/SdlWormTextureManager.h"
+#include "../../../Common/Vect2D.h"
 
 
 using namespace SDL2pp;  // NOLINT

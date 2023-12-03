@@ -19,9 +19,15 @@
 CommonMapParser::CommonMapParser() {}
 
 std::vector<Tile> CommonMapParser::get_map(std::string file_name) {
-
-    std::fstream archivo(file_name);
+    std::fstream archivo;
     std::vector<Tile> map;
+    archivo.open(file_name);
+
+    if (!archivo.is_open()) 
+        return map;
+    
+    
+    
     char scape;
     char type = ' ';
     char angle[4];

@@ -13,6 +13,7 @@
 #include "SdlWorm.h"
 #include "SdlMap.h"
 #include "texture_sound_manager/SdlProjectilesTextureManager.h"
+#include "../../../Common/Vect2D.h"
 #include "projectiles/common_projectiles.h"
 #include "../../../Common/queue.h"
 #include "../Event/EventHeaders.h"
