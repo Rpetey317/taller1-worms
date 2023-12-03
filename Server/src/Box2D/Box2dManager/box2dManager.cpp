@@ -41,7 +41,7 @@ void BoxManager::next_turn() {
 // should later introduce to recive the map position automatically
 bool BoxManager::set_map() {
     CommonMapParser parser;
-    return world.set_map(parser.get_map("../maps/mapita.txt"));
+    return world.set_map(parser.get_map("mapita.yaml"));
 }
 
 std::map<int, Vect2D>* BoxManager::create_position_map(const std::list<Box2DPlayer>& worms) {
