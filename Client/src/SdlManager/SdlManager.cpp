@@ -336,7 +336,7 @@ void SdlManager::run(std::string background_type, std::string selected_map) {
     init_projectiles(projectiles_texture_manager, camera);
     //aca creo los gusanos, pero deberia recibir como son los equipos y sus id
     std::vector<Tile> worms_positions = map.get_worms_positions();
-    int i = 0;
+    int i = 1;
     for (auto worm : worms_positions) {//me deberian pasar tambien la vida de los gusanitos
         worms[i] = new SdlWorm(camera, renderer, worm_texture_manager, sound_manager, worm.pos_x, worm.pos_y, i, i%3, 100);//hago este %2 para probar distintos id de jugadores
         i++;
