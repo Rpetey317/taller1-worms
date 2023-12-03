@@ -104,6 +104,16 @@ std::shared_ptr<Message> ServerProtocol::recv_update() {
         return std::make_shared<Box2DMsg>(plid, 1);
     } else if (code == MSGCODE_PLAYER_MOVE_LEFT) {
         return std::make_shared<Box2DMsg>(plid, 2);
+    } else if (code == MSGCODE_PLAYER_JUMP_FORWARD) {
+
+    } else if (code == MSGCODE_PLAYER_JUMP_BACKWARDS) {
+
+    } else if (code == MSGCODE_PLAYER_MOVE_LEFT) {
+
+    } else if (code == MSGCODE_PLAYER_MOVE_RIGHT) {
+
+    } else if (code == MSGCODE_SHOOT) {
+
     } else {
         return std::make_shared<NullMessage>();
     }
