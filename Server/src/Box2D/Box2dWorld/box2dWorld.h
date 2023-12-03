@@ -8,7 +8,7 @@
 // #include "../Box2DWeapons/WeaponsHeaders.h"
 #include "ContactListener/box2dContactListener.h"
 #include "QueryCallback/box2dQueryCallback.h"
-
+#include "../Box2dPlayer/box2dPlayer.h"
 #include <cstdio>
 #include <vector>
 #include <list>
@@ -20,13 +20,14 @@
 class BoxWorld {
     friend class BoxManager;
 
-    BoxWorld();
+    BoxWorld(std::list<Box2DPlayer>& worm);
+    std::list<Box2DPlayer>& worms;
     Queue<b2Contact*> contacts;
     b2World* world;
     void initialize_world();
     bool set_map(std::vector<Tile> map); 
 
-    b2Body* create_worm(float x, float y);
+    b2Body* create_worm(float x, float y, int id);
     void create_ground(b2Vec2 lower_l, b2Vec2 lower_r, b2Vec2 upper_l, b2Vec2 upper_r);
     void create_wall(b2Vec2 start, b2Vec2 end);
     void create_long_beam(b2Vec2 start, float angle);

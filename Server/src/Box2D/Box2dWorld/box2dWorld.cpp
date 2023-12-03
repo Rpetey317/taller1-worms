@@ -1,5 +1,6 @@
 #include "box2dWorld.h"
 #include "../Box2DWeapons/WeaponsHeaders.h"
+#include "../Box2dPlayer/box2dPlayer.h"
 
 #define DEGTORAD -0.0174532925199432957f
 #define RADTODEG 57.295779513082320876f
@@ -8,7 +9,7 @@
 #define LONG_BEAM '1'
 #define NEW_WORM '2'
 
-BoxWorld::BoxWorld() : contacts(10000) {
+BoxWorld::BoxWorld(std::list<Box2DPlayer>& worm) : worms(worm), contacts(10000) {
     initialize_world();
 }
 
@@ -24,13 +25,15 @@ void BoxWorld::initialize_world() {
     create_ground(b2Vec2(zero,zero), b2Vec2(width,zero), b2Vec2(zero,height), b2Vec2(width, height)); 
 }
 
-b2Body* BoxWorld::create_worm(float x, float y) {
+b2Body* BoxWorld::create_worm(float x, float y, int id) {
     b2BodyDef myBodyDef;
     myBodyDef.type = b2_dynamicBody; 
     myBodyDef.position.Set(x, y); 
     myBodyDef.angle = 0; 
-    b2Body *worm = world->CreateBody(&myBodyDef);
-
+    b2Body* worm = world->CreateBody(&myBodyDef);
+    Box2DPlayer player(id, worm);
+    worms.push_back(player);
+    myBodyDef.userData.pointer = ((uintptr_t)&player);
     b2Vec2 vertices[6];
     vertices[0].Set(-0.06f, -0.15f);
     vertices[1].Set(-0.12f, -0.1f);
@@ -118,18 +121,25 @@ void BoxWorld::create_short_beam(b2Vec2 start, float angle){
     staticBody->CreateFixture(&beamFixtureDef); //add fixture to body
 }
 
-void applyBlastImpulse(b2Body* body, b2Vec2 blastCenter, b2Vec2 applyPoint, float blastPower) {
+void applyBlastImpulse(b2Body* body, b2Vec2 blastCenter, b2Vec2 applyPoint, float blastPower, float blastRadius) {
     b2Vec2 blastDir = applyPoint - blastCenter;
-    printf("aplico una fuerza de %f en el cuerpo parado en (%f, %f) a una distancia de (%f, %f)\n", blastPower, applyPoint.x, applyPoint.y, blastDir.x, blastDir.y);
     float distance = blastDir.Normalize();
-    if ( distance == 0 )
-        return;
-    float invDistance = 1 / distance;
-    float impulseMag = blastPower * invDistance * invDistance;
-    if(body->GetFixtureList()->GetFilterData().categoryBits == WORM)
-        printf("aplico una fuerza de %f en el cuerpo parado en (%f, %f)\n", impulseMag, applyPoint.x, applyPoint.y);
-    body->ApplyLinearImpulse( impulseMag * blastDir, applyPoint , true);
+    float damage = blastPower * ((-distance/blastRadius) + 1) * 1000;
+    printf("el dano es %f\n", damage);
+    if(blastDir.y > 0) {
+        blastDir.y = -blastDir.y;
+    }
+	if(distance <= 1) {
+        distance = 1;
+    }
+	float invDistance = 1/distance;
+	float impulseMag = (blastPower/2) * invDistance;
+    if(body->GetFixtureList()->GetFilterData().categoryBits == WORM){
+        printf("aplico una fuerza de (%f, %f) en el cuerpo parado en (%f, %f)\n\n\n\n", (impulseMag * blastDir.x), (impulseMag * blastDir.y), applyPoint.x, applyPoint.y);
+        body->ApplyLinearImpulse( impulseMag * blastDir, applyPoint , true);
+    }
 }
+
 
 void BoxWorld::fragments() {
     const int numBombs = 6;
@@ -195,8 +205,8 @@ void BoxWorld::execute_checks(){
             if ( (bodyCom - contactCenter).Length() >= blastRadius )
                 continue;
             printf("encontro un cuerpo para aplicar la fuerza\n");
-                
-            applyBlastImpulse(body, contactCenter, bodyCom, blastPower );
+            
+            applyBlastImpulse(body, contactCenter, bodyCom, blastPower, blastRadius);
         }
 
         check_blast = false;
@@ -425,7 +435,7 @@ bool BoxWorld::set_map(std::vector<Tile> map) {
                 std::cout << "creamos una larga" << std::endl;
                 break;
             case NEW_WORM:
-                create_worm(pixel_to_meter(position).x, pixel_to_meter(position).y);
+                create_worm(pixel_to_meter(position).x, pixel_to_meter(position).y, worms.size());
                 std::cout << "creamos un gusano" << std::endl;
                 break;
             default:
