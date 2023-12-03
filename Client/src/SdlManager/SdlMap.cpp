@@ -1,5 +1,6 @@
 #include "SdlMap.h"
 #include <fstream>
+#include <yaml-cpp/yaml.h>
 SdlMap::SdlMap(SdlCamera& camera, std::vector<Tile> map, SdlTexturesManager& textures_manager) : camera(camera), map(map), textures_manager(textures_manager) {}
 
 void SdlMap::update_map(std::vector<Tile> new_map) {
@@ -7,7 +8,6 @@ void SdlMap::update_map(std::vector<Tile> new_map) {
 }
 
 void SdlMap::save_to_file(std::string& map_name) {
-
 }
 void SdlMap::render_one(Tile tile) {
     textures_manager.draw_editor(tile, camera.get_x(), camera.get_y());

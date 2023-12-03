@@ -4,56 +4,52 @@
 #define VIGA_CORTA 0
 #define VIGA_LARGA 1
 #include <iostream>
-/**
- *
- *  tipo_viga(1) angulo(3) posicion_x(4) posicion_y(4)
- *   0 -> viga corta
- *   1 -> viga larga
- *   2 -> un gusanito, el angulo se va a ignorar para este
- *   proporciones viga: alto -> 19 pixeles. ancho -> 64 pixeles para viga corta, 128 pixeles para
- * viga larga
- *
- */
+#include <yaml-cpp/yaml.h>
+
 
 
 CommonMapParser::CommonMapParser() {}
 
 std::vector<Tile> CommonMapParser::get_map(std::string file_name) {
-    std::fstream archivo;
-    std::vector<Tile> map;
-    archivo.open(file_name);
 
-    if (!archivo.is_open()) 
-        return map;
-    
-    
-    
-    char scape;
-    char type = ' ';
-    char angle[4];
-    char pos_x[5];
-    char pos_y[5];
-    while (!archivo.eof()) {
-        archivo.get(type);
-        archivo.get(scape);
-        archivo.get(angle[0]);
-        archivo.get(angle[1]);
-        archivo.get(angle[2]);
-        angle[3] = 0;
-        archivo.get(scape);
-        archivo.get(pos_x[0]);
-        archivo.get(pos_x[1]);
-        archivo.get(pos_x[2]);
-        archivo.get(pos_x[3]);
-        pos_x[4] = 0;
-        archivo.get(scape);
-        archivo.get(pos_y[0]);
-        archivo.get(pos_y[1]);
-        archivo.get(pos_y[2]);
-        archivo.get(pos_y[3]);
-        pos_y[4] = 0;
-        archivo.get(scape);
-        Tile tile = {type, atoi(angle), atoi(pos_x), atoi(pos_y)};
+    std::vector<Tile> map;
+    YAML::Node config = YAML::LoadFile("../maps/mapita.yaml");
+    int x = 0;
+    int y = 0;
+    int angle = 0;
+    YAML::Node small_tiles = config["small_tiles"];
+    YAML::Node large_tiles = config["small_tiles"];
+    YAML::Node worms_spawnpoints = config["worms"];
+    for (YAML::const_iterator it = small_tiles.begin(); it != small_tiles.end(); ++it) {
+        const YAML::Node& small_tile = *it;
+
+        x = small_tile["x"].as<int>();
+        y = small_tile["y"].as<int>();
+        angle = small_tile["angle"].as<int>();
+        std::cout << x << ":" << angle << ":" << y << std::endl;
+        Tile tile = {'0', angle, x, y};
+        map.emplace_back(tile);
+    }
+
+    for (YAML::const_iterator it = large_tiles.begin(); it != large_tiles.end(); ++it) {
+        const YAML::Node& large_tile = *it;
+
+        x = large_tile["x"].as<int>();
+        y = large_tile["y"].as<int>();
+        angle = large_tile["angle"].as<int>();
+        std::cout << x << ":" << angle << ":" << y << std::endl;
+        Tile tile = {'1', angle, x, y};
+        map.emplace_back(tile);
+    }
+
+    for (YAML::const_iterator it = worms_spawnpoints.begin(); it != worms_spawnpoints.end(); ++it) {
+        const YAML::Node& worm_spawnpoint = *it;
+
+        x = worm_spawnpoint["x"].as<int>();
+        y = worm_spawnpoint["y"].as<int>();
+        angle = worm_spawnpoint["angle"].as<int>();
+        std::cout << x << ":" << angle << ":" << y << std::endl;
+        Tile tile = {'2', angle, x, y};
         map.emplace_back(tile);
     }
 
