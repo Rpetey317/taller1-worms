@@ -23,7 +23,7 @@ public:
     bool next_animation();
     void change_state(std::string state);
     void play_sound(std::string sound_to_play);
-    void render_new(Vect2D position);
+    void render_new(Vect2D position, int state);
     void render_same();
     void destroy();
     void apply();
@@ -34,13 +34,14 @@ public:
     void play_animation();
     void recharge_ammo();
     void set_health(int ammount_to_heal);
+    int projectile_id();
     bool is_animation_playing;
+    int angle;
 private:
     SdlCamera &camera;
     Renderer &renderer;
     SdlWormTextureManager& texture_manager;
     SdlSoundManager& sound_manager;
-    int angle;
     int animation_phase;
     int health;
     int initial_health;

@@ -34,3 +34,6 @@ bool SdlWormStateTeleport::has_ammo(std::map<std::string, int>& gun_ammo) {
 }
 
 
+int SdlWormStateTeleport::projectile_id() {
+    return 0x0012;
+}

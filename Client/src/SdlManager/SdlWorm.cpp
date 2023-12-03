@@ -48,7 +48,11 @@ void SdlWorm::render_same() {
     worm_state->render_ammo(renderer, gun_ammo[worm_state->get_name()], 0,0);
 }
 
-void SdlWorm::render_new(Vect2D position) {
+int SdlWorm::projectile_id() {
+    return worm_state->projectile_id();
+}
+
+void SdlWorm::render_new(Vect2D position, int state) {
     x_pos = position.x;
     y_pos = position.y;
     if (is_animation_playing) {

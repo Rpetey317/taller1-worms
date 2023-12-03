@@ -26,4 +26,5 @@ class SdlWormState {
                 virtual void play_choosen_animation() {just_choosen = true;};
                 virtual void render_ammo(Renderer& renderer, int ammount_of_bullets, int camera_x, int camera_y) {return;};
                 virtual std::string get_name() {return "NULL";};
+                virtual int projectile_id() {return -1;};
 };

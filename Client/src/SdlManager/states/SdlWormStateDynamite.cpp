@@ -47,3 +47,7 @@ void SdlWormStateDynamite::render_ammo(Renderer& renderer, int ammount_of_ammo, 
 std::string SdlWormStateDynamite::get_name() {
     return "DYNAMITE";
 }
+
+int SdlWormStateDynamite::projectile_id() {
+    return 0x0014;
+}

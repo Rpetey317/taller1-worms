@@ -31,3 +31,7 @@ bool SdlWormStateBanana::has_ammo(std::map<std::string, int>& gun_ammo) {
 bool SdlWormStateBanana::reduce_ammo(std::map<std::string, int>& gun_ammo) {
     return true;
 }
+
+int SdlWormStateBanana::projectile_id() {
+    return 0x0007;
+}
