@@ -59,3 +59,14 @@ The format of this action is:
 - `<power>` is an int that defines the type of power of the shooting
 - `<angle>` is an int that defines the type of angle of the shooting
 
+`<weapon>` can have 10 diferent values for the diferent type of weapons, ennumerating here:
+  - 0 : BAZOOKA
+  - 1 : MORTERO
+  - 2 : GRANADA ROJA
+  - 3 : GRANADA VERDE
+  - 4 : BANANA
+  - 5 : GRANADA SANTA
+  - 6 : ATAQUE AEREO
+  - 7 : DINAMITA
+  - 8 : BATE DE BEISBOL
+  - 9 : TELETRANSPORTACION
