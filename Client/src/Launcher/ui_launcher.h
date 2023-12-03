@@ -19,19 +19,17 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_Greeter
-{
+class Ui_Greeter {
 public:
-    QVBoxLayout *verticalLayout_2;
-    QVBoxLayout *verticalLayout;
-    QLabel *label;
-    QLabel *label_2;
-    QHBoxLayout *horizontalLayout;
-    QPushButton *createButton;
-    QPushButton *joinButton;
+    QVBoxLayout* verticalLayout_2;
+    QVBoxLayout* verticalLayout;
+    QLabel* label;
+    QLabel* label_2;
+    QHBoxLayout* horizontalLayout;
+    QPushButton* createButton;
+    QPushButton* joinButton;
 
-    void setupUi(QWidget *Greeter)
-    {
+    void setupUi(QWidget* Greeter) {
         if (Greeter->objectName().isEmpty())
             Greeter->setObjectName(QString::fromUtf8("Greeter"));
         Greeter->resize(441, 362);
@@ -132,23 +130,21 @@ public:
         retranslateUi(Greeter);
 
         QMetaObject::connectSlotsByName(Greeter);
-    } // setupUi
+    }  // setupUi
 
-    void retranslateUi(QWidget *Greeter)
-    {
+    void retranslateUi(QWidget* Greeter) {
         Greeter->setWindowTitle(QCoreApplication::translate("Greeter", "Greeter", nullptr));
         label->setText(QCoreApplication::translate("Greeter", "Ready to play WORMS?", nullptr));
         label_2->setText(QCoreApplication::translate("Greeter", "Choose an option:", nullptr));
         createButton->setText(QCoreApplication::translate("Greeter", "Create Match", nullptr));
         joinButton->setText(QCoreApplication::translate("Greeter", "Join Match", nullptr));
-    } // retranslateUi
-
+    }  // retranslateUi
 };
 
 namespace Ui {
-    class Greeter: public Ui_Greeter {};
-} // namespace Ui
+class Greeter: public Ui_Greeter {};
+}  // namespace Ui
 
 QT_END_NAMESPACE
 
-#endif // UI_LAUNCHER_H
+#endif  // UI_LAUNCHER_H

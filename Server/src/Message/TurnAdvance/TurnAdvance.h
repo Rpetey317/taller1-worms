@@ -12,8 +12,7 @@ class TurnAdvance: public Message {
     const int new_pl_id;
 
 public:
-    TurnAdvance(const int& prev_pl_id,
-                const int& new_pl_id);
+    TurnAdvance(const int& prev_pl_id, const int& new_pl_id);
     ~TurnAdvance();
 
     bool is_valid() override;

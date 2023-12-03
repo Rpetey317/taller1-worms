@@ -5,11 +5,12 @@
 
 #include "CreateGame.h"
 // #include "CreateMap.h"
-#include "JoinGame.h"
 #include <string>
 
 #include "../../ClientProtocol/ClientProtocol.h"
 #include "../ui_launcher.h"
+
+#include "JoinGame.h"
 
 class Greeter: public QWidget {
 

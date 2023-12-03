@@ -25,7 +25,8 @@ void EventProcessor::process_turn_update(TurnUpdate& event) {
 
 void EventProcessor::process_player_position(PlayerPosition& event) {
     // Vect2D position = event.get_position();
-    // std::cout << "Player " << event.get_id() << "with position: " << position.x << "," << position.y
+    // std::cout << "Player " << event.get_id() << "with position: " << position.x << "," <<
+    // position.y
     //           << std::endl;
 }
 
