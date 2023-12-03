@@ -11,3 +11,5 @@ void Timer::get_processed_by(EventProcessor& eventProcessor) {
 }
 
 int Timer::get_duration() { return this->duration; }
+
+int Timer::get_player_turn() { return this->id; }
