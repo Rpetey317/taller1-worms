@@ -1,9 +1,11 @@
 #include <QApplication>
 #include <iostream>
-
+#include <string.h>
+#include <string>
 #include "GameProcessing/GameProcessing.h"
 #include "src/Launcher/Headers/Greeter.h"
 #include "src/SdlManager/SdlManager.h"
+#include "src/SdlManager/Editor.h"
 
 int main(int argc, char* argv[]) {
 
@@ -19,6 +21,16 @@ int main(int argc, char* argv[]) {
 
     try {
         int ret = -1;
+
+        if (argc == 2) {    
+            std::string map_name(argv[1]);
+            MapEditor editor(map_name);
+            editor.run();
+            return 0;
+            
+            
+            return ret;
+        }
 
         if (argc != 3) {
             std::cerr << "Bad program call. Expected " << argv[0] << " <servname>\n";

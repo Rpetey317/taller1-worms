@@ -1,6 +1,8 @@
 #pragma once
 #include <SDL2pp/SDL2pp.hh>
 #include "../../../Common/CommonMapParser/CommonMapParser.h"
+#define MAP_WIDTH 20000
+#define MAP_HEIGHT 500
 using namespace SDL2pp;  // NOLINT
 
 //deberia ser map_textures_manager...
@@ -10,6 +12,9 @@ class SdlTexturesManager {
                 SdlTexturesManager(Renderer& renderer, Window& window, std::string background_type);
                 void draw(Tile& tile, int camera_x, int camera_y);
                 void draw_background();
+                void update_background(std::string background_type);
+                void draw_editor(Tile& tile, int camera_x, int camera_y);
+                void draw_water(int camera_x, int camera_y);
 
         private:
                 Renderer& renderer;
@@ -17,8 +22,11 @@ class SdlTexturesManager {
                 Window& window;
                 Texture small_bridge;
                 Texture large_bridge;
-                Texture water;
+                Texture* water1;
+                Texture* water2;
+                Texture* water3;
                 Texture background;
+                Texture* worm;
                 
 
 

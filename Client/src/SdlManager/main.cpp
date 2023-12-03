@@ -32,3 +32,4 @@
 #include "projectiles/SdlHolyGrenadeProjectile.cpp"
 #include "projectiles/SdlMortarProjectile.cpp"
 #include "projectiles/SdlRedGrenadeProjectile.cpp"
+#include "Editor.cpp"
