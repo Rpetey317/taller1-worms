@@ -2,22 +2,10 @@
 #include <map>
 #include <SDL2pp/SDL2pp.hh>
 #include <SDL2pp/SDLImage.hh>
-#include "SdlSoundManager.h"
-#include "SdlWormTextureManager.h"
-#include "SdlWormState.h"
-#include "SdlWormStateAirStrike.h"
-#include "SdlWormStateBanana.h"
-#include "SdlWormStateBazooka.h"
-#include "SdlWormStateBeisboll.h"
-#include "SdlWormStateDynamite.h"
-#include "SdlWormStateFalling.h"
-#include "SdlWormStateGreenGrenade.h"
-#include "SdlWormStateHolyGrenade.h"
-#include "SdlWormStateMortar.h"
-#include "SdlWormStateRedGrenade.h"
-#include "SdlWormStateStill.h"
-#include "SdlWormStateTeleport.h"
-#include "SdlWormStateWalk.h"
+#include "../states/common_states.h"
+#include "../texture_sound_manager/SdlSoundManager.h"
+#include "../texture_sound_manager/SdlWormTextureManager.h"
+
 
 using namespace SDL2pp;  // NOLINT
 
@@ -29,6 +17,7 @@ public:
     bool is_charging;
     int attack_power;
     int worm_id;
+    int player_id;
     explicit SdlWorm(SdlCamera& camera, Renderer& renderer, SdlWormTextureManager& texture_manager, SdlSoundManager& sound_manager, int x_pos, int y_pos, int worm_id, int player_id, int health);
     bool next_animation();
     void change_state(std::string state);
@@ -50,7 +39,6 @@ private:
     Renderer &renderer;
     SdlWormTextureManager& texture_manager;
     SdlSoundManager& sound_manager;
-    int player_id;
     int angle;
     int animation_phase;
     int health;
