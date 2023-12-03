@@ -62,12 +62,14 @@ std::shared_ptr<Update> Game::process_timer(RunTimer& event) {
     if (elapsed.count() >= this->turn_time) {
         auto new_curr_pl = this->curr_pl == this->players.end() ? this->players.begin() :
                                                                   std::next(this->curr_pl);
+        int new_plid = new_curr_pl == this->players.end() ? 0 : new_curr_pl->first;
         if (new_curr_pl != this->players.end()) {
             this->eventq.push(std::make_shared<TurnAdvance>(SERVER_ID, new_curr_pl));
-            return std::make_shared<TimerUpdate>(turn_time - elapsed.count(), new_curr_pl->first);
+            return std::make_shared<TimerUpdate>(turn_time - elapsed.count(), new_plid);
         }
     }
-    return std::make_shared<TimerUpdate>(turn_time - elapsed.count(), this->curr_pl->first);
+    int plid = this->curr_pl == this->players.end() ? 0 : this->curr_pl->first;
+    return std::make_shared<TimerUpdate>(turn_time - elapsed.count(), plid);
 }
 
 std::shared_ptr<Update> Game::process_box2d(Box2DMsg& event) {
