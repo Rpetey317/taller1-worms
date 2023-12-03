@@ -4,7 +4,7 @@
 #include "../Weapons.h"
 
 class Bazooka : public B2dWeapon {
-    BoxManager* box_manager;
+    class BoxManager* box_manager;
 public:
     explicit Bazooka(BoxManager* box_manager);
 

@@ -4,7 +4,7 @@
 #include "../Weapons.h"
 
 class Teleport : public B2dWeapon {
-    BoxManager* box_manager;
+    class BoxManager* box_manager;
 public:
     explicit Teleport(BoxManager* box_manager);
 

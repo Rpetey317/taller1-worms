@@ -1,4 +1,5 @@
 #include "GreenGranade.h"
+#include "../../Box2dManager/box2dManager.h"
 
 GreenGranade::GreenGranade(BoxManager* box_manager) {
     this->box_manager = box_manager;

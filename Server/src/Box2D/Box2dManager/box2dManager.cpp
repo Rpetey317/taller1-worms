@@ -1,5 +1,7 @@
 #include "box2dManager.h"
 #include "Vect2D.h"
+#include <iostream>
+#include "../Box2DWeapons/WeaponsHeaders.h"
 
 #define DEGTORAD -0.0174532925199432957f
 #define RADTODEG 57.295779513082320876f
@@ -10,6 +12,7 @@
 #define COMMAND_LEFT 2
 #define COMMAND_JUMP 3
 #define COMMAND_NEXT 4
+#define COMMAND_FIRE 5
 
 #define LEFT 1
 #define RIGHT 0
@@ -18,14 +21,14 @@ Vect2D BoxManager::meter_to_pixel(b2Vec2 meter) {
     return Vect2D(static_cast<int>((meter.x-0.12f) * 100.0f), static_cast<int>(5000.00f - ((0.245+meter.y) * 100.0f)));
 }
 
-BoxManager::BoxManager(): world() {
+BoxManager::BoxManager(): worms(), world(worms) {
     set_map();
 }
 
 void BoxManager::add_player() {
     float x = 0.5f;
     float y = 49.5f;
-    worms.push_back(Box2DPlayer(worms.size(), world.create_worm(x, y)));
+    world.create_worm(x, y, worms.size());
     if(worms.size() == 1)
         playing_worm = worms.begin();
 }
@@ -40,7 +43,7 @@ bool BoxManager::set_map() {
     CommonMapParser parser;
     return world.set_map(parser.get_map("../maps/mapita.txt"));
 }
-#include <iostream>
+
 std::map<int, Vect2D>* BoxManager::create_position_map(const std::list<Box2DPlayer>& worms) {
     std::map<int, Vect2D>* positions = new std::map<int, Vect2D>();
     for (auto worm : worms) {
@@ -79,6 +82,11 @@ std::shared_ptr<WorldUpdate> BoxManager::process(Box2DMsg& update) {
         case COMMAND_NEXT:
             this->next_turn();
             break;
+        
+        case COMMAND_FIRE:
+            // this->player_shoot(update.get_angle(), update.get_power(), update.get_type());
+            break;
+
         default:
             vel.x = 0.0f;
             break;
@@ -103,6 +111,35 @@ void BoxManager::fire_projectile(float angle, float power, float restitution, in
     projectiles.push_back(projectile);  
 }
 
-void BoxManager::player_shoot(float angle, float power) {
-    // To implement
+void BoxManager::player_shoot(float angle, float power, int type) {
+    switch(type){
+        case BAZOOKA:
+            Bazooka(this).fire(angle, power);
+            break;
+        case MORTAR:
+            Mortar(this).fire(angle, power);
+            break;
+        case GREEN_GRANADE:
+            GreenGranade(this).fire(angle, power);
+            break;
+        case RED_GRANADE:
+            RedGranade(this).fire(angle, power);
+            break;
+        case BANANA:
+            Banana(this).fire(angle, power);
+            break;
+        case HOLY_GRANADE:
+            HolyGranade(this).fire(angle, power);
+            break;
+        case DYNAMITE:
+            // Dynamite(this).fire(angle, power);
+            break;
+        case AIR_STRIKE:
+            // AirAttack(this).fire(angle, power);
+            break;
+        case TELEPORT:
+            // Teleport(this).fire(angle, power);
+            break;
+        
+    }
 }
