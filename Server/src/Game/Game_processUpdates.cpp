@@ -61,6 +61,10 @@ std::shared_ptr<Update> Game::process_TurnAdvance(TurnAdvance& event) {
 
 std::shared_ptr<Update> Game::process_timer(RunTimer& event) {
     std::lock_guard<std::mutex> lock(this->plmtx);
+    if (this->players.empty()) {
+        return std::make_shared<NullUpdate>();
+    }
+    
     auto now = std::chrono::steady_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(now - this->turn_start);
     if (elapsed.count() >= this->turn_time) {
