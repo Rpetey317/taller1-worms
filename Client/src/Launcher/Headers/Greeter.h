@@ -23,7 +23,6 @@ private:
     // void updateNameRandom();
     void createGame();
     void joinToGame();
-    void createMap();
     // ~Greeter();
 
 public:

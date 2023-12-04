@@ -34,8 +34,13 @@ void LobbyHandlerThread::create_game(CreateRequest& request) {
     std::string& game_name = request.get_game_name();
     std::string& map_name = request.get_map_name();
     std::cout << "Creating game " << game_name << " with map " << map_name << std::endl;
+
+    // TODO: check if map_name is valid
+
     handler.create_game(game_name, map_name);
-    handler.join_player(game_name, std::move(player));
+    if (!handler.join_player(game_name, std::move(player))){
+        return;
+    }
 
     if (player.recv_game_start())
         handler.start_game(game_name);
@@ -46,8 +51,8 @@ void LobbyHandlerThread::create_game(CreateRequest& request) {
 void LobbyHandlerThread::process_null_request(NullRequest& request) { _keep_running = false; }
 
 void LobbyHandlerThread::run() {
+    std::cout << "Lobby handler thread started\n";
     while (_keep_running) {
-
         try {
             auto request = player.recv_request();
             request->get_processed_by(*this);

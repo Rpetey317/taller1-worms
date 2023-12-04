@@ -84,6 +84,7 @@ std::unique_ptr<Request> ServerProtocol::recv_request() {
     if (this->isclosed) {
         return std::make_unique<NullRequest>();
     }
+    std::cout << "Received request with code " << (uint8_t)code << std::endl;
 
     if (code == CLI_REQ_GAMES) {
         return std::make_unique<GameDataRequest>();
@@ -120,9 +121,6 @@ bool ServerProtocol::recv_game_start() {
 }
 
 char ServerProtocol::send_game_data(const std::list<std::string>& names) {
-    if (!this->send_char(SRV_RESP_GAMES))
-        return CLOSED_SKT;
-
     if (!this->send_short(names.size()))
         return CLOSED_SKT;
 
@@ -135,9 +133,6 @@ char ServerProtocol::send_game_data(const std::list<std::string>& names) {
 }
 
 char ServerProtocol::send_map_data(const std::list<std::string>& names) {
-    if (!this->send_char(SRV_RESP_MAPS))
-        return CLOSED_SKT;
-
     if (!this->send_short(names.size()))
         return CLOSED_SKT;
 
@@ -147,6 +142,18 @@ char ServerProtocol::send_map_data(const std::list<std::string>& names) {
             return CLOSED_SKT;
         }
     }
+    return SUCCESS;
+}
+
+char ServerProtocol::send_success() {
+    if (!this->send_char(SRV_SUCCESS))
+        return CLOSED_SKT;
+    return SUCCESS;
+}
+
+char ServerProtocol::send_fail() {
+    if (!this->send_char(SRV_FAIL))
+        return CLOSED_SKT;
     return SUCCESS;
 }
 

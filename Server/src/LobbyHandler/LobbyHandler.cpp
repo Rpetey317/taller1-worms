@@ -9,9 +9,12 @@
 LobbyHandler::LobbyHandler(): games() {}
 
 bool LobbyHandler::create_game(const std::string& game_name, const std::string& map_name) {
+    /*
     if (games.find(game_name) != games.end()) {
         return false;
     }
+    */
+    std::cout << "Creating game " << game_name << " with map " << map_name << std::endl;
     games[game_name] = std::make_unique<GameWrapper>();
     return true;
 }
@@ -25,8 +28,11 @@ void LobbyHandler::start_game(const std::string& game_name) {
 
 bool LobbyHandler::join_player(const std::string& game, ServerProtocol&& player) {
     if (games.find(game) == games.end()) {
+        player.send_fail();
         return false;
     }
+    std::cout << "Joining player to game " << game << std::endl;
+    player.send_success();
     games[game]->add_player(std::move(player));
     return true;
 }

@@ -62,11 +62,14 @@ public:
     char send_NullAction(NullAction action);
     char send_Shoot(Shoot action);
 
-    std::list<std::string> recv_games_info();
-    std::list<std::string> recv_maps_info();
-    char send_start();
+    std::list<std::string> req_map_info();
+    std::list<std::string> req_game_info();
+    bool req_succeed();
     char create_new_game(std::string& game_name, std::string& map_name);
     char join_game(std::string& game_name);
+    char send_start();
+
+
 
     /*
         Sends code of match game

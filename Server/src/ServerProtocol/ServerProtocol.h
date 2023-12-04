@@ -69,6 +69,8 @@ public:
 
     char send_game_data(const std::list<std::string>& names);
     char send_map_data(const std::list<std::string>& names);
+    char send_success();
+    char send_fail();
 
     /*
      * Constructs a new protocol from socket with move semantics

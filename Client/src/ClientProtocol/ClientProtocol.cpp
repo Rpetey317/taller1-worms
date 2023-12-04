@@ -257,14 +257,6 @@ char ClientProtocol::send_Shoot(Shoot action) {
     return SUCCESS;
 }
 
-// std::list<std::string> ClientProtocol::recv_games_info() {
-
-// }
-
-// std::list<std::string> ClientProtocol::recv_maps_info() {
-
-// }
-
 char ClientProtocol::send_start() {
     if (!this->send_char(CLI_REQ_START)) {
         return CLOSED_SKT;
@@ -273,7 +265,63 @@ char ClientProtocol::send_start() {
     return SUCCESS;
 }
 
-char ClientProtocol::create_new_game( std::string& game_name, std::string& map_name) {
+std::list<std::string> ClientProtocol::req_map_info() { 
+    if (!this->send_char(CLI_REQ_MAPS)) {
+        return std::list<std::string>();
+    }
+    uint16_t count;
+    this->skt.recvall(&count, sizeof(uint16_t), &this->isclosed);
+    if (this->isclosed) {
+        return std::list<std::string>();
+    }
+    count = ntohs(count);
+    std::list<std::string> maps;
+
+    for (int i = 0; i < count; i++) {
+        std::string map_name = this->recv_msg();
+        if (map_name == "") {
+            return maps;
+        }
+        maps.push_back(map_name);
+    }
+    return maps;
+}
+
+std::list<std::string> ClientProtocol::req_game_info() { 
+    if (!this->send_char(CLI_REQ_GAMES)) {
+        return std::list<std::string>();
+    }
+    uint16_t count;
+    this->skt.recvall(&count, sizeof(uint16_t), &this->isclosed);
+    if (this->isclosed) {
+        return std::list<std::string>();
+    }
+    count = ntohs(count);
+    std::list<std::string> games;
+
+    for (int i = 0; i < count; i++) {
+        std::string game_name = this->recv_msg();
+        if (game_name == "") {
+            return games;
+        }
+        games.push_back(game_name);
+    }
+    return games;
+}
+
+bool ClientProtocol::req_succeed() { 
+    std::cout << "se espera codigo de succes" << std::endl;
+    char code;
+    this->skt.recvall(&code, sizeof(char), &this->isclosed);
+    if (this->isclosed) {
+        return false;
+    }
+    std::cout << "se recibe codigo de succes" << std::endl;
+    return code == SRV_SUCCESS;
+}
+
+char ClientProtocol::create_new_game(std::string& game_name, std::string& map_name) {
+    std::cout << "Envio que se cree partida" << std::endl;
     if (!this->send_char(CLI_REQ_CREATE)) {
         return CLOSED_SKT;
     }
@@ -285,7 +333,7 @@ char ClientProtocol::create_new_game( std::string& game_name, std::string& map_n
     if (!this->send_str(map_name)) {
         return CLOSED_SKT;
     }
-
+    std::cout << "Se crea partida" << std::endl;
     return SUCCESS;
 }
 

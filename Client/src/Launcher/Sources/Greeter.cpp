@@ -49,6 +49,12 @@ void Greeter::createGame() {
         std::string mapNameString(this->mapName.toStdString());
 
         this->protocol.create_new_game(gameNameString, mapNameString);
+        bool could_create_match =this->protocol.req_succeed();
+        if (!could_create_match) {
+            std::cout << "Could not create match" << std::endl;
+            close();
+        }
+        
 
         //Crear otro QDialog que espere a un accept
         StartGame startGame;
@@ -70,18 +76,13 @@ void Greeter::joinToGame() {
         // this->dataLoggin.gameName = this->gameName.toStdString();
         // std::cout << "Joined succesfully to game: " << gameName.toStdString() << std::endl;
         std::string gameNameString(this->gameName.toStdString());
+
         this->protocol.join_game(gameNameString);
+        
+        // this->protocol.recv_start_game(); // Es bloqueante?
+
         close();
     }
-}
-
-
-void Greeter::createMap() {
-    CreateMap createMap;
-    createMap.setModal(true);
-    if (createMap.exec() == QDialog::Accepted) {
-        std::cout << "Map created succesfully with name: " << std::endl;
-    };
 }
 
 void Greeter::connectEvents() {
