@@ -5,6 +5,7 @@ bazooka:
   ammount_of_fragments: -1
   radius_of_fragments: -1
   damage_of_fragments: -1
+  restitution: 0
 mortar:
   damage: 50
   radius: 2
@@ -12,6 +13,7 @@ mortar:
   ammount_of_fragments: 6
   radius_of_fragments: 2
   damage_of_fragments: 10
+  restitution: 0
 banana:
   damage: 70
   radius: 4
@@ -19,6 +21,7 @@ banana:
   ammount_of_fragments: -1
   radius_of_fragments: -1
   damage_of_fragments: -1
+  restitution: 0.6
 red_grenade:
   damage: 30
   radius: 2
@@ -26,6 +29,7 @@ red_grenade:
   ammount_of_fragments: 6
   radius_of_fragments: 2
   damage_of_fragments: 10
+  restitution: 0.6
 green_grenade:
   damage: 30
   radius: 2
@@ -33,6 +37,7 @@ green_grenade:
   ammount_of_fragments: -1
   radius_of_fragments: -1
   damage_of_fragments: -1
+  restitution: 0.6
 holy_grenade:
   damage: 110
   radius: 8
@@ -40,6 +45,7 @@ holy_grenade:
   ammount_of_fragments: -1
   radius_of_fragments: -1
   damage_of_fragments: -1
+  restitution: 0.6
 air_strike:
   damage: 40
   radius: 2
@@ -47,13 +53,15 @@ air_strike:
   ammount_of_fragments: 6
   radius_of_fragments: 2
   damage_of_fragments: 40
-beisboll:
+  restitution: 0
+baseball:
   damage: 10
-  radius: -1
+  radius: 0.5
   ammount_of_bullets: -1
   ammount_of_fragments: -1
   radius_of_fragments: -1
   damage_of_fragments: -1
+  restitution: 0
 dynamite:
   damage: 50
   radius: 4
@@ -61,3 +69,4 @@ dynamite:
   ammount_of_fragments: -1
   radius_of_fragments: -1
   damage_of_fragments: -1
+  restitution: 0

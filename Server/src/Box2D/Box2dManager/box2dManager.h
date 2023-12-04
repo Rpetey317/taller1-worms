@@ -18,6 +18,7 @@
 #include "../../../Common/Vect2D.h"
 #include "../../../Common/Worm.h"
 #include "../../../Common/WeaponDTO.h"
+#include "../../../Common/CommonConfigurationParser.h"
 #include "../../../Common/CommonMapParser/CommonMapParser.h"
 
 #include "../Box2dPlayer/box2dPlayer.h"
@@ -30,6 +31,7 @@ class BoxManager {
     std::list<Box2DPlayer>::iterator playing_worm;
     BoxWorld world;
     bool timer_allows;
+    CommonConfigurationParser configurator;
 
     // call to function should be implemented in process 
     // but execution in corresponding class

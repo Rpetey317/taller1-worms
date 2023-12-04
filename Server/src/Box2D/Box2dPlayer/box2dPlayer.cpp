@@ -1,6 +1,6 @@
 #include "box2dPlayer.h"
 
-Box2DPlayer::Box2DPlayer(int id, b2Body* body, int direction, int state): id(id), body(body), health_points(100), direction(direction), state(state) {}
+Box2DPlayer::Box2DPlayer(int id, b2Body* body, int direction, int state, int health_points): id(id), body(body), health_points(health_points), direction(direction), state(state) {}
 
 Box2DPlayer::Box2DPlayer(int id, b2Body* body): id(id), body(body), health_points(-1), direction(0), state(0) {}
 

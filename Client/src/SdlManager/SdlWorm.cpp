@@ -17,7 +17,7 @@ void SdlWorm::recharge_ammo() {
     gun_ammo["NULL"] = 0;
     gun_ammo["BANANA"] = weapon_config.banana.ammount_of_bullets;
     gun_ammo["BAZOOKA"] = weapon_config.bazooka.ammount_of_bullets;
-    gun_ammo["BEISBOLL"] = weapon_config.beisboll.ammount_of_bullets;
+    gun_ammo["BEISBOLL"] = weapon_config.baseball.ammount_of_bullets;
     gun_ammo["TELEPORT"] = -1;
 
     gun_ammo["MORTAR"] = weapon_config.mortar.ammount_of_bullets;
