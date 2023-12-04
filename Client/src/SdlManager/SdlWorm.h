@@ -6,7 +6,7 @@
 #include "../texture_sound_manager/SdlSoundManager.h"
 #include "../texture_sound_manager/SdlWormTextureManager.h"
 #include "../../../Common/Vect2D.h"
-
+#include "../../../Common/CommonConfigurationParser.h"
 
 using namespace SDL2pp;  // NOLINT
 
@@ -57,5 +57,7 @@ private:
     SdlWormState *worm_state;
     std::map<std::string, SdlWormState*> worm_states;
     std::map<std::string, int> gun_ammo;
+    WormConfiguration worm_config;
+    WeaponsConfiguration weapon_config;
 
 };

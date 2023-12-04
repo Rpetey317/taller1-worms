@@ -25,12 +25,36 @@ bool SdlWormStateBanana::is_in_gun_state() {
 }
 
 bool SdlWormStateBanana::has_ammo(std::map<std::string, int>& gun_ammo) {
-    return true;
+    return gun_ammo["BANANA"] != 0;
 }
 
 bool SdlWormStateBanana::reduce_ammo(std::map<std::string, int>& gun_ammo) {
+    if (!has_ammo(gun_ammo))
+        return false;
+    gun_ammo["BANANA"] = gun_ammo["BANANA"] -1;
     return true;
 }
+
+void SdlWormStateBanana::render_ammo(Renderer& renderer, int ammount_of_ammo, int position_x, int position_y) {
+    Rect dest;
+    Color color;
+    color.SetBlue(100);
+    color.SetGreen(255);
+    color.SetRed(255);
+    for (int i = 0; i < ammount_of_ammo; i++) {
+        dest.SetX(position_x + i*AMMO_RENDER_SEPARATION);
+        dest.SetY(position_y);
+        dest.SetW(AMMO_RENDER_WIDTH);
+        dest.SetH(AMMO_RENDER_HEIGHT);
+        renderer.SetDrawColor(color);
+        renderer.FillRect(dest);
+    }
+}
+
+std::string SdlWormStateBanana::get_name() {
+    return "BANANA";
+}
+
 
 int SdlWormStateBanana::projectile_id() {
     return 0x0007;

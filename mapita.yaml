@@ -37,6 +37,12 @@ long_tiles:
     pos_y: -7
     angle: 0
 worms:
-  - pos_x: 260
+  - pos_x: 250
+    pos_y: 8
+    angle: 0
+  - pos_x: 300
+    pos_y: 8
+    angle: 0
+  - pos_x: 350
     pos_y: 8
     angle: 0
