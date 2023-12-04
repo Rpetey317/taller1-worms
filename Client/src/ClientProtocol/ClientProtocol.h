@@ -67,8 +67,8 @@ public:
     bool req_succeed();
     char create_new_game(std::string& game_name, std::string& map_name);
     char join_game(std::string& game_name);
-    char send_start();
-
+    char send_start_game();
+    char recv_start_game();
 
 
     /*

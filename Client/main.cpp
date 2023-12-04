@@ -56,6 +56,11 @@ int main(int argc, char* argv[]) {
         app.exec();
 
         QString gameName = greeter.gameName;
+        if (gameName.toStdString() == "") {
+            std::cout << "Could not join to game" << std::endl;
+            return ret;
+        }
+        
         std::cout << "Game name to join or created: " << gameName.toStdString() << std::endl;
 
         Queue<std::shared_ptr<Action>> commands(10000);

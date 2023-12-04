@@ -257,14 +257,6 @@ char ClientProtocol::send_Shoot(Shoot action) {
     return SUCCESS;
 }
 
-char ClientProtocol::send_start() {
-    if (!this->send_char(CLI_REQ_START)) {
-        return CLOSED_SKT;
-    }
-
-    return SUCCESS;
-}
-
 std::list<std::string> ClientProtocol::req_map_info() { 
     if (!this->send_char(CLI_REQ_MAPS)) {
         return std::list<std::string>();
@@ -349,6 +341,22 @@ char ClientProtocol::join_game(std::string& game_name) {
     return SUCCESS;
 }
 
+char ClientProtocol::send_start_game() { 
+    if(!this->send_char(CLI_REQ_START)){
+        return CLOSED_SKT;
+    }
+
+    return SUCCESS;
+}
+
+char ClientProtocol::recv_start_game() { 
+    
+    msgcode_t code = this->recv_code();
+    if (code == SRV_START_GAME) {
+        return SUCCESS;
+    }
+    return CLOSED_SKT;
+}
 
 
 void ClientProtocol::send_code_game(size_t code) {

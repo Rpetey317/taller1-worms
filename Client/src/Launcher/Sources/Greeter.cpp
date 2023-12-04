@@ -63,6 +63,7 @@ void Greeter::createGame() {
         StartGame startGame;
         startGame.setModal(true);
         if (startGame.exec() == QDialog::Accepted) {
+            this->protocol.send_start_game(); // Brodcastear a los demas clientes conectados
             std::cout << "Game started succesfully with name: " << gameName.toStdString()
                       << " and map name: " << mapName.toStdString() << std::endl;
             close();
@@ -84,11 +85,12 @@ void Greeter::joinToGame() {
         bool could_join_game = this->protocol.req_succeed();
         if (!could_join_game){
             std::cout << "Non existing game" << std::endl;
+            this->gameName = "";
             close();
         }
         else {
             std::cout << "Could join game" << std::endl;
-            // this->protocol.recv_start_game(); // Es bloqueante?
+            this->protocol.recv_start_game(); // Es bloqueante?
             close();
         }
     }

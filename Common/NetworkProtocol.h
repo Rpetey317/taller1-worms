@@ -42,6 +42,7 @@ const msgcode_t SRV_RESP_GAMES = 0x20;
 const msgcode_t SRV_RESP_MAPS = 0x21;
 const msgcode_t SRV_SUCCESS = 0x22;
 const msgcode_t SRV_FAIL = 0x23;
+const msgcode_t SRV_START_GAME = 0x24;
 
 const msgcode_t MSGCODE_PLAYER_POSITION = 0x15;
 const msgcode_t MSGCODE_PROYECTILE_UPDATE = 0x16;
