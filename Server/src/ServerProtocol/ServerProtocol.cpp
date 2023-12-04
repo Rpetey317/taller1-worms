@@ -8,7 +8,6 @@
 #include <arpa/inet.h>
 
 #include "Update.h"
-#include "Update.h"
 
 // I thoroughly refuse to manually write the using directive
 // for every. single. constant. in the NetworkProtocol namespace.
@@ -18,6 +17,41 @@ ServerProtocol::ServerProtocol(Socket&& _cli): cli(std::move(_cli)), isclosed(fa
 
 ServerProtocol::ServerProtocol(ServerProtocol&& other):
         cli(std::move(other.cli)), isclosed(other.isclosed) {}
+
+bool ServerProtocol::send_Worm(const Worm& pt) {
+    if (!this->send_short(pt.position.x)) {
+        return false;
+    }
+    if (!this->send_short(pt.position.y)) {
+        return false;
+    }
+    if (!this->send_char(pt.state)) {
+        return false;
+    }
+    if (!this->send_char(pt.id)) {
+        return false;
+    }
+    if (!this->send_char(pt.health_points)) {
+        return false;
+    }
+    return true;
+}
+
+bool ServerProtocol::send_weapon(const WeaponDTO& weapon) {
+    if (!this->send_short(weapon.position.x)) {
+        return false;
+    }
+    if (!this->send_short(weapon.position.y)) {
+        return false;
+    }
+    if (!this->send_char(weapon.angle)) {
+        return false;
+    }
+    if (!this->send_char(weapon.id)) {
+        return false;
+    }
+    return true;
+}
 
 // DD methods for each update type implemented in ServerProtocol_sendUpdate.cpp
 char ServerProtocol::send_update(std::shared_ptr<Update> msg) { return msg->get_sent_by(*this); }
@@ -71,9 +105,19 @@ std::shared_ptr<Message> ServerProtocol::recv_update(const int& plid) {
         }
         if (!this->cli.recvall(&angle, sizeof(uint16_t), &this->isclosed)) {
             return std::make_shared<NullMessage>();
-        }   
+        }
         return std::make_shared<BoxShoot>(plid, weapon_id, power, angle);
-    } else {
+
+    }
+    // else if (code == MSGCODE_CHANGE_WEAPON) { // Habria que luego broadcastear el cambio de arma,
+    // para que en sdl se actualice
+    //     uint8_t weapon_id;
+    //     if (!this->cli.recvall(&weapon_id, sizeof(uint8_t), &this->isclosed)) {
+    //         return std::make_shared<NullMessage>();
+    //     }
+    //     return std::make_shared<PlayerChangeWeapon>(plid, weapon_id);
+    // }
+    else {
         return std::make_shared<NullMessage>();
     }
 }

@@ -22,6 +22,7 @@ private:
     SdlCamera &camera;
     std::vector<Tile> map;
     SdlTexturesManager& textures_manager;
+    std::string background;
     
 
 };

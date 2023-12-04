@@ -25,6 +25,14 @@ void SdlCamera::update_position() {
         
 }
 
+int SdlCamera::get_window_height() {
+        return window->GetHeight();
+}
+
+int SdlCamera::get_window_width() {
+        return window->GetWidth();
+}
+
 int SdlCamera::get_x() {
         return camera.GetX();
 }

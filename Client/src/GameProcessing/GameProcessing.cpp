@@ -24,17 +24,6 @@ using NetworkProtocol::MSGCODE_PLAYER_AMOUNT;
 using NetworkProtocol::MSGCODE_PLAYER_MESSAGE;
 using NetworkProtocol::msgcode_t;
 
-// GameProcessing::GameProcessing(const char* hostname, const char* port,
-//                                Queue<std::shared_ptr<Action>>& commands,
-//                                Queue<std::shared_ptr<Event>>& events):
-//         skt(Socket(hostname, port)),
-//         protocol(std::move(this->skt)),
-
-//         outgoingq(commands),
-//         incomingq(events),
-//         receiverTh(incomingq, protocol),  // pass the expected arguments to the constructor
-//         senderTh(outgoingq, protocol),
-//         id(0) {}
 GameProcessing::GameProcessing(ClientProtocol& protocol, Queue<std::shared_ptr<Action>>& commands,
                                Queue<std::shared_ptr<Event>>& events):
         protocol(protocol),
@@ -58,97 +47,6 @@ std::string GameProcessing::ask_for_command() {
         s_new >> action;
     }
     return command;
-}
-
-void GameProcessing::alternate_run() {
-    // Creo los threads sender y receiver pasandoles el protocolo y los corro
-
-    const std::map<std::string, int> lut{
-            {CREATE_STR, CREATE}, {JOIN_STR, JOIN}, {CHAT_STR, CHAT},
-            {READ_STR, READ},     {EXIT_STR, EXIT}, {NOCMD_STR, NOCMD},
-    };
-
-    std::shared_ptr<Event> ack_update =
-            this->protocol.recv_update();  // Va a ser player connected. Me devuelve mi id
-    std::shared_ptr<PlayerConnected> connected =
-            std::dynamic_pointer_cast<PlayerConnected>(ack_update);
-    this->id = connected->get_id();
-    if (id < 0) {
-        throw std::runtime_error("Error al recibir el id del jugador");
-    }
-    std::cout << "Player id: " << this->id << std::endl;
-
-    this->receiverTh.start();
-    this->senderTh.start();
-
-    bool playing = true;
-    std::string command;
-    while (playing) {
-        // pop.commands()
-        //
-        std::list<std::shared_ptr<Event>> update_list;
-
-        bool popped = false;
-        do {
-            std::shared_ptr<Event> upd;
-            popped = this->incomingq.try_pop(upd);
-            if (popped)
-                update_list.push_back(upd);
-        } while (popped);
-
-        for (auto upd: update_list) {
-            std::cout << "Popped an event" << std::endl;
-            this->eventProcessor.proccess_event(upd);
-        }
-
-        command = ask_for_command();
-        std::istringstream ss(command);
-        std::string action_str;
-        ss >> action_str;
-        int cmd_id = lut.at(action_str);
-        if (cmd_id == EXIT) {
-            playing = false;
-            // break;
-        } else if (cmd_id == CREATE) {
-            // Action create_game(CREATE, "");
-            // this->outgoingq.push(create_game);
-        } else if (cmd_id == JOIN) {
-            /* code */
-        } else if (cmd_id == CHAT) {
-            std::string chatmsg;
-            std::getline(ss, chatmsg);
-            int lenght;
-            lenght = chatmsg.size();
-            int position = 0;
-            while (isblank(chatmsg[position])) {  // Quiero empezar a leer cuando se encuentre la
-                                                  // primera letra
-                position++;
-                lenght--;  // Quito el espacio blanco
-            }
-            // Action new_action(MSGCODE_PLAYER_MESSAGE, new_chatmsg);
-            std::string new_chatmsg = chatmsg.substr(position);
-            std::shared_ptr<Message> action = std::make_shared<Message>(new_chatmsg);
-            this->outgoingq.push(action);
-        } else if (cmd_id == READ) {
-            int amount_msgs;
-            ss >> amount_msgs;
-
-            while (amount_msgs > 0) {
-                std::shared_ptr<Event> popped_update = this->incomingq.pop();
-                std::shared_ptr<PlayerMessage> msg = std::dynamic_pointer_cast<PlayerMessage>(
-                        popped_update);  // TODO: ver si esto esta bien. Por ahora se que es un
-                                         // PlayerMessage action
-                if (msg != nullptr && msg->get_msg() != "")
-                    std::cout << msg->get_msg() << std::endl;
-
-                amount_msgs--;
-            }
-        }  // Puede haber distintos comandos.
-    }
-    this->receiverTh.end();
-    this->receiverTh.join();
-    this->senderTh.end();
-    this->senderTh.join();
 }
 
 void GameProcessing::run() {

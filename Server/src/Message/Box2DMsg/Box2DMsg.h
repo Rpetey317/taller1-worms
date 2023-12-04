@@ -26,7 +26,7 @@ public:
 
     std::shared_ptr<Update> get_processed_by(Game& game) override;
 
-    virtual int get_cmd()=0;
+    virtual int get_cmd() = 0;
 
     ~Box2DMsg() override = default;
 };

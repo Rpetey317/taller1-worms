@@ -19,6 +19,9 @@ SdlManager::SdlManager(Queue<std::shared_ptr<Action>>& outgoing, Queue<std::shar
     is_moving_camera = false;
     is_projectile_flying = false;
     is_animation_playing = false;
+    timer_rect.set_color(0, 0, 255);
+    timer_rect.set_height(10);
+    timer_rect.set_width(0);
     // Initialize SDL_ttf library
     SDLTTF ttf;
 }
@@ -29,7 +32,6 @@ bool SdlManager::event_handler() {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
-            //worms[id_worm_turn]->destroy();
             return false;
         } else if (event.type == SDL_KEYDOWN) {
             if (id_of_player_turn != id_of_player || worms[id_worm_turn]->is_animation_playing)
@@ -37,8 +39,6 @@ bool SdlManager::event_handler() {
 
             switch (event.key.keysym.sym) {
                 case SDLK_ESCAPE: {
-                    //worms[id_worm_turn]->destroy();
-                    //commands.push(0);
                     return false;
                 }
                 case SDLK_RIGHT: {
@@ -109,54 +109,52 @@ bool SdlManager::event_handler() {
                 //ESTA EN WIP ESTAS
                 case SDLK_0:{ //BAZOOKA
                     worms[id_worm_turn]->change_state("BAZOOKA");
-                    //worms[0]->worm_state = 3;
-                    //PUSH DEL NUEVO ESTADO, NOMAS HAY QUE HACER UN BROADCAST AL RESTO DE GUSANOS PARA QUE ACTUALICEN
+                    outgoing.push(std::make_shared<ChangeWeapon>(BAZOOKA));
                     break;
                 }
                 case SDLK_1:{//MORTERO
                     worms[id_worm_turn]->change_state("MORTAR");
-                    //worms[0]->worm_state = 3;
+                    outgoing.push(std::make_shared<ChangeWeapon>(MORTAR));
                     break;
                 }
                 case SDLK_2:{//GRANDA ROJA
                     worms[id_worm_turn]->change_state("RED_GRENADE");
-                    //worms[0]->worm_state = 3;
+                    outgoing.push(std::make_shared<ChangeWeapon>(RED_GRANADE));
                     break;
                 }
                 case SDLK_3:{//GRANADA VERDE
                     worms[id_worm_turn]->change_state("GREEN_GRENADE");
-                    //worms[0]->worm_state = 3;
+                    outgoing.push(std::make_shared<ChangeWeapon>(GREEN_GRANADE));
                     break;
                 }
                 case SDLK_4:{//BANANA
                     worms[id_worm_turn]->change_state("BANANA");
-                    //worms[0]->worm_state = 3;
+                    outgoing.push(std::make_shared<ChangeWeapon>(BANANA));
                     break;
                 }
                 case SDLK_5:{//GRANADA SANTA
-
                     worms[id_worm_turn]->change_state("HOLY_GRENADE");
-                    //worms[0]->worm_state = 3;
+                    outgoing.push(std::make_shared<ChangeWeapon>(HOLY_GRANADE));
                     break;
                 }
                 case SDLK_6:{//ATAQUE AEREO
                     worms[id_worm_turn]->change_state("AIR_STRIKE");
-                    //worms[0]->worm_state = 3;
+                    outgoing.push(std::make_shared<ChangeWeapon>(AIR_STRIKE));
                     break;
                 }
                 case SDLK_7:{//DINAMITA
                     worms[id_worm_turn]->change_state("DYNAMITE");
-                    //worms[0]->worm_state = 3;
+                    outgoing.push(std::make_shared<ChangeWeapon>(DYNAMITE));
                     break;
                 }
                 case SDLK_8:{//BATE DE BEISBOL
                     worms[id_worm_turn]->change_state("BEISBOLL");
-                    //worms[0]->worm_state = 3;
+                    outgoing.push(std::make_shared<ChangeWeapon>(BASEBALL_BAT));
                     break;
                 }
                 case SDLK_9:{//TELETRANSPORTACION
                     worms[id_worm_turn]->change_state("TELEPORT");
-                    //worms[0]->worm_state = 3;
+                    outgoing.push(std::make_shared<ChangeWeapon>(TELEPORT));
                     break;
                 }
                 case SDLK_RETURN: { //SALTO HACIA DELANTE
@@ -243,20 +241,19 @@ bool SdlManager::main_loop(Renderer& renderer, SdlMap& map, SdlSoundManager& sou
 void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager& sound_manager, SdlWormTextureManager& worm_texture_manager) {
     std::shared_ptr<Event> event;
     bool there_is_element = ingoing.try_pop(event);
-    // LAS POSICIONES DE TODOS LOS GUSANOS, EL ID DE TODOS LOS GUSANOS, Y EL ESTADO EN EL QUE ESTAN LOS GUSANOS
-    // ESTADOS -> MOVIENDOSE, HACIENDO NADA, CAYENDO, LLEVANDO UNA DE 10 ARMAS
+    // LAS POSICIONES DE TODOS LOS GUSANOS, EL ID DE TODOS LOS GUSANOS, EL ESTADO EN EL QUE ESTAN LOS GUSANOS, Y LA VIDA
 
-    //si se conecta un gusano nuevo, podria crear el worm y le pateo los managers, asi que ellos tienen el renderer :)
     renderer.Clear();
     map.draw_map();
     
     if (there_is_element) {
-        //std::map<int, Vect2D> positions = event->get_worm_positions();
         std::map<int, Worm> server_worms = event->get_worms();
         for (auto& worm : worms) {
+
             if (!server_worms.empty()) {
                 //el id de gusano =/= id de jugador controla al gusano
                 worm.second->render_new(server_worms[worm.second->worm_id].position, server_worms[worm.second->worm_id].state);//deberia obtener el estado aca y se lo paso
+                
             } else {
                 worm.second->render_same();
             }
@@ -274,13 +271,22 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
         }
     
         if (event->get_player_turn() > 0) {
+            if (id_worm_turn != event->get_player_turn()) {
+                worms[id_worm_turn]->angle = 0;
+                worms[id_worm_turn]->is_charging = false;
+                worms[id_worm_turn]->attack_power = 0;
+            }
             id_worm_turn = event->get_player_turn();
-            std::cout << "ID DE GUSANITO:" << id_worm_turn << std::endl;
+            timer = event->get_duration();
+            if (timer <= 3) {
+                timer_rect.set_color(255, 0, 0);
+            } else {
+                timer_rect.set_color(0, 0, 255);
+            }
+            timer_rect.set_width(timer * 2);
+            timer_rect.set_position(10, camera.get_window_height() - 20);
             id_of_player_turn = worms[id_worm_turn]->player_id;
         }
-        
-        //std::cout << "WORM ID: " <<id_worm_turn << std::endl;
-        //id_of_player_turn = worms[id_worm_turn]->player_id;
 
 
     } else {  //SI NO RECIBO NADA, SEGUI EJECUTANDO LA ANTERIOR ANIMACION Y QUEDATE EN EL MISMO LUGAR
@@ -297,7 +303,7 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
         if (!is_animation_playing)
             is_projectile_flying = false;
     }
-
+    timer_rect.render(renderer);
     renderer.Present();
 }
 
@@ -312,7 +318,7 @@ void SdlManager::init_projectiles(SdlProjectilesTextureManager& projectiles_text
     projectiles["BANANA"] = new SdlBananaProjectile(projectiles_texture_manager, camera);
 }
 
-void SdlManager::run(std::string background_type, std::string selected_map) {
+void SdlManager::run(std::string selected_map) {
     //QUIZA LA IDEA ES QUE TENGA ACA UN POP PARA RECIBIR ESTE BACKGROUND_TYPE Y SELECTED_MAP???
     //COMO HACEMOS TEMA ANIMACIONES ENTRE MUCHOS PLAYERS???
     //TENGO UNA IDEA, ADEMAS DE RECIBIR POSICIONES GUSANOS, RECIBO SUS ID Y QUE ACCION REALIAZARON
@@ -327,8 +333,8 @@ void SdlManager::run(std::string background_type, std::string selected_map) {
     Renderer renderer(window, -1, SDL_RENDERER_SOFTWARE);
     camera.set_window(&window);
     
-    SdlTexturesManager textures_manager(renderer, window, background_type);
     CommonMapParser parser;
+    SdlTexturesManager textures_manager(renderer, window, parser.get_background(selected_map));
     SdlMap map(camera, parser.get_map(selected_map), textures_manager);
     SdlSoundManager sound_manager;
     SdlWormTextureManager worm_texture_manager(renderer);

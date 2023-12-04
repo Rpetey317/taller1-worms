@@ -16,6 +16,8 @@ class CommonMapParser {
 public:
     CommonMapParser();
     std::vector<Tile> get_map(std::string file_name);
-
+    std::string get_background(std::string file_name);
+    int get_amount_of_worms();
 private:
+    std::vector<Tile> map;
 };
