@@ -234,9 +234,6 @@ char ClientProtocol::send_Jump(Jump action) {
 }
 
 char ClientProtocol::send_NullAction(NullAction action) {
-    if (!this->send_char(MSGCODE_NULL_ACTION)) {
-        return CLOSED_SKT;
-    }
     return SUCCESS;
 }
 
@@ -249,11 +246,11 @@ char ClientProtocol::send_Shoot(Shoot action) {
         return CLOSED_SKT;
     }
 
-    if (!this->send_char(action.get_power())) {
+    if (!this->send_short(action.get_power())) {
         return CLOSED_SKT;
     }
 
-    if (!this->send_char(action.get_angle())) {
+    if (!this->send_short(action.get_angle())) {
         return CLOSED_SKT;
     }
 

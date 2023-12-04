@@ -2,19 +2,10 @@
 #include "Vect2D.h"
 #include <iostream>
 #include "../Box2DWeapons/WeaponsHeaders.h"
+#include "Box2DMsg/Box2DMsgHeaders.h"
 
 #define DEGTORAD -0.0174532925199432957f
 #define RADTODEG 57.295779513082320876f
-
-#define COMMAND_STOP 0
-#define COMMAND_EXIT -1
-#define COMMAND_RIGHT 1
-#define COMMAND_LEFT 2
-#define COMMAND_JUMP_FOWARD 3
-#define COMMAND_JUMP_BACKWARD 4
-#define COMMAND_NEXT 5
-#define COMMAND_FIRE 6
-#define COMMAND_SPECIAL_SHOOT 7
 
 #define LEFT 1
 #define RIGHT 0
