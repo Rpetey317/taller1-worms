@@ -109,54 +109,52 @@ bool SdlManager::event_handler() {
                 //ESTA EN WIP ESTAS
                 case SDLK_0:{ //BAZOOKA
                     worms[id_worm_turn]->change_state("BAZOOKA");
-                    //worms[0]->worm_state = 3;
-                    //PUSH DEL NUEVO ESTADO, NOMAS HAY QUE HACER UN BROADCAST AL RESTO DE GUSANOS PARA QUE ACTUALICEN
+                    outgoing.push(std::make_shared<ChangeWeapon>(BAZOOKA));
                     break;
                 }
                 case SDLK_1:{//MORTERO
                     worms[id_worm_turn]->change_state("MORTAR");
-                    //worms[0]->worm_state = 3;
+                    outgoing.push(std::make_shared<ChangeWeapon>(MORTAR));
                     break;
                 }
                 case SDLK_2:{//GRANDA ROJA
                     worms[id_worm_turn]->change_state("RED_GRENADE");
-                    //worms[0]->worm_state = 3;
+                    outgoing.push(std::make_shared<ChangeWeapon>(RED_GRANADE));
                     break;
                 }
                 case SDLK_3:{//GRANADA VERDE
                     worms[id_worm_turn]->change_state("GREEN_GRENADE");
-                    //worms[0]->worm_state = 3;
+                    outgoing.push(std::make_shared<ChangeWeapon>(GREEN_GRANADE));
                     break;
                 }
                 case SDLK_4:{//BANANA
                     worms[id_worm_turn]->change_state("BANANA");
-                    //worms[0]->worm_state = 3;
+                    outgoing.push(std::make_shared<ChangeWeapon>(BANANA));
                     break;
                 }
                 case SDLK_5:{//GRANADA SANTA
-
                     worms[id_worm_turn]->change_state("HOLY_GRENADE");
-                    //worms[0]->worm_state = 3;
+                    outgoing.push(std::make_shared<ChangeWeapon>(HOLY_GRANADE));
                     break;
                 }
                 case SDLK_6:{//ATAQUE AEREO
                     worms[id_worm_turn]->change_state("AIR_STRIKE");
-                    //worms[0]->worm_state = 3;
+                    outgoing.push(std::make_shared<ChangeWeapon>(AIR_STRIKE));
                     break;
                 }
                 case SDLK_7:{//DINAMITA
                     worms[id_worm_turn]->change_state("DYNAMITE");
-                    //worms[0]->worm_state = 3;
+                    outgoing.push(std::make_shared<ChangeWeapon>(DYNAMITE));
                     break;
                 }
                 case SDLK_8:{//BATE DE BEISBOL
                     worms[id_worm_turn]->change_state("BEISBOLL");
-                    //worms[0]->worm_state = 3;
+                    outgoing.push(std::make_shared<ChangeWeapon>(BASEBALL_BAT));
                     break;
                 }
                 case SDLK_9:{//TELETRANSPORTACION
                     worms[id_worm_turn]->change_state("TELEPORT");
-                    //worms[0]->worm_state = 3;
+                    outgoing.push(std::make_shared<ChangeWeapon>(TELEPORT));
                     break;
                 }
                 case SDLK_RETURN: { //SALTO HACIA DELANTE
