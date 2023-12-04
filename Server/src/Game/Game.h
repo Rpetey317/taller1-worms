@@ -6,6 +6,7 @@
 #include <memory>
 #include <mutex>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "../Box2D/Box2dManager/box2dManager.h"
@@ -33,6 +34,8 @@ class Game {
     Queue<std::vector<int>> box2d_out;
     std::chrono::steady_clock::time_point turn_start;
     int turn_time;
+    int worm_count;
+    std::pair<int, int> current_worm;
     BoxManager box2d;
 
 public:

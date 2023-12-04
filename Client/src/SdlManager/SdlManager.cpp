@@ -273,7 +273,7 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
             is_animation_playing = true;
         }
     
-        if (event->get_player_turn() != -1) {
+        if (event->get_player_turn() > 0) {
             id_worm_turn = event->get_player_turn();
             std::cout << "ID DE GUSANITO:" << id_worm_turn << std::endl;
             id_of_player_turn = worms[id_worm_turn]->player_id;

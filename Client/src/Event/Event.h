@@ -20,7 +20,7 @@ protected:
     explicit Event(const int& _id): id(_id) {}
 
 public:
-    int get_id() { return this->id; } 
+    int get_id() { return this->id; }
 
     virtual void get_processed_by(EventProcessor& eventProcessor) = 0;
 
@@ -38,7 +38,7 @@ public:
 
     virtual bool proyectile_got_exploded() { return false; }
 
-    virtual int get_duration() { return 0; } // 
+    virtual int get_duration() { return 0; }  //
 
     virtual int get_player_turn() { return -1; }
 
