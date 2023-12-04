@@ -2,7 +2,7 @@
 SdlWormStateFalling::SdlWormStateFalling(){}
 
 bool SdlWormStateFalling::is_at_max_animation_phase(int animation_phase) {
-    return animation_phase == 6;
+    return animation_phase == 2;
 }
 
 

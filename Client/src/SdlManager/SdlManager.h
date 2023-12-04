@@ -39,6 +39,8 @@ private:
     bool is_moving_camera;
     std::string last_projectile_used;
     bool is_projectile_flying;
+    int timer;
+    SdlResizableRect timer_rect;
     
     void init_projectiles(SdlProjectilesTextureManager& projectiles_texture_manager, SdlCamera& camera);
     void cheat_set_life_of_all_worms_to(int new_health);

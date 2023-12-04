@@ -12,3 +12,4 @@
 #include "SdlWormStateStill.h"
 #include "SdlWormStateTeleport.h"
 #include "SdlWormStateWalk.h"
+#include "SdlWormStateDie.h"

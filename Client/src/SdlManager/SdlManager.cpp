@@ -19,6 +19,9 @@ SdlManager::SdlManager(Queue<std::shared_ptr<Action>>& outgoing, Queue<std::shar
     is_moving_camera = false;
     is_projectile_flying = false;
     is_animation_playing = false;
+    timer_rect.set_color(0, 0, 255);
+    timer_rect.set_height(10);
+    timer_rect.set_width(0);
     // Initialize SDL_ttf library
     SDLTTF ttf;
 }
@@ -29,7 +32,6 @@ bool SdlManager::event_handler() {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
-            //worms[id_worm_turn]->destroy();
             return false;
         } else if (event.type == SDL_KEYDOWN) {
             if (id_of_player_turn != id_of_player || worms[id_worm_turn]->is_animation_playing)
@@ -37,8 +39,6 @@ bool SdlManager::event_handler() {
 
             switch (event.key.keysym.sym) {
                 case SDLK_ESCAPE: {
-                    //worms[id_worm_turn]->destroy();
-                    //commands.push(0);
                     return false;
                 }
                 case SDLK_RIGHT: {
@@ -243,20 +243,19 @@ bool SdlManager::main_loop(Renderer& renderer, SdlMap& map, SdlSoundManager& sou
 void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager& sound_manager, SdlWormTextureManager& worm_texture_manager) {
     std::shared_ptr<Event> event;
     bool there_is_element = ingoing.try_pop(event);
-    // LAS POSICIONES DE TODOS LOS GUSANOS, EL ID DE TODOS LOS GUSANOS, Y EL ESTADO EN EL QUE ESTAN LOS GUSANOS
-    // ESTADOS -> MOVIENDOSE, HACIENDO NADA, CAYENDO, LLEVANDO UNA DE 10 ARMAS
+    // LAS POSICIONES DE TODOS LOS GUSANOS, EL ID DE TODOS LOS GUSANOS, EL ESTADO EN EL QUE ESTAN LOS GUSANOS, Y LA VIDA
 
-    //si se conecta un gusano nuevo, podria crear el worm y le pateo los managers, asi que ellos tienen el renderer :)
     renderer.Clear();
     map.draw_map();
     
     if (there_is_element) {
-        //std::map<int, Vect2D> positions = event->get_worm_positions();
         std::map<int, Worm> server_worms = event->get_worms();
         for (auto& worm : worms) {
+
             if (!server_worms.empty()) {
                 //el id de gusano =/= id de jugador controla al gusano
                 worm.second->render_new(server_worms[worm.second->worm_id].position, server_worms[worm.second->worm_id].state);//deberia obtener el estado aca y se lo paso
+                
             } else {
                 worm.second->render_same();
             }
@@ -274,13 +273,22 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
         }
     
         if (event->get_player_turn() > 0) {
+            if (id_worm_turn != event->get_player_turn()) {
+                worms[id_worm_turn]->angle = 0;
+                worms[id_worm_turn]->is_charging = false;
+                worms[id_worm_turn]->attack_power = 0;
+            }
             id_worm_turn = event->get_player_turn();
-            std::cout << "ID DE GUSANITO:" << id_worm_turn << std::endl;
+            timer = event->get_duration();
+            if (timer <= 3) {
+                timer_rect.set_color(255, 0, 0);
+            } else {
+                timer_rect.set_color(0, 0, 255);
+            }
+            timer_rect.set_width(timer * 2);
+            timer_rect.set_position(10, camera.get_window_height() - 20);
             id_of_player_turn = worms[id_worm_turn]->player_id;
         }
-        
-        //std::cout << "WORM ID: " <<id_worm_turn << std::endl;
-        //id_of_player_turn = worms[id_worm_turn]->player_id;
 
 
     } else {  //SI NO RECIBO NADA, SEGUI EJECUTANDO LA ANTERIOR ANIMACION Y QUEDATE EN EL MISMO LUGAR
@@ -297,7 +305,7 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
         if (!is_animation_playing)
             is_projectile_flying = false;
     }
-
+    timer_rect.render(renderer);
     renderer.Present();
 }
 
