@@ -41,6 +41,10 @@ include_directories(${PROJECT_SOURCE_DIR}/Server/src/ReceiverThread)
 include_directories(${PROJECT_SOURCE_DIR}/Server/src/SenderThread)
 include_directories(${PROJECT_SOURCE_DIR}/Server/src/ServerProtocol)
 include_directories(${PROJECT_SOURCE_DIR}/Server/src/Box2D)
+include_directories(${PROJECT_SOURCE_DIR}/Server/src/GameWrapper)
+include_directories(${PROJECT_SOURCE_DIR}/Server/src/LobbyHandler)
+include_directories(${PROJECT_SOURCE_DIR}/Server/src/LobbyHandlerThread)
+include_directories(${PROJECT_SOURCE_DIR}/Server/src/Request)
 
 add_subdirectory("Server/src")
 

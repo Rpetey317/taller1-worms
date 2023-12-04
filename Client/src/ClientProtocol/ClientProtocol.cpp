@@ -314,6 +314,106 @@ char ClientProtocol::send_Shoot(Shoot action) {
     return SUCCESS;
 }
 
+std::list<std::string> ClientProtocol::req_map_info() { 
+    if (!this->send_char(CLI_REQ_MAPS)) {
+        return std::list<std::string>();
+    }
+    uint16_t count;
+    this->skt.recvall(&count, sizeof(uint16_t), &this->isclosed);
+    if (this->isclosed) {
+        return std::list<std::string>();
+    }
+    count = ntohs(count);
+    std::list<std::string> maps;
+
+    for (int i = 0; i < count; i++) {
+        std::string map_name = this->recv_msg();
+        if (map_name == "") {
+            return maps;
+        }
+        maps.push_back(map_name);
+    }
+    return maps;
+}
+
+std::list<std::string> ClientProtocol::req_game_info() { 
+    if (!this->send_char(CLI_REQ_GAMES)) {
+        return std::list<std::string>();
+    }
+    uint16_t count;
+    this->skt.recvall(&count, sizeof(uint16_t), &this->isclosed);
+    if (this->isclosed) {
+        return std::list<std::string>();
+    }
+    count = ntohs(count);
+    std::list<std::string> games;
+
+    for (int i = 0; i < count; i++) {
+        std::string game_name = this->recv_msg();
+        if (game_name == "") {
+            return games;
+        }
+        games.push_back(game_name);
+    }
+    return games;
+}
+
+bool ClientProtocol::req_succeed() { 
+    std::cout << "se espera codigo de succes" << std::endl;
+    char code;
+    this->skt.recvall(&code, sizeof(char), &this->isclosed);
+    if (this->isclosed) {
+        return false;
+    }
+    std::cout << "se recibe codigo de succes" << std::endl;
+    return code == SRV_SUCCESS;
+}
+
+char ClientProtocol::create_new_game(std::string& game_name, std::string& map_name) {
+    std::cout << "Envio que se cree partida" << std::endl;
+    if (!this->send_char(CLI_REQ_CREATE)) {
+        return CLOSED_SKT;
+    }
+
+    if (!this->send_str(game_name)) {
+        return CLOSED_SKT;
+    }
+
+    if (!this->send_str(map_name)) {
+        return CLOSED_SKT;
+    }
+    std::cout << "Se crea partida" << std::endl;
+    return SUCCESS;
+}
+
+char ClientProtocol::join_game(std::string& game_name) {
+    if (!this->send_char(CLI_REQ_JOIN)) {
+        return CLOSED_SKT;
+    }
+
+    if (!this->send_str(game_name)) {
+            return CLOSED_SKT;
+    }
+
+    return SUCCESS;
+}
+
+char ClientProtocol::send_start_game() { 
+    if(!this->send_char(CLI_REQ_START)){
+        return CLOSED_SKT;
+    }
+
+    return SUCCESS;
+}
+
+char ClientProtocol::recv_start_game() { 
+    
+    msgcode_t code = this->recv_code();
+    if (code == SRV_START_GAME) {
+        return SUCCESS;
+    }
+    return CLOSED_SKT;
+}
 char ClientProtocol::send_ChangeWeapon(ChangeWeapon action) {
     if (!this->send_char(MSGCODE_CHANGE_WEAPON)) {
         return CLOSED_SKT;
@@ -325,7 +425,6 @@ char ClientProtocol::send_ChangeWeapon(ChangeWeapon action) {
 
     return SUCCESS;
 }
-
 
 void ClientProtocol::send_code_game(size_t code) {
     // Send code game to join
@@ -382,17 +481,6 @@ int ClientProtocol::recv_amount_players() {
     return (int)playercount;
 }
 
-
-// uint8_t ClientProtocol::receive_gameupdate() {
-//     bool isclosed = false;
-//     uint8_t response;
-//     int sz = this->skt.recvall(&response, sizeof(uint8_t), &isclosed);
-//     if (sz == 0) {
-//         throw std::runtime_error("Fallo. No se puede leer retorno de server");
-//     }
-
-//     return response;
-// }
 
 void ClientProtocol::close() {
     if (this->isclosed) {

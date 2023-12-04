@@ -32,6 +32,8 @@ class BoxManager {
     BoxWorld world;
     bool timer_allows;
     CommonConfigurationParser configurator;
+    long time_ticker;
+    long detonation_tick;
 
     // call to function should be implemented in process 
     // but execution in corresponding class
@@ -45,8 +47,9 @@ public:
   
     Vect2D meter_to_pixel(b2Vec2 meter);
 
-    BoxManager();
-    bool set_map();
+    explicit BoxManager(std::string file_name);
+    bool set_map(std::string file_name);
+    void tick();
     void fire_projectile(float angle, float power, float restitution, int category, int mask, bool set_timer, int type);
     void air_strike(Vect2D position);
     void teleport(Vect2D position);

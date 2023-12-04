@@ -1,11 +1,13 @@
 #ifndef __SERVER_PROTOCOL_H__
 #define __SERVER_PROTOCOL_H__
 
+#include <list>
 #include <memory>
 #include <string>
 
 #include "MessageHeaders.h"
 #include "NetworkProtocol.h"
+#include "RequestHeaders.h"
 #include "Socket.h"
 #include "UpdateHeaders.h"
 #include "Vect2D.h"
@@ -28,7 +30,6 @@ using NetworkProtocol::MSGCODE_PLAYER_MESSAGE;
 class ServerProtocol {
     Socket cli;
     bool isclosed;
-    const int plid;
 
     /*
      * Primitive type send methods, to simplify update-specific send methods
@@ -42,6 +43,14 @@ class ServerProtocol {
     bool send_Worm(const Worm& pt);
     bool send_weapon(const WeaponDTO& wpn);
 
+    /*
+     * Primitive type receive methods, to simplify update-specific receive methods
+     * On successful receive return true, false if socket closed
+     */
+    bool recv_char(uint8_t& num);
+    bool recv_short(uint16_t& num);
+    bool recv_long(uint32_t& num);
+    bool recv_str(std::string& str);
 
 public:
     // ========== DD ============ //
@@ -58,12 +67,22 @@ public:
     char send_NullUpdate(const NullUpdate& upd);
     char send_WorldUpdate(const WorldUpdate& upd);
     char send_TimerUpdate(const TimerUpdate& upd);
+    char send_Start(const StartUpdate& upd);
 
+
+    char send_game_data(const std::list<std::string>& names);
+    char send_map_data(const std::list<std::string>& names);
+    char send_success();
+    char send_fail();
 
     /*
      * Constructs a new protocol from socket with move semantics
      */
-    ServerProtocol(Socket&& cli, const int& plid);
+    explicit ServerProtocol(Socket&& cli);
+
+    ServerProtocol(const ServerProtocol&) = delete;
+
+    ServerProtocol(ServerProtocol&& other);
 
     /*
      * Sends given message to client
@@ -73,12 +92,16 @@ public:
     /*
      * Reads a message from client. Returns NullMsg if connection closed
      */
-    std::shared_ptr<Message> recv_update();
+    std::shared_ptr<Message> recv_update(const int& plid);
+
+    std::unique_ptr<Request> recv_request();
+
+    bool recv_game_start();
 
     /*
-     * Reads the first request the client sends. Can be CREATE_GAME or JOIN_GAME
+     * Reads the code of the game the client wants to join
      */
-    msgcode_t recv_request();
+    size_t recv_join();
 
     /*
      * returns true if connection with client is still open

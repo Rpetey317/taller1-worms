@@ -5,6 +5,8 @@
 #include "AccepterThread.h"
 #include "Game.h"
 #include "GameLoopThread.h"
+#include "LobbyHandler.h"
+#include "LobbyHandlerThread.h"
 #include "Message.h"
 #include "ServerProtocol.h"
 #include "Socket.h"
@@ -28,15 +30,16 @@ int main(int argc, const char** argv) {
 
     // Initialization
     Socket acc(argv[1]);
+    LobbyHandler hdl;
     Queue<std::shared_ptr<Message>> eventq(10000);
-    Game game(eventq);
+    // Game game(eventq);
 
-    ServerAccepterThread acc_th(std::move(acc), game);
-    GameLoopThread gloop(eventq, game);
+    ServerAccepterThread acc_th(std::move(acc), hdl);
+    // GameLoopThread gloop(eventq, game);
 
     // Execution
     acc_th.start();
-    gloop.start();
+    // gloop.start();
 
     char c = 0;
     while (c != 'q') {
@@ -44,11 +47,11 @@ int main(int argc, const char** argv) {
     }
 
     // Destruction
-    game.close();
+    // game.close();
     acc_th.end();
     acc_th.join();
-    gloop.stop();
-    gloop.join();
+    // gloop.stop();
+    // gloop.join();
 
     return 0;
 }
