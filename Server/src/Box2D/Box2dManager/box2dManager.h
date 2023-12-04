@@ -45,7 +45,7 @@ public:
     std::map<int, Worm>* create_position_map(const std::list<Box2DPlayer>& worms);
     std::map<int, WeaponDTO>* create_proyectile_map(const std::list<b2Body*>& projectiles);
   
-    Vect2D meter_to_pixel(b2Vec2 meter);
+    Vect2D meter_to_pixel(b2Vec2 meter, float offset_x, float offset_y);
 
     explicit BoxManager(std::string file_name);
     bool set_map(std::string file_name);
