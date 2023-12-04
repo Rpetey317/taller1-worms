@@ -15,7 +15,7 @@ bool LobbyHandler::create_game(const std::string& game_name, const std::string& 
     }
     */
     std::cout << "Creating game " << game_name << " with map " << map_name << std::endl;
-    games[game_name] = std::make_unique<GameWrapper>();
+    games[game_name] = std::make_unique<GameWrapper>(map_name);
     return true;
 }
 
@@ -34,6 +34,18 @@ bool LobbyHandler::join_player(const std::string& game, ServerProtocol&& player)
     std::cout << "Joining player to game " << game << std::endl;
     player.send_success();
     games[game]->add_player(std::move(player));
+    return true;
+}
+
+bool LobbyHandler::join_host(const std::string& game, ServerProtocol&& player) {
+    if (games.find(game) == games.end()) {
+        player.send_fail();
+        return false;
+    }
+    std::cout << "Joining host to game " << game << std::endl;
+    player.send_success();
+    games[game]->add_host(std::move(player));
+    games[game]->start();
     return true;
 }
 

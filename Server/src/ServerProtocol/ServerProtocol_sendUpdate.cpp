@@ -140,3 +140,11 @@ char ServerProtocol::send_TimerUpdate(const TimerUpdate& upd) {
 
     return SUCCESS;
 }
+
+char ServerProtocol::send_Start(const StartUpdate& upd) {
+    // send code
+    if (!this->send_char(SRV_START_GAME)) {
+        return CLOSED_SKT;
+    }
+    return SUCCESS;
+}

@@ -2,6 +2,7 @@
 #define __GAMEWRAPPER_H__
 
 #include <memory>
+#include <string>
 
 #include "Game.h"
 #include "GameLoopThread.h"
@@ -14,9 +15,10 @@ class GameWrapper {
     GameLoopThread game_loop;
 
 public:
-    GameWrapper();
+    explicit GameWrapper(const std::string& map_name);
 
     void add_player(ServerProtocol&& player);
+    void add_host(ServerProtocol&& player);
 
     void start();
 

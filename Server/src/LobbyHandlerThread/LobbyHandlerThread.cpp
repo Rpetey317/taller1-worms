@@ -40,12 +40,9 @@ void LobbyHandlerThread::create_game(CreateRequest& request) {
     // TODO: check if map_name is valid
 
     handler.create_game(game_name, map_name);
-    if (!handler.join_player(game_name, std::move(player))){
+    if (!handler.join_host(game_name, std::move(player))){
         return;
     }
-
-    if (player.recv_game_start())
-        handler.start_game(game_name);
 
     _keep_running = false;
 }
@@ -55,6 +52,7 @@ void LobbyHandlerThread::process_null_request(NullRequest& request) { _keep_runn
 void LobbyHandlerThread::run() {
     std::cout << "Lobby handler thread started\n";
     while (_keep_running) {
+        std::cout << "Tuki" << std::endl;
         try {
             auto request = player.recv_request();
             request->get_processed_by(*this);

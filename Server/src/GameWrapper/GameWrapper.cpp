@@ -2,9 +2,10 @@
 
 #include <utility>
 
-GameWrapper::GameWrapper(): queue(), game(queue), game_loop(queue, game) {}
+GameWrapper::GameWrapper(const std::string& _name): queue(), game(queue, _name), game_loop(queue, game) {}
 
 void GameWrapper::add_player(ServerProtocol&& player) { game.add_player(std::move(player)); }
+void GameWrapper::add_host(ServerProtocol&& player) { game.add_host(std::move(player)); }
 
 void GameWrapper::start() { game_loop.start(); }
 

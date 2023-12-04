@@ -6,5 +6,6 @@
 #include "TimerUpdate/TimerUpdate.h"
 #include "TurnChange/TurnChange.h"
 #include "WorldUpdate/WorldUpdate.h"
+#include "StartUpdate/StartUpdate.h"
 
 #include "Update.h"

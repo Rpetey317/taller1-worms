@@ -50,6 +50,10 @@ public:
      */
     void advance_worm();
 
+    void assign_worm(int id);
+
+    bool recv_start();
+
     /*
      * Gets worm ID of next worm to use
      */

@@ -32,7 +32,7 @@ int main(int argc, const char** argv) {
     Socket acc(argv[1]);
     LobbyHandler hdl;
     Queue<std::shared_ptr<Message>> eventq(10000);
-    Game game(eventq);
+    // Game game(eventq);
 
     ServerAccepterThread acc_th(std::move(acc), hdl);
     // GameLoopThread gloop(eventq, game);
@@ -47,7 +47,7 @@ int main(int argc, const char** argv) {
     }
 
     // Destruction
-    game.close();
+    // game.close();
     acc_th.end();
     acc_th.join();
     // gloop.stop();

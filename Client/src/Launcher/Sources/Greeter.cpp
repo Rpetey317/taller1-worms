@@ -90,7 +90,7 @@ void Greeter::joinToGame() {
         }
         else {
             std::cout << "Could join game" << std::endl;
-            this->protocol.recv_start_game(); // Es bloqueante?
+            this->protocol.recv_start_game(); // Es bloqueante
             close();
         }
     }

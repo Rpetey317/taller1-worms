@@ -10,8 +10,11 @@ GameLoopThread::GameLoopThread(Queue<std::shared_ptr<Message>>& _eventq, Game& _
         eventq(_eventq), game(_game) {}
 
 void GameLoopThread::run() {
+    game.recv_host_start();
+    game.divide_worms();
     // Ensure timer starts at 0
     game.reset_timer();
+    game.broadcast(std::make_shared<StartUpdate>());
     while (_keep_running) {
         std::list<std::shared_ptr<Message>> event_list;
         auto start_time = std::chrono::steady_clock::now();

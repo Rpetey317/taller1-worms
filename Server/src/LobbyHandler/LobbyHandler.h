@@ -23,6 +23,7 @@ public:
     void start_game(const std::string& game_name);
 
     bool join_player(const std::string& game, ServerProtocol&& player);
+    bool join_host(const std::string& game, ServerProtocol&& player);
 
     std::list<std::string> get_game_names();
     std::list<std::string> get_map_names();

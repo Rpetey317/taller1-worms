@@ -28,6 +28,7 @@ class Game {
     std::atomic<int> plcount;
     Queue<std::shared_ptr<Message>>& eventq;
     std::map<int, std::unique_ptr<PlayerHandler>>::iterator curr_pl;
+    std::map<int, std::unique_ptr<PlayerHandler>>::iterator host;
     int game_code;
     int next_free_id;
     Queue<int> box2d_in;
@@ -78,13 +79,19 @@ public:
     /*
      * Creates new handler, adding players (recievers) to given list
      */
-    explicit Game(Queue<std::shared_ptr<Message>>& _eventq);
+    explicit Game(Queue<std::shared_ptr<Message>>& _eventq, const std::string& map_name);
     // explicit GameHandler(Queue<std::shared_ptr<Message>>& _eventq, int code);
 
     /*
      * Adds a new player, connected to given socket
      */
     void add_player(ServerProtocol&& player);
+    void add_host(ServerProtocol&& player);
+    bool recv_host_start();
+
+    void divide_worms();
+
+    void tick_box2d();
 
     /*
      * Executes given event, returns update to be sent back to players

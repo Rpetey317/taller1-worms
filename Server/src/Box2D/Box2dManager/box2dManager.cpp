@@ -14,8 +14,8 @@ Vect2D BoxManager::meter_to_pixel(b2Vec2 meter) {
     return Vect2D(static_cast<int>((meter.x-0.12f) * 100.0f), static_cast<int>(5000.00f - ((0.245+meter.y) * 100.0f)));
 }
 
-BoxManager::BoxManager(): worms(), world(worms), timer_allows(true) {
-    set_map();
+BoxManager::BoxManager(std::string file_name): worms(), world(worms), timer_allows(true) {
+    set_map(file_name);
     std::cout << "BoxManager created con " << std::to_string(worms.size()) << " gusanos" << std::endl;
     playing_worm = worms.begin();
 }
@@ -28,9 +28,10 @@ void BoxManager::next_turn(int player_id) {
 }
 
 // should later introduce to recive the map position automatically
-bool BoxManager::set_map() {
+bool BoxManager::set_map(std::string file_name) {
     CommonMapParser parser;
-    return world.set_map(parser.get_map("mapita.yaml"));
+    std::cout << "creando mapita" << std::endl;
+    return world.set_map(parser.get_map(file_name));
 }
 
 std::map<int, Worm>* BoxManager::create_position_map(const std::list<Box2DPlayer>& worms) {
@@ -63,6 +64,10 @@ std::map<int, WeaponDTO>* BoxManager::create_proyectile_map(const std::list<b2Bo
     return positions;
 }
 
+void BoxManager::tick() {
+    this->time_ticker++;
+}
+
 std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> update) {
     b2Body* current = (*playing_worm).get_body();
     int current_command = update->get_cmd();        
@@ -70,6 +75,8 @@ std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> updat
     b2ContactEdge* contacts = current->GetContactList();
 
     Box2DPlayer* temp = (Box2DPlayer*)(current->GetUserData().pointer);
+    std::shared_ptr<BoxShoot> sh_update;
+    std::shared_ptr<BoxSpecialShoot> spsh_update;
     switch (current_command) {
         case COMMAND_LEFT:
             vel.x = -1.0f;  // modifico componente en x
@@ -91,33 +98,30 @@ std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> updat
                 current->ApplyLinearImpulse(b2Vec2(0.1f, 0.45f), current->GetWorldCenter(), true);
             }
             break;
-        
         case COMMAND_JUMP_BACKWARD:
             if (contacts != nullptr && contacts->contact != nullptr) {
                 current->ApplyLinearImpulse(b2Vec2(0.1f, 0.45f), current->GetWorldCenter(), true);
             }
             break; 
-
         case COMMAND_NEXT:
             this->next_turn(update->get_id());
             this->world.clean_projectiles(true);
+            this->time_ticker = 0;
             break;
-        
         case COMMAND_SHOOT:
-            // this->player_shoot(update->get_angle(), update->get_power(), update->get_weapon_id());
+            sh_update = std::static_pointer_cast<BoxShoot>(update);
+            this->player_shoot(sh_update->get_angle(), sh_update->get_power(), sh_update->get_weapon_id());
             break; 
-        
         case COMMAND_SPECIAL_SHOOT:
-            // this->player_special_shoot(update->get_position(), update->get_weapon_id());
+            spsh_update = std::static_pointer_cast<BoxSpecialShoot>(update);
+            this->player_special_shoot(spsh_update->get_position(), spsh_update->get_weapon_id());
             break;
-        
-        // case COMMAND_TIMER:
-        //     this->world.timer_allows = true;
-        //     break;
-
         default:
             vel.x = 0.0f;
             break;
+    }
+    if((this->time_ticker - this->detonation_tick) > 75){
+        this->world.timer_allows = true;
     }
     current->SetLinearVelocity(vel);  // seteo la nueva velocidad
     world.step();
@@ -151,18 +155,23 @@ void BoxManager::player_shoot(int angle, int power, int weapon_type) {
             Mortar(this).fire(fangle, fpower);
             break;
         case GREEN_GRANADE:
+            this->detonation_tick = this->time_ticker;
             GreenGranade(this).fire(fangle, fpower);
             break;
         case RED_GRANADE:
+            this->detonation_tick = this->time_ticker;
             RedGranade(this).fire(fangle, fpower);
             break;
         case BANANA:
+            this->detonation_tick = this->time_ticker;
             Banana(this).fire(fangle, fpower);
             break;
         case HOLY_GRANADE:
+            this->detonation_tick = this->time_ticker;
             HolyGranade(this).fire(fangle, fpower);
             break;
         case DYNAMITE:
+            this->detonation_tick = this->time_ticker;
             Dynamite(this).fire(fangle, fpower);
             break;
         case BASEBALL_BAT:
