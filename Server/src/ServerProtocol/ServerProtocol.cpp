@@ -95,11 +95,9 @@ std::shared_ptr<Message> ServerProtocol::recv_update() {
         return std::make_shared<Chat>(plid, msg);
 
     } else if (code == MSGCODE_PLAYER_MOVE_RIGHT) {
-        std::cout << "recv move right" << std::endl;
         return BoxMove::move_right(plid);
 
     } else if (code == MSGCODE_PLAYER_MOVE_LEFT) {
-        std::cout << "recv move left" << std::endl;
         return BoxMove::move_left(plid);
 
     } else if (code == MSGCODE_PLAYER_JUMP_FORWARD) {
