@@ -16,6 +16,7 @@ class CommonMapParser {
 public:
     CommonMapParser();
     std::vector<Tile> get_map(std::string file_name);
+    std::string get_background(std::string file_name);
 
 private:
 };

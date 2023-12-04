@@ -23,7 +23,7 @@ class SdlManager {
 
 public:
     SdlManager(Queue<std::shared_ptr<Action>>& outgoing, Queue<std::shared_ptr<Event>>& ingoing, int id_of_player);
-    void run(std::string background_type, std::string selected_map);  //este background_type lo deberia recibir para saber que cargar, quiza vienen por el server (?
+    void run(std::string selected_map);
 
 private:
 

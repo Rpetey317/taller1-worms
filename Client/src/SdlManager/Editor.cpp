@@ -176,6 +176,7 @@ void MapEditor::run() {
     CommonMapParser parser;
     map = parser.get_map(map_name);
     SdlMap sdl_map(camera, map, texture_manager);
+    sdl_map.update_background("../Images/TerrainSprites/back1.png");
     if (!map.empty()) {
         ammount_of_worms = sdl_map.get_amount_of_worms();
         camera.focus_object(map.front().pos_x, map.front().pos_y);
