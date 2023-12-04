@@ -1,0 +1,63 @@
+bazooka:
+  damage: 50
+  radius: 2
+  ammount_of_bullets: -1
+  ammount_of_fragments: -1
+  radius_of_fragments: -1
+  damage_of_fragments: -1
+mortar:
+  damage: 50
+  radius: 2
+  ammount_of_bullets: 10
+  ammount_of_fragments: 6
+  radius_of_fragments: 2
+  damage_of_fragments: 10
+banana:
+  damage: 70
+  radius: 4
+  ammount_of_bullets: 5
+  ammount_of_fragments: -1
+  radius_of_fragments: -1
+  damage_of_fragments: -1
+red_grenade:
+  damage: 30
+  radius: 2
+  ammount_of_bullets: 10
+  ammount_of_fragments: 6
+  radius_of_fragments: 2
+  damage_of_fragments: 10
+green_grenade:
+  damage: 30
+  radius: 2
+  ammount_of_bullets: -1
+  ammount_of_fragments: -1
+  radius_of_fragments: -1
+  damage_of_fragments: -1
+holy_grenade:
+  damage: 110
+  radius: 8
+  ammount_of_bullets: 2
+  ammount_of_fragments: -1
+  radius_of_fragments: -1
+  damage_of_fragments: -1
+air_strike:
+  damage: 40
+  radius: 2
+  ammount_of_bullets: 2
+  ammount_of_fragments: 6
+  radius_of_fragments: 2
+  damage_of_fragments: 40
+beisboll:
+  damage: 10
+  radius: -1
+  ammount_of_bullets: -1
+  ammount_of_fragments: -1
+  radius_of_fragments: -1
+  damage_of_fragments: -1
+dynamite:
+  damage: 50
+  radius: 4
+  ammount_of_bullets: 5
+  ammount_of_fragments: -1
+  radius_of_fragments: -1
+  damage_of_fragments: -1
