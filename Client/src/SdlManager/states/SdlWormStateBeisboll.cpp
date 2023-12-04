@@ -48,3 +48,7 @@ bool SdlWormStateBeisboll::reduce_ammo(std::map<std::string, int>& gun_ammo) {
 int SdlWormStateBeisboll::projectile_id() {
     return BASEBALL_BAT;
 }
+
+void SdlWormStateBeisboll::play_sound(SdlSoundManager& sound_manager) {
+    sound_manager.play_sound("BEISBOLL_HIT_SOUND");
+}

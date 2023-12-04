@@ -36,3 +36,7 @@ bool SdlWormStateBazooka::reduce_ammo(std::map<std::string, int>& gun_ammo) {
 int SdlWormStateBazooka::projectile_id() {
     return BAZOOKA;
 }
+
+void SdlWormStateBazooka::play_sound(SdlSoundManager& sound_manager) {
+    sound_manager.play_sound("BAZOOKA_MORTAR_THROWING_SOUND");
+}
