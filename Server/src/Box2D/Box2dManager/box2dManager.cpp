@@ -10,9 +10,11 @@
 #define COMMAND_EXIT -1
 #define COMMAND_RIGHT 1
 #define COMMAND_LEFT 2
-#define COMMAND_JUMP 3
-#define COMMAND_NEXT 4
-#define COMMAND_FIRE 5
+#define COMMAND_JUMP_FOWARD 3
+#define COMMAND_JUMP_BACKWARD 4
+#define COMMAND_NEXT 5
+#define COMMAND_FIRE 6
+#define COMMAND_SPECIAL_SHOOT 7
 
 #define LEFT 1
 #define RIGHT 0
@@ -90,11 +92,18 @@ std::shared_ptr<WorldUpdate> BoxManager::process(Box2DMsg& update) {
         case COMMAND_STOP:
             vel.x = 0.0f;
             break;
-        case COMMAND_JUMP:
+        case COMMAND_JUMP_FOWARD:
             if (contacts != nullptr && contacts->contact != nullptr) {
                 current->ApplyLinearImpulse(b2Vec2(0.1f, 0.45f), current->GetWorldCenter(), true);
             }
             break;
+        
+        case COMMAND_JUMP_BACKWARD:
+            if (contacts != nullptr && contacts->contact != nullptr) {
+                current->ApplyLinearImpulse(b2Vec2(0.1f, 0.45f), current->GetWorldCenter(), true);
+            }
+            break; 
+
         case COMMAND_NEXT:
             this->next_turn(update.get_id());
             break;
