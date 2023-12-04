@@ -10,6 +10,14 @@
 
 # Integrantes y division de tareas
 
+- Ruben Bohorquez: 
+
+- Paolo Belforte: 
+
+- Inaki Pujato:
+
+- Mateo Lardiez: 
+
 # Evolucion del proyecto
 
 ### Semana 1
