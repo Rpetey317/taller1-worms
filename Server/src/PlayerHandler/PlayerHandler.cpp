@@ -18,14 +18,6 @@ PlayerHandler::PlayerHandler(ServerProtocol&& _peer, Queue<std::shared_ptr<Messa
         assigned_worms(),
         last_worm_used(assigned_worms.end()) {
     std::shared_ptr<PlayerAcknowledge> ack = std::make_shared<PlayerAcknowledge>(_id);
-    // This is for debugging purposes only, delete later
-    if (_id % 2 == 0) {
-        assigned_worms.push_back(2);
-        assigned_worms.push_back(4);
-    } else {
-        assigned_worms.push_back(1);
-        assigned_worms.push_back(3);
-    }
     last_worm_used = assigned_worms.begin();
 
     this->prot.send_update(ack);

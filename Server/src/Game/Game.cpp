@@ -61,13 +61,13 @@ bool Game::recv_host_start() {
 }
 
 void Game::divide_worms() {
-    u_int i = 0;
+    std::map<int, std::unique_ptr<PlayerHandler>>::iterator it = players.begin();
     for (int j = 0; j < worm_count; j++) {
-        if (i == players.size()) {
-            i = 0;
+        if (it == players.end()) {
+            it = players.begin();
         }
-        players[i]->assign_worm(j+1);
-        i++;
+        it->second->assign_worm(j+1);
+        ++it;
     }
 }
 
