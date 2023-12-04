@@ -33,13 +33,14 @@ bool BoxManager::set_map() {
     return world.set_map(parser.get_map("mapita.yaml"));
 }
 
-std::map<int, Vect2D>* BoxManager::create_position_map(const std::list<Box2DPlayer>& worms) {
-    std::map<int, Vect2D>* positions = new std::map<int, Vect2D>();
+std::map<int, Worm>* BoxManager::create_position_map(const std::list<Box2DPlayer>& worms) {
+    std::map<int, Worm>* positions = new std::map<int, Worm>();
     for (auto worm : worms) {
         b2Body* body = worm.get_body(); // Obtener el cuerpo
         if (body && worm.is_alive()) { // Verificar si el cuerpo es válido
             b2Vec2 pos = body->GetPosition();
-            positions->insert(std::make_pair(worm.get_id(), meter_to_pixel(pos)));
+            Worm worm_class( meter_to_pixel(pos), worm.get_id(), worm.get_state(), worm.get_health_points());
+            positions->insert(std::make_pair(worm.get_id(), worm_class));
         }
     }
     return positions;

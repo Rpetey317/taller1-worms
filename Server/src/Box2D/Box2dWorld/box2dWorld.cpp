@@ -9,6 +9,9 @@
 #define LONG_BEAM '1'
 #define NEW_WORM '2'
 
+#define RIGHT 0
+#define LEFT 1
+
 #define BAT_LENGTH 0.5f
 
 BoxWorld::BoxWorld(std::list<Box2DPlayer>& worm) : worms(worm), contacts(10000) {
@@ -33,7 +36,7 @@ b2Body* BoxWorld::create_worm(float x, float y, int id) {
     myBodyDef.position.Set(x, y); 
     myBodyDef.angle = 0; 
     b2Body* worm = world->CreateBody(&myBodyDef);
-    Box2DPlayer player(id, worm);
+    Box2DPlayer player(id, worm, RIGHT, WORM_STILL);
     std::cout << "creamos un gusano y se lo empuja a la lista" << std::endl; 
     worms.push_back(player);
     std::cout << "se lo empujo a la lista y tiene tamaño " << std::to_string(worms.size()) << std::endl;
@@ -215,7 +218,7 @@ void BoxWorld::blast(){
         if ( (bodyCom - contactCenter).Length() >= blastRadius )
             continue;
         printf("encontro un cuerpo para aplicar la fuerza\n");
-        
+        Box2DPlayer* temp = (Box2DPlayer*)(body->GetUserData().pointer);
         applyBlastImpulse(body, contactCenter, bodyCom, blastPower, blastRadius);
     }
 }

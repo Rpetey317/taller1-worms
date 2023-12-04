@@ -97,7 +97,7 @@ char ServerProtocol::send_WorldUpdate(const WorldUpdate& upd) {
         }
 
         // send position
-        if (!this->send_Vect2D(it->second)) {
+        if (!this->send_Worm(it->second)) {
             return CLOSED_SKT;
         }
     }

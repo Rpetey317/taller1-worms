@@ -5,6 +5,7 @@
 #include "../../../Common/CommonMapParser/CommonMapParser.h"
 #include "../../../Common/Vect2D.h"
 #include "../../../Common/queue.h"
+#include "../../../Common/Worm.h"
 // #include "../Box2DWeapons/WeaponsHeaders.h"
 #include "ContactListener/box2dContactListener.h"
 #include "QueryCallback/box2dQueryCallback.h"
