@@ -1,11 +1,11 @@
 #ifndef PROTOCOL_H
 #define PROTOCOL_H
 
+#include <list>
 #include <memory>
 #include <utility>
 #include <variant>
 #include <vector>
-#include <list>
 
 #include "../Action/ActionHeaders.h"
 #include "../Event/EventHeaders.h"

@@ -134,7 +134,7 @@ std::shared_ptr<Event> ClientProtocol::recv_map_update() {
             return std::make_shared<NullEvent>(0);
         }
 
-        Worm worm(position,(int)state, (int)worm_id, (int)health_points);
+        Worm worm(position, (int)state, (int)worm_id, (int)health_points);
         worms[(int)player_id] = worm;
     }
 
@@ -177,7 +177,7 @@ std::shared_ptr<Event> ClientProtocol::recv_map_update() {
         WeaponDTO weapon((int)weapon_id, weapon_position, (int)angle);
         weapons[(int)player_id] = weapon;
     }
-    
+
 
     return std::make_shared<MapUpdate>(worms, weapons);
 }
@@ -314,7 +314,7 @@ char ClientProtocol::send_Shoot(Shoot action) {
     return SUCCESS;
 }
 
-std::list<std::string> ClientProtocol::req_map_info() { 
+std::list<std::string> ClientProtocol::req_map_info() {
     if (!this->send_char(CLI_REQ_MAPS)) {
         return std::list<std::string>();
     }
@@ -336,7 +336,7 @@ std::list<std::string> ClientProtocol::req_map_info() {
     return maps;
 }
 
-std::list<std::string> ClientProtocol::req_game_info() { 
+std::list<std::string> ClientProtocol::req_game_info() {
     if (!this->send_char(CLI_REQ_GAMES)) {
         return std::list<std::string>();
     }
@@ -358,7 +358,7 @@ std::list<std::string> ClientProtocol::req_game_info() {
     return games;
 }
 
-bool ClientProtocol::req_succeed() { 
+bool ClientProtocol::req_succeed() {
     std::cout << "se espera codigo de succes" << std::endl;
     char code;
     this->skt.recvall(&code, sizeof(char), &this->isclosed);
@@ -392,22 +392,22 @@ char ClientProtocol::join_game(std::string& game_name) {
     }
 
     if (!this->send_str(game_name)) {
-            return CLOSED_SKT;
-    }
-
-    return SUCCESS;
-}
-
-char ClientProtocol::send_start_game() { 
-    if(!this->send_char(CLI_REQ_START)){
         return CLOSED_SKT;
     }
 
     return SUCCESS;
 }
 
-char ClientProtocol::recv_start_game() { 
-    
+char ClientProtocol::send_start_game() {
+    if (!this->send_char(CLI_REQ_START)) {
+        return CLOSED_SKT;
+    }
+
+    return SUCCESS;
+}
+
+char ClientProtocol::recv_start_game() {
+
     msgcode_t code = this->recv_code();
     if (code == SRV_START_GAME) {
         return SUCCESS;

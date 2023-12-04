@@ -60,7 +60,7 @@ int main(int argc, char* argv[]) {
             std::cout << "Could not join to game" << std::endl;
             return ret;
         }
-        
+
         std::cout << "Game name to join or created: " << gameName.toStdString() << std::endl;
 
         Queue<std::shared_ptr<Action>> commands(10000);

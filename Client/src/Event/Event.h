@@ -6,8 +6,8 @@
 #include <vector>
 
 #include "Vect2D.h"
-#include "Worm.h"
 #include "WeaponDTO.h"
+#include "Worm.h"
 
 class ClientProtocol;
 class EventProcessor;

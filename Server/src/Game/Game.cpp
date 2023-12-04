@@ -3,9 +3,10 @@
 #include <memory>
 #include <utility>
 
+#include "CommonMapParser/CommonMapParser.h"
+
 #include "ReceiverThread.h"
 #include "SenderThread.h"
-#include "CommonMapParser/CommonMapParser.h"
 
 int ttime = 5;
 
@@ -54,9 +55,7 @@ void Game::broadcast(std::shared_ptr<Update> update) {
 
 int Game::count() { return plcount; }
 
-bool Game::recv_host_start() {
-    return this->host->second->recv_start();
-}
+bool Game::recv_host_start() { return this->host->second->recv_start(); }
 
 void Game::divide_worms() {
     std::map<int, std::unique_ptr<PlayerHandler>>::iterator it = players.begin();
@@ -64,17 +63,16 @@ void Game::divide_worms() {
         if (it == players.end()) {
             it = players.begin();
         }
-        it->second->assign_worm(j+1);
+        it->second->assign_worm(j + 1);
         ++it;
     }
 }
 
 void Game::start() {
-    for (auto pl = this->players.begin(); pl != this->players.end(); pl++)
-        (*pl).second->start();
+    for (auto pl = this->players.begin(); pl != this->players.end(); pl++) (*pl).second->start();
 }
 
-void Game::tick_box2d(){ this->box2d.tick(); }
+void Game::tick_box2d() { this->box2d.tick(); }
 
 void Game::reset_timer() { turn_start = std::chrono::steady_clock::now(); }
 

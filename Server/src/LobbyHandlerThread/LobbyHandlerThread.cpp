@@ -1,11 +1,10 @@
 #include "LobbyHandlerThread.h"
 
+#include <iostream>
 #include <list>
 #include <memory>
 #include <string>
 #include <utility>
-
-#include <iostream>
 
 #include "LibError.h"
 #include "ServerProtocol.h"
@@ -27,7 +26,7 @@ void LobbyHandlerThread::join_game(JoinRequest& request) {
     std::string& game_name = request.get_name();
     std::cout << "Joining player to game " << game_name << std::endl;
 
-    if(!handler.join_player(game_name, std::move(player))){
+    if (!handler.join_player(game_name, std::move(player))) {
         _keep_running = false;
     }
 }
@@ -40,7 +39,7 @@ void LobbyHandlerThread::create_game(CreateRequest& request) {
     // TODO: check if map_name is valid
 
     handler.create_game(game_name, map_name);
-    if (!handler.join_host(game_name, std::move(player))){
+    if (!handler.join_host(game_name, std::move(player))) {
         return;
     }
 
@@ -68,7 +67,7 @@ void LobbyHandlerThread::run() {
 bool LobbyHandlerThread::is_dead() { return !_keep_running; }
 
 void LobbyHandlerThread::stop() {
-    if(_keep_running)
+    if (_keep_running)
         player.close();
     _keep_running = false;
 }

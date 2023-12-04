@@ -15,7 +15,6 @@ public:
     int get_id();
     Vect2D get_position();
     int get_angle();
-
 };
 
-#endif // WEAPON_DTO_H
+#endif  // WEAPON_DTO_H

@@ -8,7 +8,7 @@
 
 class StartGame: public QDialog {
 public:
-    explicit StartGame();
+    StartGame();
 
 private slots:
     void StartNewGame();

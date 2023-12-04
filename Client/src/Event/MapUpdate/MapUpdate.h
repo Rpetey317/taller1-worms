@@ -7,8 +7,8 @@
 
 #include "../Event.h"
 
-#include "Worm.h"
 #include "WeaponDTO.h"
+#include "Worm.h"
 
 class MapUpdate: public Event {
     // private:
@@ -25,7 +25,7 @@ public:
     std::map<int, Vect2D> get_worm_positions() override;
 
     std::map<int, Worm> get_worms() override;
-    
+
     std::map<int, WeaponDTO> get_weapons() override;
 };
 

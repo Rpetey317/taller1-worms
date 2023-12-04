@@ -46,9 +46,7 @@ void PlayerHandler::advance_worm() {
 
 void PlayerHandler::assign_worm(int id) { assigned_worms.push_back(id); }
 
-bool PlayerHandler::recv_start() {
-    return this->prot.recv_game_start();
-}
+bool PlayerHandler::recv_start() { return this->prot.recv_game_start(); }
 
 int PlayerHandler::get_current_worm() { return *last_worm_used; }
 

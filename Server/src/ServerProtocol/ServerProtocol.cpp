@@ -108,6 +108,8 @@ std::shared_ptr<Message> ServerProtocol::recv_update(const int& plid) {
         }
         return std::make_shared<BoxShoot>(plid, weapon_id, power, angle);
 
+    } else {
+        return std::make_shared<NullMessage>();
     }
     // else if (code == MSGCODE_CHANGE_WEAPON) { // Habria que luego broadcastear el cambio de arma,
     // para que en sdl se actualice
@@ -117,9 +119,6 @@ std::shared_ptr<Message> ServerProtocol::recv_update(const int& plid) {
     //     }
     //     return std::make_shared<PlayerChangeWeapon>(plid, weapon_id);
     // }
-    else {
-        return std::make_shared<NullMessage>();
-    }
 }
 
 std::unique_ptr<Request> ServerProtocol::recv_request() {
@@ -141,7 +140,8 @@ std::unique_ptr<Request> ServerProtocol::recv_request() {
         if (!this->recv_str(game_name) || !this->recv_str(map_name)) {
             return std::make_unique<NullRequest>();
         }
-        std::cout << "Received request to create game " << game_name << " with map " << map_name << std::endl;
+        std::cout << "Received request to create game " << game_name << " with map " << map_name
+                  << std::endl;
         return std::make_unique<CreateRequest>(std::move(game_name), std::move(map_name));
     } else if (code == CLI_REQ_JOIN) {
         std::string game_name;
@@ -150,7 +150,7 @@ std::unique_ptr<Request> ServerProtocol::recv_request() {
         }
         std::cout << "Received request to join game " << game_name << std::endl;
         return std::make_unique<JoinRequest>(std::move(game_name));
-    }  else {
+    } else {
         return std::make_unique<NullRequest>();
     }
 }

@@ -117,7 +117,7 @@ char ServerProtocol::send_WorldUpdate(const WorldUpdate& upd) {
             return CLOSED_SKT;
         }
     }
-    
+
 
     return SUCCESS;
 }

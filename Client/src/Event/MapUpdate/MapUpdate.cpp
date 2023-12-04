@@ -2,7 +2,8 @@
 
 #include "../EventProcessor/EventProcessor.h"
 
-MapUpdate::MapUpdate(const std::map<int, Worm>& worms, const std::map<int, WeaponDTO>& weapons): Event(0), worms(worms), weapons(weapons) {}
+MapUpdate::MapUpdate(const std::map<int, Worm>& worms, const std::map<int, WeaponDTO>& weapons):
+        Event(0), worms(worms), weapons(weapons) {}
 
 MapUpdate::MapUpdate(const std::map<int, Worm>& worms): Event(0), worms(worms) {}
 
