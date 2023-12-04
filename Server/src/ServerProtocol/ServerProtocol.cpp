@@ -117,7 +117,8 @@ std::shared_ptr<Message> ServerProtocol::recv_update() {
 
     } else if (code == MSGCODE_SHOOT) {
 
-    } */else {
+    } */
+    else {
         return std::make_shared<NullMessage>();
     }
     return std::make_shared<NullMessage>();  // del this

@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+
 #include <yaml-cpp/yaml.h>
 
 struct Box2DConfiguration {
@@ -12,29 +13,29 @@ struct Box2DConfiguration {
 };
 
 struct WormConfiguration {
-        int health;
-        int speed;
+    int health;
+    int speed;
 };
 
 struct WeaponConfiguration {
-        int damage;
-        int radius;
-        int ammount_of_bullets;
-        int ammount_of_fragments;
-        int radius_of_fragments;
-        int damage_of_fragments;
+    int damage;
+    int radius;
+    int ammount_of_bullets;
+    int ammount_of_fragments;
+    int radius_of_fragments;
+    int damage_of_fragments;
 };
 
 struct WeaponsConfiguration {
-        WeaponConfiguration bazooka;
-        WeaponConfiguration mortar;
-        WeaponConfiguration banana;
-        WeaponConfiguration red_grenade;
-        WeaponConfiguration green_grenade;
-        WeaponConfiguration holy_grenade;
-        WeaponConfiguration air_strike;
-        WeaponConfiguration beisboll;
-        WeaponConfiguration dynamite;
+    WeaponConfiguration bazooka;
+    WeaponConfiguration mortar;
+    WeaponConfiguration banana;
+    WeaponConfiguration red_grenade;
+    WeaponConfiguration green_grenade;
+    WeaponConfiguration holy_grenade;
+    WeaponConfiguration air_strike;
+    WeaponConfiguration beisboll;
+    WeaponConfiguration dynamite;
 };
 
 class CommonConfigurationParser {
@@ -45,5 +46,5 @@ public:
     Box2DConfiguration get_box2D_configuration();
 
 private:
-        WeaponConfiguration load_weapon(std::string weapon_name, YAML::Node& config);
+    WeaponConfiguration load_weapon(std::string weapon_name, YAML::Node& config);
 };

@@ -4,15 +4,15 @@
 #define VIGA_CORTA 0
 #define VIGA_LARGA 1
 #include <iostream>
-#include <yaml-cpp/yaml.h>
 
+#include <yaml-cpp/yaml.h>
 
 
 CommonMapParser::CommonMapParser() {}
 
 std::vector<Tile> CommonMapParser::get_map(std::string file_name) {
 
-std::vector<Tile> map;
+    std::vector<Tile> map;
     std::string path("../");
     path.append(file_name);
     YAML::Node config;

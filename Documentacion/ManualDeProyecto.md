@@ -29,7 +29,7 @@ implementacion del modelo Client-Server ya que lo conociamos de los TPs individu
 ### Semana 3
  Seguimos construyendo sobre la base del Client-Server y comenzamos a avanzar por diferentes frentes cada uno con lo suyo.
 ### Semana 4
- Semana de poco a 
+ Semana de poco avance. Principalmente avances individuales, pero problemas en el intento de unirlo.
 ### Semana 5
  Similar a semana 4.
 ### Semana 6
