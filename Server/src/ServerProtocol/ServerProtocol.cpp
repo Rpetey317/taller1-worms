@@ -99,12 +99,15 @@ std::shared_ptr<Message> ServerProtocol::recv_update() {
         if (this->isclosed) {
             return std::make_shared<NullMessage>();
         }
+        std::cout << "input: " << input << std::endl;
         return std::make_shared<Box2DMsg>(plid, input);
     } else if (code == MSGCODE_PLAYER_MOVE_RIGHT) {
+        std::cout << "recv move right" << std::endl;
         return std::make_shared<Box2DMsg>(plid, 1);
     } else if (code == MSGCODE_PLAYER_MOVE_LEFT) {
+        std::cout << "recv move left" << std::endl;
         return std::make_shared<Box2DMsg>(plid, 2);
-    } else if (code == MSGCODE_PLAYER_JUMP_FORWARD) {
+    } /*else if (code == MSGCODE_PLAYER_JUMP_FORWARD) {
 
     } else if (code == MSGCODE_PLAYER_JUMP_BACKWARDS) {
 
@@ -114,7 +117,7 @@ std::shared_ptr<Message> ServerProtocol::recv_update() {
 
     } else if (code == MSGCODE_SHOOT) {
 
-    } else {
+    } */else {
         return std::make_shared<NullMessage>();
     }
     return std::make_shared<NullMessage>();  // del this

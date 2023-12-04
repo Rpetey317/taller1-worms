@@ -37,6 +37,10 @@ bool PlayerHandler::is_connected() { return prot.is_connected(); }
 void PlayerHandler::send(std::shared_ptr<Update> msg) { sendq.push(msg); }
 
 void PlayerHandler::advance_worm() {
+    if (last_worm_used == assigned_worms.end()) {
+        last_worm_used = assigned_worms.begin();
+        return;
+    }
     ++last_worm_used;
     if (last_worm_used == assigned_worms.end()) {
         last_worm_used = assigned_worms.begin();
