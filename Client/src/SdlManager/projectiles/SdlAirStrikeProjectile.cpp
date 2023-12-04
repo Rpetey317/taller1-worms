@@ -1,6 +1,6 @@
 #include "SdlAirStrikeProjectile.h"
 
-SdlAirStrikeProjectile::SdlAirStrikeProjectile(SdlProjectilesTextureManager& projectile_texture_manager, SdlCamera& camera) : SdlProjectile(projectile_texture_manager, camera) {}
+SdlAirStrikeProjectile::SdlAirStrikeProjectile(SdlSoundManager& sound_manager, SdlProjectilesTextureManager& projectile_texture_manager, SdlCamera& camera) : SdlProjectile(sound_manager, projectile_texture_manager, camera) {}
 
 
 void SdlAirStrikeProjectile::render(int x_pos, int y_pos, int angle) {

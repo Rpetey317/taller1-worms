@@ -8,7 +8,7 @@ class SdlSoundManager {
 
         public:
                 SdlSoundManager();
-                void play_sound(std::string);
+                void play_sound(std::string sound_to_play);
                 void destroy();
 
         private:
