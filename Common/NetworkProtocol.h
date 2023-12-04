@@ -32,11 +32,11 @@ const msgcode_t MSGCODE_NULL_ACTION = 0x0D;
 const msgcode_t MSGCODE_SHOOT = 0x14;
 
 // New constant names from here on
-const msgcode_t CLI_REQ_JOIN = 0xB0;
-const msgcode_t CLI_REQ_GAMES = 0xB1;
-const msgcode_t CLI_REQ_MAPS = 0xB2;
-const msgcode_t CLI_REQ_CREATE = 0xB3;
-const msgcode_t CLI_REQ_START = 0xB4;
+const msgcode_t CLI_REQ_JOIN = 0x30;
+const msgcode_t CLI_REQ_GAMES = 0x31;
+const msgcode_t CLI_REQ_MAPS = 0x32;
+const msgcode_t CLI_REQ_CREATE = 0x33;
+const msgcode_t CLI_REQ_START = 0x34;
 
 const msgcode_t SRV_RESP_GAMES = 0x20;
 const msgcode_t SRV_RESP_MAPS = 0x21;

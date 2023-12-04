@@ -84,13 +84,14 @@ std::unique_ptr<Request> ServerProtocol::recv_request() {
     if (this->isclosed) {
         return std::make_unique<NullRequest>();
     }
-    std::cout << "Received request with code " << (uint8_t)code << std::endl;
+    std::cout << "Received request with code " << (int)code << std::endl;
 
     if (code == CLI_REQ_GAMES) {
         return std::make_unique<GameDataRequest>();
     } else if (code == CLI_REQ_MAPS) {
         return std::make_unique<MapDataRequest>();
     } else if (code == CLI_REQ_CREATE) {
+        std::cout << "Received request to create game" << std::endl;
         std::string game_name;
         std::string map_name;
         if (!this->recv_str(game_name) || !this->recv_str(map_name)) {
