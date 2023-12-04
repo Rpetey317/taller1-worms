@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <list>
 #include <vector>
+#include <memory>
 
 // #include "libs/box2d/include/box2d/box2d.h"
 
@@ -43,7 +44,7 @@ public:
     bool set_map();
     void fire_projectile(float angle, float power, float restitution, int category, int mask);
     void add_player(); // should reach agreement whether position is random or sent by server
-    std::shared_ptr<WorldUpdate> process(Box2DMsg& update);
+    std::shared_ptr<WorldUpdate> process(std::shared_ptr<Box2DMsg> update);
 };
 
 #endif

@@ -17,7 +17,7 @@ class BoxManager;
 #define COMMAND_FIRE 6
 #define COMMAND_SPECIAL_SHOOT 7
 
-class Box2DMsg: public Message {
+class Box2DMsg: public Message, public std::enable_shared_from_this<Box2DMsg> {
 
     int command;
 

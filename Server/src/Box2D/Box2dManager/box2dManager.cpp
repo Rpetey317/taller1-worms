@@ -65,9 +65,9 @@ std::map<int, Vect2D>* BoxManager::create_position_map(const std::list<Box2DPlay
     return positions;
 }
 
-std::shared_ptr<WorldUpdate> BoxManager::process(Box2DMsg& update) {
+std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> update) {
     b2Body* current = (*playing_worm).get_body();
-    int current_command = update.get_cmd();        
+    int current_command = update->get_cmd();        
     b2Vec2 vel = current->GetLinearVelocity();  // vector vel del gusano
     b2ContactEdge* contacts = current->GetContactList();
 
@@ -96,15 +96,15 @@ std::shared_ptr<WorldUpdate> BoxManager::process(Box2DMsg& update) {
             break; 
 
         case COMMAND_NEXT:
-            this->next_turn(update.get_id());
+            this->next_turn(update->get_id());
             break;
         
         // case COMMAND_FIRE:
-            // this->player_shoot(update.get_angle(), update.get_power(), update.get_type());
+            // this->player_shoot(update->get_angle(), update->get_power(), update->get_type());
             // break; 
         
         // case COMMAND_SPECIAL_SHOOT:
-        //     this->player_special_shoot(update.get_position(), update.get_type());
+        //     this->player_special_shoot(update->get_position(), update->get_type());
         //     break;
 
         default:

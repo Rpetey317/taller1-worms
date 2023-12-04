@@ -94,15 +94,6 @@ std::shared_ptr<Message> ServerProtocol::recv_update() {
         std::string msg(vmsg.begin(), vmsg.end());
         return std::make_shared<Chat>(plid, msg);
 
-    } else if (code == MSGCODE_BOX2D) {
-        input_t input;
-        this->cli.recvall(&input, sizeof(input_t), &this->isclosed);
-        if (this->isclosed) {
-            return std::make_shared<NullMessage>();
-        }
-        std::cout << "input: " << input << std::endl;
-        return std::make_shared<Box2DMsg>(plid, input);
-
     } else if (code == MSGCODE_PLAYER_MOVE_RIGHT) {
         std::cout << "recv move right" << std::endl;
         return BoxMove::move_right(plid);

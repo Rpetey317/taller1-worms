@@ -61,7 +61,7 @@ std::shared_ptr<Update> Game::process_TurnAdvance(TurnAdvance& event) {
             std::make_pair(this->curr_pl->second->get_current_worm(), this->curr_pl->first);
     this->turn_start = std::chrono::steady_clock::now();
     std::cout << "New turn!" << std::endl;
-    BoxTurnAdvance msg(this->curr_pl->first);
+    std::shared_ptr<BoxTurnAdvance> msg = std::make_shared<BoxTurnAdvance>(this->curr_pl->first);
     box2d.process(msg);
     return std::make_shared<TurnChange>(new_curr_pl->first);
 }
@@ -86,6 +86,6 @@ std::shared_ptr<Update> Game::process_timer(RunTimer& event) {
     return std::make_shared<TimerUpdate>(turn_time - elapsed.count(), this->current_worm.first);
 }
 
-std::shared_ptr<Update> Game::process_box2d(Box2DMsg& event) {
+std::shared_ptr<Update> Game::process_box2d(std::shared_ptr<Box2DMsg> event) {
     return std::shared_ptr<Update>(box2d.process(event));
 }
