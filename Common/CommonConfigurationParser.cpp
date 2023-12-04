@@ -54,6 +54,7 @@ Box2DConfiguration CommonConfigurationParser::get_box2D_configuration() {
     box2d_config.pixel_to_meters = config["meters_to_pixel"].as<float>();
     box2d_config.map_height = config["map_width"].as<int>();
     box2d_config.map_width = config["map_height"].as<int>();
+    box2d_config.timer = config["timer"].as<int>();
 
     return box2d_config;
 }

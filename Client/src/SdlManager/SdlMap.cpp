@@ -82,11 +82,14 @@ void SdlMap::save_to_file(std::string& map_name) {
     }
     out_worms << YAML::EndSeq;
     out_worms << YAML::EndMap;
-    std::string path("../");
-    path.append(map_name);
-    std::ofstream fout(path);
+    YAML::Emitter out_background;
+    out_background <<YAML::BeginMap;
 
-    fout << out_small.c_str() << std::endl << out_long.c_str() << std::endl << out_worms.c_str();
+    out_background << YAML::Key << "background" << YAML::Value  << background;
+    std::ofstream fout(map_name);
+    std::string comando = "mv " + map_name + " ../Maps/" + map_name;
+    fout << out_small.c_str() << std::endl << out_long.c_str() << std::endl << out_worms.c_str() << std::endl << out_background.c_str();
+    std::system(comando.c_str());
 
 }
 void SdlMap::render_one(Tile tile) {
@@ -102,6 +105,7 @@ void SdlMap::draw_editor_map() {
 }
 
 void SdlMap::update_background(std::string background_type) {
+    background = background_type;
     textures_manager.update_background(background_type);
 }
 

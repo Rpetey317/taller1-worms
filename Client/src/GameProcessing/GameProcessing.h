@@ -33,9 +33,6 @@ public:
         Creates a GameProcessing object. It will create a socket and connect to the server.
         It will also create the threads for sending and receiving messages.
     */
-    // explicit GameProcessing(const char* hostname, const char* port,
-    //                         Queue<std::shared_ptr<Action>>& commands,
-    //                         Queue<std::shared_ptr<Event>>& events);
     explicit GameProcessing(ClientProtocol& protocol, Queue<std::shared_ptr<Action>>& commands,
                             Queue<std::shared_ptr<Event>>& events);
 
@@ -43,8 +40,6 @@ public:
         Checks if the command send by the user in the terminal is valid.
     */
     std::string ask_for_command();
-
-    void alternate_run();  // Should delete
 
     /*
         Runs the game. Receives the id of the client and runs the receiver and sender threads

@@ -37,10 +37,7 @@ SdlWormTextureManager::SdlWormTextureManager(Renderer &renderer) : renderer(rend
     image_dynamite.SetColorKey(true, SDL_MapRGB(image_dynamite.Get()->format, 128, 128,
                                        192));  
     texture_map["DYNAMITE"] = new Texture(renderer, image_dynamite);
-    Surface image_falling("../Images/Worms/wfall.png");
-    image_falling.SetColorKey(true, SDL_MapRGB(image_falling.Get()->format, 128, 128,
-                                       192));  
-    texture_map["FALLING"] = new Texture(renderer, image_falling);
+    
     Surface image_green_grenade("../Images/Worms/wthrgrn.png");
     image_green_grenade.SetColorKey(true, SDL_MapRGB(image_green_grenade.Get()->format, 128, 128,
                                        192));  
@@ -118,9 +115,9 @@ SdlWormTextureManager::SdlWormTextureManager(Renderer &renderer) : renderer(rend
                                        192));  
     texture_map["DIE"] = new Texture(renderer, image_die);  
 
-    Surface image_fall("../Images/Worms/wfall.png");
-    image_fall.SetColorKey(true, SDL_MapRGB(image_fall.Get()->format, 128, 128,
+    Surface image_falling("../Images/Worms/wfall.png");
+    image_falling.SetColorKey(true, SDL_MapRGB(image_falling.Get()->format, 128, 128,
                                        192));  
-    texture_map["FALL"] = new Texture(renderer, image_fall);  
+    texture_map["FALLING"] = new Texture(renderer, image_falling);  
 
 }

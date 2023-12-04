@@ -10,6 +10,7 @@ struct Box2DConfiguration {
     float meters_to_pixel;
     int map_width;
     int map_height;
+    int timer;
 };
 
 struct WormConfiguration {

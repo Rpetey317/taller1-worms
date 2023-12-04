@@ -40,6 +40,8 @@ class ServerProtocol {
     bool send_char(const uint8_t& num);
     bool send_str(const std::string& str);
     bool send_Vect2D(const Vect2D& pt);
+    bool send_Worm(const Worm& pt);
+    bool send_weapon(const WeaponDTO& wpn);
 
     /*
      * Primitive type receive methods, to simplify update-specific receive methods

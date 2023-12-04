@@ -46,6 +46,7 @@ const msgcode_t SRV_FAIL = 0x23;
 const msgcode_t MSGCODE_PLAYER_POSITION = 0x15;
 const msgcode_t MSGCODE_PROYECTILE_UPDATE = 0x16;
 const msgcode_t MSGCODE_TIMER = 0x17;
+const msgcode_t MSGCODE_CHANGE_WEAPON = 0x18;
 
 
 // TODO: separar los msgcodes para los que se mandan del server al client y del client al server
