@@ -31,7 +31,6 @@ void Game::add_player(ServerProtocol&& peer) {
     std::lock_guard<std::mutex> lock(this->plmtx);
     PlayerHandler* new_player = new PlayerHandler(std::move(peer), this->eventq, ++next_free_id);
     this->players.insert(std::make_pair(next_free_id, std::unique_ptr<PlayerHandler>(new_player)));
-    new_player->start();
 }
 
 void Game::add_host(ServerProtocol&& peer) {
@@ -39,7 +38,6 @@ void Game::add_host(ServerProtocol&& peer) {
     PlayerHandler* new_player = new PlayerHandler(std::move(peer), this->eventq, ++next_free_id);
     this->players.insert(std::make_pair(next_free_id, std::unique_ptr<PlayerHandler>(new_player)));
     this->host = this->players.find(next_free_id);
-    new_player->start();
 }
 
 // DD methods implemented in Game_processUpdate.cpp
@@ -69,6 +67,11 @@ void Game::divide_worms() {
         it->second->assign_worm(j+1);
         ++it;
     }
+}
+
+void Game::start() {
+    for (auto pl = this->players.begin(); pl != this->players.end(); pl++)
+        (*pl).second->start();
 }
 
 void Game::tick_box2d(){ this->box2d.tick(); }

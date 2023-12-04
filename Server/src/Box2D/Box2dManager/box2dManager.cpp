@@ -36,11 +36,13 @@ bool BoxManager::set_map(std::string file_name) {
 }
 
 std::map<int, Worm>* BoxManager::create_position_map(const std::list<Box2DPlayer>& worms) {
+    std::cout << "creando mapa de posiciones en Box2dManager (39)" << std::endl;
     std::map<int, Worm>* worms_position = new std::map<int, Worm>();
     for (auto worm : worms) {
         b2Body* body = worm.get_body(); // Obtener el cuerpo
         if (body && worm.is_alive()) { // Verificar si el cuerpo es válido
             b2Vec2 pos = body->GetPosition();
+            std::cout << "posicion del gusano segun b2d " << std::to_string(worm.get_id()) << " es " << std::to_string(pos.x) << " " << std::to_string(pos.y) << std::endl;
             Worm worm_class( meter_to_pixel(pos), worm.get_id(), worm.get_state(), worm.get_health_points());
             worms_position->insert(std::make_pair(worm.get_id(), worm_class));
         }
@@ -57,6 +59,7 @@ std::map<int, WeaponDTO>* BoxManager::create_proyectile_map(const std::list<b2Bo
             b2Vec2 pos = projectile->GetPosition();
             int angle = (int)acos(projectile->GetLinearVelocity().x / projectile->GetLinearVelocity().Length()) * configurator.get_box2D_configuration().rad_to_deg;
             Box2DPlayer* temp = (Box2DPlayer*)(projectile->GetUserData().pointer);
+            std::cout << "posicion del proyectil segun b2d " << std::to_string(temp->get_id()) << " es " << std::to_string(pos.x) << " " << std::to_string(pos.y) << "en angulo " << std::to_string(angle) << std::endl;
             WeaponDTO weapon(temp->get_id(), meter_to_pixel(pos), angle);
             positions->insert(std::make_pair(i, weapon));
         }
