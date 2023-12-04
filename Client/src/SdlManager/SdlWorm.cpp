@@ -30,6 +30,8 @@ void SdlWorm::recharge_ammo() {
 }
 
 void SdlWorm::render_same() {
+    if (health <= 0)
+        return;
     texture_manager.render(worm_state, animation_phase, x_pos - camera.get_x(), y_pos - camera.get_y(), flip);
     health_bar.set_position(x_pos - camera.get_x(), y_pos - 10 - camera.get_y());
     health_bar.set_width(health/2);
@@ -51,6 +53,16 @@ int SdlWorm::projectile_id() {
 }
 
 void SdlWorm::render_new(Vect2D position, int state) {
+    //aca obtendria el state, y haria un super switch case y le actualizaria el worm_state
+    // cuando muere un worm, me pasan su estado de muerte y despues veo que onda
+    if (worm_state == worm_states["DIE"])
+        return;
+    /*if (state == SE_MURIO) {
+        worm_state = worm_states["DIE"];
+        play_animation();
+    }*/
+    
+
     x_pos = position.x;
     y_pos = position.y;
     std::cout << x_pos << " : " << y_pos << std::endl;
@@ -173,6 +185,7 @@ health(health),  health_bar(x_pos, y_pos, 10, (health/2))
     worm_states["STILL"] = new SdlWormStateStill();
     worm_states["TELEPORT"] = new SdlWormStateTeleport();
     worm_states["WALK"] = new SdlWormStateWalk();
+    worm_states["DIE"] = new SdlWormStateDie();
 
     
 

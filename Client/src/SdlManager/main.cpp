@@ -35,3 +35,4 @@
 #include "projectiles/SdlRedGrenadeProjectile.cpp"
 #include "Editor.cpp"
 #include "SdlResizableRect.cpp"
+#include "states/SdlWormStateDie.cpp"

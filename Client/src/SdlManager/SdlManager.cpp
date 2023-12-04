@@ -246,20 +246,19 @@ bool SdlManager::main_loop(Renderer& renderer, SdlMap& map, SdlSoundManager& sou
 void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager& sound_manager, SdlWormTextureManager& worm_texture_manager) {
     std::shared_ptr<Event> event;
     bool there_is_element = ingoing.try_pop(event);
-    // LAS POSICIONES DE TODOS LOS GUSANOS, EL ID DE TODOS LOS GUSANOS, Y EL ESTADO EN EL QUE ESTAN LOS GUSANOS
-    // ESTADOS -> MOVIENDOSE, HACIENDO NADA, CAYENDO, LLEVANDO UNA DE 10 ARMAS
+    // LAS POSICIONES DE TODOS LOS GUSANOS, EL ID DE TODOS LOS GUSANOS, EL ESTADO EN EL QUE ESTAN LOS GUSANOS, Y LA VIDA
 
-    //si se conecta un gusano nuevo, podria crear el worm y le pateo los managers, asi que ellos tienen el renderer :)
     renderer.Clear();
     map.draw_map();
     
     if (there_is_element) {
-        //std::map<int, Vect2D> positions = event->get_worm_positions();
         std::map<int, Worm> server_worms = event->get_worms();
         for (auto& worm : worms) {
+
             if (!server_worms.empty()) {
                 //el id de gusano =/= id de jugador controla al gusano
                 worm.second->render_new(server_worms[worm.second->worm_id].position, server_worms[worm.second->worm_id].state);//deberia obtener el estado aca y se lo paso
+                
             } else {
                 worm.second->render_same();
             }
