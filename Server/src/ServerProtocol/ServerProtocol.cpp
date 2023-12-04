@@ -69,13 +69,13 @@ bool ServerProtocol::send_Worm(const Worm& pt) {
     if (!this->send_short(pt.position.y)) {
         return false;
     }
-    if (!this->send_short(pt.state)) {
+    if (!this->send_char(pt.state)) {
         return false;
     }
-    if (!this->send_short(pt.id)) {
+    if (!this->send_char(pt.id)) {
         return false;
     }
-    if (!this->send_short(pt.health_points)) {
+    if (!this->send_char(pt.health_points)) {
         return false;
     }
     return true;
@@ -88,10 +88,10 @@ bool ServerProtocol::send_weapon(const WeaponDTO& weapon) {
     if (!this->send_short(weapon.position.y)) {
         return false;
     }
-    if (!this->send_short(weapon.angle)) {
+    if (!this->send_char(weapon.angle)) {
         return false;
     }
-    if (!this->send_short(weapon.id)) {
+    if (!this->send_char(weapon.id)) {
         return false;
     }
     return true;
