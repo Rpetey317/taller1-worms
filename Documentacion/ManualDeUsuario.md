@@ -150,6 +150,14 @@ a la cual se desea unir el jugador.
 
 ![Alt text](joinGame.png)
 
+## Editor de mapas
+
+Si se quiere crear un nuevo mapa, se debe correr en el directiorio build del proyecto el comando:
+./client <nombre de mapa> , siendo el `nombre de mapa` el nombre de un mapa existente, si se quiere modificar el mapa, o un
+nombre del nuevo mapa que se quiere crear, en este caso se crea un nuevo mapa. Si se toca la tecla 'Escape' , se guardan los
+cambios correctamente, si se toca la X de la ventana donde se edita el mapa, no se guarda. Al guardarse los cambios, se crea o 
+modifica un archivo YAML, el cual se guarda en la carpeta 'Maps' del directorio, el cual tiene todos los mapas correspondientes
+
 # Flujo de juego
 
 

@@ -4,7 +4,7 @@
 
 - [Introduccion](#introduccion)
 - [Requerimientos del sistema](#requerimientos-del-sistema)
-- [Modulo comun](#modulo-comun)
+- [Modulo comun](#descripcion-general)
 - [Modulo cliente](#modulo-cliente)
 - [Modulo servidor](#modulo-servidor)
 
@@ -37,13 +37,17 @@ compilar y ejecutar el juego. Estas son las siguientes:
  crea un nuevo mapa, se genera un nuevo archivo YAML que se guarda en la carpeta del proyecto
 
 
-# Modulo comun
+# Descripcion general
 
-
+El trabajo cuenta con dos programas ejecutables, un cliente y un servidor, estos tendrán interacción
+por medio de un protocolo de comunicación basado en sockets TCP/IP.
+En el contexto de una aplicación o juego, el cliente cumple un papel fundamental al gestionar la
+comunicación con el usuario en la parte visible y accesible de la interfaz (front-end). Esto implica que
+el cliente no solo recibe y procesa los eventos que ocurren, sino también las acciones que el usuario
+realiza. Por otro lado, el servidor asume la responsabilidad de manejar toda la lógica del juego o la
+aplicación (back-end), respondiendo de manera adecuada a las acciones que el usuario lleva a cabo.
 
 # Modulo cliente
-
-## Descripcion general
 
 El módulo del cliente se encarga de establecer la conexión con el Servidor, gestionar las acciones
 al Servidor y procesar los eventos recibidos por el Servidor. 
