@@ -14,7 +14,6 @@
     - [Crear Partida](#crear-partida)
     - [Unirse a Partida](#unirse-a-partida)
 - [Juego](#flujo-de-juego)
-    - [Sala de espera](#sala-de-espera)
     - [Jugar](#jugar)
     - [Cheats](#cheats)
 
@@ -95,6 +94,8 @@ En una terminal, localizarse en el directorio build, creado anteriormente, ingre
 
 ### Cliente
 
+## Sala de Espera
+
 En otra terminal y parandote en el directorio build, ingrese el comando:
 
 - ./client 127.0.0.1 <port number>. Como por ejemplo ./client 127.0.0.1 8080. Ambos deben tener el mismo port number.
@@ -105,19 +106,63 @@ Al poner el mismo numero de puerto, el cliente se conecta al server, para luego 
 
 ## Movimientos
 
+El gusano tiene distintos movimientos, para los cuales se utilizan las siguientes teclas:
+
+- Moverse hacia la izquierda y derecha: flechas izquierda y derecha
+- Saltar: Tecla 'Enter' para salto hacia adelante, tecla 'Backspace' para salto hacia atras
+- Elegir arma: Con las teclas de los numeros del 0 al 9 se eligen las distinas armas, las cuales son:
+    Tecla 0: Bazooka
+    Tecla 1: Mortero
+    Tecla 2: Granada roja
+    Tecla 3: Granada verde
+    Tecla 4: Banana
+    Tecla 5: Granada santa
+    Tecla 6: Ataque aereo
+    Tecla 7: Dinamita
+    Tecla 8: Bate de beisbol
+    Tecla 9: Teletransportacion
+
+- Potencia de disparo: Con la barra espaciadora. Manteniendola apretada mas tiempo, hace el disparo mas fuerte
+- Disparar: Soltando el espacio
+
+
 ## Launcher
 
 Al conectarse el cliente con el servidor, se ejecuta el qt launcher, el cual le permite al usuario elegir unirse a una partida, 
-o crear una partida, como se puede ver en la siguiente imagen. NO OLVIDARSE DE INGRESAR IMAGEN
+o crear una partida, como se puede ver en la siguiente imagen.
+
+![Alt text](launcher.png)
 
 ## Crear Partida
 
+Se selecciona el boton 'Create Match', para el cual se abre el siguiente form, en el cual se rellena el nombre de la partida
+que se quiere crear, seleccionando el mapa que se desea elegir.
+
+![Alt text](createMatch.png)
+
+Al apretar 'Accept', se abre otro QWidget el cual espera al jugador a empezar la partida. En este momento se espera a que se
+conecten los demas jugadores que quieran jugar. Cuando se apreta 'Start Game', se comienza la partida.
+
 ## Unirse a Partida
+
+Se selecciona el boton 'Join Game' para el cual se abre el siguiente form. en el cual se pide rellenar el nombre de la partida
+a la cual se desea unir el jugador.
+
+![Alt text](joinGame.png)
 
 # Flujo de juego
 
-## Sala de Espera
 
 ## Jugar
 
+El juego esta implementado con un sistema de turnos, para el cual cada jugador tiene una determinada cantidad de tiempo (editable)
+para actuar, ya sea moviendose y/o saltando y/o disparando. Cuando se termina ese tiempo, se pasa al siguiente jugador.
+El juego fluye hasta que quede un solo jugador jugando.
+
 ## Cheats
+
+Teclas de cheats:
+
+- F1: Recargar balas
+- F2: Setear la vida en 100 a todos los gusanos
+- F3: Setear la vida en 1 a todos los gusanos
