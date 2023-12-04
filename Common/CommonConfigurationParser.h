@@ -8,8 +8,12 @@ struct Box2DConfiguration {
     float rad_to_deg;
     float pixel_to_meters;
     float meters_to_pixel;
-    int map_width;
-    int map_height;
+    float map_width;
+    float map_height;
+    float gravity;
+    float velocity_iterations;
+    float position_iterations;
+    float time_step;
 };
 
 struct WormConfiguration {
@@ -19,11 +23,12 @@ struct WormConfiguration {
 
 struct WeaponConfiguration {
     int damage;
-    int radius;
+    float radius;
     int ammount_of_bullets;
     int ammount_of_fragments;
-    int radius_of_fragments;
+    float radius_of_fragments;
     int damage_of_fragments;
+    float restitution;
 };
 
 struct WeaponsConfiguration {
@@ -34,7 +39,7 @@ struct WeaponsConfiguration {
     WeaponConfiguration green_grenade;
     WeaponConfiguration holy_grenade;
     WeaponConfiguration air_strike;
-    WeaponConfiguration beisboll;
+    WeaponConfiguration baseball;
     WeaponConfiguration dynamite;
 };
 

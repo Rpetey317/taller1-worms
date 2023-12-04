@@ -6,6 +6,7 @@
 #include "../../../Common/Vect2D.h"
 #include "../../../Common/queue.h"
 #include "../../../Common/Worm.h"
+#include "../../../Common/CommonConfigurationParser.h"
 // #include "../Box2DWeapons/WeaponsHeaders.h"
 #include "ContactListener/box2dContactListener.h"
 #include "QueryCallback/box2dQueryCallback.h"
@@ -22,6 +23,7 @@
 class BoxWorld {
     friend class BoxManager;
 
+    CommonConfigurationParser configurator;
     BoxWorld(std::list<Box2DPlayer>& worm);
     std::list<Box2DPlayer>& worms;
     Queue<b2Contact*> contacts;
@@ -42,6 +44,9 @@ class BoxWorld {
     bool create_fragments;
     bool air_check;
     bool timer_allows;
+    int fragment_amount;
+    float fragment_radius;
+    float fragment_damage;
     std::list <b2Body*> projectiles;
     std::list <b2Body*> projectiles_to_remove;
     b2Vec2 contactCenter;

@@ -11,7 +11,7 @@ class Box2DPlayer {
     int state;
     
     public:
-    Box2DPlayer(int id, b2Body* body, int direction, int state);
+    Box2DPlayer(int id, b2Body* body, int direction, int state, int health_points);
     Box2DPlayer(int id, b2Body* body);
     b2Body* get_body();
     int get_id();

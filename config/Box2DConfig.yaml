@@ -4,4 +4,8 @@ pixel_to_meters:  0.01
 meters_to_pixel: 100.0
 map_width: 5000
 map_height: 1000
+gravity: -9.8
+velocity_iterations: 6
+position_iterations: 2
+time_step: 30
   

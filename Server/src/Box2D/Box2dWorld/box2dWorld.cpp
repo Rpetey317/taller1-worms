@@ -14,17 +14,17 @@
 
 #define BAT_LENGTH 0.5f
 
-BoxWorld::BoxWorld(std::list<Box2DPlayer>& worm) : worms(worm), contacts(10000) {
+BoxWorld::BoxWorld(std::list<Box2DPlayer>& worm) : configurator(), worms(worm), contacts(10000) {
     initialize_world();
 }
 
 void BoxWorld::initialize_world() {
     // creo el mundo
-    b2Vec2 gravity(0.0f, -9.8f);  // se le da el valor de gravedad que querramos
+    b2Vec2 gravity(0.0f, configurator.get_box2D_configuration().gravity);  // se le da el valor de gravedad que querramos
     world = new b2World(gravity);
-    float height = 50.0f;
-    float width = 200.0f;
-    float zero = -0.15f;
+    float height = configurator.get_box2D_configuration().map_height;
+    float width = configurator.get_box2D_configuration().map_width;
+    float zero = 0.0f;
     contact_listener = new box2dContactListener(contacts);
     world->SetContactListener(contact_listener);
     create_ground(b2Vec2(zero,zero), b2Vec2(width,zero), b2Vec2(zero,height), b2Vec2(width, height)); 
@@ -36,7 +36,7 @@ b2Body* BoxWorld::create_worm(float x, float y, int id) {
     myBodyDef.position.Set(x, y); 
     myBodyDef.angle = 0; 
     b2Body* worm = world->CreateBody(&myBodyDef);
-    Box2DPlayer player(id, worm, RIGHT, WORM_STILL);
+    Box2DPlayer player(id, worm, RIGHT, WORM_STILL, configurator.get_worm_configuration().health);
     std::cout << "creamos un gusano y se lo empuja a la lista" << std::endl; 
     worms.push_back(player);
     std::cout << "se lo empujo a la lista y tiene tamaño " << std::to_string(worms.size()) << std::endl;
@@ -103,7 +103,7 @@ void BoxWorld::create_long_beam(b2Vec2 start, float angle){
 
     myBodyDef.type = b2_staticBody; //this will be a static body
     myBodyDef.position.Set(start.x + 0.64f, start.y - 0.095f); //slightly lower position
-    myBodyDef.angle = angle * DEGTORAD; //set the starting angle
+    myBodyDef.angle = angle * configurator.get_box2D_configuration().deg_to_rad; //set the starting angle
     b2Body* staticBody = world->CreateBody(&myBodyDef); //add body to world
     staticBody->CreateFixture(&beamFixtureDef); //add fixture to body
 }
@@ -122,7 +122,7 @@ void BoxWorld::create_short_beam(b2Vec2 start, float angle){
 
     myBodyDef.type = b2_staticBody; //this will be a static body
     myBodyDef.position.Set(start.x + 0.64f, start.y - 0.095f); //slightly lower position
-    myBodyDef.angle = angle * DEGTORAD; //set the starting angle
+    myBodyDef.angle = angle * configurator.get_box2D_configuration().deg_to_rad; //set the starting angle
     b2Body* staticBody = world->CreateBody(&myBodyDef); //add body to world
     staticBody->CreateFixture(&beamFixtureDef); //add fixture to body
 }
@@ -150,7 +150,7 @@ void applyBlastImpulse(b2Body* body, b2Vec2 blastCenter, b2Vec2 applyPoint, floa
 
 
 void BoxWorld::fragments() {
-    const int numBombs = 6;
+    const int numBombs = this->fragment_amount;
     const float angleIncrement = b2_pi / numBombs;
     for (int i = 0; i < numBombs; i++) {
         float angle = i * angleIncrement;
@@ -181,7 +181,8 @@ void BoxWorld::fragments() {
 }
 
 void BoxWorld::air_missiles(){
-    for (int i = -3; i < 3; i++) {
+    int half_amount = configurator.get_weapons_configuration().air_strike.ammount_of_fragments/2;
+    for (int i = -half_amount; i < half_amount; i++) {
         b2Vec2 bombPosition = b2Vec2(contactCenter.x + i*0.5f, 70.0f + i*0.5f);
         b2BodyDef myBodyDef;
         myBodyDef.type = b2_dynamicBody;
@@ -190,11 +191,11 @@ void BoxWorld::air_missiles(){
         b2Body* missile = world->CreateBody(&myBodyDef);
         b2CircleShape circleShape;
         circleShape.m_p.Set(0.0f, 0.0f); //position, relative to body position
-        circleShape.m_radius = 0.1f; //radius
+        circleShape.m_radius = 0.05f; //radius
         b2FixtureDef myFixtureDef;
         myFixtureDef.shape = &circleShape; //this is a pointer to the shape above
         myFixtureDef.density = 0.1f;
-        myFixtureDef.restitution = 0.0f;
+        myFixtureDef.restitution = configurator.get_weapons_configuration().air_strike.restitution;
         myFixtureDef.filter.categoryBits = AIR_MISSLE;
         myFixtureDef.filter.maskBits = WORM | BEAM;
         missile->CreateFixture(&myFixtureDef); //add a fixture to the body
@@ -256,9 +257,9 @@ void BoxWorld::clean_projectiles(bool full_clean){
 
 
 void BoxWorld::step(){
-    float timeStep = 1.0f / 30.0f;  // Paso de tiempo para la simulación (60 FPS)
-    int32 velocityIterations = 6;
-    int32 positionIterations = 2;
+    float timeStep = 1.0f / configurator.get_box2D_configuration().time_step;  // Paso de tiempo para la simulación (60 FPS)
+    int32 velocityIterations = configurator.get_box2D_configuration().velocity_iterations;
+    int32 positionIterations = configurator.get_box2D_configuration().position_iterations;
     world->Step(timeStep, velocityIterations, positionIterations);
     this->PostSolve();
 }
@@ -287,77 +288,90 @@ void BoxWorld::PostSolve(){
         if(!timer_allows)
             continue;
         if ( (a == WORM || a == BEAM) && b == BAZOOKA ) {
-            contactSolver(contact, 2.0f, 0.05f, fixtureB);
+            contactSolver(contact, configurator.get_weapons_configuration().bazooka.radius, configurator.get_weapons_configuration().bazooka.damage, fixtureB);
         }
         else if ( (b == BEAM || b == WORM) && a == BAZOOKA ) {
-            contactSolver(contact, 2.0f, 0.05f, fixtureA);
+            contactSolver(contact, configurator.get_weapons_configuration().bazooka.radius, configurator.get_weapons_configuration().bazooka.damage, fixtureA);
         }
 
         if ( (a == WORM || a == BEAM) && b == MORTAR ) {
-            contactSolver(contact, 2.0f, 0.05f, fixtureB);
+            contactSolver(contact, configurator.get_weapons_configuration().mortar.radius, configurator.get_weapons_configuration().mortar.damage, fixtureB);
+            this->fragment_amount = configurator.get_weapons_configuration().mortar.ammount_of_fragments;
+            this->fragment_damage = configurator.get_weapons_configuration().mortar.damage_of_fragments;
+            this->fragment_radius = configurator.get_weapons_configuration().mortar.radius_of_fragments;
             create_fragments = true;
         }
         else if ( (b == BEAM || b == WORM) && a == MORTAR ) {
-            contactSolver(contact, 2.0f, 0.05f, fixtureA);
+            contactSolver(contact, configurator.get_weapons_configuration().mortar.radius, configurator.get_weapons_configuration().mortar.damage, fixtureA);
+            this->fragment_amount = configurator.get_weapons_configuration().mortar.ammount_of_fragments;
+            this->fragment_damage = configurator.get_weapons_configuration().mortar.damage_of_fragments;
+            this->fragment_radius = configurator.get_weapons_configuration().mortar.radius_of_fragments;
             create_fragments = true;
         }
 
         if ( (a == WORM || a == BEAM) && b == FRAGMENT ) {
-            contactSolver(contact, 2.0f, 0.01f, fixtureB);
+            contactSolver(contact, this->fragment_damage, this->fragment_radius, fixtureB);
         }
         else if ( (b == BEAM || b == WORM) && a == FRAGMENT ) {
-            contactSolver(contact, 2.0f, 0.01f, fixtureA);
+            contactSolver(contact, this->fragment_damage, this->fragment_radius, fixtureA);
         }
 
         if ( (a == WORM || a == BEAM) && b == GREEN_GRANADE ) {
-            contactSolver(contact, 2.0f, 0.03f, fixtureB);
+            contactSolver(contact, configurator.get_weapons_configuration().green_grenade.radius, configurator.get_weapons_configuration().green_grenade.damage, fixtureB);
         }
         else if ( (b == BEAM || b == WORM) && a == GREEN_GRANADE ) {
-            contactSolver(contact, 2.0f, 0.03f, fixtureA);
+            contactSolver(contact, configurator.get_weapons_configuration().green_grenade.radius, configurator.get_weapons_configuration().green_grenade.damage, fixtureA);
         }
 
         if ( (a == WORM || a == BEAM) && b == RED_GRANADE ) {
-            contactSolver(contact, 2.0f, 0.03f, fixtureB);
+            contactSolver(contact, configurator.get_weapons_configuration().red_grenade.radius, configurator.get_weapons_configuration().red_grenade.damage, fixtureB);
+            this->fragment_amount = configurator.get_weapons_configuration().red_grenade.ammount_of_fragments;
+            this->fragment_damage = configurator.get_weapons_configuration().red_grenade.damage_of_fragments;
+            this->fragment_radius = configurator.get_weapons_configuration().red_grenade.radius_of_fragments;
             create_fragments = true;
         }
         else if ( (b == BEAM || b == WORM) && a == RED_GRANADE ) {
-            contactSolver(contact, 2.0f, 0.03f, fixtureA);
+            contactSolver(contact, configurator.get_weapons_configuration().red_grenade.radius, configurator.get_weapons_configuration().red_grenade.damage, fixtureA);
+            this->fragment_amount = configurator.get_weapons_configuration().red_grenade.ammount_of_fragments;
+            this->fragment_damage = configurator.get_weapons_configuration().red_grenade.damage_of_fragments;
+            this->fragment_radius = configurator.get_weapons_configuration().red_grenade.radius_of_fragments;
             create_fragments = true;
         }
 
         if ( (a == WORM || a == BEAM) && b == BANANA ) {
-            contactSolver(contact, 4.0f, 0.07f, fixtureB);
+            contactSolver(contact, configurator.get_weapons_configuration().banana.radius, configurator.get_weapons_configuration().banana.damage, fixtureB);
         }
         else if ( (b == BEAM || b == WORM) && a == BANANA ) {
-            contactSolver(contact, 4.0f, 0.07f, fixtureA);
+            contactSolver(contact, configurator.get_weapons_configuration().banana.radius, configurator.get_weapons_configuration().banana.damage, fixtureA);
         }
 
         if ( (a == WORM || a == BEAM) && b == HOLY_GRANADE ) {
-            contactSolver(contact, 8.0f, 0.11f, fixtureB);
+            contactSolver(contact, configurator.get_weapons_configuration().holy_grenade.radius, configurator.get_weapons_configuration().holy_grenade.damage, fixtureB);
         }
         else if ( (b == BEAM || b == WORM) && a == HOLY_GRANADE ) {
-            contactSolver(contact, 8.0f, 0.11f, fixtureA);
+            contactSolver(contact, configurator.get_weapons_configuration().holy_grenade.radius, configurator.get_weapons_configuration().holy_grenade.damage, fixtureA);
         }
 
         if ( (a == WORM || a == BEAM) && b == AIR_MISSLE ) {
-            contactSolver(contact, 2.0f, 0.04f, fixtureB);
+            contactSolver(contact, configurator.get_weapons_configuration().air_strike.radius_of_fragments, configurator.get_weapons_configuration().air_strike.damage_of_fragments, fixtureB);
         }
         else if ( (b == BEAM || b == WORM) && a == AIR_MISSLE ) {
-            contactSolver(contact, 2.0f, 0.04f, fixtureA);
+            contactSolver(contact, configurator.get_weapons_configuration().air_strike.radius_of_fragments, configurator.get_weapons_configuration().air_strike.damage_of_fragments, fixtureA);
         }
 
         if ( (a == WORM || a == BEAM) && b == DYNAMITE ) {
-            contactSolver(contact, 4.0f, 0.05f, fixtureB);
+            contactSolver(contact, configurator.get_weapons_configuration().dynamite.radius, configurator.get_weapons_configuration().dynamite.damage, fixtureB);
         }
         else if ( (b == BEAM || b == WORM) && a == DYNAMITE ) {
-            contactSolver(contact, 4.0f, 0.05f, fixtureA);
+            contactSolver(contact, configurator.get_weapons_configuration().dynamite.radius, configurator.get_weapons_configuration().dynamite.damage, fixtureA);
         }
     }
 }
 
 b2Vec2 BoxWorld::pixel_to_meter(Vect2D pixel) {
-    return b2Vec2(pixel.x * 0.01f, (pixel.y * (-0.01f)) + 50.0f);
+    return b2Vec2(pixel.x * configurator.get_box2D_configuration().pixel_to_meters, (pixel.y * (-configurator.get_box2D_configuration().pixel_to_meters)) + 50.0f);
 }
+
 #include <iostream>
 bool BoxWorld::set_map(std::vector<Tile> map) {
     for (auto tile : map) {
@@ -439,12 +453,11 @@ void BoxWorld::baseball_bat(b2Body* current, float angle, float power, float dir
     if (direction == 0) {
         batting_angle = 90 - angle;
     } else batting_angle = 270 + angle;
-
-    batting_angle = batting_angle * DEGTORAD;    
+    batting_angle = batting_angle * configurator.get_box2D_configuration().deg_to_rad;    
     b2Vec2 rayDir(sinf(batting_angle), cosf(batting_angle));
     b2Vec2 center(current->GetPosition().x, current->GetPosition().y);
     rayDir.y = -rayDir.y;    
-    b2Vec2 p2 = center + BAT_LENGTH * rayDir;
+    b2Vec2 p2 = center + configurator.get_weapons_configuration().baseball.radius * rayDir;
     box2dRayCastCallback callback;
     this->world->RayCast(&callback, center, p2);
     if (callback.body) {
@@ -452,7 +465,7 @@ void BoxWorld::baseball_bat(b2Body* current, float angle, float power, float dir
         if (body_type == WORM) {   
             Box2DPlayer* temp = (Box2DPlayer*)(callback.body->GetUserData().pointer);
             if (temp) {
-                temp->get_hurt(10);
+                temp->get_hurt(configurator.get_weapons_configuration().baseball.damage);
                 temp->get_body()->ApplyLinearImpulseToCenter( b2Vec2( 0.001f*cosf(batting_angle), 0.001f*sinf(batting_angle) ) , true );
             }
         }
