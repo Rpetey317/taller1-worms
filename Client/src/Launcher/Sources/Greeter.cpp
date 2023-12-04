@@ -48,6 +48,9 @@ void Greeter::createGame() {
         std::string gameNameString(this->gameName.toStdString());
         std::string mapNameString(this->mapName.toStdString());
 
+        std::cout << "Game started succesfully with name: " << gameName.toStdString() << " and map name: " << mapName.toStdString() << std::endl;
+        
+        
         this->protocol.create_new_game(gameNameString, mapNameString);
         bool could_create_match =this->protocol.req_succeed();
         if (!could_create_match) {
