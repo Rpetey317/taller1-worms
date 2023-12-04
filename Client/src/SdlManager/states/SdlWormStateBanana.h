@@ -17,4 +17,5 @@ class SdlWormStateBanana : public SdlWormState {
                 void render_ammo(Renderer& renderer, int ammount_of_bullets, int camera_x, int camera_y) override;
                 int projectile_id() override;
                 std::string get_name() override;
+                void play_sound(SdlSoundManager& sound_manager) override;
 };

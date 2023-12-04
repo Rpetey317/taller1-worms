@@ -59,3 +59,8 @@ std::string SdlWormStateBanana::get_name() {
 int SdlWormStateBanana::projectile_id() {
     return BANANA;
 }
+
+void SdlWormStateBanana::play_sound(SdlSoundManager& sound_manager) {
+    
+}
+    

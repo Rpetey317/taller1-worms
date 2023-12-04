@@ -1,7 +1,7 @@
 #include "SdlProjectile.h"
 
 
-SdlProjectile::SdlProjectile(SdlProjectilesTextureManager& projectile_texture_manager, SdlCamera& camera) : projectile_texture_manager(projectile_texture_manager), camera(camera) {
+SdlProjectile::SdlProjectile(SdlSoundManager& sound_manager ,SdlProjectilesTextureManager& projectile_texture_manager, SdlCamera& camera) : sound_manager(sound_manager), projectile_texture_manager(projectile_texture_manager), camera(camera) {
         x_pos = y_pos = angle = 0;
 }
 

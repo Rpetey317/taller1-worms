@@ -1,7 +1,7 @@
 #include "SdlMortarProjectile.h"
 
 
-SdlMortarProjectile::SdlMortarProjectile(SdlProjectilesTextureManager& projectile_texture_manager, SdlCamera& camera) : SdlProjectile(projectile_texture_manager, camera){
+SdlMortarProjectile::SdlMortarProjectile(SdlSoundManager& sound_manager, SdlProjectilesTextureManager& projectile_texture_manager, SdlCamera& camera) : SdlProjectile(sound_manager, projectile_texture_manager, camera){
 }
 
 void SdlMortarProjectile::render(int x_pos, int y_pos, int angle) {

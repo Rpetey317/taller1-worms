@@ -23,7 +23,7 @@ public:
     explicit SdlWorm(SdlCamera& camera, Renderer& renderer, SdlWormTextureManager& texture_manager, SdlSoundManager& sound_manager, int x_pos, int y_pos, int worm_id, int player_id, int health);
     bool next_animation();
     void change_state(std::string state);
-    void play_sound(std::string sound_to_play);
+    void play_sound();
     void render_new(Vect2D position, int state);
     void render_same();
     void destroy();

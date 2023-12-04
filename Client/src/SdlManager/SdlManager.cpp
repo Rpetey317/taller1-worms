@@ -82,8 +82,7 @@ bool SdlManager::event_handler() {
                         break;
                     if (!worms[id_worm_turn]->has_ammo())
                         break;
-                    //ACA SETEO GUSANO EN "CARGANDO ARMA", Y A CADA TICK LE SUMO UNO EL PODER
-                    worms[id_worm_turn]->play_sound("CHARGE");
+                        
                     worms[id_worm_turn]->is_charging = true;
                 }
                 break;
@@ -170,7 +169,7 @@ bool SdlManager::event_handler() {
                         break;
                     worms[id_worm_turn]->reduce_ammo();
                     worms[id_worm_turn]->play_animation();
-                    worms[id_worm_turn]->play_sound("THROWING");
+                    worms[id_worm_turn]->play_sound();
                     outgoing.push(std::make_shared<Shoot>(worms[id_worm_turn]->projectile_id(), worms[id_worm_turn]->attack_power, worms[id_worm_turn]->angle));
                     worms[id_worm_turn]->is_charging = false;
                     worms[id_worm_turn]->attack_power = 0; //en vez de worms[0], deberiamos hacer worms[jugador_en_turno], osea voy a necesitar 2 variables mas
@@ -268,6 +267,7 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
         }
         if (event->proyectile_got_exploded()) {
             is_animation_playing = true;
+            projectiles[last_projectile_used]->play_sound();
         }
     
         if (event->get_player_turn() > 0) {
@@ -307,15 +307,15 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
     renderer.Present();
 }
 
-void SdlManager::init_projectiles(SdlProjectilesTextureManager& projectiles_texture_manager, SdlCamera& camera) {
-    projectiles["BAZOOKA"] = new SdlBazookaProjectile(projectiles_texture_manager, camera);
-    projectiles["DYNAMITE"] = new SdlDynamiteProjectile(projectiles_texture_manager, camera);
-    projectiles["HOLY_GRENADE"] = new SdlHolyGrenadeProjectile(projectiles_texture_manager, camera);
-    projectiles["RED_GRENADE"] = new SdlRedGrenadeProjectile(projectiles_texture_manager, camera);
-    projectiles["GREEN_GRENADE"] = new SdlGreenGrenadeProjectile(projectiles_texture_manager, camera);
-    projectiles["MORTAR"] = new SdlMortarProjectile(projectiles_texture_manager, camera);
-    projectiles["AIR_STRIKE"] = new SdlAirStrikeProjectile(projectiles_texture_manager, camera);
-    projectiles["BANANA"] = new SdlBananaProjectile(projectiles_texture_manager, camera);
+void SdlManager::init_projectiles(SdlSoundManager& sound_manager, SdlProjectilesTextureManager& projectiles_texture_manager, SdlCamera& camera) {
+    projectiles["BAZOOKA"] = new SdlBazookaProjectile(sound_manager, projectiles_texture_manager, camera);
+    projectiles["DYNAMITE"] = new SdlDynamiteProjectile(sound_manager, projectiles_texture_manager, camera);
+    projectiles["HOLY_GRENADE"] = new SdlHolyGrenadeProjectile(sound_manager, projectiles_texture_manager, camera);
+    projectiles["RED_GRENADE"] = new SdlRedGrenadeProjectile(sound_manager, projectiles_texture_manager, camera);
+    projectiles["GREEN_GRENADE"] = new SdlGreenGrenadeProjectile(sound_manager, projectiles_texture_manager, camera);
+    projectiles["MORTAR"] = new SdlMortarProjectile(sound_manager, projectiles_texture_manager, camera);
+    projectiles["AIR_STRIKE"] = new SdlAirStrikeProjectile(sound_manager, projectiles_texture_manager, camera);
+    projectiles["BANANA"] = new SdlBananaProjectile(sound_manager, projectiles_texture_manager, camera);
 }
 
 void SdlManager::run(std::string selected_map) {
@@ -339,7 +339,7 @@ void SdlManager::run(std::string selected_map) {
     SdlSoundManager sound_manager;
     SdlWormTextureManager worm_texture_manager(renderer);
     SdlProjectilesTextureManager projectiles_texture_manager(renderer);
-    init_projectiles(projectiles_texture_manager, camera);
+    init_projectiles(sound_manager,  projectiles_texture_manager, camera);
     //aca creo los gusanos, pero deberia recibir como son los equipos y sus id
     std::vector<Tile> worms_positions = map.get_worms_positions();
     int i = 1;
