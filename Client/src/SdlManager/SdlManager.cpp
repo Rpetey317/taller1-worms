@@ -312,7 +312,7 @@ void SdlManager::init_projectiles(SdlProjectilesTextureManager& projectiles_text
     projectiles["BANANA"] = new SdlBananaProjectile(projectiles_texture_manager, camera);
 }
 
-void SdlManager::run(std::string background_type, std::string selected_map) {
+void SdlManager::run(std::string selected_map) {
     //QUIZA LA IDEA ES QUE TENGA ACA UN POP PARA RECIBIR ESTE BACKGROUND_TYPE Y SELECTED_MAP???
     //COMO HACEMOS TEMA ANIMACIONES ENTRE MUCHOS PLAYERS???
     //TENGO UNA IDEA, ADEMAS DE RECIBIR POSICIONES GUSANOS, RECIBO SUS ID Y QUE ACCION REALIAZARON
@@ -327,8 +327,8 @@ void SdlManager::run(std::string background_type, std::string selected_map) {
     Renderer renderer(window, -1, SDL_RENDERER_SOFTWARE);
     camera.set_window(&window);
     
-    SdlTexturesManager textures_manager(renderer, window, background_type);
     CommonMapParser parser;
+    SdlTexturesManager textures_manager(renderer, window, parser.get_background(selected_map));
     SdlMap map(camera, parser.get_map(selected_map), textures_manager);
     SdlSoundManager sound_manager;
     SdlWormTextureManager worm_texture_manager(renderer);

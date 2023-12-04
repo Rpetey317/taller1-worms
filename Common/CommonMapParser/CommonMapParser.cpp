@@ -10,10 +10,24 @@
 
 CommonMapParser::CommonMapParser() {}
 
+std::string CommonMapParser::get_background(std::string file_name) {
+    std::string background;
+    std::string path("../Maps/");
+    path.append(file_name);
+    YAML::Node config;
+    try {
+        config = YAML::LoadFile(path);
+    } catch (...) {
+        return background;
+    }
+    background = config["background"].as<std::string>();
+    return background;
+}
+
 std::vector<Tile> CommonMapParser::get_map(std::string file_name) {
 
 std::vector<Tile> map;
-    std::string path("../");
+    std::string path("../Maps/");
     path.append(file_name);
     YAML::Node config;
     try {
