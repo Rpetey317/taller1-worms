@@ -86,6 +86,11 @@ std::shared_ptr<Update> Game::process_timer(RunTimer& event) {
     return std::make_shared<TimerUpdate>(turn_time - elapsed.count(), this->current_worm.first);
 }
 
+// Hay que terminar de implementarla
+std::shared_ptr<Update> Game::process_player_change_weapon(PlayerChangeWeapon& event) {
+    return std::shared_ptr<Update>();
+}
+
 std::shared_ptr<Update> Game::process_box2d(std::shared_ptr<Box2DMsg> event) {
     return std::shared_ptr<Update>(box2d.process(event));
 }

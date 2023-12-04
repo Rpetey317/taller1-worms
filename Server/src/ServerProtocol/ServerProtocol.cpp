@@ -8,7 +8,6 @@
 #include <arpa/inet.h>
 
 #include "Update.h"
-#include "Update.h"
 
 // I thoroughly refuse to manually write the using directive
 // for every. single. constant. in the NetworkProtocol namespace.
@@ -118,17 +117,18 @@ std::shared_ptr<Message> ServerProtocol::recv_update() {
         }
         if (!this->cli.recvall(&angle, sizeof(uint16_t), &this->isclosed)) {
             return std::make_shared<NullMessage>();
-        }   
+        }
         return std::make_shared<BoxShoot>(plid, weapon_id, power, angle);
 
-    } 
-    // else if (code == MSGCODE_CHANGE_WEAPON) { // Habria que luego broadcastear el cambio de arma, para que en sdl se actualice
+    }
+    // else if (code == MSGCODE_CHANGE_WEAPON) { // Habria que luego broadcastear el cambio de arma,
+    // para que en sdl se actualice
     //     uint8_t weapon_id;
     //     if (!this->cli.recvall(&weapon_id, sizeof(uint8_t), &this->isclosed)) {
     //         return std::make_shared<NullMessage>();
     //     }
     //     return std::make_shared<PlayerChangeWeapon>(plid, weapon_id);
-    // } 
+    // }
     else {
         return std::make_shared<NullMessage>();
     }

@@ -233,9 +233,7 @@ char ClientProtocol::send_Jump(Jump action) {
     return SUCCESS;
 }
 
-char ClientProtocol::send_NullAction(NullAction action) {
-    return SUCCESS;
-}
+char ClientProtocol::send_NullAction(NullAction action) { return SUCCESS; }
 
 char ClientProtocol::send_Shoot(Shoot action) {
     if (!this->send_char(MSGCODE_SHOOT)) {
@@ -257,7 +255,7 @@ char ClientProtocol::send_Shoot(Shoot action) {
     return SUCCESS;
 }
 
-char ClientProtocol::send_ChangeWeapon(ChangeWeapon action) { 
+char ClientProtocol::send_ChangeWeapon(ChangeWeapon action) {
     if (!this->send_char(MSGCODE_CHANGE_WEAPON)) {
         return CLOSED_SKT;
     }

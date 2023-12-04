@@ -72,6 +72,9 @@ public:
 
     std::shared_ptr<Update> process_timer(RunTimer& event);
 
+    std::shared_ptr<Update> process_player_change_weapon(PlayerChangeWeapon& event);
+
+
     /*
      * Creates new handler, adding players (recievers) to given list
      */

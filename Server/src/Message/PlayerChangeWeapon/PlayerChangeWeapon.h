@@ -7,6 +7,7 @@
 
 class PlayerChangeWeapon: public Message {
     int type_weapon;
+
 public:
     explicit PlayerChangeWeapon(const int& _id);
 
