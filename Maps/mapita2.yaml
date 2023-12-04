@@ -1,0 +1,34 @@
+small_tiles:
+  - pos_x: 473
+    pos_y: 423
+    angle: 0
+long_tiles:
+  - pos_x: 552
+    pos_y: 426
+    angle: 0
+  - pos_x: 697
+    pos_y: 430
+    angle: 0
+  - pos_x: 839
+    pos_y: 438
+    angle: 0
+worms:
+  - pos_x: 521
+    pos_y: 365
+    angle: 0
+  - pos_x: 623
+    pos_y: 357
+    angle: 0
+  - pos_x: 627
+    pos_y: 306
+    angle: 0
+  - pos_x: 807
+    pos_y: 340
+    angle: 0
+  - pos_x: 757
+    pos_y: 371
+    angle: 0
+  - pos_x: 723
+    pos_y: 316
+    angle: 0
+background: ../Images/TerrainSprites/back1.png

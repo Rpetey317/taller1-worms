@@ -3,21 +3,19 @@
 # Tabla de Contenidos
 
 - [Guía de Instalación](#guia-de-instalación)
-    - [Requisitos](#requisitos)
-    - [Instalación de Dependencias](#instalación-de-dependecias)
+     - [Requisitos](#requisitos)
+     - [Instalación de Dependencias](#instalación-de-dependecias)
 - [Guía de Usuario](#guía-de-usuario)
-    - [Formas de ejecución](#formas-de-ejecucción)
-        - [Server](#server)
-        - [Cliente](#cliente)
+     - [Formas de ejecución](#formas-de-ejecucción)
+          - [Server](#server)
+          - [Cliente](#cliente)
 - [Cómo jugar](#cómo-jugar)
-    - [Movimientos](#movimientos)
-    - [Crear Partida](#crear-partida)
-    - [Unirse a Partida](#unirse-a-partida)
+     - [Movimientos](#movimientos)
+     - [Crear Partida](#crear-partida)
+     - [Unirse a Partida](#unirse-a-partida)
 - [Juego](#flujo-de-juego)
-    - [Jugar](#jugar)
-    - [Cheats](#cheats)
-
-
+     - [Jugar](#jugar)
+     - [Cheats](#cheats)
 
 # Guía de instalación
 
@@ -35,36 +33,36 @@ sudo apt update
 sudo apt install cmake
 sudo apt install make
 
-
 En este juego se utiliza SDL, para el cual hay que instalar diversos archivos:
 
 - Para instalar y usar la versión 0.18 de libsdl2pp:
-    sudo apt-get install libjpeg-dev libpng-dev libfreetype-dev libopusfile-dev libflac-dev libxmp-dev libfluidsynth-dev libwavpack-dev cmake libmodplug-dev libsdl2-dev
+  sudo apt-get install libjpeg-dev libpng-dev libfreetype-dev libopusfile-dev libflac-dev libxmp-dev libfluidsynth-dev libwavpack-dev cmake libmodplug-dev libsdl2-dev
 
 - Descargar los siguientes 3 zip:
-    1) ( 2.6.3, https://github.com/libsdl-org/SDL_image/releases/tag/release-2.6.3)
-    2) libsdl2-mixer (2.6.3, https://github.com/libsdl-org/SDL_mixer/releases/tag/release-2.6.3)
-    3) libsdl2-ttf (2.20.2, https://github.com/libsdl-org/SDL_ttf/releases/tag/release-2.20.2)
-  Hacer unzip de cada uno y luego ejecutar en cada respectiva carpeta:
-    cd carpeta_sdl_x
-    mkdir build
-    cd build
-    cmake ..
-    make -j4
-    sudo make install
-  
-  Luego ir a https://github.com/libSDL2pp/libSDL2pp/releases y descargarse el zip de la ultima version (libSDL2pp-0.18.1), hacer unzip y ejecutar:
-    cd libSDL2pp-0.18.1
-    mkdir build
-    cd build
-    cmake ..
-    make -j4
-    sudo make install
 
-  con eso deberian estar todas las dependencias instaladas para utilizar SDL. Luego, ir a carpeta Images y hacer unzip de los 2 zip
+     1. ( 2.6.3, https://github.com/libsdl-org/SDL_image/releases/tag/release-2.6.3)
+     2. libsdl2-mixer (2.6.3, https://github.com/libsdl-org/SDL_mixer/releases/tag/release-2.6.3)
+     3. libsdl2-ttf (2.20.2, https://github.com/libsdl-org/SDL_ttf/releases/tag/release-2.20.2)
+        Hacer unzip de cada uno y luego ejecutar en cada respectiva carpeta:
+        cd carpeta_sdl_x
+        mkdir build
+        cd build
+        cmake ..
+        make -j4
+        sudo make install
+
+     Luego ir a https://github.com/libSDL2pp/libSDL2pp/releases y descargarse el zip de la ultima version (libSDL2pp-0.18.1), hacer unzip y ejecutar:
+     cd libSDL2pp-0.18.1
+     mkdir build
+     cd build
+     cmake ..
+     make -j4
+     sudo make install
+
+     con eso deberian estar todas las dependencias instaladas para utilizar SDL. Luego, ir a carpeta Images y hacer unzip de los 2 zip
 
 Tambien se utiliza QT, para el cual se debe correr en la terminal el comando:
-    sudo apt-install qt5-default
+sudo apt-install qt5-default
 
 Se utiliza tambien box2D, para el cual no se debe instalar nada manualmente, ya que se carga todo en su respectivo CMake
 
@@ -75,10 +73,10 @@ Debe clonar el repositorio corriendo el siguiente comando en la terminal de la c
 - https://github.com/Rpetey317/taller1-worms.git
 
 Luego crear la carpeta build y ejecutar el CMake:
-    mkdir build
-    cd build
-    cmake ..
-    make
+mkdir build
+cd build
+cmake ..
+make
 
 Esto creara los archivos ejecutables server y client.
 
@@ -111,24 +109,23 @@ El gusano tiene distintos movimientos, para los cuales se utilizan las siguiente
 - Moverse hacia la izquierda y derecha: flechas izquierda y derecha
 - Saltar: Tecla 'Enter' para salto hacia adelante, tecla 'Backspace' para salto hacia atras
 - Elegir arma: Con las teclas de los numeros del 0 al 9 se eligen las distinas armas, las cuales son:
-    Tecla 0: Bazooka
-    Tecla 1: Mortero
-    Tecla 2: Granada roja
-    Tecla 3: Granada verde
-    Tecla 4: Banana
-    Tecla 5: Granada santa
-    Tecla 6: Ataque aereo
-    Tecla 7: Dinamita
-    Tecla 8: Bate de beisbol
-    Tecla 9: Teletransportacion
+  Tecla 0: Bazooka
+  Tecla 1: Mortero
+  Tecla 2: Granada roja
+  Tecla 3: Granada verde
+  Tecla 4: Banana
+  Tecla 5: Granada santa
+  Tecla 6: Ataque aereo
+  Tecla 7: Dinamita
+  Tecla 8: Bate de beisbol
+  Tecla 9: Teletransportacion
 
 - Potencia de disparo: Con la barra espaciadora. Manteniendola apretada mas tiempo, hace el disparo mas fuerte
 - Disparar: Soltando el espacio
 
-
 ## Launcher
 
-Al conectarse el cliente con el servidor, se ejecuta el qt launcher, el cual le permite al usuario elegir unirse a una partida, 
+Al conectarse el cliente con el servidor, se ejecuta el qt launcher, el cual le permite al usuario elegir unirse a una partida,
 o crear una partida, como se puede ver en la siguiente imagen.
 
 ![Alt text](launcher.png)
@@ -153,13 +150,12 @@ a la cual se desea unir el jugador.
 ## Editor de mapas
 
 Si se quiere crear un nuevo mapa, se debe correr en el directiorio build del proyecto el comando:
-./client <nombre de mapa> , siendo el `nombre de mapa` el nombre de un mapa existente, si se quiere modificar el mapa, o un
+./client <nombre de mapa.yaml> , siendo el `nombre de mapa.yaml` el nombre de un mapa existente, si se quiere modificar el mapa, o un
 nombre del nuevo mapa que se quiere crear, en este caso se crea un nuevo mapa. Si se toca la tecla 'Escape' , se guardan los
-cambios correctamente, si se toca la X de la ventana donde se edita el mapa, no se guarda. Al guardarse los cambios, se crea o 
+cambios correctamente, si se toca la X de la ventana donde se edita el mapa, no se guarda. Al guardarse los cambios, se crea o
 modifica un archivo YAML, el cual se guarda en la carpeta 'Maps' del directorio, el cual tiene todos los mapas correspondientes
 
 # Flujo de juego
-
 
 ## Jugar
 
