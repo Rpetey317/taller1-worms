@@ -11,3 +11,8 @@ std::string name("HOLY_GRENADE");
     this->angle = angle;
     projectile_texture_manager.render(name, x_pos, y_pos, angle, 0);
 }
+
+void SdlHolyGrenadeProjectile::play_sound() {
+    sound_manager.play_sound("HOLY_GRENADE_EXPLODING_SOUND");
+}
+
