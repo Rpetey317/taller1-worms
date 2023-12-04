@@ -8,6 +8,7 @@
 #include <arpa/inet.h>
 
 #include "Update.h"
+#include "Update.h"
 
 // I thoroughly refuse to manually write the using directive
 // for every. single. constant. in the NetworkProtocol namespace.
@@ -78,7 +79,6 @@ std::shared_ptr<Message> ServerProtocol::recv_update() {
 
     // TODO: fix this
     if (code == MSGCODE_PLAYER_MESSAGE) {
-
         strlen_t msg_len;
         this->cli.recvall(&msg_len, sizeof(strlen_t), &this->isclosed);
         if (this->isclosed) {
@@ -93,34 +93,36 @@ std::shared_ptr<Message> ServerProtocol::recv_update() {
         }
         std::string msg(vmsg.begin(), vmsg.end());
         return std::make_shared<Chat>(plid, msg);
-    } else if (code == MSGCODE_BOX2D) {
-        input_t input;
-        this->cli.recvall(&input, sizeof(input_t), &this->isclosed);
-        if (this->isclosed) {
-            return std::make_shared<NullMessage>();
-        }
-        std::cout << "input: " << input << std::endl;
-        return std::make_shared<Box2DMsg>(plid, input);
+
     } else if (code == MSGCODE_PLAYER_MOVE_RIGHT) {
-        std::cout << "recv move right" << std::endl;
-        return std::make_shared<Box2DMsg>(plid, 1);
+        return BoxMove::move_right(plid);
+
     } else if (code == MSGCODE_PLAYER_MOVE_LEFT) {
-        std::cout << "recv move left" << std::endl;
-        return std::make_shared<Box2DMsg>(plid, 2);
-    } /*else if (code == MSGCODE_PLAYER_JUMP_FORWARD) {
+        return BoxMove::move_left(plid);
+
+    } else if (code == MSGCODE_PLAYER_JUMP_FORWARD) {
+        return BoxJump::jump_fw(plid);
 
     } else if (code == MSGCODE_PLAYER_JUMP_BACKWARDS) {
-
-    } else if (code == MSGCODE_PLAYER_MOVE_LEFT) {
-
-    } else if (code == MSGCODE_PLAYER_MOVE_RIGHT) {
+        return BoxJump::jump_bw(plid);
 
     } else if (code == MSGCODE_SHOOT) {
+        uint8_t weapon_id;
+        uint16_t power, angle;
 
-    } */else {
+        if (!this->cli.recvall(&weapon_id, sizeof(uint8_t), &this->isclosed)) {
+            return std::make_shared<NullMessage>();
+        }
+        if (!this->cli.recvall(&power, sizeof(uint16_t), &this->isclosed)) {
+            return std::make_shared<NullMessage>();
+        }
+        if (!this->cli.recvall(&angle, sizeof(uint16_t), &this->isclosed)) {
+            return std::make_shared<NullMessage>();
+        }   
+        return std::make_shared<BoxShoot>(plid, weapon_id, power, angle);
+    } else {
         return std::make_shared<NullMessage>();
     }
-    return std::make_shared<NullMessage>();  // del this
 }
 
 msgcode_t ServerProtocol::recv_request() {

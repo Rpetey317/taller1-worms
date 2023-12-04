@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <list>
 #include <vector>
+#include <memory>
 
 // #include "libs/box2d/include/box2d/box2d.h"
 
@@ -25,25 +26,29 @@
 class BoxManager {
     std::list<Box2DPlayer> worms;
     std::list<Box2DPlayer>::iterator playing_worm;
-
-    std::list<b2Body*> projectiles;
     BoxWorld world;
+    bool timer_allows;
 
-    float direction;
     // call to function should be implemented in process 
     // but execution in corresponding class
     void next_turn(int player_id);
-    void player_shoot(float angle, float power, int type);
+    void player_shoot(int angle, int power, int weapon_type);
+    void player_special_shoot(Vect2D position, int weapon_type);
 public:
 
     std::map<int, Vect2D>* create_position_map(const std::list<Box2DPlayer>& worms);
+    // std::map<int, Vect2D>* create_proyectile_map(const std::list<b2Body*>& projectiles);
+  
     Vect2D meter_to_pixel(b2Vec2 meter);
 
     BoxManager();
     bool set_map();
-    void fire_projectile(float angle, float power, float restitution, int category, int mask);
-    void add_player(); // should reach agreement whether position is random or sent by server
-    std::shared_ptr<WorldUpdate> process(Box2DMsg& update);
+    void fire_projectile(float angle, float power, float restitution, int category, int mask, bool set_timer, int type);
+    void air_strike(Vect2D position);
+    void teleport(Vect2D position);
+    void dynamite(float restitution, int category, int mask);
+    void baseball_bat(float angle, float power);
+    std::shared_ptr<WorldUpdate> process(std::shared_ptr<Box2DMsg> update);
 };
 
 #endif

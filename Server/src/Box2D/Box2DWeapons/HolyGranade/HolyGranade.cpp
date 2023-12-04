@@ -6,7 +6,8 @@ HolyGranade::HolyGranade(BoxManager* box_manager) {
 }
 
 void HolyGranade::fire(float angle, float strength) {
-    box_manager->fire_projectile(angle, strength, 0.25, HOLY_GRANADE, WORM | BEAM);
+    int type = HOLY_GRANADE;
+    box_manager->fire_projectile(angle, strength, 0.25, HOLY_GRANADE, WORM | BEAM, false, type);
 }
 
 HolyGranade::~HolyGranade() {}

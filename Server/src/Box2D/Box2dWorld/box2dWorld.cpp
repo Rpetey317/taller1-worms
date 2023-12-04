@@ -9,6 +9,8 @@
 #define LONG_BEAM '1'
 #define NEW_WORM '2'
 
+#define BAT_LENGTH 0.5f
+
 BoxWorld::BoxWorld(std::list<Box2DPlayer>& worm) : worms(worm), contacts(10000) {
     initialize_world();
 }
@@ -35,7 +37,7 @@ b2Body* BoxWorld::create_worm(float x, float y, int id) {
     std::cout << "creamos un gusano y se lo empuja a la lista" << std::endl; 
     worms.push_back(player);
     std::cout << "se lo empujo a la lista y tiene tamaño " << std::to_string(worms.size()) << std::endl;
-    myBodyDef.userData.pointer = ((uintptr_t)&player);
+    worm->GetUserData().pointer = ((uintptr_t)&player);
     b2Vec2 vertices[6];
     vertices[0].Set(-0.06f, -0.15f);
     vertices[1].Set(-0.12f, -0.1f);
@@ -48,8 +50,7 @@ b2Body* BoxWorld::create_worm(float x, float y, int id) {
 
     b2FixtureDef boxFixtureDef;
     boxFixtureDef.shape = &wormShape;
-    boxFixtureDef.density = 2.5f;
-    boxFixtureDef.friction = 0.2f;
+    boxFixtureDef.density = 1.0f;
     boxFixtureDef.filter.categoryBits = WORM;
     boxFixtureDef.filter.maskBits = BEAM;
     worm->CreateFixture(&boxFixtureDef);
@@ -137,6 +138,8 @@ void applyBlastImpulse(b2Body* body, b2Vec2 blastCenter, b2Vec2 applyPoint, floa
 	float invDistance = 1/distance;
 	float impulseMag = (blastPower/2) * invDistance;
     if(body->GetFixtureList()->GetFilterData().categoryBits == WORM){
+        Box2DPlayer* temp = (Box2DPlayer*)(body->GetUserData().pointer);
+        temp->get_hurt(damage);
         printf("aplico una fuerza de (%f, %f) en el cuerpo parado en (%f, %f)\n\n\n\n", (impulseMag * blastDir.x), (impulseMag * blastDir.y), applyPoint.x, applyPoint.y);
         body->ApplyLinearImpulse( impulseMag * blastDir, applyPoint , true);
     }
@@ -148,7 +151,7 @@ void BoxWorld::fragments() {
     const float angleIncrement = b2_pi / numBombs;
     for (int i = 0; i < numBombs; i++) {
         float angle = i * angleIncrement;
-        b2Vec2 bombPosition = contactCenter + b2Vec2(cos(angle), sin(angle));
+        b2Vec2 bombPosition = contactCenter + b2Vec2(cosf(angle), sinf(angle));
         b2BodyDef myBodyDef;
         myBodyDef.type = b2_dynamicBody;
         b2Vec2 pos = bombPosition;
@@ -164,9 +167,12 @@ void BoxWorld::fragments() {
         myFixtureDef.filter.categoryBits = FRAGMENT;
         myFixtureDef.filter.maskBits = WORM | BEAM;
         fragment->CreateFixture(&myFixtureDef); //add a fixture to the body
-        b2Vec2 Vector = b2Vec2( 0.000001f*cos(angle), 0.000001f*sin(angle) );
+        b2Vec2 Vector = b2Vec2( 0.000001f*cosf(angle), 0.000001f*sinf(angle) );
         fragment->ApplyLinearImpulseToCenter( Vector , true );
         fragment->SetBullet(true);
+        projectiles.push_back(fragment);
+        int type = FRAGMENT;
+        fragment->GetUserData().pointer = ((uintptr_t)&type);
     }
 }
 
@@ -189,28 +195,34 @@ void BoxWorld::air_missiles(){
         myFixtureDef.filter.maskBits = WORM | BEAM;
         missile->CreateFixture(&myFixtureDef); //add a fixture to the body
         missile->SetBullet(true);
+        projectiles.push_back(missile);
+        int type = AIR_MISSLE;
+        missile->GetUserData().pointer = ((uintptr_t)&type);
+    }
+}
+
+void BoxWorld::blast(){
+    printf("check center at (%f, %f) explota con fuerza: %f y radio: %f\n", contactCenter.x, contactCenter.y, blastPower, blastRadius);
+    box2dQueryCallback queryCallback;
+    b2AABB aabb;
+    aabb.lowerBound = contactCenter - b2Vec2( blastRadius, blastRadius );
+    aabb.upperBound = contactCenter + b2Vec2( blastRadius, blastRadius );
+    world->QueryAABB( &queryCallback, aabb );
+
+    for (size_t i = 0; i < queryCallback.foundBodies.size(); i++) {
+        b2Body* body = queryCallback.foundBodies[i];
+        b2Vec2 bodyCom = body->GetWorldCenter();
+        if ( (bodyCom - contactCenter).Length() >= blastRadius )
+            continue;
+        printf("encontro un cuerpo para aplicar la fuerza\n");
+        
+        applyBlastImpulse(body, contactCenter, bodyCom, blastPower, blastRadius);
     }
 }
 
 void BoxWorld::execute_checks(){
     if (check_blast){
-        printf("check center at (%f, %f) explota con fuerza: %f y radio: %f\n", contactCenter.x, contactCenter.y, blastPower, blastRadius);
-        MyQueryCallback queryCallback;
-        b2AABB aabb;
-        aabb.lowerBound = contactCenter - b2Vec2( blastRadius, blastRadius );
-        aabb.upperBound = contactCenter + b2Vec2( blastRadius, blastRadius );
-        world->QueryAABB( &queryCallback, aabb );
-        
-        for (size_t i = 0; i < queryCallback.foundBodies.size(); i++) {
-            b2Body* body = queryCallback.foundBodies[i];
-            b2Vec2 bodyCom = body->GetWorldCenter();
-            if ( (bodyCom - contactCenter).Length() >= blastRadius )
-                continue;
-            printf("encontro un cuerpo para aplicar la fuerza\n");
-            
-            applyBlastImpulse(body, contactCenter, bodyCom, blastPower, blastRadius);
-        }
-
+        blast();
         check_blast = false;
     }
     if(create_fragments){
@@ -221,25 +233,23 @@ void BoxWorld::execute_checks(){
         air_missiles();
         air_check = false;
     }
-    if(check_teleport){
-        // current->SetTransform(b2Vec2(center.x, center.y + 0.16f), 0.0f);
-        check_teleport = false;
-    }
 }
 
-void BoxWorld::clean_projectiles(){
+void BoxWorld::clean_projectiles(bool full_clean){
     for (auto it = projectiles_to_remove.begin(); it != projectiles_to_remove.end(); ++it) {
         b2Body* projectile = *it;
         world->DestroyBody(projectile);
+        projectiles_to_remove.erase(it);
     }
-    for (auto it = projectiles.begin(); it != projectiles.end(); ++it) {
-        b2Body* projectile = *it;
-        if(projectile->GetLinearVelocity().y == 0.0f && projectile->GetLinearVelocity().x == 0.0f){
+    if(full_clean){
+        for (auto it = projectiles.begin(); it != projectiles.end(); ++it) {
+            b2Body* projectile = *it;
             world->DestroyBody(projectile);
             projectiles.erase(it);
         }
     }
 }
+
 
 void BoxWorld::step(){
     float timeStep = 1.0f / 30.0f;  // Paso de tiempo para la simulación (60 FPS)
@@ -260,7 +270,7 @@ void BoxWorld::contactSolver(b2Contact* contact, float radius, float power,  b2F
     printf("center at (%f, %f)\n", contactCenter.x, contactCenter.y);
     check_blast = true;    
     this->execute_checks();
-    this->clean_projectiles();
+    this->clean_projectiles(false);
 }
 
 void BoxWorld::PostSolve(){
@@ -270,151 +280,73 @@ void BoxWorld::PostSolve(){
         b2Fixture* fixtureB = contact->GetFixtureB();
         int a = fixtureA->GetFilterData().categoryBits;
         int b = fixtureB->GetFilterData().categoryBits;
-
-        if ( a == WORM && b == BAZOOKA ) {
+        if(!timer_allows)
+            continue;
+        if ( (a == WORM || a == BEAM) && b == BAZOOKA ) {
             contactSolver(contact, 2.0f, 0.05f, fixtureB);
         }
-        else if ( b == WORM && a == BAZOOKA ) {
-            contactSolver(contact, 2.0f, 0.05f, fixtureA);
-        }
-        else if ( a == BEAM && b == BAZOOKA ) {
-            contactSolver(contact, 2.0f, 0.05f, fixtureB);
-        }
-        else if ( b == BEAM && a == BAZOOKA ) {
+        else if ( (b == BEAM || b == WORM) && a == BAZOOKA ) {
             contactSolver(contact, 2.0f, 0.05f, fixtureA);
         }
 
-        if ( a == WORM && b == MORTAR ) {
+        if ( (a == WORM || a == BEAM) && b == MORTAR ) {
             contactSolver(contact, 2.0f, 0.05f, fixtureB);
             create_fragments = true;
         }
-        else if ( b == WORM && a == MORTAR ) {
-            contactSolver(contact, 2.0f, 0.05f, fixtureA);
-            create_fragments = true;
-        }
-        else if ( a == BEAM && b == MORTAR ) {
-            contactSolver(contact, 2.0f, 0.05f, fixtureB);
-            create_fragments = true;
-        }
-        else if ( b == BEAM && a == MORTAR ) {
+        else if ( (b == BEAM || b == WORM) && a == MORTAR ) {
             contactSolver(contact, 2.0f, 0.05f, fixtureA);
             create_fragments = true;
         }
 
-        if ( a == WORM && b == FRAGMENT ) {
+        if ( (a == WORM || a == BEAM) && b == FRAGMENT ) {
             contactSolver(contact, 2.0f, 0.01f, fixtureB);
         }
-        else if ( b == WORM && a == FRAGMENT ) {
-            contactSolver(contact, 2.0f, 0.01f, fixtureA);
-        }
-        else if ( a == BEAM && b == FRAGMENT ) {
-            contactSolver(contact, 2.0f, 0.01f, fixtureB);
-        }
-        else if ( b == BEAM && a == FRAGMENT ) {
+        else if ( (b == BEAM || b == WORM) && a == FRAGMENT ) {
             contactSolver(contact, 2.0f, 0.01f, fixtureA);
         }
 
-        if ( a == WORM && b == GREEN_GRANADE ) {
+        if ( (a == WORM || a == BEAM) && b == GREEN_GRANADE ) {
             contactSolver(contact, 2.0f, 0.03f, fixtureB);
         }
-        else if ( b == WORM && a == GREEN_GRANADE ) {
-            contactSolver(contact, 2.0f, 0.03f, fixtureA);
-        }
-        else if ( a == BEAM && b == GREEN_GRANADE ) {
-            contactSolver(contact, 2.0f, 0.03f, fixtureB);
-        }
-        else if ( b == BEAM && a == GREEN_GRANADE ) {
+        else if ( (b == BEAM || b == WORM) && a == GREEN_GRANADE ) {
             contactSolver(contact, 2.0f, 0.03f, fixtureA);
         }
 
-        if ( a == WORM && b == RED_GRANADE ) {
+        if ( (a == WORM || a == BEAM) && b == RED_GRANADE ) {
             contactSolver(contact, 2.0f, 0.03f, fixtureB);
             create_fragments = true;
         }
-        else if ( b == WORM && a == RED_GRANADE ) {
-            contactSolver(contact, 2.0f, 0.03f, fixtureA);
-            create_fragments = true;
-        }
-        else if ( a == BEAM && b == RED_GRANADE ) {
-            contactSolver(contact, 2.0f, 0.03f, fixtureB);
-            create_fragments = true;
-        }
-        else if ( b == BEAM && a == RED_GRANADE ) {
+        else if ( (b == BEAM || b == WORM) && a == RED_GRANADE ) {
             contactSolver(contact, 2.0f, 0.03f, fixtureA);
             create_fragments = true;
         }
 
-        if ( a == WORM && b == BANANA ) {
+        if ( (a == WORM || a == BEAM) && b == BANANA ) {
             contactSolver(contact, 4.0f, 0.07f, fixtureB);
         }
-        else if ( b == WORM && a == BANANA ) {
-            contactSolver(contact, 4.0f, 0.07f, fixtureA);
-        }
-        else if ( a == BEAM && b == BANANA ) {
-            contactSolver(contact, 4.0f, 0.07f, fixtureB);
-        }
-        else if ( b == BEAM && a == BANANA ) {
+        else if ( (b == BEAM || b == WORM) && a == BANANA ) {
             contactSolver(contact, 4.0f, 0.07f, fixtureA);
         }
 
-        if ( a == WORM && b == HOLY_GRANADE ) {
+        if ( (a == WORM || a == BEAM) && b == HOLY_GRANADE ) {
             contactSolver(contact, 8.0f, 0.11f, fixtureB);
         }
-        else if ( b == WORM && a == HOLY_GRANADE ) {
+        else if ( (b == BEAM || b == WORM) && a == HOLY_GRANADE ) {
             contactSolver(contact, 8.0f, 0.11f, fixtureA);
-        }
-        else if ( a == BEAM && b == HOLY_GRANADE ) {
-            contactSolver(contact, 8.0f, 0.11f, fixtureB);
-        }
-        else if ( b == BEAM && a == HOLY_GRANADE ) {
-            contactSolver(contact, 8.0f, 0.11f, fixtureA);
-        }
-        
-        if ( a == WORM && b == AIR_STRIKE ) {
-            contactSolver(contact, 0.0f, 0.0f, fixtureB);
-            air_check = true;
-        }
-        else if ( b == WORM && a == AIR_STRIKE ) {
-            contactSolver(contact, 0.0f, 0.0f, fixtureA);
-            air_check = true;
-        }
-        else if ( a == BEAM && b == AIR_STRIKE ) {
-            contactSolver(contact, 0.0f, 0.0f, fixtureB);
-            air_check = true;
-        }
-        else if ( b == BEAM && a == AIR_STRIKE ) {
-            contactSolver(contact, 0.0f, 0.0f, fixtureA);
-            air_check = true;
         }
 
-        if ( a == WORM && b == AIR_MISSLE ) {
+        if ( (a == WORM || a == BEAM) && b == AIR_MISSLE ) {
             contactSolver(contact, 2.0f, 0.04f, fixtureB);
         }
-        else if ( b == WORM && a == AIR_MISSLE ) {
-            contactSolver(contact, 2.0f, 0.04f, fixtureA);
-        }
-        else if ( a == BEAM && b == AIR_MISSLE ) {
-            contactSolver(contact, 2.0f, 0.04f, fixtureB);
-        }
-        else if ( b == BEAM && a == AIR_MISSLE ) {
+        else if ( (b == BEAM || b == WORM) && a == AIR_MISSLE ) {
             contactSolver(contact, 2.0f, 0.04f, fixtureA);
         }
 
-        if ( a == WORM && b == TELEPORT ) {
-            contactSolver(contact, 0.0f, 0.0f, fixtureB);
-            check_teleport = true;
+        if ( (a == WORM || a == BEAM) && b == DYNAMITE ) {
+            contactSolver(contact, 4.0f, 0.05f, fixtureB);
         }
-        else if ( b == WORM && a == TELEPORT ) {
-            contactSolver(contact, 0.0f, 0.0f, fixtureA);
-            check_teleport = true;
-        }
-        else if ( a == BEAM && b == TELEPORT ) {
-            contactSolver(contact, 0.0f, 0.0f, fixtureB);
-            check_teleport = true;
-        }
-        else if ( b == BEAM && a == TELEPORT ) {
-            contactSolver(contact, 0.0f, 0.0f, fixtureA);
-            check_teleport = true;
+        else if ( (b == BEAM || b == WORM) && a == DYNAMITE ) {
+            contactSolver(contact, 4.0f, 0.05f, fixtureA);
         }
     }
 }
@@ -437,7 +369,7 @@ bool BoxWorld::set_map(std::vector<Tile> map) {
                 std::cout << "creamos una larga" << std::endl;
                 break;
             case NEW_WORM:
-                create_worm(pixel_to_meter(position).x, pixel_to_meter(position).y, worms.size());
+                create_worm(pixel_to_meter(position).x, pixel_to_meter(position).y, worms.size() + 1);
                 std::cout << "creamos un gusano" << std::endl;
                 break;
             default:
@@ -447,26 +379,79 @@ bool BoxWorld::set_map(std::vector<Tile> map) {
     return true;
 }
 
-b2Body* BoxWorld::create_projectile(float x, float y, float restitution, float direction, int category, int mask) {
+b2Body* BoxWorld::create_projectile(float x, float y, float restitution, float direction, int category, int mask, bool set_timer, int type) {
+    this->timer_allows = set_timer;
     b2BodyDef myBodyDef;
     myBodyDef.type = b2_dynamicBody;
     b2Vec2 pos = b2Vec2(x,y) + b2Vec2(0.16f - 0.32f*direction, 0.15f);
     myBodyDef.position.Set(pos.x, pos.y);
     myBodyDef.position.Set(pos.x, pos.y);
     b2Body* projectile = world->CreateBody(&myBodyDef);
-
     b2CircleShape circleShape;
     circleShape.m_p.Set(0.0f, 0.0f); //position, relative to body position
-    circleShape.m_radius = 0.1f; //radius
+    circleShape.m_radius = 0.05f; //radius
     b2FixtureDef myFixtureDef;
     myFixtureDef.shape = &circleShape; //this is a pointer to the shape above
-    myFixtureDef.density = 0.001f;
+    myFixtureDef.density = 0.002f;
     myFixtureDef.restitution = restitution;
     myFixtureDef.filter.categoryBits = category;
     myFixtureDef.filter.maskBits = mask;
     projectile->CreateFixture(&myFixtureDef); //add a fixture to the body
     projectiles.push_back(projectile);
+    projectile->GetUserData().pointer = ((uintptr_t)&type);
     return projectile;
+}
+
+void BoxWorld::air_strike(Vect2D position){
+    this->contactCenter = pixel_to_meter(position);
+    this->air_check = true;
+    this->execute_checks();
+}
+
+void BoxWorld::teleport(Vect2D position, b2Body* current){
+    b2Vec2 teleport_position = pixel_to_meter(position);
+    bool valid_position = true;
+    for(b2Body* body = this->world->GetBodyList(); body != NULL; body = body->GetNext()){
+        if(body->GetFixtureList()->GetFilterData().categoryBits == BEAM){
+            if(body->GetFixtureList()->TestPoint(teleport_position)){
+                valid_position = false;
+                break;
+            }
+        }
+    }
+    if(valid_position)
+        current->SetTransform(b2Vec2(teleport_position.x, teleport_position.y + 0.16f), 0.0f);
+}
+
+void BoxWorld::dynamite(b2Vec2 position){
+    this->contactCenter = position;
+    this->check_blast = true;
+    this->execute_checks();
+}
+
+void BoxWorld::baseball_bat(b2Body* current, float angle, float power, float direction){
+    float batting_angle;
+    if (direction == 0) {
+        batting_angle = 90 - angle;
+    } else batting_angle = 270 + angle;
+
+    batting_angle = batting_angle * DEGTORAD;    
+    b2Vec2 rayDir(sinf(batting_angle), cosf(batting_angle));
+    b2Vec2 center(current->GetPosition().x, current->GetPosition().y);
+    rayDir.y = -rayDir.y;    
+    b2Vec2 p2 = center + BAT_LENGTH * rayDir;
+    box2dRayCastCallback callback;
+    this->world->RayCast(&callback, center, p2);
+    if (callback.body) {
+        int body_type = callback.body->GetFixtureList()->GetFilterData().categoryBits;
+        if (body_type == WORM) {   
+            Box2DPlayer* temp = (Box2DPlayer*)(callback.body->GetUserData().pointer);
+            if (temp) {
+                temp->get_hurt(10);
+                temp->get_body()->ApplyLinearImpulseToCenter( b2Vec2( 0.001f*cosf(batting_angle), 0.001f*sinf(batting_angle) ) , true );
+            }
+        }
+    }
 }
 
 BoxWorld::~BoxWorld() {

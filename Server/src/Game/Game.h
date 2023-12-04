@@ -68,7 +68,7 @@ public:
      */
     std::shared_ptr<Update> process_TurnAdvance(TurnAdvance& event);
 
-    std::shared_ptr<Update> process_box2d(Box2DMsg& event);
+    std::shared_ptr<Update> process_box2d(std::shared_ptr<Box2DMsg> event);
 
     std::shared_ptr<Update> process_timer(RunTimer& event);
 

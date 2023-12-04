@@ -14,4 +14,6 @@ std::shared_ptr<Message> BoxMove::move_left(int id) {
     return std::shared_ptr<Message>(new BoxMove(false, id));
 }
 
+int BoxMove::get_cmd() { return this->is_right() ? COMMAND_RIGHT : COMMAND_LEFT; }
+
 bool BoxMove::is_right() const { return this->right; }
