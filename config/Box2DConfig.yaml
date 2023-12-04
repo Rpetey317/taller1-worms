@@ -4,4 +4,4 @@ pixel_to_meters:  0.01
 meters_to_pixel: 100.0
 map_width: 5000
 map_height: 1000
-  
+timer: 30
