@@ -96,12 +96,14 @@ std::unique_ptr<Request> ServerProtocol::recv_request() {
         if (!this->recv_str(game_name) || !this->recv_str(map_name)) {
             return std::make_unique<NullRequest>();
         }
+        std::cout << "Received request to create game " << game_name << " with map " << map_name << std::endl;
         return std::make_unique<CreateRequest>(std::move(game_name), std::move(map_name));
     } else if (code == CLI_REQ_JOIN) {
         std::string game_name;
         if (!this->recv_str(game_name)) {
             return std::make_unique<NullRequest>();
         }
+        std::cout << "Received request to join game " << game_name << std::endl;
         return std::make_unique<JoinRequest>(std::move(game_name));
     }  else {
         return std::make_unique<NullRequest>();
