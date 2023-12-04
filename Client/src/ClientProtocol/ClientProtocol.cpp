@@ -257,6 +257,18 @@ char ClientProtocol::send_Shoot(Shoot action) {
     return SUCCESS;
 }
 
+char ClientProtocol::send_ChangeWeapon(ChangeWeapon action) { 
+    if (!this->send_char(MSGCODE_CHANGE_WEAPON)) {
+        return CLOSED_SKT;
+    }
+
+    if (!this->send_char(action.get_type_weapon())) {
+        return CLOSED_SKT;
+    }
+
+    return SUCCESS;
+}
+
 
 void ClientProtocol::send_code_game(size_t code) {
     // Send code game to join
