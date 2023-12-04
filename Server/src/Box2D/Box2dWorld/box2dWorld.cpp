@@ -9,6 +9,9 @@
 #define LONG_BEAM '1'
 #define NEW_WORM '2'
 
+#define RIGHT 0
+#define LEFT 1
+
 #define BAT_LENGTH 0.5f
 
 BoxWorld::BoxWorld(std::list<Box2DPlayer>& worm) : worms(worm), contacts(10000) {
@@ -33,7 +36,7 @@ b2Body* BoxWorld::create_worm(float x, float y, int id) {
     myBodyDef.position.Set(x, y); 
     myBodyDef.angle = 0; 
     b2Body* worm = world->CreateBody(&myBodyDef);
-    Box2DPlayer player(id, worm);
+    Box2DPlayer player(id, worm, RIGHT, WORM_STILL);
     std::cout << "creamos un gusano y se lo empuja a la lista" << std::endl; 
     worms.push_back(player);
     std::cout << "se lo empujo a la lista y tiene tamaño " << std::to_string(worms.size()) << std::endl;
@@ -172,7 +175,8 @@ void BoxWorld::fragments() {
         fragment->SetBullet(true);
         projectiles.push_back(fragment);
         int type = FRAGMENT;
-        fragment->GetUserData().pointer = ((uintptr_t)&type);
+        Box2DPlayer bullet(type, fragment);
+        fragment->GetUserData().pointer = ((uintptr_t)&bullet);
     }
 }
 
@@ -197,7 +201,8 @@ void BoxWorld::air_missiles(){
         missile->SetBullet(true);
         projectiles.push_back(missile);
         int type = AIR_MISSLE;
-        missile->GetUserData().pointer = ((uintptr_t)&type);
+        Box2DPlayer bullet(type, missile);
+        missile->GetUserData().pointer = ((uintptr_t)&bullet);
     }
 }
 
@@ -215,7 +220,6 @@ void BoxWorld::blast(){
         if ( (bodyCom - contactCenter).Length() >= blastRadius )
             continue;
         printf("encontro un cuerpo para aplicar la fuerza\n");
-        
         applyBlastImpulse(body, contactCenter, bodyCom, blastPower, blastRadius);
     }
 }
@@ -398,7 +402,8 @@ b2Body* BoxWorld::create_projectile(float x, float y, float restitution, float d
     myFixtureDef.filter.maskBits = mask;
     projectile->CreateFixture(&myFixtureDef); //add a fixture to the body
     projectiles.push_back(projectile);
-    projectile->GetUserData().pointer = ((uintptr_t)&type);
+    Box2DPlayer bullet(type, projectile);
+    projectile->GetUserData().pointer = ((uintptr_t)&bullet);
     return projectile;
 }
 

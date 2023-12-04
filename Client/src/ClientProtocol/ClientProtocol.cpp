@@ -98,7 +98,7 @@ std::shared_ptr<Event> ClientProtocol::recv_map_update() {
         return std::make_shared<NullEvent>(0);
     }
     // Receive players positions
-    std::map<int, Worm> worm_positions;
+    std::map<int, Worm> worms;
 
     for (int i = 0; i < amount_players; i++) {
         playerid_t player_id;
@@ -117,10 +117,69 @@ std::shared_ptr<Event> ClientProtocol::recv_map_update() {
             return std::make_shared<NullEvent>(0);
         }
         Vect2D position(Vect2D(ntohs(x), ntohs(y)));
-        Worm worm(position, (int)player_id);
-        worm_positions[(int)player_id] = worm;
+
+        uint8_t state;
+        this->skt.recvall(&state, sizeof(uint8_t), &this->isclosed);
+        if (this->isclosed) {
+            return std::make_shared<NullEvent>(0);
+        }
+        uint8_t worm_id;
+        this->skt.recvall(&worm_id, sizeof(uint8_t), &this->isclosed);
+        if (this->isclosed) {
+            return std::make_shared<NullEvent>(0);
+        }
+        uint8_t health_points;
+        this->skt.recvall(&health_points, sizeof(uint8_t), &this->isclosed);
+        if (this->isclosed) {
+            return std::make_shared<NullEvent>(0);
+        }
+
+        Worm worm(position,(int)state, (int)worm_id, (int)health_points);
+        worms[(int)player_id] = worm;
     }
-    return std::make_shared<MapUpdate>(worm_positions);
+
+    // Ahora leo el mapa de armas
+    amount_players_t amount_weapons;
+    this->skt.recvall(&amount_weapons, sizeof(amount_players_t), &this->isclosed);
+    if (this->isclosed) {
+        return std::make_shared<NullEvent>(0);
+    }
+
+    std::map<int, WeaponDTO> weapons;
+    for (int i = 0; i < amount_weapons; i++) {
+        playerid_t player_id;
+        this->skt.recvall(&player_id, sizeof(playerid_t), &this->isclosed);
+        if (this->isclosed) {
+            return std::make_shared<NullEvent>(0);
+        }
+
+        uint16_t x;
+        this->skt.recvall(&x, sizeof(uint16_t), &this->isclosed);
+        if (this->isclosed) {
+            return std::make_shared<NullEvent>(0);
+        }
+        uint16_t y;
+        this->skt.recvall(&y, sizeof(uint16_t), &this->isclosed);
+        if (this->isclosed) {
+            return std::make_shared<NullEvent>(0);
+        }
+        Vect2D weapon_position(Vect2D(ntohs(x), ntohs(y)));
+        uint8_t angle;
+        this->skt.recvall(&angle, sizeof(uint8_t), &this->isclosed);
+        if (this->isclosed) {
+            return std::make_shared<NullEvent>(0);
+        }
+        uint8_t weapon_id;
+        this->skt.recvall(&weapon_id, sizeof(uint8_t), &this->isclosed);
+        if (this->isclosed) {
+            return std::make_shared<NullEvent>(0);
+        }
+        WeaponDTO weapon((int)weapon_id, weapon_position, (int)angle);
+        weapons[(int)player_id] = weapon;
+    }
+    
+
+    return std::make_shared<MapUpdate>(worms, weapons);
 }
 
 std::shared_ptr<Event> ClientProtocol::recv_player_position() {

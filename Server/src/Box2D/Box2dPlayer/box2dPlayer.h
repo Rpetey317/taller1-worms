@@ -8,8 +8,10 @@ class Box2DPlayer {
     b2Body* body;
     int health_points;
     int direction;
+    int state;
     
     public:
+    Box2DPlayer(int id, b2Body* body, int direction, int state);
     Box2DPlayer(int id, b2Body* body);
     b2Body* get_body();
     int get_id();
@@ -17,6 +19,10 @@ class Box2DPlayer {
     void kill();
     void set_direction(int direction);
     int get_direction();
+    void set_health_points(int health_points);
+    int get_health_points();
+    void set_state(int state);
+    int get_state();
     bool is_alive();
 };
 

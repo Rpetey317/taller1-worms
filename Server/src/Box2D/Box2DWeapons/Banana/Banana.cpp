@@ -1,9 +1,7 @@
 #include "Banana.h"
 #include "../../Box2dManager/box2dManager.h"
 
-Banana::Banana(BoxManager* box_manager) {
-    this->box_manager = box_manager;
-}
+Banana::Banana(BoxManager* box_manager): box_manager(box_manager) {}
 
 void Banana::fire(float angle, float strength) {
     int type = BANANA;
