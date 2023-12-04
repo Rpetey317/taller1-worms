@@ -32,7 +32,9 @@ b2Body* BoxWorld::create_worm(float x, float y, int id) {
     myBodyDef.angle = 0; 
     b2Body* worm = world->CreateBody(&myBodyDef);
     Box2DPlayer player(id, worm);
+    std::cout << "creamos un gusano y se lo empuja a la lista" << std::endl; 
     worms.push_back(player);
+    std::cout << "se lo empujo a la lista y tiene tamaño " << std::to_string(worms.size()) << std::endl;
     myBodyDef.userData.pointer = ((uintptr_t)&player);
     b2Vec2 vertices[6];
     vertices[0].Set(-0.06f, -0.15f);
@@ -240,7 +242,7 @@ void BoxWorld::clean_projectiles(){
 }
 
 void BoxWorld::step(){
-    float timeStep = 1.0f / 60.0f;  // Paso de tiempo para la simulación (60 FPS)
+    float timeStep = 1.0f / 30.0f;  // Paso de tiempo para la simulación (60 FPS)
     int32 velocityIterations = 6;
     int32 positionIterations = 2;
     world->Step(timeStep, velocityIterations, positionIterations);

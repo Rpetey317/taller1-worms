@@ -32,7 +32,7 @@ class BoxManager {
     float direction;
     // call to function should be implemented in process 
     // but execution in corresponding class
-    void next_turn();
+    void next_turn(int player_id);
     void player_shoot(float angle, float power, int type);
 public:
 

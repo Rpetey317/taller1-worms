@@ -1,6 +1,7 @@
 
 #include "../Action/Null/NullAction.cpp"
 #include "../../../Common/CommonMapParser/CommonMapParser.cpp"
+#include "../../../Common/CommonConfigurationParser.cpp"
 #include "SdlManager.cpp"
 #include "SdlMap.cpp"
 #include "texture_sound_manager/SdlSoundManager.cpp"

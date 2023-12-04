@@ -16,7 +16,7 @@ public:
     void get_processed_by(EventProcessor& eventProcessor) override;
 
     int get_duration() override;
-    
+
     int get_player_turn() override;
 
     ~Timer() = default;

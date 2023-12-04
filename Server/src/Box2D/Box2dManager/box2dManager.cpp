@@ -10,9 +10,11 @@
 #define COMMAND_EXIT -1
 #define COMMAND_RIGHT 1
 #define COMMAND_LEFT 2
-#define COMMAND_JUMP 3
-#define COMMAND_NEXT 4
-#define COMMAND_FIRE 5
+#define COMMAND_JUMP_FOWARD 3
+#define COMMAND_JUMP_BACKWARD 4
+#define COMMAND_NEXT 5
+#define COMMAND_FIRE 6
+#define COMMAND_SPECIAL_SHOOT 7
 
 #define LEFT 1
 #define RIGHT 0
@@ -23,6 +25,8 @@ Vect2D BoxManager::meter_to_pixel(b2Vec2 meter) {
 
 BoxManager::BoxManager(): worms(), world(worms) {
     set_map();
+    std::cout << "BoxManager created con " << std::to_string(worms.size()) << " gusanos" << std::endl;
+    playing_worm = worms.begin();
 }
 
 void BoxManager::add_player() {
@@ -33,9 +37,21 @@ void BoxManager::add_player() {
         playing_worm = worms.begin();
 }
 
-void BoxManager::next_turn() {
-    if(++playing_worm == worms.end())
-        playing_worm = worms.begin();
+void BoxManager::next_turn(int player_id) {
+    std::cout << "Next turn en b2d manager y va al " << std::to_string(player_id) << std::endl;
+    // // if(++playing_worm == worms.end())
+    // //     playing_worm = worms.begin();
+    // if (playing_worm == worms.end()) {
+    //     playing_worm = worms.begin();
+    //     return;
+    // }
+    // ++playing_worm;
+    // if (playing_worm == worms.end()) {
+    //     playing_worm = worms.begin();
+    // }
+    auto it = worms.begin();
+    std::advance(it, player_id - 1);
+    playing_worm = it;
 }
 
 // should later introduce to recive the map position automatically
@@ -46,11 +62,13 @@ bool BoxManager::set_map() {
 
 std::map<int, Vect2D>* BoxManager::create_position_map(const std::list<Box2DPlayer>& worms) {
     std::map<int, Vect2D>* positions = new std::map<int, Vect2D>();
+    int i = 1;
     for (auto worm : worms) {
         b2Body* body = worm.get_body(); // Obtener el cuerpo
         if (body) { // Verificar si el cuerpo es válido
             b2Vec2 pos = body->GetPosition();
-            positions->insert(std::make_pair(worm.get_id(), meter_to_pixel(pos)));
+            positions->insert(std::make_pair(i, meter_to_pixel(pos)));
+            i++;
         }
     }
     return positions;
@@ -74,13 +92,20 @@ std::shared_ptr<WorldUpdate> BoxManager::process(Box2DMsg& update) {
         case COMMAND_STOP:
             vel.x = 0.0f;
             break;
-        case COMMAND_JUMP:
+        case COMMAND_JUMP_FOWARD:
             if (contacts != nullptr && contacts->contact != nullptr) {
                 current->ApplyLinearImpulse(b2Vec2(0.1f, 0.45f), current->GetWorldCenter(), true);
             }
             break;
+        
+        case COMMAND_JUMP_BACKWARD:
+            if (contacts != nullptr && contacts->contact != nullptr) {
+                current->ApplyLinearImpulse(b2Vec2(0.1f, 0.45f), current->GetWorldCenter(), true);
+            }
+            break; 
+
         case COMMAND_NEXT:
-            this->next_turn();
+            this->next_turn(update.get_id());
             break;
         
         // case COMMAND_FIRE:

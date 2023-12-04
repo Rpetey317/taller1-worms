@@ -14,18 +14,31 @@ void SdlWorm::set_health(int new_health) {
 
 void SdlWorm::recharge_ammo() {
 
-    gun_ammo["NULL"] = 0;
-    gun_ammo["BANANA"] = -1;
-    gun_ammo["BAZOOKA"] = -1;
-    gun_ammo["BEISBOLL"] = -1;
+    /*gun_ammo["NULL"] = 0;
+    gun_ammo["BANANA"] = weapon_config.banana.ammount_of_bullets;
+    gun_ammo["BAZOOKA"] = weapon_config.bazooka.ammount_of_bullets;
+    gun_ammo["BEISBOLL"] = weapon_config.beisboll.ammount_of_bullets;
     gun_ammo["TELEPORT"] = -1;
 
-    gun_ammo["MORTAR"] = 10;
-    gun_ammo["GREEN_GRENADE"] = 5;
-    gun_ammo["HOLY_GRENADE"] = 2;
-    gun_ammo["DYNAMITE"] = 5;
-    gun_ammo["RED_GRENADE"] = 10;
-    gun_ammo["AIR_STRIKE"] = 2;
+    gun_ammo["MORTAR"] = weapon_config.mortar.ammount_of_bullets;
+    gun_ammo["GREEN_GRENADE"] = weapon_config.green_grenade.ammount_of_bullets;
+    gun_ammo["HOLY_GRENADE"] = weapon_config.holy_grenade.ammount_of_bullets;
+    gun_ammo["DYNAMITE"] = weapon_config.dynamite.ammount_of_bullets;
+    gun_ammo["RED_GRENADE"] = weapon_config.red_grenade.ammount_of_bullets;
+    gun_ammo["AIR_STRIKE"] = weapon_config.air_strike.ammount_of_bullets;*/
+    gun_ammo["NULL"] = 0;
+    gun_ammo["BANANA"] = weapon_config.banana.ammount_of_bullets;
+    gun_ammo["BAZOOKA"] = weapon_config.bazooka.ammount_of_bullets;
+    gun_ammo["BEISBOLL"] = weapon_config.beisboll.ammount_of_bullets;
+    gun_ammo["TELEPORT"] = -1;
+
+    gun_ammo["MORTAR"] = weapon_config.mortar.ammount_of_bullets;
+    gun_ammo["GREEN_GRENADE"] = weapon_config.green_grenade.ammount_of_bullets;
+    gun_ammo["HOLY_GRENADE"] = weapon_config.holy_grenade.ammount_of_bullets;
+    gun_ammo["DYNAMITE"] = weapon_config.dynamite.ammount_of_bullets;
+    gun_ammo["RED_GRENADE"] = weapon_config.red_grenade.ammount_of_bullets;
+    gun_ammo["AIR_STRIKE"] = weapon_config.air_strike.ammount_of_bullets;
+
 }
 
 void SdlWorm::render_health_bar() {
@@ -151,6 +164,10 @@ SdlWorm::SdlWorm(SdlCamera& camera, Renderer& renderer, SdlWormTextureManager& t
     health_bar_delim.SetH(12);
     health_bar_delim.SetW((health/2) + 2);
     set_color();
+    CommonConfigurationParser configuration_parser;
+    worm_config = configuration_parser.get_worm_configuration();
+    weapon_config = configuration_parser.get_weapons_configuration();
+
 
     worm_states["AIR_STRIKE"] = new SdlWormStateAirStrike();
     worm_states["BANANA"] = new SdlWormStateBanana();
