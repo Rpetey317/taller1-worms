@@ -39,8 +39,10 @@ std::map<int, Worm>* BoxManager::create_position_map(const std::list<Box2DPlayer
     std::map<int, Worm>* worms_position = new std::map<int, Worm>();
     for (auto worm : worms) {
         b2Body* body = worm.get_body(); // Obtener el cuerpo
-        if (body && worm.is_alive()) { // Verificar si el cuerpo es válido
+        if (body) { // Verificar si el cuerpo es válido
             b2Vec2 pos = body->GetPosition();
+            if(worm.is_falling() && worm.get_state() != WORM_DEAD)
+                worm.set_state(WORM_FALLING);
             std::cout << "posicion del gusano segun b2d " << std::to_string(worm.get_id()) << " es " << std::to_string(meter_to_pixel(pos, 0.12f, 0.245f).x) << " " << std::to_string(meter_to_pixel(pos, 0.12f, 0.245f).y) << std::endl;
             Worm worm_class( meter_to_pixel(pos, 0.12f, 0.245f), worm.get_id(), worm.get_state(), worm.get_health_points());
             worms_position->insert(std::make_pair(worm.get_id(), worm_class));
@@ -86,16 +88,21 @@ std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> updat
             vel.x = -configurator.get_worm_configuration().speed;  // modifico componente en x
             if (temp) {
                 temp->set_direction(LEFT);
+                temp->set_state(WORM_WALKING);
             }
             break;
         case COMMAND_RIGHT:
             vel.x = configurator.get_worm_configuration().speed;
             if (temp) {
                 temp->set_direction(RIGHT);
+                temp->set_state(WORM_WALKING);
             }
             break;
         case COMMAND_STOP:
             vel.x = 0.0f;
+            if (temp) {
+                temp->set_state(WORM_STILL);
+            }
             break;
         case COMMAND_JUMP_FOWARD:
             if (contacts != nullptr && contacts->contact != nullptr) {
@@ -120,8 +127,13 @@ std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> updat
             spsh_update = std::static_pointer_cast<BoxSpecialShoot>(update);
             this->player_special_shoot(spsh_update->get_position(), spsh_update->get_weapon_id());
             break;
+        case COMMAND_NULL:
+            break;
         default:
             vel.x = 0.0f;
+            if(temp){
+                temp->set_state(WORM_STILL);
+            }
             break;
     }
     if((this->time_ticker - this->detonation_tick) > 75){

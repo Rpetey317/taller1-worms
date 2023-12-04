@@ -2,6 +2,7 @@
 #define BOX2D_PLAYER
 
 #include "../../../libs/box2d/include/box2d/box2d.h"
+#include "../../../Common/Worm.h"
 
 class Box2DPlayer {
     int id;
@@ -24,6 +25,7 @@ class Box2DPlayer {
     void set_state(int state);
     int get_state();
     bool is_alive();
+    bool is_falling();
 };
 
 #endif

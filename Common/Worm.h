@@ -31,6 +31,7 @@ public:
     int state;
     int id;  // Podria tener esto tmb y quizas simplificar el mapa de <int id_player, Worm>
     int health_points;
+    int player_id;
 
     Worm();
 
