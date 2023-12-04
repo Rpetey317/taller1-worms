@@ -46,5 +46,5 @@ bool SdlWormStateBeisboll::reduce_ammo(std::map<std::string, int>& gun_ammo) {
 }
 
 int SdlWormStateBeisboll::projectile_id() {
-    return 0x0013;
+    return BASEBALL_BAT;
 }

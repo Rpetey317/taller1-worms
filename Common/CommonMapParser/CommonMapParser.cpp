@@ -26,8 +26,6 @@ std::string CommonMapParser::get_background(std::string file_name) {
 
 std::vector<Tile> CommonMapParser::get_map(std::string file_name) {
 
-
-    std::vector<Tile> map;
     std::string path("../Maps/");
 
     path.append(file_name);
@@ -73,4 +71,14 @@ std::vector<Tile> CommonMapParser::get_map(std::string file_name) {
     }
 
     return map;
+}
+
+int CommonMapParser::get_amount_of_worms() {
+    int ammount_of_worms = 0;
+    for (auto tile : map) {
+        if (tile.type == '2') {
+            ammount_of_worms++;
+        }
+    }
+    return ammount_of_worms;
 }

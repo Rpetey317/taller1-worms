@@ -2,6 +2,8 @@
 #pragma once
 #include <SDL2pp/SDL2pp.hh>
 #include <map>
+#include "../../../../Common/Worm.h"
+
 #include "../texture_sound_manager/SdlSoundManager.h"
 #define AMMO_RENDER_SEPARATION 8
 #define AMMO_RENDER_WIDTH 4
