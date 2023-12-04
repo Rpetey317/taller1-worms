@@ -48,5 +48,5 @@ std::string SdlWormStateAirStrike::get_name() {
 }
 
 int SdlWormStateAirStrike::projectile_id() {
-    return 0x0009;
+    return AIR_STRIKE;
 }

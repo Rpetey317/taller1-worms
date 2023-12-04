@@ -57,5 +57,5 @@ std::string SdlWormStateBanana::get_name() {
 
 
 int SdlWormStateBanana::projectile_id() {
-    return 0x0007;
+    return BANANA;
 }

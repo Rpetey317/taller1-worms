@@ -49,5 +49,5 @@ std::string SdlWormStateDynamite::get_name() {
 }
 
 int SdlWormStateDynamite::projectile_id() {
-    return 0x0014;
+    return DYNAMITE;
 }

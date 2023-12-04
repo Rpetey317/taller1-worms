@@ -34,5 +34,5 @@ bool SdlWormStateBazooka::reduce_ammo(std::map<std::string, int>& gun_ammo) {
     return true;
 }
 int SdlWormStateBazooka::projectile_id() {
-    return 0x0003;
+    return BAZOOKA;
 }

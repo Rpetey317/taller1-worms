@@ -2,6 +2,8 @@
 #pragma once
 #include <SDL2pp/SDL2pp.hh>
 #include <map>
+#include "../../../../Common/Worm.h"
+
 #define AMMO_RENDER_SEPARATION 8
 #define AMMO_RENDER_WIDTH 4
 #define AMMO_RENDER_HEIGHT 20
