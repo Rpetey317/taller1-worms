@@ -5,5 +5,6 @@
 #include "PlayerDisconnectedMessage/PlayerDisconnectedMessage.h"
 #include "RunTimer/RunTimer.h"
 #include "TurnAdvance/TurnAdvance.h"
+#include "PlayerChangeWeapon/PlayerChangeWeapon.h"
 
 #include "Message.h"
