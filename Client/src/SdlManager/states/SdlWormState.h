@@ -2,6 +2,7 @@
 #pragma once
 #include <SDL2pp/SDL2pp.hh>
 #include <map>
+#include "../texture_sound_manager/SdlSoundManager.h"
 #define AMMO_RENDER_SEPARATION 8
 #define AMMO_RENDER_WIDTH 4
 #define AMMO_RENDER_HEIGHT 20
@@ -27,4 +28,5 @@ class SdlWormState {
                 virtual void render_ammo(Renderer& renderer, int ammount_of_bullets, int camera_x, int camera_y) {return;};
                 virtual std::string get_name() {return "NULL";};
                 virtual int projectile_id() {return -1;};
+                virtual void play_sound(SdlSoundManager& sound_manager) {return;};
 };

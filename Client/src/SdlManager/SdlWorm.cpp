@@ -212,8 +212,9 @@ void SdlWorm::destroy() {
     //}
 }
 
-void SdlWorm::play_sound(std::string sound_to_play) {
-    sound_manager.play_sound(sound_to_play);
+void SdlWorm::play_sound() {
+    worm_state->play_sound(sound_manager);
+    //sound_manager.play_sound(sound_to_play);
 }
 
 void SdlWorm::change_angle(int angle) {

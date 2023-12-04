@@ -82,8 +82,7 @@ bool SdlManager::event_handler() {
                         break;
                     if (!worms[id_worm_turn]->has_ammo())
                         break;
-                    //ACA SETEO GUSANO EN "CARGANDO ARMA", Y A CADA TICK LE SUMO UNO EL PODER
-                    worms[id_worm_turn]->play_sound("CHARGE");
+                        
                     worms[id_worm_turn]->is_charging = true;
                 }
                 break;
@@ -170,7 +169,7 @@ bool SdlManager::event_handler() {
                         break;
                     worms[id_worm_turn]->reduce_ammo();
                     worms[id_worm_turn]->play_animation();
-                    worms[id_worm_turn]->play_sound("THROWING");
+                    worms[id_worm_turn]->play_sound();
                     outgoing.push(std::make_shared<Shoot>(worms[id_worm_turn]->projectile_id(), worms[id_worm_turn]->attack_power, worms[id_worm_turn]->angle));
                     worms[id_worm_turn]->is_charging = false;
                     worms[id_worm_turn]->attack_power = 0; //en vez de worms[0], deberiamos hacer worms[jugador_en_turno], osea voy a necesitar 2 variables mas
@@ -268,6 +267,7 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
         }
         if (event->proyectile_got_exploded()) {
             is_animation_playing = true;
+            projectiles[last_projectile_used]->play_sound();
         }
     
         if (event->get_player_turn() > 0) {

@@ -14,6 +14,7 @@ public:
     virtual int get_pos_x() {return x_pos;};
     virtual int get_pos_y() {return y_pos;};
     virtual void play_animation(bool *is_animation_playing);   
+    virtual void play_sound() {return;};
 
 
 protected:
