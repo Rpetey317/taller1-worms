@@ -81,6 +81,22 @@ bool ServerProtocol::send_Worm(const Worm& pt) {
     return true;
 }
 
+bool ServerProtocol::send_weapon(const WeaponDTO& weapon) {
+    if (!this->send_short(weapon.position.x)) {
+        return false;
+    }
+    if (!this->send_short(weapon.position.y)) {
+        return false;
+    }
+    if (!this->send_short(weapon.angle)) {
+        return false;
+    }
+    if (!this->send_short(weapon.id)) {
+        return false;
+    }
+    return true;
+}
+
 
 ServerProtocol::ServerProtocol(Socket&& _cli, const int& _plid):
         cli(std::move(_cli)), isclosed(false), plid(_plid) {}

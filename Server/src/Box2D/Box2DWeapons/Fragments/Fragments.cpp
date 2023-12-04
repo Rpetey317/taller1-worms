@@ -1,9 +1,7 @@
 #include "Fragments.h"
 #include "../../Box2dManager/box2dManager.h"
 
-Fragments::Fragments(BoxManager* box_manager) {
-    this->box_manager = box_manager;
-}
+Fragments::Fragments(BoxManager* box_manager): box_manager(box_manager) {}
 
 void Fragments::fire(float angle, float strength) {
     int type = FRAGMENT;

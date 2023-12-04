@@ -8,21 +8,29 @@
 
 #include "Vect2D.h"
 #include "Worm.h"
+#include "WeaponDTO.h"
 
 class WorldUpdate: public Update {
 
     std::map<int, Worm>* positions;
+    std::map<int, WeaponDTO>* weapons;
 
 
 public:
     explicit WorldUpdate(std::map<int, Worm>* positions);
+    WorldUpdate(std::map<int, Worm>* positions, std::map<int, WeaponDTO>* weapons);
 
     char get_sent_by(ServerProtocol& prot) override;
 
     std::map<int, Worm>::const_iterator begin() const;
     std::map<int, Worm>::const_iterator end() const;
 
+    std::map<int, WeaponDTO>::const_iterator begin_weapons() const;
+    std::map<int, WeaponDTO>::const_iterator end_weapons() const;
+
+
     int get_plcount() const;
+    int get_weaponscount() const;
 
     ~WorldUpdate();
 };

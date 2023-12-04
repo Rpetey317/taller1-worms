@@ -12,6 +12,7 @@ class Box2DPlayer {
     
     public:
     Box2DPlayer(int id, b2Body* body, int direction, int state);
+    Box2DPlayer(int id, b2Body* body);
     b2Body* get_body();
     int get_id();
     void get_hurt(int damage);

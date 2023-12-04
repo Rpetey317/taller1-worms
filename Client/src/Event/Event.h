@@ -7,6 +7,7 @@
 
 #include "Vect2D.h"
 #include "Worm.h"
+#include "WeaponDTO.h"
 
 class ClientProtocol;
 class EventProcessor;
@@ -27,6 +28,8 @@ public:
     virtual std::map<int, Vect2D> get_worm_positions() { return std::map<int, Vect2D>(); }
 
     virtual std::map<int, Worm> get_worms() { return std::map<int, Worm>(); }
+
+    virtual std::map<int, WeaponDTO> get_weapons() { return std::map<int, WeaponDTO>(); }
 
     virtual bool is_new_player() { return false; }
 

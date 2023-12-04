@@ -17,6 +17,7 @@
 #include "../../../Common/thread.h"
 #include "../../../Common/Vect2D.h"
 #include "../../../Common/Worm.h"
+#include "../../../Common/WeaponDTO.h"
 #include "../../../Common/CommonMapParser/CommonMapParser.h"
 
 #include "../Box2dPlayer/box2dPlayer.h"
@@ -38,7 +39,7 @@ class BoxManager {
 public:
 
     std::map<int, Worm>* create_position_map(const std::list<Box2DPlayer>& worms);
-    // std::map<int, Vect2D>* create_proyectile_map(const std::list<b2Body*>& projectiles);
+    std::map<int, WeaponDTO>* create_proyectile_map(const std::list<b2Body*>& projectiles);
   
     Vect2D meter_to_pixel(b2Vec2 meter);
 

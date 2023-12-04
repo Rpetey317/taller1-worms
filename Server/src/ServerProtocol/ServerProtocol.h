@@ -40,6 +40,7 @@ class ServerProtocol {
     bool send_str(const std::string& str);
     bool send_Vect2D(const Vect2D& pt);
     bool send_Worm(const Worm& pt);
+    bool send_weapon(const WeaponDTO& wpn);
 
 
 public:

@@ -101,6 +101,24 @@ char ServerProtocol::send_WorldUpdate(const WorldUpdate& upd) {
             return CLOSED_SKT;
         }
     }
+
+    if (!this->send_char((amount_players_t)upd.get_weaponscount())) {
+        return CLOSED_SKT;
+    }
+    for (auto it = upd.begin_weapons(); it != upd.end_weapons(); ++it) {
+
+        // send player id
+        if (!this->send_char((playerid_t)it->first)) {
+            return CLOSED_SKT;
+        }
+
+        // send position
+        if (!this->send_weapon(it->second)) {
+            return CLOSED_SKT;
+        }
+    }
+    
+
     return SUCCESS;
 }
 

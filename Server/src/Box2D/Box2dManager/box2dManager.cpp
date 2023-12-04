@@ -34,30 +34,34 @@ bool BoxManager::set_map() {
 }
 
 std::map<int, Worm>* BoxManager::create_position_map(const std::list<Box2DPlayer>& worms) {
-    std::map<int, Worm>* positions = new std::map<int, Worm>();
+    std::map<int, Worm>* worms_position = new std::map<int, Worm>();
     for (auto worm : worms) {
         b2Body* body = worm.get_body(); // Obtener el cuerpo
         if (body && worm.is_alive()) { // Verificar si el cuerpo es válido
             b2Vec2 pos = body->GetPosition();
             Worm worm_class( meter_to_pixel(pos), worm.get_id(), worm.get_state(), worm.get_health_points());
-            positions->insert(std::make_pair(worm.get_id(), worm_class));
+            worms_position->insert(std::make_pair(worm.get_id(), worm_class));
         }
     }
-    return positions;
+    return worms_position;
 }
 
 
-// std::map<int, Vect2D>* BoxManager::create_proyectile_map(const std::list<b2Body*>& projectiles) {
-//     std::map<int, Vect2D>* positions = new std::map<int, Vect2D>();
-//     for (auto projectile : projectiles) {
-//         if (projectile) { // Verificar si el cuerpo es válido
-//             b2Vec2 pos = projectile->GetPosition();
-//             int* type = (int *)(projectile->GetUserData().pointer);
-//             positions->insert(std::make_pair((*type), meter_to_pixel(pos)));
-//         }
-//     }
-//     return positions;
-// }
+std::map<int, WeaponDTO>* BoxManager::create_proyectile_map(const std::list<b2Body*>& projectiles) {
+    std::map<int, WeaponDTO>* positions = new std::map<int, WeaponDTO>();
+    int i = 1;
+    for (auto projectile : projectiles) {
+        if (projectile) { // Verificar si el cuerpo es válido
+            b2Vec2 pos = projectile->GetPosition();
+            int angle = (int)acos(projectile->GetLinearVelocity().x / projectile->GetLinearVelocity().Length()) * RADTODEG;
+            Box2DPlayer* temp = (Box2DPlayer*)(projectile->GetUserData().pointer);
+            WeaponDTO weapon(temp->get_id(), meter_to_pixel(pos), angle);
+            positions->insert(std::make_pair(i, weapon));
+        }
+        i++;
+    }
+    return positions;
+}
 
 std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> update) {
     b2Body* current = (*playing_worm).get_body();
@@ -118,7 +122,7 @@ std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> updat
     current->SetLinearVelocity(vel);  // seteo la nueva velocidad
     world.step();
     // this->create_proyectile_map(this->world.projectiles);
-    return std::make_shared<WorldUpdate>(create_position_map(worms)); // TODO: ver que devolver
+    return std::make_shared<WorldUpdate>(create_position_map(worms), create_proyectile_map(this->world.projectiles)); // TODO: ver que devolver
 }
 
 /*  

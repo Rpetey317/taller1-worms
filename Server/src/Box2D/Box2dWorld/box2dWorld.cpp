@@ -175,7 +175,8 @@ void BoxWorld::fragments() {
         fragment->SetBullet(true);
         projectiles.push_back(fragment);
         int type = FRAGMENT;
-        fragment->GetUserData().pointer = ((uintptr_t)&type);
+        Box2DPlayer bullet(type, fragment);
+        fragment->GetUserData().pointer = ((uintptr_t)&bullet);
     }
 }
 
@@ -200,7 +201,8 @@ void BoxWorld::air_missiles(){
         missile->SetBullet(true);
         projectiles.push_back(missile);
         int type = AIR_MISSLE;
-        missile->GetUserData().pointer = ((uintptr_t)&type);
+        Box2DPlayer bullet(type, missile);
+        missile->GetUserData().pointer = ((uintptr_t)&bullet);
     }
 }
 
@@ -218,7 +220,6 @@ void BoxWorld::blast(){
         if ( (bodyCom - contactCenter).Length() >= blastRadius )
             continue;
         printf("encontro un cuerpo para aplicar la fuerza\n");
-        Box2DPlayer* temp = (Box2DPlayer*)(body->GetUserData().pointer);
         applyBlastImpulse(body, contactCenter, bodyCom, blastPower, blastRadius);
     }
 }
@@ -401,7 +402,8 @@ b2Body* BoxWorld::create_projectile(float x, float y, float restitution, float d
     myFixtureDef.filter.maskBits = mask;
     projectile->CreateFixture(&myFixtureDef); //add a fixture to the body
     projectiles.push_back(projectile);
-    projectile->GetUserData().pointer = ((uintptr_t)&type);
+    Box2DPlayer bullet(type, projectile);
+    projectile->GetUserData().pointer = ((uintptr_t)&bullet);
     return projectile;
 }
 

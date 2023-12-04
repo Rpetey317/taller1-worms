@@ -1,12 +1,8 @@
 #include "box2dPlayer.h"
 
-Box2DPlayer::Box2DPlayer(int id, b2Body* body, int direction, int state){
-    this->id = id;
-    this->body = body;
-    this->health_points = 100;
-    this->direction = direction;
-    this->state = state;
-}
+Box2DPlayer::Box2DPlayer(int id, b2Body* body, int direction, int state): id(id), body(body), health_points(100), direction(direction), state(state) {}
+
+Box2DPlayer::Box2DPlayer(int id, b2Body* body): id(id), body(body), health_points(-1), direction(0), state(0) {}
 
 b2Body* Box2DPlayer::get_body(){
     return body;
