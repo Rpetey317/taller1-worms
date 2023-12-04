@@ -12,6 +12,18 @@ int Box2DPlayer::get_id(){
     return id;
 }
 
+void Box2DPlayer::set_direction(int direction){
+    this->direction = direction;
+}
+
+int Box2DPlayer::get_direction(){
+    return this->direction;
+}
+
+bool Box2DPlayer::is_alive(){
+    return health_points > 0;
+}
+
 void Box2DPlayer::get_hurt(int damage){
     if (damage > this->health_points)
         this->kill();

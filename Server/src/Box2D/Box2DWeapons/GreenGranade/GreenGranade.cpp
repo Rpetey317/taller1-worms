@@ -6,7 +6,8 @@ GreenGranade::GreenGranade(BoxManager* box_manager) {
 }
 
 void GreenGranade::fire(float angle, float strength) {
-    box_manager->fire_projectile(angle, strength, 0.25, GREEN_GRANADE, WORM | BEAM);
+    int type = GREEN_GRANADE;
+    box_manager->fire_projectile(angle, strength, 0.25, GREEN_GRANADE, WORM | BEAM, false, type);
 }
 
 GreenGranade::~GreenGranade() {}

@@ -2,7 +2,7 @@
 #include "Vect2D.h"
 #include <iostream>
 #include "../Box2DWeapons/WeaponsHeaders.h"
-#include "Box2DMsg/Box2DMsgHeaders.h"
+#include "../../../src/Message/Box2DMsg/Box2DMsgHeaders.h"
 
 #define DEGTORAD -0.0174532925199432957f
 #define RADTODEG 57.295779513082320876f
@@ -14,32 +14,14 @@ Vect2D BoxManager::meter_to_pixel(b2Vec2 meter) {
     return Vect2D(static_cast<int>((meter.x-0.12f) * 100.0f), static_cast<int>(5000.00f - ((0.245+meter.y) * 100.0f)));
 }
 
-BoxManager::BoxManager(): worms(), world(worms) {
+BoxManager::BoxManager(): worms(), world(worms), timer_allows(true) {
     set_map();
     std::cout << "BoxManager created con " << std::to_string(worms.size()) << " gusanos" << std::endl;
     playing_worm = worms.begin();
 }
 
-void BoxManager::add_player() {
-    float x = 0.5f;
-    float y = 49.5f;
-    world.create_worm(x, y, worms.size());
-    if(worms.size() == 1)
-        playing_worm = worms.begin();
-}
-
 void BoxManager::next_turn(int player_id) {
     std::cout << "Next turn en b2d manager y va al " << std::to_string(player_id) << std::endl;
-    // // if(++playing_worm == worms.end())
-    // //     playing_worm = worms.begin();
-    // if (playing_worm == worms.end()) {
-    //     playing_worm = worms.begin();
-    //     return;
-    // }
-    // ++playing_worm;
-    // if (playing_worm == worms.end()) {
-    //     playing_worm = worms.begin();
-    // }
     auto it = worms.begin();
     std::advance(it, player_id - 1);
     playing_worm = it;
@@ -53,17 +35,28 @@ bool BoxManager::set_map() {
 
 std::map<int, Vect2D>* BoxManager::create_position_map(const std::list<Box2DPlayer>& worms) {
     std::map<int, Vect2D>* positions = new std::map<int, Vect2D>();
-    int i = 1;
     for (auto worm : worms) {
         b2Body* body = worm.get_body(); // Obtener el cuerpo
-        if (body) { // Verificar si el cuerpo es válido
+        if (body && worm.is_alive()) { // Verificar si el cuerpo es válido
             b2Vec2 pos = body->GetPosition();
-            positions->insert(std::make_pair(i, meter_to_pixel(pos)));
-            i++;
+            positions->insert(std::make_pair(worm.get_id(), meter_to_pixel(pos)));
         }
     }
     return positions;
 }
+
+
+// std::map<int, Vect2D>* BoxManager::create_proyectile_map(const std::list<b2Body*>& projectiles) {
+//     std::map<int, Vect2D>* positions = new std::map<int, Vect2D>();
+//     for (auto projectile : projectiles) {
+//         if (projectile) { // Verificar si el cuerpo es válido
+//             b2Vec2 pos = projectile->GetPosition();
+//             int* type = (int *)(projectile->GetUserData().pointer);
+//             positions->insert(std::make_pair((*type), meter_to_pixel(pos)));
+//         }
+//     }
+//     return positions;
+// }
 
 std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> update) {
     b2Body* current = (*playing_worm).get_body();
@@ -71,14 +64,19 @@ std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> updat
     b2Vec2 vel = current->GetLinearVelocity();  // vector vel del gusano
     b2ContactEdge* contacts = current->GetContactList();
 
+    Box2DPlayer* temp = (Box2DPlayer*)(current->GetUserData().pointer);
     switch (current_command) {
         case COMMAND_LEFT:
             vel.x = -1.0f;  // modifico componente en x
-            direction = LEFT;
+            if (temp) {
+                temp->set_direction(LEFT);
+            }
             break;
         case COMMAND_RIGHT:
             vel.x = 1.0f;
-            direction = RIGHT;
+            if (temp) {
+                temp->set_direction(RIGHT);
+            }
             break;
         case COMMAND_STOP:
             vel.x = 0.0f;
@@ -97,14 +95,19 @@ std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> updat
 
         case COMMAND_NEXT:
             this->next_turn(update->get_id());
+            this->world.clean_projectiles(true);
             break;
         
-        // case COMMAND_FIRE:
-            // this->player_shoot(update->get_angle(), update->get_power(), update->get_type());
-            // break; 
+        case COMMAND_SHOOT:
+            // this->player_shoot(update->get_angle(), update->get_power(), update->get_weapon_id());
+            break; 
         
-        // case COMMAND_SPECIAL_SHOOT:
-        //     this->player_special_shoot(update->get_position(), update->get_type());
+        case COMMAND_SPECIAL_SHOOT:
+            // this->player_special_shoot(update->get_position(), update->get_weapon_id());
+            break;
+        
+        // case COMMAND_TIMER:
+        //     this->world.timer_allows = true;
         //     break;
 
         default:
@@ -113,6 +116,7 @@ std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> updat
     }
     current->SetLinearVelocity(vel);  // seteo la nueva velocidad
     world.step();
+    // this->create_proyectile_map(this->world.projectiles);
     return std::make_shared<WorldUpdate>(create_position_map(worms)); // TODO: ver que devolver
 }
 
@@ -121,54 +125,74 @@ std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> updat
   by the player to the shot. Angle represents the angle in degrees relative to the floor the 
   player aims.
 */
-void BoxManager::fire_projectile(float angle, float power, float restitution, int category, int mask) {
-    b2Body* projectile = world.create_projectile(playing_worm->get_body()->GetPosition().x, playing_worm->get_body()->GetPosition().y, restitution, this->direction, category, mask);
-    b2Vec2 Vector = b2Vec2( (power*0.001f)*cos(angle*DEGTORAD), (power*0.001f)*sin(angle*DEGTORAD) );
-    if(direction == LEFT)
+void BoxManager::fire_projectile(float angle, float power, float restitution, int category, int mask, bool set_timer, int type) {
+    Box2DPlayer* temp = (Box2DPlayer*)(playing_worm->get_body()->GetUserData().pointer);
+    b2Body* projectile = world.create_projectile(playing_worm->get_body()->GetPosition().x, playing_worm->get_body()->GetPosition().y, restitution, temp->get_direction(), category, mask, set_timer, type);
+    b2Vec2 Vector = b2Vec2( (power*0.001f)*cosf(angle*DEGTORAD), (power*0.001f)*sinf(angle*DEGTORAD) );
+    if(temp->get_direction() == LEFT)
         Vector.x = -Vector.x;
-    projectile->ApplyLinearImpulseToCenter( Vector , true );
     projectile->SetBullet(true);
-    projectiles.push_back(projectile);  
+    projectile->ApplyLinearImpulseToCenter( Vector , true );
 }
 
-void BoxManager::player_shoot(float angle, float power, int type) {
-    switch(type){
+void BoxManager::player_shoot(int angle, int power, int weapon_type) {
+    float fangle = static_cast<float>(angle);
+    float fpower = static_cast<float>(power);
+    switch(weapon_type){
         case BAZOOKA:
-            Bazooka(this).fire(angle, power);
+            Bazooka(this).fire(fangle, fpower);
             break;
         case MORTAR:
-            Mortar(this).fire(angle, power);
+            Mortar(this).fire(fangle, fpower);
             break;
         case GREEN_GRANADE:
-            GreenGranade(this).fire(angle, power);
+            GreenGranade(this).fire(fangle, fpower);
             break;
         case RED_GRANADE:
-            RedGranade(this).fire(angle, power);
+            RedGranade(this).fire(fangle, fpower);
             break;
         case BANANA:
-            Banana(this).fire(angle, power);
+            Banana(this).fire(fangle, fpower);
             break;
         case HOLY_GRANADE:
-            HolyGranade(this).fire(angle, power);
+            HolyGranade(this).fire(fangle, fpower);
             break;
         case DYNAMITE:
-            // Dynamite(this).fire(angle, power);
+            Dynamite(this).fire(fangle, fpower);
             break;
         case BASEBALL_BAT:
-            // BaseballBat(this).fire(angle, power);
+            // BaseballBat(this).fire(fangle, fpower);
             break;
         
     }
 }
 
+void BoxManager::air_strike(Vect2D position) {
+    world.air_strike(position);
+}
 
-// BoxManager::player_special_shoot(update.get_position(), update.get_type()) {
-//     switch(type){
-//         case AIR_STRIKE:
-//             AirAttack(this).fire(angle, power);
-//             break;
-//         case TELEPORT:
-//             Teleport(this).fire(angle, power);
-//             break;
-//     }
-// }
+void BoxManager::teleport(Vect2D position) {
+    world.teleport(position, playing_worm->get_body());
+}
+
+void BoxManager::dynamite(float restitution, int category, int mask) {
+    Box2DPlayer* temp = (Box2DPlayer*)(playing_worm->get_body()->GetUserData().pointer);
+    world.create_projectile(playing_worm->get_body()->GetPosition().x, playing_worm->get_body()->GetPosition().y, restitution, temp->get_direction(), category, mask, false, DYNAMITE);
+}
+
+void BoxManager::baseball_bat(float angle, float power) {
+    Box2DPlayer* temp = (Box2DPlayer*)(playing_worm->get_body()->GetUserData().pointer);
+    world.baseball_bat(playing_worm->get_body(), angle, power, temp->get_direction());
+}
+
+void BoxManager::player_special_shoot(Vect2D position, int weapon_type) {
+    switch(weapon_type){
+        case AIR_STRIKE:
+            AirAttack(this).fire_special(position);
+            break;
+        case TELEPORT:
+            Teleport(this).fire_special(position);
+            break;
+    }
+}
+

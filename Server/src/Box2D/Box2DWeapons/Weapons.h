@@ -30,4 +30,14 @@ public:
     virtual ~B2dWeapon() = default;
 };
 
+class B2dWeaponSpecial{
+public:
+    B2dWeaponSpecial() = default;
+
+    virtual void fire_special(Vect2D position) = 0;
+
+    virtual ~B2dWeaponSpecial() = default;
+};
+
+
 #endif  // !_Weapons_H_

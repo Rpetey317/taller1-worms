@@ -14,7 +14,7 @@ class BoxManager;
 #define COMMAND_JUMP_FOWARD 3
 #define COMMAND_JUMP_BACKWARD 4
 #define COMMAND_NEXT 5
-#define COMMAND_FIRE 6
+#define COMMAND_SHOOT 6
 #define COMMAND_SPECIAL_SHOOT 7
 
 class Box2DMsg: public Message, public std::enable_shared_from_this<Box2DMsg> {

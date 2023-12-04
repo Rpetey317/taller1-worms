@@ -4,7 +4,7 @@
 #include "../../../libs/box2d/include/box2d/box2d.h"
 #include <vector>
 
-class MyQueryCallback : public b2QueryCallback {
+class box2dQueryCallback : public b2QueryCallback {
     friend class BoxWorld;
     std::vector<b2Body*> foundBodies;
 public:

@@ -7,6 +7,7 @@ class Box2DPlayer {
     int id;
     b2Body* body;
     int health_points;
+    int direction;
     
     public:
     Box2DPlayer(int id, b2Body* body);
@@ -14,6 +15,9 @@ class Box2DPlayer {
     int get_id();
     void get_hurt(int damage);
     void kill();
+    void set_direction(int direction);
+    int get_direction();
+    bool is_alive();
 };
 
 #endif
