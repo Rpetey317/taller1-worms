@@ -81,10 +81,16 @@ void Greeter::joinToGame() {
         std::string gameNameString(this->gameName.toStdString());
 
         this->protocol.join_game(gameNameString);
-        
-        // this->protocol.recv_start_game(); // Es bloqueante?
-
-        close();
+        bool could_join_game = this->protocol.req_succeed();
+        if (!could_join_game){
+            std::cout << "Non existing game" << std::endl;
+            close();
+        }
+        else {
+            std::cout << "Could join game" << std::endl;
+            // this->protocol.recv_start_game(); // Es bloqueante?
+            close();
+        }
     }
 }
 
