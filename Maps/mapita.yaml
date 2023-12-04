@@ -1,0 +1,57 @@
+small_tiles:
+  - pos_x: 298
+    pos_y: 318
+    angle: 0
+  - pos_x: 235
+    pos_y: 314
+    angle: 0
+long_tiles:
+  - pos_x: 366
+    pos_y: 315
+    angle: 0
+  - pos_x: 501
+    pos_y: 314
+    angle: 0
+  - pos_x: 628
+    pos_y: 314
+    angle: 0
+  - pos_x: 758
+    pos_y: 312
+    angle: 0
+  - pos_x: 101
+    pos_y: 315
+    angle: 0
+  - pos_x: 30
+    pos_y: 130
+    angle: 0
+  - pos_x: 162
+    pos_y: 132
+    angle: 1
+  - pos_x: 290
+    pos_y: 156
+    angle: 19
+  - pos_x: -100
+    pos_y: 125
+    angle: 1
+  - pos_x: 65
+    pos_y: -7
+    angle: 0
+worms:
+  - pos_x: 250
+    pos_y: 8
+    angle: 0
+  - pos_x: 300
+    pos_y: 8
+    angle: 0
+  - pos_x: 350
+    pos_y: 8
+    angle: 0
+  - pos_x: 260
+    pos_y: 241
+    angle: 0
+  - pos_x: 361
+    pos_y: 214
+    angle: 0
+  - pos_x: 313
+    pos_y: 100
+    angle: 0

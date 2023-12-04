@@ -82,11 +82,10 @@ void SdlMap::save_to_file(std::string& map_name) {
     }
     out_worms << YAML::EndSeq;
     out_worms << YAML::EndMap;
-    std::string path("../");
-    path.append(map_name);
-    std::ofstream fout(path);
-
+    std::ofstream fout(map_name);
+    std::string comando = "mv " + map_name + " ../Maps/" + map_name;
     fout << out_small.c_str() << std::endl << out_long.c_str() << std::endl << out_worms.c_str();
+    std::system(comando.c_str());
 
 }
 void SdlMap::render_one(Tile tile) {
