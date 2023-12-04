@@ -12,6 +12,7 @@ typedef uint8_t input_t;
 typedef uint8_t msgcode_t;
 typedef uint8_t playerid_t;
 typedef uint8_t amount_players_t;
+typedef uint8_t time_t;
 
 // const msgcode_t MSGCODE_CREATE_GAME = 0x01;
 // const msgcode_t MSGCODE_PLAYER_CONNECT_TO_GAME = 0x02;
@@ -29,20 +30,27 @@ const msgcode_t MSGCODE_PLAYER_JUMP_BACKWARDS = 0x0B;
 const msgcode_t MSGCODE_WORLD_UPD = 0x0C;
 const msgcode_t MSGCODE_NULL_ACTION = 0x0D;
 const msgcode_t MSGCODE_SHOOT = 0x14;
+
 // New constant names from here on
-const msgcode_t CLI_REQ_JOIN = 0x0E;
-const msgcode_t CLI_REQ_GAMES = 0x0F;
-const msgcode_t CLI_REQ_MAPS = 0x10;
-const msgcode_t CLI_REQ_CREATE = 0x11;
-const msgcode_t CLI_REQ_START = 0x12;
+const msgcode_t CLI_REQ_JOIN = 0xB0;
+const msgcode_t CLI_REQ_GAMES = 0xB1;
+const msgcode_t CLI_REQ_MAPS = 0xB2;
+const msgcode_t CLI_REQ_CREATE = 0xB3;
+const msgcode_t CLI_REQ_START = 0xB4;
 
 const msgcode_t SRV_RESP_GAMES = 0x20;
 const msgcode_t SRV_RESP_MAPS = 0x21;
+
+const msgcode_t MSGCODE_PLAYER_POSITION = 0x15;
+const msgcode_t MSGCODE_PROYECTILE_UPDATE = 0x16;
+const msgcode_t MSGCODE_TIMER = 0x17;
+
 
 // TODO: separar los msgcodes para los que se mandan del server al client y del client al server
 
 // TODO: delete
 const msgcode_t MSGCODE_BOX2D = 0xFF;
+const msgcode_t SRV_TIMER_UPD = 0xA0;
 
 const int ERROR = -1;
 }  // namespace NetworkProtocol

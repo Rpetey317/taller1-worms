@@ -93,3 +93,36 @@ The packet structure is:
 - `<plcount>` is a `amount_players_t` number with the amount of player positions to receive
 - `<id>` is a player's id in `playerid_t`
 - `<x> <y>` are the x and y coordinates in `point_t` of a player
+
+
+## Player Position
+
+A packet with the player position.
+
+The packet structure is
+
+```
+<cd> <id> <x> <y>
+```
+
+- `<cd>` is the associated code
+- `<id>` is a player's id in `playerid_t`
+- `<x> <y>` are the x and y coordinates in `point_t` of a player
+
+
+## Proyectile update
+
+A packet with the proyectile position, type and angle
+
+The packet structure is
+
+```
+<cd> <id> <type_proyectile> <x> <y> <angle> <exploded>
+```
+
+- `<cd>` is the associated code
+- `<id>` is a player's id in `playerid_t`
+- `<type_proyectile>` is a string of the type of proyectile
+- `<x> <y>` are the x and y coordinates in `point_t` of a player
+- `<angle>` is an int of the angle of the shooting
+- `<exploded>` is an int that defines if the proyectile exploded (being the int = 1) or if it did not exploded (being the int = 0)

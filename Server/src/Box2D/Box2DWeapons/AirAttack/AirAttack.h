@@ -3,13 +3,12 @@
 
 #include "../Weapons.h"
 
-class AirAttack : public B2dWeapon {
-    BoxManager* box_manager;
+class AirAttack : public B2dWeaponSpecial {
+    class BoxManager* box_manager;
 public:
     explicit AirAttack(BoxManager* box_manager);
 
-    void fire(float angle, float strength) override;
-
+    void fire_special(Vect2D position) override;
     ~AirAttack();
 
 };

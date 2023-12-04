@@ -14,7 +14,11 @@ SdlManager::SdlManager(Queue<std::shared_ptr<Action>>& outgoing, Queue<std::shar
     // SDL sdl(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
     this->id_of_player = id_of_player;
-    this->id_of_player_turn = 0;
+    this->id_of_player_turn = 1;
+    id_worm_turn = 1;
+    is_moving_camera = false;
+    is_projectile_flying = false;
+    is_animation_playing = false;
     // Initialize SDL_ttf library
     SDLTTF ttf;
 }
@@ -25,7 +29,7 @@ bool SdlManager::event_handler() {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
-            worms[id_of_player]->destroy();
+            //worms[id_worm_turn]->destroy();
             return false;
         } else if (event.type == SDL_KEYDOWN) {
             if (id_of_player_turn != id_of_player || worms[id_worm_turn]->is_animation_playing)
@@ -33,19 +37,19 @@ bool SdlManager::event_handler() {
 
             switch (event.key.keysym.sym) {
                 case SDLK_ESCAPE: {
-                    worms[id_worm_turn]->destroy();
+                    //worms[id_worm_turn]->destroy();
                     //commands.push(0);
                     return false;
                 }
                 case SDLK_RIGHT: {
-                    worms[id_of_player]->change_state("WALK");
-                    worms[id_of_player]->flip = SDL_FLIP_HORIZONTAL;
+                    worms[id_worm_turn]->change_state("WALK");
+                    worms[id_worm_turn]->flip = SDL_FLIP_HORIZONTAL;
                     outgoing.push(std::make_shared<Move>(true));
                     break;
                 }
                 case SDLK_LEFT: {
-                    worms[id_of_player]->change_state("WALK");
-                    worms[id_of_player]->flip = SDL_FLIP_NONE;
+                    worms[id_worm_turn]->change_state("WALK");
+                    worms[id_worm_turn]->flip = SDL_FLIP_NONE;
                     outgoing.push(std::make_shared<Move>(false));
                     break;
                 }
@@ -72,6 +76,15 @@ bool SdlManager::event_handler() {
                 case SDLK_F3: {    // setear vida en 1 a todos los gusanos
                     cheat_set_life_of_all_worms_to(1);
                     break;
+                }
+                case SDLK_SPACE: {
+                    if (!worms[id_worm_turn]->is_in_gun_state())
+                        break;
+                    if (!worms[id_worm_turn]->has_ammo())
+                        break;
+                    //ACA SETEO GUSANO EN "CARGANDO ARMA", Y A CADA TICK LE SUMO UNO EL PODER
+                    worms[id_worm_turn]->play_sound("CHARGE");
+                    worms[id_worm_turn]->is_charging = true;
                 }
                 break;
                 
@@ -154,6 +167,19 @@ bool SdlManager::event_handler() {
                     outgoing.push(std::make_shared<Jump>(false));
                     break;
                 }
+                case SDLK_SPACE: {
+                    if (!worms[id_worm_turn]->has_ammo())
+                        break;
+                    worms[id_worm_turn]->reduce_ammo();
+                    worms[id_worm_turn]->play_animation();
+                    worms[id_worm_turn]->play_sound("THROWING");
+                    outgoing.push(std::make_shared<Shoot>(worms[id_worm_turn]->projectile_id(), worms[id_worm_turn]->attack_power, worms[id_worm_turn]->angle));
+                    worms[id_worm_turn]->is_charging = false;
+                    worms[id_worm_turn]->attack_power = 0; //en vez de worms[0], deberiamos hacer worms[jugador_en_turno], osea voy a necesitar 2 variables mas
+                    // uno es la variable del id jugador de este cliente, otro la variable del id jugador en turno :)
+                    //push de que disparo algo
+                    break;
+                }
                 default: {
 
                     break;
@@ -161,40 +187,22 @@ bool SdlManager::event_handler() {
 
             }
         } else if(event.type == SDL_MOUSEBUTTONDOWN) {
-            if (id_of_player_turn != id_of_player || worms[id_worm_turn]->is_animation_playing)
-                return true;
+
             switch(event.button.button) {
                 
                 case SDL_BUTTON_LEFT : {
-                    if (!worms[id_worm_turn]->is_in_gun_state())
-                        break;
-                    if (!worms[id_worm_turn]->has_ammo())
-                        break;
-                    //ACA SETEO GUSANO EN "CARGANDO ARMA", Y A CADA TICK LE SUMO UNO EL PODER
-                    worms[id_worm_turn]->play_sound("CHARGE");
-                    worms[id_worm_turn]->is_charging = true;
+                    is_moving_camera = true;
                     break;
-                } 
+                }
                 default: {
                     break;
                 }
             }
 
         } else if (event.type == SDL_MOUSEBUTTONUP) {
-            if (id_of_player_turn != id_of_player || worms[id_worm_turn]->is_animation_playing)
-                return true;
             switch(event.button.button) {
                 case SDL_BUTTON_LEFT : {
-                    if (!worms[id_worm_turn]->has_ammo())
-                        break;
-                    worms[id_worm_turn]->reduce_ammo();
-                    worms[id_worm_turn]->play_animation();
-                    worms[id_worm_turn]->play_sound("THROWING");
-                    
-                    worms[id_worm_turn]->is_charging = false;
-                    worms[id_worm_turn]->attack_power = 0; //en vez de worms[0], deberiamos hacer worms[jugador_en_turno], osea voy a necesitar 2 variables mas
-                    // uno es la variable del id jugador de este cliente, otro la variable del id jugador en turno :)
-                    //push de que disparo algo
+                    is_moving_camera = false;
                     break;
                 }
                 default: {
@@ -205,6 +213,21 @@ bool SdlManager::event_handler() {
 
         }
     }
+
+    if (!is_moving_camera) {
+        if (is_projectile_flying) {
+            camera.focus_object(projectiles[last_projectile_used]->get_pos_x(), projectiles[last_projectile_used]->get_pos_y());
+        } else {
+            camera.focus_object(worms[id_worm_turn]->x_pos, worms[id_worm_turn]->y_pos);
+
+        }
+    } else {
+        int x_pos;
+        int y_pos;
+        SDL_GetMouseState(&x_pos, &y_pos);
+        camera.focus_object(x_pos - camera.get_width(), y_pos - camera.get_height());
+    }
+
     return true;
 }
 
@@ -218,8 +241,8 @@ bool SdlManager::main_loop(Renderer& renderer, SdlMap& map, SdlSoundManager& sou
     return keep_playing;
 }
 void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager& sound_manager, SdlWormTextureManager& worm_texture_manager) {
-    std::shared_ptr<Event> val;
-    bool there_is_element = ingoing.try_pop(val);
+    std::shared_ptr<Event> event;
+    bool there_is_element = ingoing.try_pop(event);
     // LAS POSICIONES DE TODOS LOS GUSANOS, EL ID DE TODOS LOS GUSANOS, Y EL ESTADO EN EL QUE ESTAN LOS GUSANOS
     // ESTADOS -> MOVIENDOSE, HACIENDO NADA, CAYENDO, LLEVANDO UNA DE 10 ARMAS
 
@@ -228,18 +251,38 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
     map.draw_map();
     
     if (there_is_element) {
-        std::map<int, Vect2D> positions = val->get_worm_positions();
-        
+        //std::map<int, Vect2D> positions = event->get_worm_positions();
+        std::map<int, Worm> server_worms = event->get_worms();
         for (auto& worm : worms) {
-            if (!positions.empty()) {
+            if (!server_worms.empty()) {
                 //el id de gusano =/= id de jugador controla al gusano
-                worm.second->render_new(positions[worm.second->worm_id]);
+                worm.second->render_new(server_worms[worm.second->worm_id].position, server_worms[worm.second->worm_id].state);//deberia obtener el estado aca y se lo paso
             } else {
                 worm.second->render_same();
             }
             worm.second->next_animation();
             worm.second->apply();
         }
+        
+        if (event->get_type_proyectile() != "NULL") {
+            last_projectile_used = event->get_type_proyectile();
+            is_projectile_flying = true;
+            projectiles[last_projectile_used]->render(event->get_proyectile_position().x, event->get_proyectile_position().y, event->get_proyectile_angle());
+        }
+        if (event->proyectile_got_exploded()) {
+            is_animation_playing = true;
+        }
+    
+        if (event->get_player_turn() > 0) {
+            id_worm_turn = event->get_player_turn();
+            std::cout << "ID DE GUSANITO:" << id_worm_turn << std::endl;
+            id_of_player_turn = worms[id_worm_turn]->player_id;
+        }
+        
+        //std::cout << "WORM ID: " <<id_worm_turn << std::endl;
+        //id_of_player_turn = worms[id_worm_turn]->player_id;
+
+
     } else {  //SI NO RECIBO NADA, SEGUI EJECUTANDO LA ANTERIOR ANIMACION Y QUEDATE EN EL MISMO LUGAR
 
         for (auto& worm : worms) {
@@ -249,10 +292,24 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
         }
     }
 
-    id_of_player_turn = 0;//ESTO LO RECIBIRIA CON EL RESTO DE COSAS :)
-    id_worm_turn = 0;   //ESTO LO RECIBIRIA JUNTO CON EL ID_OF_PLAYER_TURN
+    if (is_animation_playing) {
+        projectiles[last_projectile_used]->play_animation(&is_animation_playing);
+        if (!is_animation_playing)
+            is_projectile_flying = false;
+    }
 
     renderer.Present();
+}
+
+void SdlManager::init_projectiles(SdlProjectilesTextureManager& projectiles_texture_manager, SdlCamera& camera) {
+    projectiles["BAZOOKA"] = new SdlBazookaProjectile(projectiles_texture_manager, camera);
+    projectiles["DYNAMITE"] = new SdlDynamiteProjectile(projectiles_texture_manager, camera);
+    projectiles["HOLY_GRENADE"] = new SdlHolyGrenadeProjectile(projectiles_texture_manager, camera);
+    projectiles["RED_GRENADE"] = new SdlRedGrenadeProjectile(projectiles_texture_manager, camera);
+    projectiles["GREEN_GRENADE"] = new SdlGreenGrenadeProjectile(projectiles_texture_manager, camera);
+    projectiles["MORTAR"] = new SdlMortarProjectile(projectiles_texture_manager, camera);
+    projectiles["AIR_STRIKE"] = new SdlAirStrikeProjectile(projectiles_texture_manager, camera);
+    projectiles["BANANA"] = new SdlBananaProjectile(projectiles_texture_manager, camera);
 }
 
 void SdlManager::run(std::string background_type, std::string selected_map) {
@@ -268,20 +325,23 @@ void SdlManager::run(std::string background_type, std::string selected_map) {
                   SDL_WINDOW_RESIZABLE);
 
     Renderer renderer(window, -1, SDL_RENDERER_SOFTWARE);
+    camera.set_window(&window);
     
     SdlTexturesManager textures_manager(renderer, window, background_type);
     CommonMapParser parser;
-    SdlMap map(parser.get_map(selected_map), textures_manager);
+    SdlMap map(camera, parser.get_map(selected_map), textures_manager);
     SdlSoundManager sound_manager;
     SdlWormTextureManager worm_texture_manager(renderer);
-
+    SdlProjectilesTextureManager projectiles_texture_manager(renderer);
+    init_projectiles(projectiles_texture_manager, camera);
     //aca creo los gusanos, pero deberia recibir como son los equipos y sus id
     std::vector<Tile> worms_positions = map.get_worms_positions();
-    int i = 0;
+    int i = 1;
     for (auto worm : worms_positions) {//me deberian pasar tambien la vida de los gusanitos
-        worms[i] = new SdlWorm(renderer, worm_texture_manager, sound_manager, worm.pos_x, worm.pos_y, i, i%2, 100);//hago este %2 para probar distintos id de jugadores
+        worms[i] = new SdlWorm(camera, renderer, worm_texture_manager, sound_manager, worm.pos_x, worm.pos_y, i, i%3, 100);//hago este %2 para probar distintos id de jugadores
         i++;
     }
+
     while (is_running) {
         uint32_t frame_start;
         uint32_t frame_time;

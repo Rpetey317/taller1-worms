@@ -13,56 +13,69 @@ void SdlWorm::set_health(int new_health) {
 }
 
 void SdlWorm::recharge_ammo() {
-    std::cout << "RECARGANDO BALAS" << std::endl;
-    gun_ammo["BANANA"] = -1;
-    gun_ammo["BAZOOKA"] = -1;
-    gun_ammo["BEISBOLL"] = -1;
+
+    /*gun_ammo["NULL"] = 0;
+    gun_ammo["BANANA"] = weapon_config.banana.ammount_of_bullets;
+    gun_ammo["BAZOOKA"] = weapon_config.bazooka.ammount_of_bullets;
+    gun_ammo["BEISBOLL"] = weapon_config.beisboll.ammount_of_bullets;
     gun_ammo["TELEPORT"] = -1;
 
-    gun_ammo["MORTAR"] = 10;
-    gun_ammo["GREEN_GRENADE"] = 5;
-    gun_ammo["HOLY_GRENADE"] = 2;
-    gun_ammo["DYNAMITE"] = 5;
-    gun_ammo["RED_GRENADE"] = 10;
-    gun_ammo["AIR_STRIKE"] = 2;
+    gun_ammo["MORTAR"] = weapon_config.mortar.ammount_of_bullets;
+    gun_ammo["GREEN_GRENADE"] = weapon_config.green_grenade.ammount_of_bullets;
+    gun_ammo["HOLY_GRENADE"] = weapon_config.holy_grenade.ammount_of_bullets;
+    gun_ammo["DYNAMITE"] = weapon_config.dynamite.ammount_of_bullets;
+    gun_ammo["RED_GRENADE"] = weapon_config.red_grenade.ammount_of_bullets;
+    gun_ammo["AIR_STRIKE"] = weapon_config.air_strike.ammount_of_bullets;*/
+    gun_ammo["NULL"] = 0;
+    gun_ammo["BANANA"] = weapon_config.banana.ammount_of_bullets;
+    gun_ammo["BAZOOKA"] = weapon_config.bazooka.ammount_of_bullets;
+    gun_ammo["BEISBOLL"] = weapon_config.beisboll.ammount_of_bullets;
+    gun_ammo["TELEPORT"] = -1;
+
+    gun_ammo["MORTAR"] = weapon_config.mortar.ammount_of_bullets;
+    gun_ammo["GREEN_GRENADE"] = weapon_config.green_grenade.ammount_of_bullets;
+    gun_ammo["HOLY_GRENADE"] = weapon_config.holy_grenade.ammount_of_bullets;
+    gun_ammo["DYNAMITE"] = weapon_config.dynamite.ammount_of_bullets;
+    gun_ammo["RED_GRENADE"] = weapon_config.red_grenade.ammount_of_bullets;
+    gun_ammo["AIR_STRIKE"] = weapon_config.air_strike.ammount_of_bullets;
+
 }
 
-void SdlWorm::render_same() {
-    texture_manager.render(worm_state, animation_phase, x_pos, y_pos, flip);
-    health_bar.SetX(x_pos);
-    health_bar.SetY(y_pos - 10);
+void SdlWorm::render_health_bar() {
+    health_bar.SetX(x_pos - camera.get_x());
+    health_bar.SetY(y_pos - 10 - camera.get_y());
     health_bar.SetW(health/2);
 
-    health_bar_delim.SetX(x_pos -1);
-    health_bar_delim.SetY(y_pos - 11);
+    health_bar_delim.SetX(x_pos -1 - camera.get_x());
+    health_bar_delim.SetY(y_pos - 11 - camera.get_y());
     health_bar_delim.SetW((health/2) +2);
     renderer.SetDrawColor(delim_color);
     renderer.DrawRect(health_bar_delim);
     renderer.SetDrawColor(color);
     renderer.FillRect(health_bar);
-
 }
 
-void SdlWorm::render_new(Vect2D position) {
+void SdlWorm::render_same() {
+    texture_manager.render(worm_state, animation_phase, x_pos - camera.get_x(), y_pos - camera.get_y(), flip);
+    render_health_bar();
+    worm_state->render_ammo(renderer, gun_ammo[worm_state->get_name()], 0,0);
+}
+
+int SdlWorm::projectile_id() {
+    return worm_state->projectile_id();
+}
+
+void SdlWorm::render_new(Vect2D position, int state) {
     x_pos = position.x;
     y_pos = position.y;
     if (is_animation_playing) {
-        texture_manager.render(worm_state, animation_phase, position.x, position.y, flip);
+        texture_manager.render(worm_state, animation_phase, position.x - camera.get_x(), position.y - camera.get_y(), flip);
     } else {
-        texture_manager.render(worm_state, animation_phase, position.x, position.y, flip);
+        texture_manager.render(worm_state, animation_phase, position.x - camera.get_x(), position.y - camera.get_y(), flip);
     }
-    health_bar.SetX(x_pos);
-    health_bar.SetY(y_pos - 10);
-    health_bar.SetW(health/2);
 
-    health_bar_delim.SetX(x_pos -1);
-    health_bar_delim.SetY(y_pos - 11);
-    health_bar_delim.SetW((health/2)+2);
-    renderer.SetDrawColor(delim_color);
-    renderer.DrawRect(health_bar_delim);
-    renderer.SetDrawColor(color);
-    renderer.FillRect(health_bar);
-    
+    render_health_bar();
+    worm_state->render_ammo(renderer, gun_ammo[worm_state->get_name()], camera.get_x(), camera.get_y());
 }
 
 void SdlWorm::apply() {
@@ -135,7 +148,7 @@ void SdlWorm::set_color() {
 
 }
 
-SdlWorm::SdlWorm(Renderer& renderer, SdlWormTextureManager& texture_manager, SdlSoundManager& sound_manager, int x_pos, int y_pos, int worm_id, int player_id, int health) : renderer(renderer), texture_manager(texture_manager), sound_manager(sound_manager) {
+SdlWorm::SdlWorm(SdlCamera& camera, Renderer& renderer, SdlWormTextureManager& texture_manager, SdlSoundManager& sound_manager, int x_pos, int y_pos, int worm_id, int player_id, int health) : camera(camera), renderer(renderer), texture_manager(texture_manager), sound_manager(sound_manager) {
     this->worm_id = worm_id;
     this->player_id = player_id;
     this->x_pos = x_pos;
@@ -151,6 +164,10 @@ SdlWorm::SdlWorm(Renderer& renderer, SdlWormTextureManager& texture_manager, Sdl
     health_bar_delim.SetH(12);
     health_bar_delim.SetW((health/2) + 2);
     set_color();
+    CommonConfigurationParser configuration_parser;
+    worm_config = configuration_parser.get_worm_configuration();
+    weapon_config = configuration_parser.get_weapons_configuration();
+
 
     worm_states["AIR_STRIKE"] = new SdlWormStateAirStrike();
     worm_states["BANANA"] = new SdlWormStateBanana();

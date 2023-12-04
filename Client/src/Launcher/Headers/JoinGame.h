@@ -8,7 +8,7 @@
 
 class JoinGame: public QDialog {
 public:
-    explicit JoinGame();
+    JoinGame();
     QString getEnteredText() const;
 
 private slots:

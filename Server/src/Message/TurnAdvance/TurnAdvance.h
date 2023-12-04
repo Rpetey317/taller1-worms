@@ -1,7 +1,6 @@
 #ifndef __TurnAdvance_H__
 #define __TurnAdvance_H__
 
-#include <map>
 #include <memory>
 
 #include "../Message.h"
@@ -10,16 +9,15 @@ class PlayerHandler;
 
 class TurnAdvance: public Message {
 
-    const std::map<int, std::unique_ptr<PlayerHandler>>::iterator& new_pl;
+    const int new_pl_id;
 
 public:
-    TurnAdvance(const int& prev_pl_id,
-                const std::map<int, std::unique_ptr<PlayerHandler>>::iterator& new_pl);
+    TurnAdvance(const int& prev_pl_id, const int& new_pl_id);
     ~TurnAdvance();
 
     bool is_valid() override;
 
-    const std::map<int, std::unique_ptr<PlayerHandler>>::iterator& get_new_pl();
+    const int get_new_pl_id();
 
     std::shared_ptr<Update> get_processed_by(Game& game) override;
 };

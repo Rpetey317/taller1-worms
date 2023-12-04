@@ -4,7 +4,7 @@
 #include "../Weapons.h"
 
 class Mortar : public B2dWeapon {
-    BoxManager* box_manager;
+    class BoxManager* box_manager;
 public:
     explicit Mortar(BoxManager* box_manager);
 

@@ -95,7 +95,7 @@ std::shared_ptr<Event> ClientProtocol::recv_map_update() {
     amount_players_t amount_players;
     this->skt.recvall(&amount_players, sizeof(amount_players_t), &this->isclosed);
     if (this->isclosed) {
-        return std::make_shared<NullEvent>(-1);
+        return std::make_shared<NullEvent>(0);
     }
     // Receive players positions
     std::map<int, Worm> worm_positions;
@@ -104,23 +104,82 @@ std::shared_ptr<Event> ClientProtocol::recv_map_update() {
         playerid_t player_id;
         this->skt.recvall(&player_id, sizeof(playerid_t), &this->isclosed);
         if (this->isclosed) {
-            return std::make_shared<NullEvent>(-1);
+            return std::make_shared<NullEvent>(0);
         }
         uint16_t x;
         this->skt.recvall(&x, sizeof(uint16_t), &this->isclosed);
         if (this->isclosed) {
-            return std::make_shared<NullEvent>(-1);
+            return std::make_shared<NullEvent>(0);
         }
         uint16_t y;
         this->skt.recvall(&y, sizeof(uint16_t), &this->isclosed);
         if (this->isclosed) {
-            return std::make_shared<NullEvent>(-1);
+            return std::make_shared<NullEvent>(0);
         }
         Vect2D position(Vect2D(ntohs(x), ntohs(y)));
         Worm worm(position, (int)player_id);
         worm_positions[(int)player_id] = worm;
     }
     return std::make_shared<MapUpdate>(worm_positions);
+}
+
+std::shared_ptr<Event> ClientProtocol::recv_player_position() {
+    playerid_t player_id = this->recv_player_id();
+    uint16_t x;
+    this->skt.recvall(&x, sizeof(uint16_t), &this->isclosed);
+    if (this->isclosed) {
+        return std::make_shared<NullEvent>(0);
+    }
+    uint16_t y;
+    this->skt.recvall(&y, sizeof(uint16_t), &this->isclosed);
+    if (this->isclosed) {
+        return std::make_shared<NullEvent>(0);
+    }
+    Vect2D position(Vect2D(ntohs(x), ntohs(y)));
+    return std::make_shared<PlayerPosition>((int)player_id, position);
+}
+
+std::shared_ptr<Event> ClientProtocol::recv_proyectile_update() {
+    playerid_t player_id = this->recv_player_id();
+    std::string type_proyectile = this->recv_msg();
+    uint16_t x;
+    this->skt.recvall(&x, sizeof(uint16_t), &this->isclosed);
+    if (this->isclosed) {
+        return std::make_shared<NullEvent>(0);
+    }
+    uint16_t y;
+    this->skt.recvall(&y, sizeof(uint16_t), &this->isclosed);
+    if (this->isclosed) {
+        return std::make_shared<NullEvent>(0);
+    }
+    uint8_t angle;
+    this->skt.recvall(&angle, sizeof(uint8_t), &this->isclosed);
+    if (this->isclosed) {
+        return std::make_shared<NullEvent>(0);
+    }
+    Vect2D position(Vect2D(ntohs(x), ntohs(y)));
+
+    uint8_t exploded;
+    this->skt.recvall(&exploded, sizeof(uint8_t), &this->isclosed);
+    if (this->isclosed) {
+        return std::make_shared<NullEvent>(0);
+    }
+    if (exploded == 1)
+        return std::make_shared<ProyectileUpdate>((int)player_id, type_proyectile, position,
+                                                  (int)angle, true);
+
+    return std::make_shared<ProyectileUpdate>((int)player_id, type_proyectile, position, (int)angle,
+                                              false);
+}
+
+std::shared_ptr<Event> ClientProtocol::recv_timer() {
+    playerid_t player_id = this->recv_player_id();
+    uint8_t duration;
+    this->skt.recvall(&duration, sizeof(uint8_t), &this->isclosed);
+    if (this->isclosed) {
+        return std::make_shared<NullEvent>(0);
+    }
+    return std::make_shared<Timer>((int)player_id, (int)duration);
 }
 
 ClientProtocol::ClientProtocol(Socket skt): skt(std::move(skt)), isclosed(false) {}
@@ -130,7 +189,7 @@ playerid_t ClientProtocol::recv_player_id() {
 
     this->skt.recvall(&id, sizeof(playerid_t), &this->isclosed);
     if (this->isclosed) {
-        return -1;
+        return 0;
     }
     return id;
 }
@@ -175,9 +234,6 @@ char ClientProtocol::send_Jump(Jump action) {
 }
 
 char ClientProtocol::send_NullAction(NullAction action) {
-    if (!this->send_char(MSGCODE_NULL_ACTION)) {
-        return CLOSED_SKT;
-    }
     return SUCCESS;
 }
 
@@ -190,11 +246,11 @@ char ClientProtocol::send_Shoot(Shoot action) {
         return CLOSED_SKT;
     }
 
-    if (!this->send_char(action.get_power())) {
+    if (!this->send_short(action.get_power())) {
         return CLOSED_SKT;
     }
 
-    if (!this->send_char(action.get_angle())) {
+    if (!this->send_short(action.get_angle())) {
         return CLOSED_SKT;
     }
 
@@ -272,8 +328,14 @@ std::shared_ptr<Event> ClientProtocol::recv_update() {
             return this->recv_player_disconnected();
         case MSGCODE_TURN_UPDATE:
             return this->recv_turn_update();
+        case MSGCODE_PLAYER_POSITION:
+            return this->recv_player_position();
+        case MSGCODE_PROYECTILE_UPDATE:
+            return this->recv_proyectile_update();
+        case SRV_TIMER_UPD:
+            return this->recv_timer();
         default:
-            return std::make_shared<NullEvent>(-1);
+            return std::make_shared<NullEvent>(0);
     }
 }
 

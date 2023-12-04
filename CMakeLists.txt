@@ -19,6 +19,9 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ggdb -DDEBUG -fno-inline ")
 # threads
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
+# Yaml library
+find_package(yaml-cpp)
+
 # COMMON---------------------------------------------------------------------------------------------------------------------
 include_directories(${PROJECT_SOURCE_DIR}/Common) #Agrega el directiorio Common al conjunto de directorios
 include_directories(${PROJECT_SOURCE_DIR}/Common/Socket)
@@ -79,11 +82,11 @@ target_link_libraries(mycpps PUBLIC SDL2pp)
 
 # EJECUTABLES---------------------------------------------------------------------------------------------------------------------
 add_executable(server "Server/main.cpp") #Define objeto ejecutable llamado server que se compila a partir de "Server/server_main.cpp"
-target_link_libraries(server server_classes common_classes) #Establece las bibliotecas necesarias para el ejecutable server
+# target_link_libraries(server server_classes common_classes yaml-cpp) #Establece las bibliotecas necesarias para el ejecutable server
 target_link_libraries(server server_classes common_classes yaml-cpp box2d)
 
 add_executable(client "Client/main.cpp")
-target_link_libraries(client client_classes common_classes mycpps)
+target_link_libraries(client client_classes common_classes mycpps yaml-cpp)
 
 
 # # Add server executable

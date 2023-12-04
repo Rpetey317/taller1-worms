@@ -17,6 +17,8 @@ enum _entityCategory {
     FRAGMENT = 0x0010,
     AIR_MISSLE = 0x0011,
     TELEPORT = 0x0012,
+    DYNAMITE = 0x0013,
+    BASEBALL_BAT = 0x0014,
   };
 
 class B2dWeapon {
@@ -27,5 +29,15 @@ public:
 
     virtual ~B2dWeapon() = default;
 };
+
+class B2dWeaponSpecial{
+public:
+    B2dWeaponSpecial() = default;
+
+    virtual void fire_special(Vect2D position) = 0;
+
+    virtual ~B2dWeaponSpecial() = default;
+};
+
 
 #endif  // !_Weapons_H_

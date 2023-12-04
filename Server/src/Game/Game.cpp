@@ -6,6 +6,9 @@
 #include "ReceiverThread.h"
 #include "SenderThread.h"
 
+int ttime = 5;
+int wct = 4;
+
 Game::Game(Queue<std::shared_ptr<Message>>& _eventq):
         plcount(0),
         eventq(_eventq),
@@ -13,15 +16,19 @@ Game::Game(Queue<std::shared_ptr<Message>>& _eventq):
         next_free_id(0),
         box2d_in(10000),
         box2d_out(10000),
+        turn_start(std::chrono::steady_clock::now()),
+        turn_time(ttime),
+        worm_count(wct),
+        current_worm(std::make_pair(0, 0)),
         box2d() {
     curr_pl = this->players.begin();
 }
 
 void Game::add_player(ServerProtocol&& peer) {
+    std::lock_guard<std::mutex> lock(this->plmtx);
     PlayerHandler* new_player = new PlayerHandler(std::move(peer), this->eventq, ++next_free_id);
     this->players.insert(std::make_pair(next_free_id, std::unique_ptr<PlayerHandler>(new_player)));
     new_player->start();
-    box2d.add_player();
 }
 
 // DD methods implemented in Game_processUpdate.cpp
@@ -30,12 +37,15 @@ std::shared_ptr<Update> Game::execute(std::shared_ptr<Message> event) {
 }
 
 void Game::broadcast(std::shared_ptr<Update> update) {
+    std::lock_guard<std::mutex> lock(this->plmtx);
     for (auto pl = this->players.begin(); pl != this->players.end(); pl++) {
         (*pl).second->send(update);
     }
 }
 
 int Game::count() { return plcount; }
+
+void Game::reset_timer() { turn_start = std::chrono::steady_clock::now(); }
 
 void Game::close() {
     for (auto pl = this->players.begin(); pl != this->players.end(); pl++)

@@ -11,7 +11,7 @@ ReceiverThread::ReceiverThread(Queue<std::shared_ptr<Message>>& _eventq, ServerP
         eventq(_eventq), prot(_prot), plid(_plid) {}
 
 void ReceiverThread::run() {
-    while (_keep_running) {
+    while (_keep_running && this->prot.is_connected()) {
         try {
 
             std::shared_ptr<Message> msg = prot.recv_update(this->plid);
@@ -27,7 +27,7 @@ void ReceiverThread::run() {
             std::cerr << "Unexpected error in receiver thread" << std::endl;
         }
     }
-    // Player disconnected
+    std::cout << "Player disconnected" << std::endl;
     this->eventq.push(std::make_shared<PlayerDisconnectedMessage>(this->plid));
 }
 

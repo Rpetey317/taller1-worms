@@ -8,7 +8,7 @@
 
 class CreateGame: public QDialog {
 public:
-    explicit CreateGame();
+    CreateGame();
     QString getEnteredGameName() const;
     QString getEnteredMapName() const;
 

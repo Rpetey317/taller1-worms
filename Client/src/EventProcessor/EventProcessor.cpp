@@ -24,9 +24,10 @@ void EventProcessor::process_turn_update(TurnUpdate& event) {
 }
 
 void EventProcessor::process_player_position(PlayerPosition& event) {
-    Vect2D position = event.get_position();
-    std::cout << "Player " << event.get_id() << "with position: " << position.x << "," << position.y
-              << std::endl;
+    // Vect2D position = event.get_position();
+    // std::cout << "Player " << event.get_id() << "with position: " << position.x << "," <<
+    // position.y
+    //           << std::endl;
 }
 
 void EventProcessor::process_map_update(MapUpdate& event) {
@@ -38,8 +39,13 @@ void EventProcessor::process_map_update(MapUpdate& event) {
     // }
 }
 
+void EventProcessor::proccess_proyectile_update(ProyectileUpdate& event) {}
+
+void EventProcessor::process_timer(Timer& event) {}
+
 void EventProcessor::proccess_event(std::shared_ptr<Event> event) {
     event->get_processed_by(*this);
 }
+
 
 EventProcessor::~EventProcessor() {}

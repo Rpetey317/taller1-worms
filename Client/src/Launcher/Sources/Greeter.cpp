@@ -72,7 +72,7 @@ void Greeter::joinToGame() {
         std::string gameNameString(this->gameName.toStdString());
         this->protocol.join_game(gameNameString);
         close();
-    };
+    }
 }
 
 
@@ -93,6 +93,6 @@ void Greeter::connectEvents() {
     QPushButton* button_join_game = findChild<QPushButton*>("joinButton");
     QObject::connect(button_join_game, &QPushButton::clicked, this, &Greeter::joinToGame);
 
-    QPushButton* button_create_map = findChild<QPushButton*>("createMapButton");
-    QObject::connect(button_create_map, &QPushButton::clicked, this, &Greeter::createMap);
+    // QPushButton* button_create_map = findChild<QPushButton*>("createMapButton");
+    // QObject::connect(button_create_map, &QPushButton::clicked, this, &Greeter::createMap);
 }

@@ -8,6 +8,7 @@
 #include <arpa/inet.h>
 
 #include "Update.h"
+#include "Update.h"
 
 // I thoroughly refuse to manually write the using directive
 // for every. single. constant. in the NetworkProtocol namespace.
@@ -31,7 +32,6 @@ std::shared_ptr<Message> ServerProtocol::recv_update(const int& plid) {
 
     // TODO: fix this
     if (code == MSGCODE_PLAYER_MESSAGE) {
-
         strlen_t msg_len;
         this->cli.recvall(&msg_len, sizeof(strlen_t), &this->isclosed);
         if (this->isclosed) {
@@ -46,17 +46,33 @@ std::shared_ptr<Message> ServerProtocol::recv_update(const int& plid) {
         }
         std::string msg(vmsg.begin(), vmsg.end());
         return std::make_shared<Chat>(plid, msg);
-    } else if (code == MSGCODE_BOX2D) {
-        input_t input;
-        this->cli.recvall(&input, sizeof(input_t), &this->isclosed);
-        if (this->isclosed) {
+
+    } else if (code == MSGCODE_PLAYER_MOVE_RIGHT) {
+        return BoxMove::move_right(plid);
+
+    } else if (code == MSGCODE_PLAYER_MOVE_LEFT) {
+        return BoxMove::move_left(plid);
+
+    } else if (code == MSGCODE_PLAYER_JUMP_FORWARD) {
+        return BoxJump::jump_fw(plid);
+
+    } else if (code == MSGCODE_PLAYER_JUMP_BACKWARDS) {
+        return BoxJump::jump_bw(plid);
+
+    } else if (code == MSGCODE_SHOOT) {
+        uint8_t weapon_id;
+        uint16_t power, angle;
+
+        if (!this->cli.recvall(&weapon_id, sizeof(uint8_t), &this->isclosed)) {
             return std::make_shared<NullMessage>();
         }
-        return std::make_shared<Box2DMsg>(plid, input);
-    } else if (code == MSGCODE_PLAYER_MOVE_RIGHT) {
-        return std::make_shared<Box2DMsg>(plid, 1);
-    } else if (code == MSGCODE_PLAYER_MOVE_LEFT) {
-        return std::make_shared<Box2DMsg>(plid, 2);
+        if (!this->cli.recvall(&power, sizeof(uint16_t), &this->isclosed)) {
+            return std::make_shared<NullMessage>();
+        }
+        if (!this->cli.recvall(&angle, sizeof(uint16_t), &this->isclosed)) {
+            return std::make_shared<NullMessage>();
+        }   
+        return std::make_shared<BoxShoot>(plid, weapon_id, power, angle);
     } else {
         return std::make_shared<NullMessage>();
     }
@@ -140,7 +156,7 @@ void ServerProtocol::close() {
     if (this->isclosed)
         return;
 
+    this->isclosed = true;
     this->cli.shutdown(2);
     this->cli.close();
-    this->isclosed = true;
 }

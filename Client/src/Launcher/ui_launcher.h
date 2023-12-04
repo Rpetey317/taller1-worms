@@ -28,7 +28,6 @@ public:
     QHBoxLayout* horizontalLayout;
     QPushButton* createButton;
     QPushButton* joinButton;
-    QPushButton* pushButton;
 
     void setupUi(QWidget* Greeter) {
         if (Greeter->objectName().isEmpty())
@@ -124,34 +123,6 @@ public:
 
         horizontalLayout->addWidget(joinButton);
 
-        pushButton = new QPushButton(Greeter);
-        pushButton->setObjectName(QString::fromUtf8("createMapButton"));
-        QPalette palette4;
-        palette4.setBrush(QPalette::Active, QPalette::Button, brush5);
-        palette4.setBrush(QPalette::Active, QPalette::Base, brush5);
-        palette4.setBrush(QPalette::Active, QPalette::Window, brush5);
-        QBrush brush6(QColor(53, 132, 228, 255));
-        brush6.setStyle(Qt::SolidPattern);
-        palette4.setBrush(QPalette::Active, QPalette::Highlight, brush6);
-        QBrush brush7(QColor(224, 27, 36, 255));
-        brush7.setStyle(Qt::SolidPattern);
-        palette4.setBrush(QPalette::Active, QPalette::Link, brush7);
-        palette4.setBrush(QPalette::Inactive, QPalette::Button, brush5);
-        palette4.setBrush(QPalette::Inactive, QPalette::Base, brush5);
-        palette4.setBrush(QPalette::Inactive, QPalette::Window, brush5);
-        palette4.setBrush(QPalette::Inactive, QPalette::Highlight, brush6);
-        palette4.setBrush(QPalette::Inactive, QPalette::Link, brush7);
-        palette4.setBrush(QPalette::Disabled, QPalette::Button, brush5);
-        palette4.setBrush(QPalette::Disabled, QPalette::Base, brush5);
-        palette4.setBrush(QPalette::Disabled, QPalette::Window, brush5);
-        QBrush brush8(QColor(145, 145, 145, 255));
-        brush8.setStyle(Qt::SolidPattern);
-        palette4.setBrush(QPalette::Disabled, QPalette::Highlight, brush8);
-        palette4.setBrush(QPalette::Disabled, QPalette::Link, brush7);
-        pushButton->setPalette(palette4);
-
-        horizontalLayout->addWidget(pushButton);
-
 
         verticalLayout_2->addLayout(horizontalLayout);
 
@@ -167,7 +138,6 @@ public:
         label_2->setText(QCoreApplication::translate("Greeter", "Choose an option:", nullptr));
         createButton->setText(QCoreApplication::translate("Greeter", "Create Match", nullptr));
         joinButton->setText(QCoreApplication::translate("Greeter", "Join Match", nullptr));
-        pushButton->setText(QCoreApplication::translate("Greeter", "Create Map", nullptr));
     }  // retranslateUi
 };
 

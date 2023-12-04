@@ -3,12 +3,12 @@
 
 #include "../Weapons.h"
 
-class Teleport : public B2dWeapon {
-    BoxManager* box_manager;
+class Teleport : public B2dWeaponSpecial {
+    class BoxManager* box_manager;
 public:
     explicit Teleport(BoxManager* box_manager);
 
-    void fire(float angle, float strength) override;
+    void fire_special(Vect2D position) override;
 
     ~Teleport();
 

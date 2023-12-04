@@ -10,6 +10,8 @@ GameLoopThread::GameLoopThread(Queue<std::shared_ptr<Message>>& _eventq, Game& _
         eventq(_eventq), game(_game) {}
 
 void GameLoopThread::run() {
+    // Ensure timer starts at 0
+    game.reset_timer();
     while (_keep_running) {
         std::list<std::shared_ptr<Message>> event_list;
         auto start_time = std::chrono::steady_clock::now();
@@ -28,8 +30,9 @@ void GameLoopThread::run() {
         for (auto event: event_list) {
             std::shared_ptr<Update> update = this->game.execute(event);
             game.broadcast(update);
-            // delete update;
         }
+        // Execute timer
+        game.broadcast(game.execute(std::make_shared<RunTimer>(0)));
 
         // Take time elapsed
         auto end_time = std::chrono::steady_clock::now();
@@ -44,8 +47,6 @@ void GameLoopThread::run() {
                     std::chrono::steady_clock::now() + time_to_sleep;
             std::this_thread::sleep_until(end);
         }
-
-        // std::cout << "Tick" << std::endl;
     }
 }
 

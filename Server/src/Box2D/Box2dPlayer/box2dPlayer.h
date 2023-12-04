@@ -6,18 +6,18 @@
 class Box2DPlayer {
     int id;
     b2Body* body;
-
+    int health_points;
+    int direction;
+    
     public:
-    Box2DPlayer(int id, b2Body* body){
-        this->id = id;
-        this->body = body;
-    }
-    b2Body* get_body(){
-        return body;
-    }
-    int get_id(){
-        return id;
-    }
+    Box2DPlayer(int id, b2Body* body);
+    b2Body* get_body();
+    int get_id();
+    void get_hurt(int damage);
+    void kill();
+    void set_direction(int direction);
+    int get_direction();
+    bool is_alive();
 };
 
 #endif

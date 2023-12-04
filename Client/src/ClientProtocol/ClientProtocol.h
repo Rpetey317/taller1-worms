@@ -45,6 +45,9 @@ private:
     std::shared_ptr<Event> recv_player_disconnected();
     std::shared_ptr<Event> recv_turn_update();
     std::shared_ptr<Event> recv_map_update();
+    std::shared_ptr<Event> recv_player_position();
+    std::shared_ptr<Event> recv_proyectile_update();
+    std::shared_ptr<Event> recv_timer();
 
 public:
     explicit ClientProtocol(Socket skt);

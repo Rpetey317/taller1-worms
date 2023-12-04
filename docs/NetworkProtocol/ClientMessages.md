@@ -46,3 +46,27 @@ The format of this action is:
  Where:
 
 - `<cd>` is the message code of the null action (0x13)
+
+# Shoot
+The format of this action is:
+ ```
+ <cd> <weapon> <power> <angle>
+ ```
+ Where:
+
+- `<cd>` is the message code of the null action
+- `<weapon>` is an int that defines the type of weapon
+- `<power>` is an int that defines the type of power of the shooting
+- `<angle>` is an int that defines the type of angle of the shooting
+
+`<weapon>` can have 10 diferent values for the diferent type of weapons, ennumerating here:
+  - BAZOOKA = 0x0003,
+  - MORTAR = 0x0004,
+  - GREEN_GRANADE = 0x0005,
+  - RED_GRANADE = 0x0006,
+  - BANANA = 0x0007,
+  - HOLY_GRANADE = 0x0008,
+  - AIR_STRIKE = 0x0009,
+  - TELEPORT = 0x0012,
+  - BATE= 0X0013,
+  - DINAMITA=0X0014,

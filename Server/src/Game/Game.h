@@ -1,10 +1,12 @@
 #ifndef __SERVER_PLMONITOR_H__
 #define __SERVER_PLMONITOR_H__
 
+#include <chrono>
 #include <map>
 #include <memory>
 #include <mutex>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "../Box2D/Box2dManager/box2dManager.h"
@@ -22,6 +24,7 @@
  */
 class Game {
     std::map<int, std::unique_ptr<PlayerHandler>> players;
+    std::mutex plmtx;
     std::atomic<int> plcount;
     Queue<std::shared_ptr<Message>>& eventq;
     std::map<int, std::unique_ptr<PlayerHandler>>::iterator curr_pl;
@@ -29,6 +32,10 @@ class Game {
     int next_free_id;
     Queue<int> box2d_in;
     Queue<std::vector<int>> box2d_out;
+    std::chrono::steady_clock::time_point turn_start;
+    int turn_time;
+    int worm_count;
+    std::pair<int, int> current_worm;
     BoxManager box2d;
 
 public:
@@ -61,8 +68,9 @@ public:
      */
     std::shared_ptr<Update> process_TurnAdvance(TurnAdvance& event);
 
-    std::shared_ptr<Update> process_box2d(Box2DMsg& event);
+    std::shared_ptr<Update> process_box2d(std::shared_ptr<Box2DMsg> event);
 
+    std::shared_ptr<Update> process_timer(RunTimer& event);
 
     /*
      * Creates new handler, adding players (recievers) to given list
@@ -85,6 +93,8 @@ public:
      * broadcasts given update to all players
      */
     void broadcast(std::shared_ptr<Update> update);
+
+    void reset_timer();
 
     /*
      * Closes lobby and frees all resources
