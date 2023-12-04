@@ -14,7 +14,7 @@ public:
     static std::shared_ptr<Message> jump_fw(int id);
     static std::shared_ptr<Message> jump_bw(int id);
 
-    // void get_processed_box2d(BoxManager& box2d) override;
+    int get_cmd() override;
 
     bool is_forward() const;
 };

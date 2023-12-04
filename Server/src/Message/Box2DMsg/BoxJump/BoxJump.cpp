@@ -15,4 +15,6 @@ std::shared_ptr<Message> BoxJump::jump_bw(int id) {
     return std::shared_ptr<Message>(new BoxJump(false, id));
 }
 
+int BoxJump::get_cmd() { return this->forward ? COMMAND_JUMP_FOWARD : COMMAND_JUMP_BACKWARD; }
+
 bool BoxJump::is_forward() const { return this->forward; }
