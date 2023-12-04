@@ -7,6 +7,7 @@
 #include "../texture_sound_manager/SdlWormTextureManager.h"
 #include "../../../Common/Vect2D.h"
 #include "../../../Common/CommonConfigurationParser.h"
+#include "SdlResizableRect.h"
 
 using namespace SDL2pp;  // NOLINT
 
@@ -22,7 +23,7 @@ public:
     explicit SdlWorm(SdlCamera& camera, Renderer& renderer, SdlWormTextureManager& texture_manager, SdlSoundManager& sound_manager, int x_pos, int y_pos, int worm_id, int player_id, int health);
     bool next_animation();
     void change_state(std::string state);
-    void play_sound(std::string sound_to_play);
+    void play_sound();
     void render_new(Vect2D position, int state);
     void render_same();
     void destroy();
@@ -45,19 +46,14 @@ private:
     int animation_phase;
     int health;
     int initial_health;
-    // ESTOS CONVERTIRLOS EN ALGO TIPO "SdlHealthComponent"
-    Color color;
-    Color delim_color;
-    Rect health_bar;
-    Rect health_bar_delim;
-    void set_color();
-    void render_health_bar();
-    //
+    SdlResizableRect health_bar;
+    SdlResizableRect attack_power_bar;
 
     SdlWormState *worm_state;
     std::map<std::string, SdlWormState*> worm_states;
     std::map<std::string, int> gun_ammo;
     WormConfiguration worm_config;
     WeaponsConfiguration weapon_config;
+    void set_color();
 
 };

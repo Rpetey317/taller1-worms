@@ -14,18 +14,6 @@ void SdlWorm::set_health(int new_health) {
 
 void SdlWorm::recharge_ammo() {
 
-    /*gun_ammo["NULL"] = 0;
-    gun_ammo["BANANA"] = weapon_config.banana.ammount_of_bullets;
-    gun_ammo["BAZOOKA"] = weapon_config.bazooka.ammount_of_bullets;
-    gun_ammo["BEISBOLL"] = weapon_config.baseball.ammount_of_bullets;
-    gun_ammo["TELEPORT"] = -1;
-
-    gun_ammo["MORTAR"] = weapon_config.mortar.ammount_of_bullets;
-    gun_ammo["GREEN_GRENADE"] = weapon_config.green_grenade.ammount_of_bullets;
-    gun_ammo["HOLY_GRENADE"] = weapon_config.holy_grenade.ammount_of_bullets;
-    gun_ammo["DYNAMITE"] = weapon_config.dynamite.ammount_of_bullets;
-    gun_ammo["RED_GRENADE"] = weapon_config.red_grenade.ammount_of_bullets;
-    gun_ammo["AIR_STRIKE"] = weapon_config.air_strike.ammount_of_bullets;*/
     gun_ammo["NULL"] = 0;
     gun_ammo["BANANA"] = weapon_config.banana.ammount_of_bullets;
     gun_ammo["BAZOOKA"] = weapon_config.bazooka.ammount_of_bullets;
@@ -41,23 +29,22 @@ void SdlWorm::recharge_ammo() {
 
 }
 
-void SdlWorm::render_health_bar() {
-    health_bar.SetX(x_pos - camera.get_x());
-    health_bar.SetY(y_pos - 10 - camera.get_y());
-    health_bar.SetW(health/2);
-
-    health_bar_delim.SetX(x_pos -1 - camera.get_x());
-    health_bar_delim.SetY(y_pos - 11 - camera.get_y());
-    health_bar_delim.SetW((health/2) +2);
-    renderer.SetDrawColor(delim_color);
-    renderer.DrawRect(health_bar_delim);
-    renderer.SetDrawColor(color);
-    renderer.FillRect(health_bar);
-}
-
 void SdlWorm::render_same() {
+    if (health <= 0)
+        return;
     texture_manager.render(worm_state, animation_phase, x_pos - camera.get_x(), y_pos - camera.get_y(), flip);
-    render_health_bar();
+    health_bar.set_position(x_pos - camera.get_x(), y_pos - 10 - camera.get_y());
+    health_bar.set_width(health/2);
+    health_bar.set_delim_position(x_pos -1 - camera.get_x(), y_pos -11 - camera.get_y());
+    health_bar.set_delim_width((health/2) + 2);
+    
+    if (attack_power > 0) {
+        attack_power_bar.set_position(x_pos - camera.get_x(), y_pos - camera.get_y() + 50);
+        attack_power_bar.set_width(attack_power/2);
+        attack_power_bar.render(renderer);
+    }
+    
+    health_bar.render(renderer);
     worm_state->render_ammo(renderer, gun_ammo[worm_state->get_name()], 0,0);
 }
 
@@ -66,89 +53,97 @@ int SdlWorm::projectile_id() {
 }
 
 void SdlWorm::render_new(Vect2D position, int state) {
+    //aca obtendria el state, y haria un super switch case y le actualizaria el worm_state
+    // cuando muere un worm, me pasan su estado de muerte y despues veo que onda
+    if (worm_state == worm_states["DIE"])
+        return;
+    /*if (state == SE_MURIO) {
+        worm_state = worm_states["DIE"];
+        play_animation();
+    }*/
+    
+
     x_pos = position.x;
     y_pos = position.y;
+    std::cout << x_pos << " : " << y_pos << std::endl;
     if (is_animation_playing) {
         texture_manager.render(worm_state, animation_phase, position.x - camera.get_x(), position.y - camera.get_y(), flip);
     } else {
         texture_manager.render(worm_state, animation_phase, position.x - camera.get_x(), position.y - camera.get_y(), flip);
     }
 
-    render_health_bar();
+    health_bar.set_position(x_pos - camera.get_x(), y_pos - 10 - camera.get_y());
+    health_bar.set_width(health/2);
+    health_bar.set_delim_position(x_pos -1 - camera.get_x(), y_pos -11 - camera.get_y());
+    health_bar.set_delim_width((health/2) + 2);
+
+    if (attack_power > 0) {
+        attack_power_bar.set_position(x_pos - camera.get_x(), y_pos - camera.get_y() + 50);
+        attack_power_bar.set_width(attack_power/2);
+        attack_power_bar.render(renderer);
+    }
+    
+    
+
+    health_bar.render(renderer);
     worm_state->render_ammo(renderer, gun_ammo[worm_state->get_name()], camera.get_x(), camera.get_y());
 }
 
 void SdlWorm::apply() {
     if (is_charging) { 
         attack_power = attack_power + 1;
-        if (attack_power == 100) {
+        if (attack_power >= 100) {
             attack_power = 100;
         }
     }
 }
 
 void SdlWorm::set_color() {
-    delim_color.SetBlue(0);
-    delim_color.SetGreen(102);
-    delim_color.SetRed(204);
+    attack_power_bar.set_color(255, 0, 0);
+    health_bar.set_delim_color(204, 102, 0);
     switch (player_id)
     {
     case 0:
-        color.SetBlue(255);
-        color.SetGreen(0);
-        color.SetRed(0);
+        health_bar.set_color(0, 0, 255);
         break;
     case 1:
-        color.SetBlue(0);
-        color.SetGreen(255);
-        color.SetRed(0);
+        health_bar.set_color(0, 255, 0);
         break;
     case 2:
-        color.SetBlue(0);
-        color.SetGreen(0);
-        color.SetRed(255);
+        health_bar.set_color(255, 0, 0);
         break;
     case 3:
-        color.SetBlue(255);
-        color.SetGreen(255);
-        color.SetRed(0);
+        health_bar.set_color(0, 255, 255);
         break;
     case 4:
-        color.SetBlue(255);
-        color.SetGreen(0);
-        color.SetRed(255);
+        health_bar.set_color(255, 0, 255);
         break;
     case 5:
-        color.SetBlue(0);
-        color.SetGreen(255);
-        color.SetRed(255);
+        health_bar.set_color(255, 255, 0);
         break;
     case 6:
-        color.SetBlue(192);
-        color.SetGreen(192);
-        color.SetRed(128);
+        health_bar.set_color(128, 192, 192);
         break;
     case 7:
-        color.SetBlue(128);
-        color.SetGreen(192);
-        color.SetRed(192);
+        health_bar.set_color(192, 192, 128);
         break;
     case 8:
-        color.SetBlue(192);
-        color.SetGreen(128);
-        color.SetRed(192);
+        health_bar.set_color(192, 128, 192);
         break;
         
     default:
-        color.SetBlue(128);
-        color.SetGreen(128);
-        color.SetRed(192);
+        health_bar.set_color(192, 128, 128);
         break;
     }
 
 }
 
-SdlWorm::SdlWorm(SdlCamera& camera, Renderer& renderer, SdlWormTextureManager& texture_manager, SdlSoundManager& sound_manager, int x_pos, int y_pos, int worm_id, int player_id, int health) : camera(camera), renderer(renderer), texture_manager(texture_manager), sound_manager(sound_manager) {
+SdlWorm::SdlWorm(SdlCamera& camera, Renderer& renderer, SdlWormTextureManager& texture_manager, SdlSoundManager& sound_manager, int x_pos, int y_pos, int worm_id, int player_id, int health) :
+x_pos(x_pos), y_pos(y_pos),
+camera(camera), renderer(renderer), texture_manager(texture_manager), sound_manager(sound_manager),
+health(health),  health_bar(x_pos, y_pos, 10, (health/2))
+
+ {
     this->worm_id = worm_id;
     this->player_id = player_id;
     this->x_pos = x_pos;
@@ -159,14 +154,22 @@ SdlWorm::SdlWorm(SdlCamera& camera, Renderer& renderer, SdlWormTextureManager& t
     is_animation_playing = false;
     this->health = health;
     initial_health = health;
-    health_bar.SetH(10);
-    health_bar.SetW(health/2);
-    health_bar_delim.SetH(12);
-    health_bar_delim.SetW((health/2) + 2);
+    health_bar.set_height(10);
+    health_bar.set_delim_height(12);
+    health_bar.set_width(health/2);
+    health_bar.set_delim_width((health/2) + 2);
+    attack_power_bar.set_height(10);
+    attack_power_bar.set_delim_height(0);
+    attack_power_bar.set_width(attack_power);
+    attack_power_bar.set_delim_width(0);
+
+
     set_color();
     CommonConfigurationParser configuration_parser;
     worm_config = configuration_parser.get_worm_configuration();
     weapon_config = configuration_parser.get_weapons_configuration();
+
+
 
 
     worm_states["AIR_STRIKE"] = new SdlWormStateAirStrike();
@@ -182,6 +185,7 @@ SdlWorm::SdlWorm(SdlCamera& camera, Renderer& renderer, SdlWormTextureManager& t
     worm_states["STILL"] = new SdlWormStateStill();
     worm_states["TELEPORT"] = new SdlWormStateTeleport();
     worm_states["WALK"] = new SdlWormStateWalk();
+    worm_states["DIE"] = new SdlWormStateDie();
 
     
 
@@ -208,8 +212,9 @@ void SdlWorm::destroy() {
     //}
 }
 
-void SdlWorm::play_sound(std::string sound_to_play) {
-    sound_manager.play_sound(sound_to_play);
+void SdlWorm::play_sound() {
+    worm_state->play_sound(sound_manager);
+    //sound_manager.play_sound(sound_to_play);
 }
 
 void SdlWorm::change_angle(int angle) {

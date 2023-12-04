@@ -57,5 +57,5 @@ std::string SdlWormStateMortar::get_name() {
 }
 
 int SdlWormStateMortar::projectile_id() {
-    return 0x0004;
+    return MORTAR;
 }

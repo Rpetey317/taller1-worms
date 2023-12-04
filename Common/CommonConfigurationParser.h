@@ -8,12 +8,14 @@ struct Box2DConfiguration {
     float rad_to_deg;
     float pixel_to_meters;
     float meters_to_pixel;
+
     float map_width;
     float map_height;
     float gravity;
     float velocity_iterations;
     float position_iterations;
     float time_step;
+    int timer;
 };
 
 struct WormConfiguration {

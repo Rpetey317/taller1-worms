@@ -57,5 +57,5 @@ std::string SdlWormStateRedGrenade::get_name() {
 }
 
 int SdlWormStateRedGrenade::projectile_id() {
-    return 0x0006;
+    return RED_GRANADE;
 }

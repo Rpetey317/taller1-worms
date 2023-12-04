@@ -2,7 +2,7 @@
 
 
 SdlHolyGrenadeProjectile::SdlHolyGrenadeProjectile(
-        SdlProjectilesTextureManager& projectile_texture_manager, SdlCamera& camera) : SdlProjectile(projectile_texture_manager, camera) {}
+        SdlSoundManager& sound_manager, SdlProjectilesTextureManager& projectile_texture_manager, SdlCamera& camera) : SdlProjectile(sound_manager, projectile_texture_manager, camera) {}
 
 void SdlHolyGrenadeProjectile::render(int x_pos, int y_pos, int angle) {
 std::string name("HOLY_GRENADE");

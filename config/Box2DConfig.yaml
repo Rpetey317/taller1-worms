@@ -8,4 +8,5 @@ gravity: -9.8
 velocity_iterations: 6
 position_iterations: 2
 time_step: 30
-  
+timer: 30
+

@@ -51,6 +51,7 @@ Box2DConfiguration CommonConfigurationParser::get_box2D_configuration() {
 
     box2d_config.deg_to_rad = config["deg_to_rad"].as<float>();
     box2d_config.rad_to_deg = config["rad_to_deg"].as<float>();
+
     box2d_config.meters_to_pixel = config["meters_to_pixel"].as<float>();
     box2d_config.pixel_to_meters = config["pixel_to_meters"].as<float>();
     box2d_config.map_height = config["map_height"].as<float>();
@@ -59,6 +60,7 @@ Box2DConfiguration CommonConfigurationParser::get_box2D_configuration() {
     box2d_config.velocity_iterations = config["velocity_iterations"].as<float>();
     box2d_config.position_iterations = config["position_iterations"].as<float>();
     box2d_config.time_step = config["time_step"].as<float>();
+    box2d_config.timer = config["timer"].as<int>();
 
     return box2d_config;
 }
