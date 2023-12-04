@@ -19,6 +19,9 @@ SdlManager::SdlManager(Queue<std::shared_ptr<Action>>& outgoing, Queue<std::shar
     is_moving_camera = false;
     is_projectile_flying = false;
     is_animation_playing = false;
+    timer_rect.set_color(0, 0, 255);
+    timer_rect.set_height(10);
+    timer_rect.set_width(0);
     // Initialize SDL_ttf library
     SDLTTF ttf;
 }
@@ -274,13 +277,22 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
         }
     
         if (event->get_player_turn() > 0) {
+            if (id_worm_turn != event->get_player_turn()) {
+                worms[id_worm_turn]->angle = 0;
+                worms[id_worm_turn]->is_charging = false;
+                worms[id_worm_turn]->attack_power = 0;
+            }
             id_worm_turn = event->get_player_turn();
-            std::cout << "ID DE GUSANITO:" << id_worm_turn << std::endl;
+            timer = event->get_duration();
+            if (timer <= 3) {
+                timer_rect.set_color(255, 0, 0);
+            } else {
+                timer_rect.set_color(0, 0, 255);
+            }
+            timer_rect.set_width(timer * 2);
+            timer_rect.set_position(10, camera.get_window_height() - 20);
             id_of_player_turn = worms[id_worm_turn]->player_id;
         }
-        
-        //std::cout << "WORM ID: " <<id_worm_turn << std::endl;
-        //id_of_player_turn = worms[id_worm_turn]->player_id;
 
 
     } else {  //SI NO RECIBO NADA, SEGUI EJECUTANDO LA ANTERIOR ANIMACION Y QUEDATE EN EL MISMO LUGAR
@@ -297,7 +309,7 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
         if (!is_animation_playing)
             is_projectile_flying = false;
     }
-
+    timer_rect.render(renderer);
     renderer.Present();
 }
 

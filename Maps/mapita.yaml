@@ -1,46 +1,34 @@
 small_tiles:
-  - pos_x: 363
-    pos_y: 418
-    angle: 0
-  - pos_x: 405
-    pos_y: 464
-    angle: 0
-  - pos_x: 472
-    pos_y: 475
-    angle: 0
-  - pos_x: 527
-    pos_y: 466
-    angle: 0
-  - pos_x: 649
-    pos_y: 440
-    angle: 0
-  - pos_x: 701
-    pos_y: 413
-    angle: 0
-  - pos_x: 808
-    pos_y: 357
-    angle: 0
+  - pos_x: 44
+    pos_y: 431
+    angle: 3
 long_tiles:
-  - pos_x: 565
-    pos_y: 368
+  - pos_x: 92
+    pos_y: 436
     angle: 0
-  - pos_x: 537
-    pos_y: 439
+  - pos_x: 221
+    pos_y: 437
     angle: 0
-  - pos_x: 657
-    pos_y: 457
+  - pos_x: 350
+    pos_y: 435
     angle: 0
+  - pos_x: 479
+    pos_y: 433
+    angle: 0
+  - pos_x: 608
+    pos_y: 434
+    angle: 3
 worms:
-  - pos_x: 831
-    pos_y: 415
+  - pos_x: 169
+    pos_y: 344
     angle: 0
-  - pos_x: 698
-    pos_y: 336
-    angle: 0
-  - pos_x: 529
+  - pos_x: 261
     pos_y: 345
     angle: 0
-  - pos_x: 405
-    pos_y: 349
+  - pos_x: 360
+    pos_y: 353
     angle: 0
-background: ../Images/TerrainSprites/back3.png
+  - pos_x: 497
+    pos_y: 348
+    angle: 0
+background: ../Images/TerrainSprites/back1.png

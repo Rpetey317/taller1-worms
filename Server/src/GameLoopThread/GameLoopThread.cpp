@@ -4,7 +4,7 @@
 #include <list>
 #include <memory>
 
-const std::chrono::milliseconds tickrate(1000 / 60);
+const std::chrono::milliseconds tickrate(1000 / 15);
 
 GameLoopThread::GameLoopThread(Queue<std::shared_ptr<Message>>& _eventq, Game& _game):
         eventq(_eventq), game(_game) {}
