@@ -263,11 +263,7 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
             worm.second->apply();
         }
         
-        if (event->get_type_proyectile() != "NULL") {
-            last_projectile_used = event->get_type_proyectile();
-            is_projectile_flying = true;
-            projectiles[last_projectile_used]->render(event->get_proyectile_position().x, event->get_proyectile_position().y, event->get_proyectile_angle());
-        }
+
         if (event->proyectile_got_exploded()) {
             is_animation_playing = true;
             projectiles[last_projectile_used]->play_sound();
@@ -339,11 +335,9 @@ void SdlManager::run(std::string selected_map) {
 
     std::shared_ptr<Event> first_event;
     while(!ingoing.try_pop(first_event)) {
-        std::cout << "se traba" << std::endl;
     }
     id_of_player_turn = first_event->get_id();
     while (!ingoing.try_pop(first_event)) {
-        std::cout << "se traba" << std::endl;
     }
     std::map<int, Worm> worms_positions = first_event->get_worms();
 
