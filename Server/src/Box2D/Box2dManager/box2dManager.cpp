@@ -44,7 +44,7 @@ std::map<int, Worm>* BoxManager::create_position_map(const std::list<Box2DPlayer
             b2Vec2 pos = body->GetPosition();
             if(worm.is_falling() && worm.get_state() != WORM_DEAD)
                 worm.set_state(WORM_FALLING);
-            std::cout << "posicion del gusano segun b2d " << std::to_string(worm.get_id()) << " es " << std::to_string(meter_to_pixel(pos, 0.12f, 0.245f).x) << " " << std::to_string(meter_to_pixel(pos, 0.12f, 0.245f).y) << " con estado " << std::to_string(worm.get_state()) << std::endl;
+            std::cout << "posicion del gusano segun b2d " << std::to_string(worm.get_id()) << " es " << std::to_string(meter_to_pixel(pos, 0.12f, 0.245f).x) << " " << std::to_string(meter_to_pixel(pos, 0.12f, 0.245f).y) << " con estado " << std::to_string(worm.get_state()) << " con vida " << std::to_string(worm.get_health_points()) << <<std::endl;
             
             Worm worm_class( meter_to_pixel(pos, 0.12f, 0.245f), worm.get_state(), worm.get_id(), worm.get_team_id(), worm.get_health_points(), map_name);
             worms_position->insert(std::make_pair(worm.get_id(), worm_class));

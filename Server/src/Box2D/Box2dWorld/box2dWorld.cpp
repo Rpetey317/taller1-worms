@@ -130,7 +130,8 @@ void BoxWorld::create_short_beam(b2Vec2 start, float angle){
 void applyBlastImpulse(b2Body* body, b2Vec2 blastCenter, b2Vec2 applyPoint, float blastPower, float blastRadius) {
     b2Vec2 blastDir = applyPoint - blastCenter;
     float distance = blastDir.Normalize();
-    float damage = blastPower * ((-distance/blastRadius) + 1) * 1000;
+    std::cout << "applyBlastImpulse con nlast power de " << std::to_string(blastPower) << " y radio de " << std::to_string(blastRadius) << std::endl;
+    float damage = blastPower * ((-distance/blastRadius) + 1);
     printf("el dano es %f\n", damage);
     if(blastDir.y > 0) {
         blastDir.y = -blastDir.y;
@@ -139,7 +140,7 @@ void applyBlastImpulse(b2Body* body, b2Vec2 blastCenter, b2Vec2 applyPoint, floa
         distance = 1;
     }
 	float invDistance = 1/distance;
-	float impulseMag = (blastPower/2) * invDistance;
+	float impulseMag = (blastPower/20000) * invDistance;
     if(body->GetFixtureList()->GetFilterData().categoryBits == WORM){
         Box2DPlayer* temp = (Box2DPlayer*)(body->GetUserData().pointer);
         temp->get_hurt(damage);
@@ -279,7 +280,7 @@ void BoxWorld::contactSolver(b2Contact* contact, float radius, float power,  b2F
     printf("center at (%f, %f)\n", contactCenter.x, contactCenter.y);
     check_blast = true;    
     this->execute_checks();
-    this->clean_projectiles(false);
+    // this->clean_projectiles(false);
 }
 
 void BoxWorld::PostSolve(){
