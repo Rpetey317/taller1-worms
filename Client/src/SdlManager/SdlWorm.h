@@ -16,7 +16,7 @@ public:
     int x_pos;
     int y_pos;
     SDL_RendererFlip flip;
-    bool is_charging;
+    bool is_charging = false;
     int attack_power;
     int worm_id;
     int player_id;

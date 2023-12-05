@@ -59,3 +59,8 @@ std::string SdlWormStateMortar::get_name() {
 int SdlWormStateMortar::projectile_id() {
     return MORTAR;
 }
+
+
+void SdlWormStateMortar::play_sound(SdlSoundManager& sound_manager) {
+    sound_manager.play_sound("BAZOOKA_MORTAR_THROWING_SOUND");
+}
