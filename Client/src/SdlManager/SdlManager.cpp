@@ -254,7 +254,7 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
 
             if (!server_worms.empty()) {
                 //el id de gusano =/= id de jugador controla al gusano
-                worm.second->render_new(server_worms[worm.second->worm_id].position, server_worms[worm.second->worm_id].state);//deberia obtener el estado aca y se lo paso
+                worm.second->render_new(server_worms[worm.second->worm_id].position, server_worms[worm.second->worm_id].state, server_worms[worm.second->worm_id].health_points);//deberia obtener el estado aca y se lo paso
                 
             } else {
                 worm.second->render_same();
@@ -275,6 +275,7 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
     
         if (event->get_player_turn() > 0) {
             if (id_worm_turn != event->get_player_turn()) {
+                worms[id_worm_turn]->change_state("STILL");
                 worms[id_worm_turn]->angle = 0;
                 worms[id_worm_turn]->is_charging = false;
                 worms[id_worm_turn]->attack_power = 0;

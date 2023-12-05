@@ -24,7 +24,7 @@ public:
     bool next_animation();
     void change_state(std::string state);
     void play_sound();
-    void render_new(Vect2D position, int state);
+    void render_new(Vect2D position, int state, int health);
     void render_same();
     void destroy();
     void apply();

@@ -52,15 +52,67 @@ int SdlWorm::projectile_id() {
     return worm_state->projectile_id();
 }
 
-void SdlWorm::render_new(Vect2D position, int state) {
+void SdlWorm::render_new(Vect2D position, int state, int health) {
     //aca obtendria el state, y haria un super switch case y le actualizaria el worm_state
     // cuando muere un worm, me pasan su estado de muerte y despues veo que onda
+
     if (worm_state == worm_states["DIE"])
         return;
-    /*if (state == SE_MURIO) {
+    this->health = health;
+    if (health <= 0) {
         worm_state = worm_states["DIE"];
         play_animation();
-    }*/
+    }
+
+    switch (state)
+    {
+    case WORM_WALKING:
+        change_state("WALK");
+        break;
+    case WORM_STILL:
+        change_state("STILL");
+        break;
+    case WORM_FALLING:
+        change_state("FALLING");
+        break;
+    case BAZOOKA:
+        change_state("BAZOOKA");
+        break;
+
+    case MORTAR:
+        change_state("MORTAR");
+        break;
+    case GREEN_GRANADE:
+        change_state("GREEN_GRENADE");
+        break;
+    case RED_GRANADE:
+        change_state("RED_GRENADE");
+        break;
+    case BANANA:
+        change_state("BANANA");
+        break;
+    case HOLY_GRANADE:
+        change_state("HOLY_GRENADE");
+        break;
+    case AIR_STRIKE:
+        change_state("AIR_STRIKE");
+        break;
+    case TELEPORT:
+        change_state("TELEPORT");
+        break;
+    case DYNAMITE:
+        change_state("DYNAMITE");
+        break;
+    case BASEBALL_BAT:
+        change_state("BEISBOLL");
+        break;
+    case WORM_DEAD:
+        change_state("DIE");
+        break;
+    default:
+        change_state("STILL");
+        break;
+    }
 
     if (x_pos == position.x) {
         flip = flip;
