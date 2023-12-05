@@ -22,8 +22,8 @@ PlayerHandler::PlayerHandler(ServerProtocol&& _peer, Queue<std::shared_ptr<Messa
 
 void PlayerHandler::start() {
     std::shared_ptr<PlayerAcknowledge> ack = std::make_shared<PlayerAcknowledge>(this->id);
-    this->prot.send_update(ack);
     this->prot.send_update(std::make_shared<StartUpdate>());
+    this->prot.send_update(ack);
 
     this->send_th.start();
     this->recv_th.start();
