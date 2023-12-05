@@ -127,7 +127,7 @@ std::shared_ptr<Message> ServerProtocol::recv_update(const int& plid) {
 std::unique_ptr<Request> ServerProtocol::recv_request() {
     char code;
     std::cout << "mucho print" << std::endl;
-    this->cli.recvall(&code, sizeof(char), &this->isclosed);    // ACA ETO TA MAL >:(
+    this->cli.recvall(&code, sizeof(char), &this->isclosed);  // ACA ETO TA MAL >:(
     std::cout << "TODO MAL WACHO" << std::endl;
     if (this->isclosed) {
         return std::make_unique<NullRequest>();

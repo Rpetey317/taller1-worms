@@ -9,7 +9,7 @@ class B2dWeapon {
 public:
     B2dWeapon() = default;
 
-    virtual void fire(float angle, float strength) = 0;
+    virtual void fire(float angle, float strength, float restitution, bool timer, bool wind) = 0;
 
     virtual ~B2dWeapon() = default;
 };

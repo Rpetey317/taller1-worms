@@ -69,6 +69,8 @@ void BoxWorld::create_wall(b2Vec2 start, b2Vec2 end){
     myFixtureDef.shape = &edgeShape;
     myFixtureDef.density = 1;
     myFixtureDef.friction = 0.4f;
+    myFixtureDef.filter.categoryBits = BEAM;
+    myFixtureDef.filter.maskBits = WORM;
 
     b2BodyDef myBodyDef;
     myBodyDef.type = b2_staticBody;
@@ -77,16 +79,32 @@ void BoxWorld::create_wall(b2Vec2 start, b2Vec2 end){
     world->CreateBody(&myBodyDef)->CreateFixture(&myFixtureDef);
 }
 
-void BoxWorld::create_ground(b2Vec2 lower_l, b2Vec2 lower_r, b2Vec2 upper_l, b2Vec2 upper_r){
-    // creo el mundo
-    b2PolygonShape boxShape;
-    b2BodyDef myBodyDef;
+void BoxWorld::create_water(b2Vec2 lower_l, b2Vec2 lower_r){
+    b2EdgeShape edgeShape;
+    b2FixtureDef myFixtureDef;
 
-    // Crear muros y piso
+    myFixtureDef.shape = &edgeShape;
+    myFixtureDef.density = 1;
+    myFixtureDef.friction = 0.4f;
+    myFixtureDef.filter.categoryBits = WATER;
+    myFixtureDef.filter.maskBits = WORM | BAZOOKA | GREEN_GRANADE | RED_GRANADE | FRAGMENT | AIR_MISSLE | MORTAR | BANANA | HOLY_GRANADE | DYNAMITE;
+
+    b2BodyDef myBodyDef;
+    myBodyDef.type = b2_staticBody;
+    myBodyDef.position.Set(0.0f, 0.0f);
+    b2Vec2 start = lower_l + b2Vec2(0.0f, 10.0f);
+    b2Vec2 end = lower_r + b2Vec2(0.0f, 10.0f);
+    edgeShape.SetTwoSided(start, end);
+    world->CreateBody(&myBodyDef)->CreateFixture(&myFixtureDef);
+}
+
+void BoxWorld::create_ground(b2Vec2 lower_l, b2Vec2 lower_r, b2Vec2 upper_l, b2Vec2 upper_r){
     create_wall(lower_l, lower_r);
     create_wall(upper_l, upper_r);
     create_wall(lower_l, upper_l);
     create_wall(lower_r, upper_r);
+
+    create_water(lower_l, lower_r);    
 }
 
 void BoxWorld::create_long_beam(b2Vec2 start, float angle){
@@ -262,6 +280,7 @@ void BoxWorld::step(){
     int32 positionIterations = configurator.get_box2D_configuration().position_iterations;
     world->Step(timeStep, velocityIterations, positionIterations);
     this->PostSolve();
+    this->clean_projectiles(false);
 }
 
 void BoxWorld::contactSolver(b2Contact* contact, float radius, float power,  b2Fixture* fixture){
@@ -287,6 +306,30 @@ void BoxWorld::PostSolve(){
         int b = fixtureB->GetFilterData().categoryBits;
         if(!timer_allows)
             continue;
+
+        if (a == WATER && b == WORM){
+            Box2DPlayer* temp = (Box2DPlayer*)(fixtureB->GetBody()->GetUserData().pointer);
+            if (temp) {
+                temp->kill();
+            }
+        }
+        else if (b == WATER && a == WORM){
+            Box2DPlayer* temp = (Box2DPlayer*)(fixtureA->GetBody()->GetUserData().pointer);
+            if (temp) {
+                temp->kill();
+            }
+        }
+        int projectile = BAZOOKA | GREEN_GRANADE | RED_GRANADE | FRAGMENT | AIR_MISSLE | MORTAR | BANANA | HOLY_GRANADE | DYNAMITE;
+        if (a & projectile && b == WATER){
+            projectiles_to_remove.push_back(fixtureA->GetBody());
+            this->clean_projectiles(false);
+        } else if (b & projectile && a == WATER){
+            projectiles_to_remove.push_back(fixtureB->GetBody());
+            this->clean_projectiles(false);
+        } else if (b & projectile && a == WATER){
+
+        }
+
         if ( (a == WORM || a == BEAM) && b == BAZOOKA ) {
             contactSolver(contact, configurator.get_weapons_configuration().bazooka.radius, configurator.get_weapons_configuration().bazooka.damage, fixtureB);
         }
@@ -397,8 +440,8 @@ bool BoxWorld::set_map(std::vector<Tile> map) {
     return true;
 }
 
-b2Body* BoxWorld::create_projectile(float x, float y, float restitution, float direction, int category, int mask, bool set_timer, int type) {
-    this->timer_allows = set_timer;
+b2Body* BoxWorld::create_projectile(float x, float y, float restitution, float direction, int category, int mask, bool has_to_wait, int type) {
+    this->timer_allows = !has_to_wait;
     b2BodyDef myBodyDef;
     myBodyDef.type = b2_dynamicBody;
     b2Vec2 pos = b2Vec2(x,y) + b2Vec2(0.16f - 0.32f*direction, 0.15f);

@@ -6,6 +6,8 @@ bazooka:
   radius_of_fragments: -1
   damage_of_fragments: -1
   restitution: 0
+  wind: true
+  timer: false
 mortar:
   damage: 50
   radius: 2
@@ -14,6 +16,8 @@ mortar:
   radius_of_fragments: 2
   damage_of_fragments: 10
   restitution: 0
+  wind: true
+  timer: false
 banana:
   damage: 70
   radius: 4
@@ -22,6 +26,8 @@ banana:
   radius_of_fragments: -1
   damage_of_fragments: -1
   restitution: 0.6
+  wind: false
+  timer: true
 red_grenade:
   damage: 30
   radius: 2
@@ -30,6 +36,8 @@ red_grenade:
   radius_of_fragments: 2
   damage_of_fragments: 10
   restitution: 0.6
+  wind: false
+  timer: true
 green_grenade:
   damage: 30
   radius: 2
@@ -38,6 +46,8 @@ green_grenade:
   radius_of_fragments: -1
   damage_of_fragments: -1
   restitution: 0.6
+  wind: false
+  timer: true
 holy_grenade:
   damage: 110
   radius: 8
@@ -46,6 +56,8 @@ holy_grenade:
   radius_of_fragments: -1
   damage_of_fragments: -1
   restitution: 0.6
+  wind: false
+  timer: true
 air_strike:
   damage: 40
   radius: 2
@@ -54,6 +66,8 @@ air_strike:
   radius_of_fragments: 2
   damage_of_fragments: 40
   restitution: 0
+  wind: true
+  timer: false
 baseball:
   damage: 10
   radius: 0.5
@@ -62,6 +76,8 @@ baseball:
   radius_of_fragments: -1
   damage_of_fragments: -1
   restitution: 0
+  wind: false
+  timer: false
 dynamite:
   damage: 50
   radius: 4
@@ -70,3 +86,5 @@ dynamite:
   radius_of_fragments: -1
   damage_of_fragments: -1
   restitution: 0
+  wind: false
+  timer: true

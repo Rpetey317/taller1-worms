@@ -34,6 +34,7 @@ class BoxWorld {
     b2Body* create_worm(float x, float y, int id);
     void create_ground(b2Vec2 lower_l, b2Vec2 lower_r, b2Vec2 upper_l, b2Vec2 upper_r);
     void create_wall(b2Vec2 start, b2Vec2 end);
+    void create_water(b2Vec2 start, b2Vec2 end);
     void create_long_beam(b2Vec2 start, float angle);
     void create_short_beam(b2Vec2 start, float angle);
     

@@ -31,6 +31,8 @@ struct WeaponConfiguration {
     float radius_of_fragments;
     int damage_of_fragments;
     float restitution;
+    bool wind;
+    bool timer;
 };
 
 struct WeaponsConfiguration {

@@ -3,9 +3,9 @@
 
 GreenGranade::GreenGranade(BoxManager* box_manager): box_manager(box_manager) {}
 
-void GreenGranade::fire(float angle, float strength) {
+void GreenGranade::fire(float angle, float strength, float restitution, bool has_to_wait, bool wind) {
     int type = GREEN_GRANADE;
-    box_manager->fire_projectile(angle, strength, 0.25, GREEN_GRANADE, WORM | BEAM, false, type);
+    box_manager->fire_projectile(angle, strength, restitution, GREEN_GRANADE, WORM | BEAM, has_to_wait, type, wind);
 }
 
 GreenGranade::~GreenGranade() {}

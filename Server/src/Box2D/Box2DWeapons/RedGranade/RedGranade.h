@@ -8,7 +8,7 @@ class RedGranade : public B2dWeapon {
 public:
     explicit RedGranade(BoxManager* box_manager);
 
-    void fire(float angle, float strength) override;
+    void fire(float angle, float strength, float restitution, bool has_to_wait, bool wind) override;
 
     ~RedGranade();
 
