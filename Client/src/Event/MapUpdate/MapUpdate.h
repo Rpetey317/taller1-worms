@@ -1,22 +1,23 @@
 #ifndef MAPUPDATE_H
 #define MAPUPDATE_H
 
+#include <list>
 #include <map>
 #include <string>
 #include <vector>
 
 #include "../Event.h"
 
-#include "Worm.h"
 #include "WeaponDTO.h"
+#include "Worm.h"
 
 class MapUpdate: public Event {
     // private:
     std::map<int, Worm> worms;
-    std::map<int, WeaponDTO> weapons;
+    std::list<WeaponDTO> weapons;
 
 public:
-    MapUpdate(const std::map<int, Worm>& worms, const std::map<int, WeaponDTO>& weapons);
+    MapUpdate(const std::map<int, Worm>& worms, const std::list<WeaponDTO>& weapons);
 
     explicit MapUpdate(const std::map<int, Worm>& worms);
 
@@ -25,8 +26,8 @@ public:
     std::map<int, Vect2D> get_worm_positions() override;
 
     std::map<int, Worm> get_worms() override;
-    
-    std::map<int, WeaponDTO> get_weapons() override;
+
+    std::list<WeaponDTO> get_weapons() override;
 };
 
 #endif  // MAPUPDATE_H

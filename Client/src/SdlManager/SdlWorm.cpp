@@ -61,6 +61,12 @@ void SdlWorm::render_new(Vect2D position, int state) {
         worm_state = worm_states["DIE"];
         play_animation();
     }*/
+
+    if (x_pos < position.x) {
+        flip = SDL_FLIP_HORIZONTAL;
+    } else {
+        flip = SDL_FLIP_NONE;
+    }
     
 
     x_pos = position.x;

@@ -50,3 +50,7 @@ std::string SdlWormStateAirStrike::get_name() {
 int SdlWormStateAirStrike::projectile_id() {
     return AIR_STRIKE;
 }
+
+void SdlWormStateAirStrike::play_sound(SdlSoundManager& sound_manager) {
+    sound_manager.play_sound("AIR_STRIKE_THROWING_SOUND");
+}

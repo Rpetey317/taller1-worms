@@ -1,11 +1,13 @@
 #include "Game.h"
 
+#include <list>
 #include <memory>
 #include <utility>
 
+#include "CommonMapParser/CommonMapParser.h"
+
 #include "ReceiverThread.h"
 #include "SenderThread.h"
-#include "CommonMapParser/CommonMapParser.h"
 
 int ttime = 5;
 
@@ -31,7 +33,6 @@ void Game::add_player(ServerProtocol&& peer) {
     std::lock_guard<std::mutex> lock(this->plmtx);
     PlayerHandler* new_player = new PlayerHandler(std::move(peer), this->eventq, ++next_free_id);
     this->players.insert(std::make_pair(next_free_id, std::unique_ptr<PlayerHandler>(new_player)));
-    new_player->start();
 }
 
 void Game::add_host(ServerProtocol&& peer) {
@@ -39,7 +40,6 @@ void Game::add_host(ServerProtocol&& peer) {
     PlayerHandler* new_player = new PlayerHandler(std::move(peer), this->eventq, ++next_free_id);
     this->players.insert(std::make_pair(next_free_id, std::unique_ptr<PlayerHandler>(new_player)));
     this->host = this->players.find(next_free_id);
-    new_player->start();
 }
 
 // DD methods implemented in Game_processUpdate.cpp
@@ -56,9 +56,7 @@ void Game::broadcast(std::shared_ptr<Update> update) {
 
 int Game::count() { return plcount; }
 
-bool Game::recv_host_start() {
-    return this->host->second->recv_start();
-}
+bool Game::recv_host_start() { return this->host->second->recv_start(); }
 
 void Game::divide_worms() {
     std::map<int, std::unique_ptr<PlayerHandler>>::iterator it = players.begin();
@@ -66,12 +64,24 @@ void Game::divide_worms() {
         if (it == players.end()) {
             it = players.begin();
         }
-        it->second->assign_worm(j+1);
+        it->second->assign_worm(j + 1);
         ++it;
+    }
+
+    it = players.begin();
+    while (it != players.end()) {
+        std::list<int> worms = it->second->get_worms();
+        for (auto worm_id: worms) {
+            box2d.set_teams(worm_id, it->first);
+        }
     }
 }
 
-void Game::tick_box2d(){ this->box2d.tick(); }
+void Game::start() {
+    for (auto pl = this->players.begin(); pl != this->players.end(); pl++) (*pl).second->start();
+}
+
+void Game::tick_box2d() { this->box2d.tick(); }
 
 void Game::reset_timer() { turn_start = std::chrono::steady_clock::now(); }
 

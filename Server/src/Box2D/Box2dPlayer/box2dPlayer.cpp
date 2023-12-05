@@ -7,6 +7,7 @@ Box2DPlayer::Box2DPlayer(int id, b2Body* body): id(id), body(body), health_point
 b2Body* Box2DPlayer::get_body(){
     return body;
 }
+
 int Box2DPlayer::get_id(){
     return id;
 }
@@ -48,4 +49,17 @@ int Box2DPlayer::get_state(){
 
 void Box2DPlayer::kill(){
     this->health_points = 0;
+    this->set_state(WORM_DEAD);
+}
+
+bool Box2DPlayer::is_falling(){
+    return this->body->GetLinearVelocity().y < -0.01f;
+}
+
+void Box2DPlayer::set_team_id(int team_id){
+    this->team_id = team_id;
+}
+
+int Box2DPlayer::get_team_id(){
+    return this->team_id;
 }

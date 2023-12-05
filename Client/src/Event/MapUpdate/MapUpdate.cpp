@@ -2,7 +2,8 @@
 
 #include "../EventProcessor/EventProcessor.h"
 
-MapUpdate::MapUpdate(const std::map<int, Worm>& worms, const std::map<int, WeaponDTO>& weapons): Event(0), worms(worms), weapons(weapons) {}
+MapUpdate::MapUpdate(const std::map<int, Worm>& worms, const std::list<WeaponDTO>& weapons):
+        Event(0), worms(worms), weapons(weapons) {}
 
 MapUpdate::MapUpdate(const std::map<int, Worm>& worms): Event(0), worms(worms) {}
 
@@ -23,4 +24,4 @@ std::map<int, Vect2D> MapUpdate::get_worm_positions() {
 
 std::map<int, Worm> MapUpdate::get_worms() { return this->worms; }
 
-std::map<int, WeaponDTO> MapUpdate::get_weapons() { return this->weapons; }
+std::list<WeaponDTO> MapUpdate::get_weapons() { return this->weapons; }

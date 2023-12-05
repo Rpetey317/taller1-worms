@@ -39,6 +39,7 @@ class BoxWorld {
     
     box2dContactListener* contact_listener;
     void step();
+    void set_teams(int worm_id, int player_id);
 
     bool check_blast;
     bool create_fragments;

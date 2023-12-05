@@ -23,17 +23,20 @@ enum _entityCategory {
     WORM_FALLING = 0x0016,
     WORM_DEAD = 0x0017,
     WORM_STILL = 0x0018,
-  };
+};
 
 class Worm {
 public:
     Vect2D position;
     int state;
     int id;  // Podria tener esto tmb y quizas simplificar el mapa de <int id_player, Worm>
+    int player_id;
     int health_points;
 
     Worm();
-    
+
+    Worm(Vect2D position, int state, int id, int player_id, int health_points);
+
     Worm(Vect2D position, int state, int id, int health_points);
 
     Worm(Vect2D position, int state, int id);

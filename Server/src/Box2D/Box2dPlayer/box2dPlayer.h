@@ -2,6 +2,7 @@
 #define BOX2D_PLAYER
 
 #include "../../../libs/box2d/include/box2d/box2d.h"
+#include "../../../Common/Worm.h"
 
 class Box2DPlayer {
     int id;
@@ -9,6 +10,7 @@ class Box2DPlayer {
     int health_points;
     int direction;
     int state;
+    int team_id;
     
     public:
     Box2DPlayer(int id, b2Body* body, int direction, int state, int health_points);
@@ -23,7 +25,10 @@ class Box2DPlayer {
     int get_health_points();
     void set_state(int state);
     int get_state();
+    void set_team_id(int team_id);
+    int get_team_id();
     bool is_alive();
+    bool is_falling();
 };
 
 #endif

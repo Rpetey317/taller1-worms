@@ -17,14 +17,12 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_StartGame
-{
+class Ui_StartGame {
 public:
-    QLabel *label;
-    QPushButton *startGameButton;
+    QLabel* label;
+    QPushButton* startGameButton;
 
-    void setupUi(QWidget *StartGame)
-    {
+    void setupUi(QWidget* StartGame) {
         if (StartGame->objectName().isEmpty())
             StartGame->setObjectName(QString::fromUtf8("StartGame"));
         StartGame->resize(262, 213);
@@ -38,21 +36,20 @@ public:
         retranslateUi(StartGame);
 
         QMetaObject::connectSlotsByName(StartGame);
-    } // setupUi
+    }  // setupUi
 
-    void retranslateUi(QWidget *StartGame)
-    {
+    void retranslateUi(QWidget* StartGame) {
         StartGame->setWindowTitle(QCoreApplication::translate("StartGame", "StartGame", nullptr));
-        label->setText(QCoreApplication::translate("StartGame", "To start the game click the button", nullptr));
+        label->setText(QCoreApplication::translate("StartGame",
+                                                   "To start the game click the button", nullptr));
         startGameButton->setText(QCoreApplication::translate("StartGame", "Start Game", nullptr));
-    } // retranslateUi
-
+    }  // retranslateUi
 };
 
 namespace Ui {
-    class StartGame: public Ui_StartGame {};
-} // namespace Ui
+class StartGame: public Ui_StartGame {};
+}  // namespace Ui
 
 QT_END_NAMESPACE
 
-#endif // UI_START_GAME_H
+#endif  // UI_START_GAME_H

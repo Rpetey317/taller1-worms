@@ -1,13 +1,14 @@
 #ifndef EVENT_H_
 #define EVENT_H_
 
+#include <list>
 #include <map>
 #include <string>
 #include <vector>
 
 #include "Vect2D.h"
-#include "Worm.h"
 #include "WeaponDTO.h"
+#include "Worm.h"
 
 class ClientProtocol;
 class EventProcessor;
@@ -29,7 +30,7 @@ public:
 
     virtual std::map<int, Worm> get_worms() { return std::map<int, Worm>(); }
 
-    virtual std::map<int, WeaponDTO> get_weapons() { return std::map<int, WeaponDTO>(); }
+    virtual std::list<WeaponDTO> get_weapons() { return std::list<WeaponDTO>(); }
 
     virtual bool is_new_player() { return false; }
 

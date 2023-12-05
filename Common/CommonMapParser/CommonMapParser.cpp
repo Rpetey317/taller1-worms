@@ -75,7 +75,7 @@ std::vector<Tile> CommonMapParser::get_map(std::string file_name) {
 
 int CommonMapParser::get_amount_of_worms() {
     int ammount_of_worms = 0;
-    for (auto tile : map) {
+    for (auto tile: map) {
         if (tile.type == '2') {
             ammount_of_worms++;
         }

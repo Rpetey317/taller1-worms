@@ -15,4 +15,5 @@ class SdlWormStateBeisboll : public SdlWormState {
                 bool reduce_ammo(std::map<std::string, int>& gun_ammo) override;
                 bool has_ammo(std::map<std::string, int>& gun_ammo) override;
                 int projectile_id() override;
+                void play_sound(SdlSoundManager& sound_manager) override;
 };

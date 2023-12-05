@@ -7,8 +7,8 @@
 #include "../Update.h"
 
 #include "Vect2D.h"
-#include "Worm.h"
 #include "WeaponDTO.h"
+#include "Worm.h"
 
 class WorldUpdate: public Update {
 

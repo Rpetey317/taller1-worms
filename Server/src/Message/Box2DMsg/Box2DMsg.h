@@ -16,6 +16,7 @@ class BoxManager;
 #define COMMAND_NEXT 5
 #define COMMAND_SHOOT 6
 #define COMMAND_SPECIAL_SHOOT 7
+#define COMMAND_NULL 8
 
 class Box2DMsg: public Message, public std::enable_shared_from_this<Box2DMsg> {
 

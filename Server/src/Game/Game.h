@@ -106,6 +106,8 @@ public:
 
     void reset_timer();
 
+    void start();
+
     /*
      * Closes lobby and frees all resources
      */
