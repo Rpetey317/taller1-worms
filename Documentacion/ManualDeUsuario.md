@@ -155,7 +155,7 @@ nombre del nuevo mapa que se quiere crear, en este caso se crea un nuevo mapa. S
 cambios correctamente, si se toca la X de la ventana donde se edita el mapa, no se guarda. Al guardarse los cambios, se crea o
 modifica un archivo YAML, el cual se guarda en la carpeta 'Maps' del directorio, el cual tiene todos los mapas correspondientes.
 Las teclas para el editor son las siguientes:
-F1: Cambia el fondo de pantalla
+F1, F2, F3: Cambia el fondo de pantalla
 
 1: Elegir viga corta
 2: Elegir viga larga

@@ -31,7 +31,7 @@ public:
     PlayerHandler(ServerProtocol&& peer, Queue<std::shared_ptr<Message>>& eventq, int& id);
 
     /*
-     * Starts to run associated threads
+     * Sends ack signal and starts to run associated threads
      */
     void start();
 

@@ -441,12 +441,13 @@ bool BoxWorld::set_map(std::vector<Tile> map) {
 }
 
 b2Body* BoxWorld::create_projectile(float x, float y, float restitution, float direction, int category, int mask, bool has_to_wait, int type) {
+    std::cout << "creamos un proyectil" << std::endl;
     this->timer_allows = !has_to_wait;
     b2BodyDef myBodyDef;
     myBodyDef.type = b2_dynamicBody;
     b2Vec2 pos = b2Vec2(x,y) + b2Vec2(0.16f - 0.32f*direction, 0.15f);
     myBodyDef.position.Set(pos.x, pos.y);
-    myBodyDef.position.Set(pos.x, pos.y);
+    std::cout << "posicion del proyectil: " << pos.x << " " << pos.y << std::endl;
     b2Body* projectile = world->CreateBody(&myBodyDef);
     b2CircleShape circleShape;
     circleShape.m_p.Set(0.0f, 0.0f); //position, relative to body position
@@ -458,7 +459,9 @@ b2Body* BoxWorld::create_projectile(float x, float y, float restitution, float d
     myFixtureDef.filter.categoryBits = category;
     myFixtureDef.filter.maskBits = mask;
     projectile->CreateFixture(&myFixtureDef); //add a fixture to the body
+    std::cout << "creamos un proyectil en la posicion " << std::to_string(pos.x) << " " << std::to_string(pos.y) << std::endl;
     projectiles.push_back(projectile);
+    std::cout << "pusheamos el proyectil a la cola de proyectiles" << std::endl;
     Box2DPlayer bullet(type, projectile);
     projectile->GetUserData().pointer = ((uintptr_t)&bullet);
     return projectile;

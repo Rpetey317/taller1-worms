@@ -59,6 +59,7 @@ std::map<int, WeaponDTO>* BoxManager::create_proyectile_map(const std::list<b2Bo
     std::map<int, WeaponDTO>* positions = new std::map<int, WeaponDTO>();
     int i = 1;
     std::cout << "creando mapa de proyectiles en Box2dManager (57)" << std::endl;
+    std::cout << "tenemos " << std::to_string(projectiles.size()) << " proyectiles" << std::endl;
     for (auto projectile : projectiles) {
         if (projectile) { // Verificar si el cuerpo es válido
             b2Vec2 pos = projectile->GetPosition();
@@ -158,7 +159,9 @@ std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> updat
   player aims.
 */
 void BoxManager::fire_projectile(float angle, float power, float restitution, int category, int mask, bool has_to_wait, int type, bool wind_affects) {
+    std::cout << "fire projectile en box2d manager" << std::endl;
     Box2DPlayer* temp = (Box2DPlayer*)(playing_worm->get_body()->GetUserData().pointer);
+    std::cout << "hay " << std::to_string(world.projectiles.size()) << " proyectiles" << std::endl;
     b2Body* projectile = world.create_projectile(playing_worm->get_body()->GetPosition().x, playing_worm->get_body()->GetPosition().y, restitution, temp->get_direction(), category, mask, has_to_wait, type);
     b2Vec2 Vector = b2Vec2( (power*0.001f)*cosf(angle*configurator.get_box2D_configuration().deg_to_rad), (power*0.001f)*sinf(angle*configurator.get_box2D_configuration().deg_to_rad) );
     if(temp->get_direction() == LEFT)
