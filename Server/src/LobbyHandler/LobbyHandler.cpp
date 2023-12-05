@@ -10,13 +10,15 @@
 LobbyHandler::LobbyHandler(): games() {}
 
 bool LobbyHandler::create_game(const std::string& game_name, const std::string& map_name) {
+
     if (games.find(game_name) != games.end()) {
         return false;
     }
-    
+    /*
     if (!std::filesystem::exists(map_name)) {
         return false;
     }
+    */
 
     std::cout << "Creating game " << game_name << " with map " << map_name << std::endl;
     games[game_name] = std::make_unique<GameWrapper>(map_name);
