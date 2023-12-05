@@ -6,6 +6,7 @@
 #include <filesystem>
 
 // All of this is yet untested
+// namespace fs = std::filesystem;
 
 LobbyHandler::LobbyHandler(): games() {}
 
@@ -15,7 +16,9 @@ bool LobbyHandler::create_game(const std::string& game_name, const std::string& 
         return false;
     }
     /*
-    if (!std::filesystem::exists(map_name)) {
+    fs::path mapsFolder = fs::current_path() / "Maps";
+    fs::path yamlFilePath = mapsFolder / map_name;
+    if (!fs::exists(yamlFilePath) && fs::is_regular_file(yamlFilePath)) {
         return false;
     }
     */
