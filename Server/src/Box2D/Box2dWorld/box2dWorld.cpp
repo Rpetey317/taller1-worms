@@ -472,6 +472,15 @@ void BoxWorld::baseball_bat(b2Body* current, float angle, float power, float dir
     }
 }
 
+void BoxWorld::set_teams(int worm_id, int player_id){
+    for (auto& worm : worms) {
+        if(worm.get_id() == worm_id){
+            worm.set_team_id(player_id);
+            return;
+        }
+    }
+}
+
 BoxWorld::~BoxWorld() {
     delete world;
     delete contact_listener;

@@ -134,8 +134,8 @@ std::shared_ptr<Event> ClientProtocol::recv_map_update() {
             return std::make_shared<NullEvent>(0);
         }
 
-        Worm worm(position, (int)state, (int)worm_id, (int)health_points);
-        worms[(int)player_id] = worm;
+        Worm worm(position, (int)state, (int)worm_id, (int)player_id, (int)health_points);
+        worms[(int)worm_id] = worm;
     }
 
     // Ahora leo el mapa de armas
@@ -145,7 +145,7 @@ std::shared_ptr<Event> ClientProtocol::recv_map_update() {
         return std::make_shared<NullEvent>(0);
     }
 
-    std::map<int, WeaponDTO> weapons;
+    std::list<WeaponDTO> weapons;
     for (int i = 0; i < amount_weapons; i++) {
         playerid_t player_id;
         this->skt.recvall(&player_id, sizeof(playerid_t), &this->isclosed);
@@ -175,7 +175,7 @@ std::shared_ptr<Event> ClientProtocol::recv_map_update() {
             return std::make_shared<NullEvent>(0);
         }
         WeaponDTO weapon((int)weapon_id, weapon_position, (int)angle);
-        weapons[(int)player_id] = weapon;
+        weapons.push_back(weapon);
     }
 
 

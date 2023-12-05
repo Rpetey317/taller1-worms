@@ -45,14 +45,16 @@ void PlayerHandler::advance_worm() {
     }
 }
 
-void PlayerHandler::assign_worm(int id) { 
-    assigned_worms.push_back(id); 
+void PlayerHandler::assign_worm(int id) {
+    assigned_worms.push_back(id);
     if (last_worm_used == assigned_worms.end()) {
         last_worm_used = std::prev(assigned_worms.end());
     }
 }
 
 bool PlayerHandler::recv_start() { return this->prot.recv_game_start(); }
+
+std::list<int> PlayerHandler::get_worms() { return assigned_worms; }
 
 int PlayerHandler::get_current_worm() { return *last_worm_used; }
 

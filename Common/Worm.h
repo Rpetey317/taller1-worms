@@ -30,10 +30,12 @@ public:
     Vect2D position;
     int state;
     int id;  // Podria tener esto tmb y quizas simplificar el mapa de <int id_player, Worm>
-    int health_points;
     int player_id;
+    int health_points;
 
     Worm();
+
+    Worm(Vect2D position, int state, int id, int player_id, int health_points);
 
     Worm(Vect2D position, int state, int id, int health_points);
 

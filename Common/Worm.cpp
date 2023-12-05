@@ -2,6 +2,13 @@
 
 Worm::Worm() {}
 
+Worm::Worm(Vect2D position, int state, int id, int player_id, int health_points):
+        position(position),
+        state(state),
+        id(id),
+        player_id(player_id),
+        health_points(health_points) {}
+
 Worm::Worm(Vect2D position, int state, int id, int health_points):
         position(position), state(state), id(id), health_points(health_points) {}
 

@@ -10,7 +10,7 @@ class BoxNull: public Box2DMsg {
 public:
     BoxNull(): Box2DMsg(0, 0) {}
 
-    int get_cmd() override{ return COMMAND_NULL; }
+    int get_cmd() override { return COMMAND_NULL; }
 };
 
 #endif  // !__BOXNULL_H__

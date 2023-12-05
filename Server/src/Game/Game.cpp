@@ -1,5 +1,6 @@
 #include "Game.h"
 
+#include <list>
 #include <memory>
 #include <utility>
 
@@ -65,6 +66,14 @@ void Game::divide_worms() {
         }
         it->second->assign_worm(j + 1);
         ++it;
+    }
+
+    it = players.begin();
+    while (it != players.end()) {
+        std::list<int> worms = it->second->get_worms();
+        for (auto worm_id: worms) {
+            box2d.set_teams(worm_id, it->first);
+        }
     }
 }
 

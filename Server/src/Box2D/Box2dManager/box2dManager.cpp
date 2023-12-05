@@ -44,7 +44,7 @@ std::map<int, Worm>* BoxManager::create_position_map(const std::list<Box2DPlayer
             if(worm.is_falling() && worm.get_state() != WORM_DEAD)
                 worm.set_state(WORM_FALLING);
             std::cout << "posicion del gusano segun b2d " << std::to_string(worm.get_id()) << " es " << std::to_string(meter_to_pixel(pos, 0.12f, 0.245f).x) << " " << std::to_string(meter_to_pixel(pos, 0.12f, 0.245f).y) << std::endl;
-            Worm worm_class( meter_to_pixel(pos, 0.12f, 0.245f), worm.get_id(), worm.get_state(), worm.get_health_points());
+            Worm worm_class( meter_to_pixel(pos, 0.12f, 0.245f), worm.get_state(), worm.get_id(), worm.get_team_id(), worm.get_health_points());
             worms_position->insert(std::make_pair(worm.get_id(), worm_class));
         }
     }
@@ -72,6 +72,10 @@ std::map<int, WeaponDTO>* BoxManager::create_proyectile_map(const std::list<b2Bo
 
 void BoxManager::tick() {
     this->time_ticker++;
+}
+
+void BoxManager::set_teams(int worm_id, int player_id) {
+    this->world.set_teams(worm_id, player_id);
 }
 
 std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> update) {

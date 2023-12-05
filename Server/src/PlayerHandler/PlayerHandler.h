@@ -54,6 +54,8 @@ public:
 
     bool recv_start();
 
+    std::list<int> get_worms();
+
     /*
      * Gets worm ID of next worm to use
      */

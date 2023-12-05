@@ -55,3 +55,11 @@ void Box2DPlayer::kill(){
 bool Box2DPlayer::is_falling(){
     return this->body->GetLinearVelocity().y < -0.01f;
 }
+
+void Box2DPlayer::set_team_id(int team_id){
+    this->team_id = team_id;
+}
+
+int Box2DPlayer::get_team_id(){
+    return this->team_id;
+}
