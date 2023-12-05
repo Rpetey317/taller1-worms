@@ -415,6 +415,7 @@ b2Body* BoxWorld::create_projectile(float x, float y, float restitution, float d
     myFixtureDef.filter.categoryBits = category;
     myFixtureDef.filter.maskBits = mask;
     projectile->CreateFixture(&myFixtureDef); //add a fixture to the body
+    std::cout << "creamos un proyectil en la posicion " << std::to_string(pos.x) << " " << std::to_string(pos.y) << std::endl;
     projectiles.push_back(projectile);
     Box2DPlayer bullet(type, projectile);
     projectile->GetUserData().pointer = ((uintptr_t)&bullet);

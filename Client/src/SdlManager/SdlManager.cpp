@@ -253,7 +253,9 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
 
             if (!server_worms.empty()) {
                 //el id de gusano =/= id de jugador controla al gusano
-                worm.second->render_new(server_worms[worm.second->worm_id].position, server_worms[worm.second->worm_id].state);//deberia obtener el estado aca y se lo paso
+                std::cout << "SERVER_WORM ID: " << server_worms[worm.second->worm_id].id << std::endl;
+                std::cout << "WORM ID: " << worm.second->worm_id << std::endl;
+                worm.second->render_new(server_worms[worm.second->worm_id].position, server_worms[worm.second->worm_id].state);
                 
             } else {
                 worm.second->render_same();
@@ -279,6 +281,7 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
                 worms[id_worm_turn]->attack_power = 0;
             }
             id_worm_turn = event->get_player_turn();
+            std::cout << "ID_WORM_TURN" << id_worm_turn << std::endl;
             worms[id_worm_turn]->already_fired = false;
             timer = event->get_duration();
             if (timer <= 3) {

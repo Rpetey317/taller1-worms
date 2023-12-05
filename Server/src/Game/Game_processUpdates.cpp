@@ -47,7 +47,7 @@ std::shared_ptr<Update> Game::process_NullUpdate(NullMessage& event) {
 
 std::shared_ptr<Update> Game::process_TurnAdvance(TurnAdvance& event) {
     std::lock_guard<std::mutex> lock(this->plmtx);
-
+    
     int plid = event.get_new_pl_id();
     auto new_curr_pl = this->players.find(plid);
 
@@ -60,8 +60,7 @@ std::shared_ptr<Update> Game::process_TurnAdvance(TurnAdvance& event) {
     this->current_worm =
             std::make_pair(this->curr_pl->second->get_current_worm(), this->curr_pl->first);
     this->turn_start = std::chrono::steady_clock::now();
-    std::cout << "New turn!" << std::endl;
-    std::shared_ptr<BoxTurnAdvance> msg = std::make_shared<BoxTurnAdvance>(this->curr_pl->first);
+    std::shared_ptr<BoxTurnAdvance> msg = std::make_shared<BoxTurnAdvance>(this->current_worm.first);
     box2d.process(msg);
     return std::make_shared<TurnChange>(new_curr_pl->first);
 }
