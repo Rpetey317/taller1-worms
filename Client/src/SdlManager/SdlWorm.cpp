@@ -62,7 +62,9 @@ void SdlWorm::render_new(Vect2D position, int state) {
         play_animation();
     }*/
 
-    if (x_pos < position.x) {
+    if (x_pos == position.x) {
+        flip = flip;
+    } else if (x_pos < position.x) {
         flip = SDL_FLIP_HORIZONTAL;
     } else {
         flip = SDL_FLIP_NONE;
