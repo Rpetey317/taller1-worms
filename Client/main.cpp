@@ -39,8 +39,6 @@ int main(int argc, char* argv[]) {
         // Instancio el greeter
         Greeter greeter(0, protocol);
         greeter.show();
-        // QString gameName = greeter.gameName;
-        // std::cout << "Game name to join or created: " << gameName.toStdString() << std::endl;
         // Arranca el loop de la UI
         app.exec();
 
@@ -48,8 +46,6 @@ int main(int argc, char* argv[]) {
         if (gameName.toStdString() == "") {
             return ret;
         }
-
-        std::cout << "Game name to join or created: " << gameName.toStdString() << std::endl;
 
         Queue<std::shared_ptr<Action>> commands(10000);
         Queue<std::shared_ptr<Event>> events(10000);
@@ -60,7 +56,6 @@ int main(int argc, char* argv[]) {
 
         SdlManager manager(commands, events);
         manager.run("tuki");
-        std::cout << "CERRANDO SDL" << std::endl;
 
         client.end();
 

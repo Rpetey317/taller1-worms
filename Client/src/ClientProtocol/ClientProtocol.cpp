@@ -360,18 +360,15 @@ std::list<std::string> ClientProtocol::req_game_info() {
 }
 
 bool ClientProtocol::req_succeed() {
-    std::cout << "se espera codigo de succes" << std::endl;
     char code;
     this->skt.recvall(&code, sizeof(char), &this->isclosed);
     if (this->isclosed) {
         return false;
     }
-    std::cout << "se recibe codigo de succes" << std::endl;
     return code == SRV_SUCCESS;
 }
 
 char ClientProtocol::create_new_game(std::string& game_name, std::string& map_name) {
-    std::cout << "Envio que se cree partida" << std::endl;
     if (!this->send_char(CLI_REQ_CREATE)) {
         return CLOSED_SKT;
     }
@@ -383,7 +380,6 @@ char ClientProtocol::create_new_game(std::string& game_name, std::string& map_na
     if (!this->send_str(map_name)) {
         return CLOSED_SKT;
     }
-    std::cout << "Se crea partida" << std::endl;
     return SUCCESS;
 }
 

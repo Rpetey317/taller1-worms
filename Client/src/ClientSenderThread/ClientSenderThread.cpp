@@ -9,7 +9,6 @@ void SenderThread::run() {
     while (_keep_running) {
         try {
             std::shared_ptr<Action> action = outgoingq.pop();
-            std::cout << "Se envia accion a servidor" << std::endl;
             action->get_send_by(this->prot);
         } catch (ClosedQueue& e) {
             _keep_running = false;

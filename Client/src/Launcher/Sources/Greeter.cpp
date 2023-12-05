@@ -41,16 +41,9 @@ void Greeter::createGame() {
     if (newGame.exec() == QDialog::Accepted) {
         this->gameName = newGame.getEnteredGameName();
         this->mapName = newGame.getEnteredMapName();
-        // this->dataLoggin.gameName = this->gameName.toStdString();
-        // std::cout << "Game created succesfully with name: " << gameName.toStdString()
-        //           << " and map name: " << mapName.toStdString() << std::endl;
 
         std::string gameNameString(this->gameName.toStdString());
         std::string mapNameString(this->mapName.toStdString());
-
-        std::cout << "Game started succesfully with name: " << gameName.toStdString()
-                  << " and map name: " << mapName.toStdString() << std::endl;
-
 
         this->protocol.create_new_game(gameNameString, mapNameString);
         bool could_create_match = this->protocol.req_succeed();
@@ -68,8 +61,7 @@ void Greeter::createGame() {
             this->protocol.send_start_game();  // Brodcastear a los demas clientes conectados
             std::cout << "Game started succesfully with name: " << gameName.toStdString()
                       << " and map name: " << mapName.toStdString() << std::endl;
-            uint8_t cd = this->protocol.recv_start_game();  // Es bloqueante
-            std::cout << "Received start game: " << cd << std::endl;
+            this->protocol.recv_start_game();  // Es bloqueante
             close();
         }
     }
@@ -80,8 +72,6 @@ void Greeter::joinToGame() {
     joinGame.setModal(true);
     if (joinGame.exec() == QDialog::Accepted) {
         this->gameName = joinGame.getEnteredText();
-        // this->dataLoggin.gameName = this->gameName.toStdString();
-        // std::cout << "Joined succesfully to game: " << gameName.toStdString() << std::endl;
         std::string gameNameString(this->gameName.toStdString());
 
         this->protocol.join_game(gameNameString);
@@ -91,9 +81,9 @@ void Greeter::joinToGame() {
             this->gameName = "";
             close();
         } else {
-            std::cout << "Could join game" << std::endl;
-            uint8_t cd = this->protocol.recv_start_game();  // Es bloqueante
-            std::cout << "Received start game: " << cd << std::endl;
+            std::cout << "Could join game. Waiting for host to start game" << std::endl;
+            this->protocol.recv_start_game();  // Es bloqueante
+            std::cout << "Received start game: " << std::endl;
             close();
         }
     }

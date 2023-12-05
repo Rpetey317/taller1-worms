@@ -15,13 +15,11 @@ Vect2D BoxManager::meter_to_pixel(b2Vec2 meter, float offset_x, float offset_y) 
 
 BoxManager::BoxManager(std::string file_name): worms(), world(worms), timer_allows(true) {
     set_map(file_name);
-    std::cout << "BoxManager created con " << std::to_string(worms.size()) << " gusanos" << std::endl;
     playing_worm = worms.begin();
 }
 
 
 void BoxManager::next_turn(int player_id) {
-    std::cout << "Next turn en b2d manager y va al " << std::to_string(player_id) << std::endl;
     auto it = worms.begin();
     std::advance(it, player_id - 1);
     playing_worm = it;
@@ -31,12 +29,10 @@ void BoxManager::next_turn(int player_id) {
 bool BoxManager::set_map(std::string file_name) {
     CommonMapParser parser;
     map_name = file_name;
-    std::cout << "creando mapita" << std::endl;
     return world.set_map(parser.get_map(file_name));
 }
 
 std::map<int, Worm>* BoxManager::create_position_map(const std::list<Box2DPlayer>& worms) {
-    std::cout << "creando mapa de posiciones en Box2dManager (39)" << std::endl;
     std::map<int, Worm>* worms_position = new std::map<int, Worm>();
     for (auto worm : worms) {
         b2Body* body = worm.get_body(); // Obtener el cuerpo
@@ -44,7 +40,6 @@ std::map<int, Worm>* BoxManager::create_position_map(const std::list<Box2DPlayer
             b2Vec2 pos = body->GetPosition();
             if(worm.is_falling() && worm.get_state() != WORM_DEAD)
                 worm.set_state(WORM_FALLING);
-            std::cout << "posicion del gusano segun b2d " << std::to_string(worm.get_id()) << " es " << std::to_string(meter_to_pixel(pos, 0.12f, 0.245f).x) << " " << std::to_string(meter_to_pixel(pos, 0.12f, 0.245f).y) << " con estado " << std::to_string(worm.get_state()) << " con vida " << std::to_string(worm.get_health_points()) << std::endl;
             
             Worm worm_class( meter_to_pixel(pos, 0.12f, 0.245f), worm.get_state(), worm.get_id(), worm.get_team_id(), worm.get_health_points(), map_name);
             worms_position->insert(std::make_pair(worm.get_id(), worm_class));
@@ -58,14 +53,11 @@ std::map<int, Worm>* BoxManager::create_position_map(const std::list<Box2DPlayer
 std::map<int, WeaponDTO>* BoxManager::create_proyectile_map(const std::list<b2Body*>& projectiles) {
     std::map<int, WeaponDTO>* positions = new std::map<int, WeaponDTO>();
     int i = 1;
-    std::cout << "creando mapa de proyectiles en Box2dManager (57)" << std::endl;
-    std::cout << "tenemos " << std::to_string(projectiles.size()) << " proyectiles" << std::endl;
     for (auto projectile : projectiles) {
         if (projectile) { // Verificar si el cuerpo es válido
             b2Vec2 pos = projectile->GetPosition();
             int angle = (int)acos(projectile->GetLinearVelocity().x / projectile->GetLinearVelocity().Length()) * configurator.get_box2D_configuration().rad_to_deg;
             Box2DPlayer* temp = (Box2DPlayer*)(projectile->GetUserData().pointer);
-            std::cout << "posicion del proyectil segun b2d " << std::to_string(temp->get_id()) << " es " << std::to_string(pos.x) << " " << std::to_string(pos.y) << "en angulo " << std::to_string(angle) << std::endl;
             WeaponDTO weapon(temp->get_id(), meter_to_pixel(pos, 0.12f, 0.245f), angle);
             positions->insert(std::make_pair(i, weapon));
         }
@@ -89,7 +81,6 @@ std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> updat
     b2ContactEdge* contacts = current->GetContactList();
 
     Box2DPlayer* temp = (Box2DPlayer*)(current->GetUserData().pointer);
-    std::cout <<  reinterpret_cast<void *>(temp) << std::endl;
     std::shared_ptr<BoxShoot> sh_update;
     std::shared_ptr<BoxSpecialShoot> spsh_update;
     std::shared_ptr<BoxChangeWeapon> wpupd;
@@ -124,7 +115,6 @@ std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> updat
             this->time_ticker = 0;
             break;
         case COMMAND_SHOOT:
-            std::cout << "comando shoot" << std::endl;
             sh_update = std::static_pointer_cast<BoxShoot>(update);
             this->player_shoot(sh_update->get_angle(), sh_update->get_power(), sh_update->get_weapon_id());
             break; 
@@ -157,7 +147,6 @@ std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> updat
   player aims.
 */
 void BoxManager::fire_projectile(float angle, float power, float restitution, int category, int mask, bool set_timer, int type) {
-    std::cout << "fire projectile en box2d manager" << std::endl;
     Box2DPlayer* temp = (Box2DPlayer*)(playing_worm->get_body()->GetUserData().pointer);
     b2Body* projectile = world.create_projectile(playing_worm->get_body()->GetPosition().x, playing_worm->get_body()->GetPosition().y, restitution, temp->get_direction(), category, mask, set_timer, type);
     b2Vec2 Vector = b2Vec2( (power*0.00001f)*cosf(angle*configurator.get_box2D_configuration().deg_to_rad), (power*0.00001f)*sinf(angle*configurator.get_box2D_configuration().deg_to_rad) );
@@ -168,7 +157,6 @@ void BoxManager::fire_projectile(float angle, float power, float restitution, in
 }
 
 void BoxManager::player_shoot(int angle, int power, int weapon_type) {
-    std::cout << "player shoot en box2d manager" << std::endl;
     float fangle = static_cast<float>(angle);
     float fpower = static_cast<float>(power);
     switch(weapon_type){
