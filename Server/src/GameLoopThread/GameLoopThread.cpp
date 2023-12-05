@@ -24,8 +24,7 @@ void GameLoopThread::run() {
     // Start player threads
     game.start();
 
-    // Broadcast s signal and initial world update
-    game.broadcast(std::make_shared<StartUpdate>());
+    // Broadcast initial world update
     game.broadcast(game.execute(std::make_shared<BoxNull>()));
 
     // Main loop

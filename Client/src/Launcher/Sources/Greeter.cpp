@@ -88,9 +88,9 @@ void Greeter::joinToGame() {
             this->gameName = "";
             close();
         } else {
-            std::cout << "Could join game" << std::endl;
-            uint8_t cd = this->protocol.recv_start_game();  // Es bloqueante
-            std::cout << "Received start game: " << cd << std::endl;
+            std::cout << "Could join game. Waiting for game creator to start game" << std::endl;
+            uint8_t cd = this->protocol.recv_start_game();  // Bloqueante
+            std::cout << "Received start game: " << (int)cd << std::endl;
             close();
         }
     }

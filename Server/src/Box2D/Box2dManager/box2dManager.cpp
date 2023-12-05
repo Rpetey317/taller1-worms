@@ -161,6 +161,7 @@ std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> updat
 void BoxManager::fire_projectile(float angle, float power, float restitution, int category, int mask, bool set_timer, int type) {
     std::cout << "fire projectile en box2d manager" << std::endl;
     Box2DPlayer* temp = (Box2DPlayer*)(playing_worm->get_body()->GetUserData().pointer);
+    std::cout << "hay " << std::to_string(world.projectiles.size()) << " proyectiles" << std::endl;
     b2Body* projectile = world.create_projectile(playing_worm->get_body()->GetPosition().x, playing_worm->get_body()->GetPosition().y, restitution, temp->get_direction(), category, mask, set_timer, type);
     b2Vec2 Vector = b2Vec2( (power*0.001f)*cosf(angle*configurator.get_box2D_configuration().deg_to_rad), (power*0.001f)*sinf(angle*configurator.get_box2D_configuration().deg_to_rad) );
     if(temp->get_direction() == LEFT)
