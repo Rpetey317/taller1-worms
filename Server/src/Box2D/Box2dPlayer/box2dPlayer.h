@@ -20,6 +20,7 @@ class Box2DPlayer {
     void get_hurt(int damage);
     void kill();
     void set_direction(int direction);
+    void set_id(int id);
     int get_direction();
     void set_health_points(int health_points);
     int get_health_points();

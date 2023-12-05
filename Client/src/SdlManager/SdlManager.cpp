@@ -264,11 +264,57 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
         }
 
         std::list<WeaponDTO> weapons = event->get_weapons();
-        
-
-        if (event->proyectile_got_exploded()) {
-            is_animation_playing = true;
-            projectiles[last_projectile_used]->play_sound();
+        if (!weapons.empty()) {
+            for (auto weapon : weapons) {
+                is_projectile_flying = true;
+                switch (weapon.id)
+                {
+                case BAZOOKA:
+                    std::cout << "lgbt?" << std::endl;
+                    last_projectile_used = "BAZOOKA";
+                    break;
+                case MORTAR:
+                    last_projectile_used = "MORTAR";
+                    break;
+                case GREEN_GRANADE:
+                    last_projectile_used = "GREEN_GRENADE";
+                    break;
+                case RED_GRANADE:
+                    last_projectile_used = "RED_GRENADE";
+                    break;
+                case BANANA:
+                    last_projectile_used = "BANANA";
+                    break;
+                case HOLY_GRANADE:
+                    last_projectile_used = "HOLY_GRENADE";
+                    break;
+                case AIR_STRIKE:
+                    last_projectile_used = "AIR_STRIKE";
+                    break;
+                case BASEBALL_BAT:
+                    last_projectile_used = "BEISBOLL";
+                    break;
+                case DYNAMITE:
+                    last_projectile_used = "DYNAMITE";
+                    break;
+                case TELEPORT:
+                    last_projectile_used = "TELEPORT";
+                    break;
+                case EXPLOSION:
+                    std::cout << "DALE BOCA" << std::endl;
+                    last_projectile_used = last_projectile_used;
+                    is_projectile_flying = false;
+                    is_animation_playing = true;
+                    projectiles[last_projectile_used]->play_sound();
+                    break;
+                default:
+                    is_projectile_flying = false;
+                    last_projectile_used = "NULL";
+                    break;
+                }
+                projectiles[last_projectile_used]->render(weapon.position.x, weapon.position.y, weapon.angle);
+            }
+            
         }
     
         if (event->get_player_turn() > 0) {

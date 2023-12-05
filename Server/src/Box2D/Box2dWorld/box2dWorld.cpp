@@ -273,7 +273,8 @@ void BoxWorld::contactSolver(b2Contact* contact, float radius, float power,  b2F
     printf("contactSolver\n");
     projectiles_to_remove.push_back(fixture->GetBody());
     Box2DPlayer* temp = (Box2DPlayer*)(fixture->GetBody()->GetUserData().pointer);
-    temp->set_state(EXPLOSION);
+    std::cout << "el proyectil que choco es de tipo " << std::to_string(temp->get_id()) << "y ahora es explosion" <<std::endl;
+    temp->set_id((int)EXPLOSION);
     blastRadius = radius;
     blastPower = power;
     b2WorldManifold worldManifold;

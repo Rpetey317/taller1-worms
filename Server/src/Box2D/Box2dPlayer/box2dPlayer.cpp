@@ -8,6 +8,10 @@ b2Body* Box2DPlayer::get_body(){
     return body;
 }
 
+void Box2DPlayer::set_id(int id){
+    this->id = id;
+}
+
 int Box2DPlayer::get_id(){
     return id;
 }
