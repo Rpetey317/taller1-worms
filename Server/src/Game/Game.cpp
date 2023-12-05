@@ -9,7 +9,7 @@
 #include "ReceiverThread.h"
 #include "SenderThread.h"
 
-int ttime = 5;
+int ttime = 15;
 
 Game::Game(Queue<std::shared_ptr<Message>>& _eventq, const std::string& _name):
         plcount(0),

@@ -36,9 +36,11 @@ void LobbyHandlerThread::create_game(CreateRequest& request) {
     std::string& map_name = request.get_map_name();
     std::cout << "Creating game " << game_name << " with map " << map_name << std::endl;
 
-    // TODO: check if map_name is valid
+    if (!handler.create_game(game_name, map_name)){
+        player.send_fail();
+        return;
+    }
 
-    handler.create_game(game_name, map_name);
     if (!handler.join_host(game_name, std::move(player))) {
         return;
     }

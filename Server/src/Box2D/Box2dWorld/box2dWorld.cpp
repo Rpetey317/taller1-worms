@@ -36,11 +36,11 @@ b2Body* BoxWorld::create_worm(float x, float y, int id) {
     myBodyDef.position.Set(x, y); 
     myBodyDef.angle = 0; 
     b2Body* worm = world->CreateBody(&myBodyDef);
-    Box2DPlayer player(id, worm, RIGHT, WORM_STILL, configurator.get_worm_configuration().health);
+    Box2DPlayer* player = new Box2DPlayer(id, worm, RIGHT, WORM_STILL, configurator.get_worm_configuration().health);
     std::cout << "creamos un gusano y se lo empuja a la lista" << std::endl; 
-    worms.push_back(player);
+    worms.push_back(*player);
     std::cout << "se lo empujo a la lista y tiene tamaño " << std::to_string(worms.size()) << std::endl;
-    worm->GetUserData().pointer = ((uintptr_t)&player);
+    worm->GetUserData().pointer = ((uintptr_t)player);
     b2Vec2 vertices[6];
     vertices[0].Set(-0.06f, -0.15f);
     vertices[1].Set(-0.12f, -0.1f);
@@ -130,7 +130,8 @@ void BoxWorld::create_short_beam(b2Vec2 start, float angle){
 void applyBlastImpulse(b2Body* body, b2Vec2 blastCenter, b2Vec2 applyPoint, float blastPower, float blastRadius) {
     b2Vec2 blastDir = applyPoint - blastCenter;
     float distance = blastDir.Normalize();
-    float damage = blastPower * ((-distance/blastRadius) + 1) * 1000;
+    std::cout << "applyBlastImpulse con nlast power de " << std::to_string(blastPower) << " y radio de " << std::to_string(blastRadius) << std::endl;
+    float damage = blastPower * ((-distance/blastRadius) + 1);
     printf("el dano es %f\n", damage);
     if(blastDir.y > 0) {
         blastDir.y = -blastDir.y;
@@ -139,7 +140,7 @@ void applyBlastImpulse(b2Body* body, b2Vec2 blastCenter, b2Vec2 applyPoint, floa
         distance = 1;
     }
 	float invDistance = 1/distance;
-	float impulseMag = (blastPower/2) * invDistance;
+	float impulseMag = (blastPower/20000) * invDistance;
     if(body->GetFixtureList()->GetFilterData().categoryBits == WORM){
         Box2DPlayer* temp = (Box2DPlayer*)(body->GetUserData().pointer);
         temp->get_hurt(damage);
@@ -166,7 +167,7 @@ void BoxWorld::fragments() {
         b2FixtureDef myFixtureDef;
         myFixtureDef.shape = &circleShape; //this is a pointer to the shape above
         myFixtureDef.density = 0.1f;
-        myFixtureDef.restitution = 0.0f;
+        myFixtureDef.restitution = configurator.get_weapons_configuration().fragments.restitution;
         myFixtureDef.filter.categoryBits = FRAGMENT;
         myFixtureDef.filter.maskBits = WORM | BEAM;
         fragment->CreateFixture(&myFixtureDef); //add a fixture to the body
@@ -175,8 +176,8 @@ void BoxWorld::fragments() {
         fragment->SetBullet(true);
         projectiles.push_back(fragment);
         int type = FRAGMENT;
-        Box2DPlayer bullet(type, fragment);
-        fragment->GetUserData().pointer = ((uintptr_t)&bullet);
+        Box2DPlayer* bullet = new Box2DPlayer(type, fragment);
+        fragment->GetUserData().pointer = ((uintptr_t)bullet);
     }
 }
 
@@ -202,8 +203,8 @@ void BoxWorld::air_missiles(){
         missile->SetBullet(true);
         projectiles.push_back(missile);
         int type = AIR_MISSLE;
-        Box2DPlayer bullet(type, missile);
-        missile->GetUserData().pointer = ((uintptr_t)&bullet);
+        Box2DPlayer* bullet = new Box2DPlayer(type, missile);
+        missile->GetUserData().pointer = ((uintptr_t)bullet);
     }
 }
 
@@ -243,14 +244,18 @@ void BoxWorld::execute_checks(){
 void BoxWorld::clean_projectiles(bool full_clean){
     for (auto it = projectiles_to_remove.begin(); it != projectiles_to_remove.end(); ++it) {
         b2Body* projectile = *it;
-        world->DestroyBody(projectile);
-        projectiles_to_remove.erase(it);
+        if(projectile != NULL){
+            world->DestroyBody(projectile);
+            projectiles_to_remove.erase(it);
+        }
     }
     if(full_clean){
         for (auto it = projectiles.begin(); it != projectiles.end(); ++it) {
             b2Body* projectile = *it;
-            world->DestroyBody(projectile);
-            projectiles.erase(it);
+            if(projectile){
+                world->DestroyBody(projectile);
+                projectiles.erase(it);
+            }   
         }
     }
 }
@@ -275,7 +280,7 @@ void BoxWorld::contactSolver(b2Contact* contact, float radius, float power,  b2F
     printf("center at (%f, %f)\n", contactCenter.x, contactCenter.y);
     check_blast = true;    
     this->execute_checks();
-    this->clean_projectiles(false);
+    // this->clean_projectiles(false);
 }
 
 void BoxWorld::PostSolve(){
@@ -418,8 +423,7 @@ b2Body* BoxWorld::create_projectile(float x, float y, float restitution, float d
     projectile->CreateFixture(&myFixtureDef); //add a fixture to the body
     projectiles.push_back(projectile);
     std::cout << "pusheamos el proyectil a la cola de proyectiles" << std::endl;
-    Box2DPlayer bullet(type, projectile);
-    projectile->GetUserData().pointer = ((uintptr_t)&bullet);
+    projectile->GetUserData().pointer = ((uintptr_t) new Box2DPlayer(type, projectile));
     return projectile;
 }
 
