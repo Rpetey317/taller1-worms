@@ -95,8 +95,8 @@ std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> updat
     switch (current_command) {
         case COMMAND_LEFT:
             vel.x = -configurator.get_worm_configuration().speed;  // modifico componente en x
-                temp->set_direction(LEFT);
-                temp->set_state(WORM_WALKING);
+            temp->set_direction(LEFT);
+            temp->set_state(WORM_WALKING);
             break;
         case COMMAND_RIGHT:
             vel.x = configurator.get_worm_configuration().speed;
@@ -119,10 +119,11 @@ std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> updat
             break; 
         case COMMAND_NEXT:
             this->next_turn(update->get_id());
-            this->world.clean_projectiles(true);
+            // this->world.clean_projectiles(true);
             this->time_ticker = 0;
             break;
         case COMMAND_SHOOT:
+            std::cout << "comando shoot" << std::endl;
             sh_update = std::static_pointer_cast<BoxShoot>(update);
             this->player_shoot(sh_update->get_angle(), sh_update->get_power(), sh_update->get_weapon_id());
             break; 
@@ -134,9 +135,8 @@ std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> updat
             break;
         default:
             vel.x = 0.0f;
-            if(temp){
-                temp->set_state(WORM_STILL);
-            }
+            std::cout << "comando defaulta -> still" << std::endl;
+            temp->set_state(WORM_STILL);
             break;
     }
     if((this->time_ticker - this->detonation_tick) > 75){
@@ -165,6 +165,7 @@ void BoxManager::fire_projectile(float angle, float power, float restitution, in
 }
 
 void BoxManager::player_shoot(int angle, int power, int weapon_type) {
+    std::cout << "player shoot en box2d manager" << std::endl;
     float fangle = static_cast<float>(angle);
     float fpower = static_cast<float>(power);
     switch(weapon_type){

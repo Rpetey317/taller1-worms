@@ -251,7 +251,7 @@ void BoxWorld::clean_projectiles(bool full_clean){
     if(full_clean){
         for (auto it = projectiles.begin(); it != projectiles.end(); ++it) {
             b2Body* projectile = *it;
-            if(projectile != NULL){
+            if(projectile){
                 world->DestroyBody(projectile);
                 projectiles.erase(it);
             }   
