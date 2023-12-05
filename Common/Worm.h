@@ -6,6 +6,7 @@
 #include "Vect2D.h"
 
 enum _entityCategory {
+    WATER = 0x0000,
     BEAM = 0x0001,
     WORM = 0x0002,
     BAZOOKA = 0x0003,

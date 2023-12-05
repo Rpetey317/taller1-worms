@@ -44,7 +44,7 @@ std::map<int, Worm>* BoxManager::create_position_map(const std::list<Box2DPlayer
             b2Vec2 pos = body->GetPosition();
             if(worm.is_falling() && worm.get_state() != WORM_DEAD)
                 worm.set_state(WORM_FALLING);
-            std::cout << "posicion del gusano segun b2d " << std::to_string(worm.get_id()) << " es " << std::to_string(meter_to_pixel(pos, 0.12f, 0.245f).x) << " " << std::to_string(meter_to_pixel(pos, 0.12f, 0.245f).y) << " con estado " << std::to_string(worm.get_state()) << " con vida " << std::to_string(worm.get_health_points()) << <<std::endl;
+            std::cout << "posicion del gusano segun b2d " << std::to_string(worm.get_id()) << " es " << std::to_string(meter_to_pixel(pos, 0.12f, 0.245f).x) << " " << std::to_string(meter_to_pixel(pos, 0.12f, 0.245f).y) << " con estado " << std::to_string(worm.get_state()) << " con vida " << std::to_string(worm.get_health_points()) << std::endl;
             
             Worm worm_class( meter_to_pixel(pos, 0.12f, 0.245f), worm.get_state(), worm.get_id(), worm.get_team_id(), worm.get_health_points(), map_name);
             worms_position->insert(std::make_pair(worm.get_id(), worm_class));
@@ -153,50 +153,59 @@ std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> updat
   by the player to the shot. Angle represents the angle in degrees relative to the floor the 
   player aims.
 */
-void BoxManager::fire_projectile(float angle, float power, float restitution, int category, int mask, bool set_timer, int type) {
-    std::cout << "fire projectile en box2d manager" << std::endl;
+void BoxManager::fire_projectile(float angle, float power, float restitution, int category, int mask, bool has_to_wait, int type, bool wind_affects) {
     Box2DPlayer* temp = (Box2DPlayer*)(playing_worm->get_body()->GetUserData().pointer);
-    b2Body* projectile = world.create_projectile(playing_worm->get_body()->GetPosition().x, playing_worm->get_body()->GetPosition().y, restitution, temp->get_direction(), category, mask, set_timer, type);
-    b2Vec2 Vector = b2Vec2( (power*0.00001f)*cosf(angle*configurator.get_box2D_configuration().deg_to_rad), (power*0.00001f)*sinf(angle*configurator.get_box2D_configuration().deg_to_rad) );
+    b2Body* projectile = world.create_projectile(playing_worm->get_body()->GetPosition().x, playing_worm->get_body()->GetPosition().y, restitution, temp->get_direction(), category, mask, has_to_wait, type);
+    b2Vec2 Vector = b2Vec2( (power*0.001f)*cosf(angle*configurator.get_box2D_configuration().deg_to_rad), (power*0.001f)*sinf(angle*configurator.get_box2D_configuration().deg_to_rad) );
     if(temp->get_direction() == LEFT)
         Vector.x = -Vector.x;
+    // if(this->wind != 0.0f && wind_affects)
+    //     Vector.x += this->wind;
     projectile->SetBullet(true);
     projectile->ApplyLinearImpulseToCenter( Vector , true );
 }
 
 void BoxManager::player_shoot(int angle, int power, int weapon_type) {
-    std::cout << "player shoot en box2d manager" << std::endl;
     float fangle = static_cast<float>(angle);
     float fpower = static_cast<float>(power);
+    WeaponConfiguration config;
     switch(weapon_type){
         case BAZOOKA:
-            Bazooka(this).fire(fangle, fpower);
+            config = configurator.get_weapons_configuration().bazooka;
+            Bazooka(this).fire(fangle, fpower, config.restitution, config.timer , config.wind);
             break;
         case MORTAR:
-            Mortar(this).fire(fangle, fpower);
+            config = configurator.get_weapons_configuration().mortar;
+            Mortar(this).fire(fangle, fpower, config.restitution, config.timer , config.wind);
             break;
         case GREEN_GRANADE:
+            config = configurator.get_weapons_configuration().green_grenade;
             this->detonation_tick = this->time_ticker;
-            GreenGranade(this).fire(fangle, fpower);
+            GreenGranade(this).fire(fangle, fpower, config.restitution, config.timer , config.wind);
             break;
         case RED_GRANADE:
+            config = configurator.get_weapons_configuration().red_grenade;
             this->detonation_tick = this->time_ticker;
-            RedGranade(this).fire(fangle, fpower);
+            RedGranade(this).fire(fangle, fpower, config.restitution, config.timer , config.wind);
             break;
         case BANANA:
+            config = configurator.get_weapons_configuration().banana;
             this->detonation_tick = this->time_ticker;
-            Banana(this).fire(fangle, fpower);
+            Banana(this).fire(fangle, fpower, config.restitution, config.timer , config.wind);
             break;
         case HOLY_GRANADE:
+            config = configurator.get_weapons_configuration().holy_grenade;
             this->detonation_tick = this->time_ticker;
-            HolyGranade(this).fire(fangle, fpower);
+            HolyGranade(this).fire(fangle, fpower, config.restitution, config.timer , config.wind);
             break;
         case DYNAMITE:
+            config = configurator.get_weapons_configuration().dynamite;
             this->detonation_tick = this->time_ticker;
-            Dynamite(this).fire(fangle, fpower);
+            Dynamite(this).fire(fangle, fpower, config.restitution, config.timer , config.wind);
             break;
         case BASEBALL_BAT:
-            // BaseballBat(this).fire(fangle, fpower);
+            config = configurator.get_weapons_configuration().baseball;
+            BaseballBat(this).fire(fangle, fpower, config.restitution, config.timer , config.wind);
             break;
         
     }
@@ -210,9 +219,9 @@ void BoxManager::teleport(Vect2D position) {
     world.teleport(position, playing_worm->get_body());
 }
 
-void BoxManager::dynamite(float restitution, int category, int mask) {
+void BoxManager::dynamite(float restitution, int category, int mask, bool has_to_wait) {
     Box2DPlayer* temp = (Box2DPlayer*)(playing_worm->get_body()->GetUserData().pointer);
-    world.create_projectile(playing_worm->get_body()->GetPosition().x, playing_worm->get_body()->GetPosition().y, restitution, temp->get_direction(), category, mask, false, DYNAMITE);
+    world.create_projectile(playing_worm->get_body()->GetPosition().x, playing_worm->get_body()->GetPosition().y, restitution, temp->get_direction(), category, mask, has_to_wait, DYNAMITE);
 }
 
 void BoxManager::baseball_bat(float angle, float power) {

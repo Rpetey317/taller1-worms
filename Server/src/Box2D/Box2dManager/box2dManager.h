@@ -35,6 +35,7 @@ class BoxManager {
     long time_ticker;
     long detonation_tick;
     std::string map_name;
+    // float wind;
     // call to function should be implemented in process 
     // but execution in corresponding class
     void next_turn(int player_id);
@@ -50,10 +51,10 @@ public:
     explicit BoxManager(std::string file_name);
     bool set_map(std::string file_name);
     void tick();
-    void fire_projectile(float angle, float power, float restitution, int category, int mask, bool set_timer, int type);
+    void fire_projectile(float angle, float power, float restitution, int category, int mask, bool set_timer, int type, bool wind_affects);
     void air_strike(Vect2D position);
     void teleport(Vect2D position);
-    void dynamite(float restitution, int category, int mask);
+    void dynamite(float restitution, int category, int mask, bool set_timer);
     void baseball_bat(float angle, float power);
     void set_teams(int worm_id, int player_id);
     std::shared_ptr<WorldUpdate> process(std::shared_ptr<Box2DMsg> update);

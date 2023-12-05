@@ -8,7 +8,7 @@ class Banana : public B2dWeapon {
 public:
     explicit Banana(BoxManager* box_manager);
 
-    void fire(float angle, float strength) override;
+    void fire(float angle, float strength, float restitution, bool has_to_wait, bool wind) override;
 
     ~Banana();
 
