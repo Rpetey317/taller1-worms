@@ -135,7 +135,6 @@ std::shared_ptr<Event> ClientProtocol::recv_map_update() {
         }
 
         std::string map_name = this->recv_msg();
-        std::cout << "HOLA, ESTE ES PLAYER_ID OWO" << (int)player_id;
         Worm worm(position, (int)state, (int)worm_id, (int)player_id, (int)health_points, map_name);
         worms[(int)worm_id] = worm;
     }

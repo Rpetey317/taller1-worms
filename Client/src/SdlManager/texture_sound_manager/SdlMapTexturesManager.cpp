@@ -33,6 +33,10 @@ SdlTexturesManager::SdlTexturesManager(Renderer& renderer, Window& window, std::
 
     src.x = src.y = 0;
     src.h = dest.h = 19;
+    CommonConfigurationParser common_parser;
+    Box2DConfiguration map_configuration = common_parser.get_box2D_configuration();
+    map_width = map_configuration.map_width;
+    map_height = map_configuration.map_height;
     
 }
 
@@ -74,8 +78,8 @@ void SdlTexturesManager::draw_water(int camera_x, int camera_y) {
     src.h = 24;
     dest.h = 24 * 6;
     dest.x = 0;
-    dest.y = MAP_HEIGHT - camera_y;
-    for (int i = 0; i < MAP_WIDTH; i+= 128) {
+    dest.y = map_height - camera_y;
+    for (int i = 0; i < map_width; i+= 128) {
         dest.x = i;
         if (i%3 == 0) {
             renderer.Copy(*water1, src, dest, 0, NullOpt, 0);

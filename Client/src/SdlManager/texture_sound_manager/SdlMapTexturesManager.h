@@ -1,8 +1,6 @@
 #pragma once
 #include <SDL2pp/SDL2pp.hh>
 #include "../../../Common/CommonMapParser/CommonMapParser.h"
-#define MAP_WIDTH 20000
-#define MAP_HEIGHT 500
 using namespace SDL2pp;  // NOLINT
 
 //deberia ser map_textures_manager...
@@ -27,6 +25,8 @@ class SdlTexturesManager {
                 Texture* water3;
                 Texture background;
                 Texture* worm;
+                int map_width;
+                int map_height;
                 
 
 
