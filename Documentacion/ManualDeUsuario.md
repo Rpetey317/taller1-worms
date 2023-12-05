@@ -133,7 +133,7 @@ o crear una partida, como se puede ver en la siguiente imagen.
 ## Crear Partida
 
 Se selecciona el boton 'Create Match', para el cual se abre el siguiente form, en el cual se rellena el nombre de la partida
-que se quiere crear, seleccionando el mapa que se desea elegir.
+que se quiere crear, seleccionando el mapa que se desea elegir, escribiendo la extension .yaml (por ejemplo: mapita.yaml).
 
 ![Alt text](createMatch.png)
 
@@ -153,7 +153,15 @@ Si se quiere crear un nuevo mapa, se debe correr en el directiorio build del pro
 ./client <nombre de mapa.yaml> , siendo el `nombre de mapa.yaml` el nombre de un mapa existente, si se quiere modificar el mapa, o un
 nombre del nuevo mapa que se quiere crear, en este caso se crea un nuevo mapa. Si se toca la tecla 'Escape' , se guardan los
 cambios correctamente, si se toca la X de la ventana donde se edita el mapa, no se guarda. Al guardarse los cambios, se crea o
-modifica un archivo YAML, el cual se guarda en la carpeta 'Maps' del directorio, el cual tiene todos los mapas correspondientes
+modifica un archivo YAML, el cual se guarda en la carpeta 'Maps' del directorio, el cual tiene todos los mapas correspondientes.
+Las teclas para el editor son las siguientes:
+F1: Cambia el fondo de pantalla
+
+1: Elegir viga corta
+2: Elegir viga larga
+3: Definir punto de spawn de gusanito
+w, a, s, d : Mover la camara
+Click izquierdo: Manter y colocar las piezas (vigas o gusanos)
 
 # Flujo de juego
 

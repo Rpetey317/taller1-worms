@@ -99,3 +99,4 @@ En la siguiente imagen se puede ver el flujo general de los threads del cliente:
 ![Alt text](threadsClient.png)
 
 # Modulo servidor
+
