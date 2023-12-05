@@ -23,15 +23,16 @@
 # Evolucion del proyecto
 
 ### Semana 1
-- En la primer semana principalmente todos nos familiarizamos con nuestros nuevos entornos. Comenzamos la 
+En la primer semana principalmente todos nos familiarizamos con nuestros nuevos entornos.  Creamos el primer diseño del flujo del juego. Comenzamos la 
 implementacion del modelo Client-Server ya que lo conociamos de los TPs individuales.
 ### Semana 2
+En esta semana comenzamos a crear las bases de codigo en base a nuestro diseño. Comenzamos tambien las primeras visaules de SDL y los primeros modelos fisicos en el testbed de Box2D, mientras el Client-Server seguia avanzando.
 ### Semana 3
  Seguimos construyendo sobre la base del Client-Server y comenzamos a avanzar por diferentes frentes cada uno con lo suyo.
 ### Semana 4
  Semana de poco avance. Principalmente avances individuales, pero problemas en el intento de unirlo.
 ### Semana 5
- Similar a semana 4.
+ Similar a semana 4. En esta semana hubo el mayor avance en temas individuales pero nuevamente fallo la union para hacerle funcional.
 ### Semana 6
  La mayoria de la semana fue utilizada en juntar todos los pedazos individualmente programados.
 
