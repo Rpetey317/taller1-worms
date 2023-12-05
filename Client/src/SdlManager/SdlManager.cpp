@@ -339,11 +339,11 @@ void SdlManager::run(std::string selected_map) {
 
     std::shared_ptr<Event> first_event;
     while(!ingoing.try_pop(first_event)) {
-
+        std::cout << "se traba" << std::endl;
     }
     id_of_player_turn = first_event->get_id();
     while (!ingoing.try_pop(first_event)) {
-
+        std::cout << "se traba" << std::endl;
     }
     std::map<int, Worm> worms_positions = first_event->get_worms();
 

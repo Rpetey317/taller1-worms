@@ -167,7 +167,7 @@ void BoxWorld::fragments() {
         b2FixtureDef myFixtureDef;
         myFixtureDef.shape = &circleShape; //this is a pointer to the shape above
         myFixtureDef.density = 0.1f;
-        myFixtureDef.restitution = configurator.get_weapons_configuration().fragments.restitution;
+        myFixtureDef.restitution = 0.0f;
         myFixtureDef.filter.categoryBits = FRAGMENT;
         myFixtureDef.filter.maskBits = WORM | BEAM;
         fragment->CreateFixture(&myFixtureDef); //add a fixture to the body
