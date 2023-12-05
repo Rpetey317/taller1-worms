@@ -54,6 +54,9 @@ std::map<int, Worm>* BoxManager::create_position_map(const std::list<Box2DPlayer
     return worms_position;
 }
 
+std::shared_ptr<WorldUpdate> BoxManager::get_state() {
+    return std::make_shared<WorldUpdate>(create_position_map(worms), create_proyectile_map(this->world.projectiles));
+}
 
 std::map<int, WeaponDTO>* BoxManager::create_proyectile_map(const std::list<b2Body*>& projectiles) {
     std::map<int, WeaponDTO>* positions = new std::map<int, WeaponDTO>();

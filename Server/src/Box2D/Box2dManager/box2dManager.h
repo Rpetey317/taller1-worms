@@ -57,6 +57,7 @@ public:
     void baseball_bat(float angle, float power);
     void set_teams(int worm_id, int player_id);
     std::shared_ptr<WorldUpdate> process(std::shared_ptr<Box2DMsg> update);
+    std::shared_ptr<WorldUpdate> get_state();
 };
 
 #endif

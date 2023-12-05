@@ -25,7 +25,7 @@ void GameLoopThread::run() {
     game.start();
 
     // Broadcast initial world update
-    game.broadcast(game.execute(std::make_shared<BoxNull>()));
+    game.broadcast(game.get_box2d_state());
 
     // Main loop
     while (_keep_running) {
@@ -49,7 +49,7 @@ void GameLoopThread::run() {
         }
         // Execute timer
         game.broadcast(game.execute(std::make_shared<RunTimer>(0)));
-        game.broadcast(game.execute(std::make_shared<BoxNull>()));
+        game.broadcast(game.get_box2d_state());
 
         // Take time elapsed
         auto end_time = std::chrono::steady_clock::now();

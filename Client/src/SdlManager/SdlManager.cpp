@@ -22,6 +22,7 @@ SdlManager::SdlManager(Queue<std::shared_ptr<Action>>& outgoing, Queue<std::shar
     timer_rect.set_height(10);
     timer_rect.set_width(0);
     // Initialize SDL_ttf library
+    last_projectile_used = "NULL";
     SDLTTF ttf;
 }
 
@@ -320,8 +321,8 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
 
             }
         }
-
-        projectiles[last_projectile_used]->render(last_projectile_x, last_projectile_y, last_projectile_angle);   
+        if (last_projectile_used != "NULL")
+            projectiles[last_projectile_used]->render(last_projectile_x, last_projectile_y, last_projectile_angle);   
 
         if (event->get_player_turn() > 0) {
             if (id_worm_turn != event->get_player_turn()) {
@@ -393,7 +394,6 @@ void SdlManager::run(std::string selected_map) {
     while (!ingoing.try_pop(first_event)) {
     }
     std::map<int, Worm> worms_positions = first_event->get_worms();
-
     CommonMapParser parser;
     SdlTexturesManager textures_manager(renderer, window, parser.get_background(worms_positions[1].map_name));
     SdlMap map(camera, parser.get_map(worms_positions[1].map_name), textures_manager);

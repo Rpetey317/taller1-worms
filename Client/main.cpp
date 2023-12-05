@@ -57,7 +57,7 @@ int main(int argc, char* argv[]) {
         GameProcessing client(protocol, commands, events);
 
         client.run();
-
+        std::cout << "HOLA" << std::endl;
         SdlManager manager(commands, events);
         manager.run("tuki");
         std::cout << "CERRANDO SDL" << std::endl;

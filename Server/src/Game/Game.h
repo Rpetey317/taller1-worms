@@ -71,6 +71,8 @@ public:
 
     std::shared_ptr<Update> process_box2d(std::shared_ptr<Box2DMsg> event);
 
+    std::shared_ptr<Update> get_box2d_state();
+
     std::shared_ptr<Update> process_timer(RunTimer& event);
 
     std::shared_ptr<Update> process_player_change_weapon(PlayerChangeWeapon& event);

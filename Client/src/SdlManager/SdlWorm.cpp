@@ -55,7 +55,9 @@ int SdlWorm::projectile_id() {
 void SdlWorm::render_new(Vect2D position, int state, int health) {
     //aca obtendria el state, y haria un super switch case y le actualizaria el worm_state
     // cuando muere un worm, me pasan su estado de muerte y despues veo que onda
-
+    std::cout << "ESTO VALE STATE: " << state << std::endl;
+    std::cout << "ESTO QUIERO QUE VALGA: " << BAZOOKA << std::endl;
+    std::cout << "ESTO VALE FALLING: " << WORM_FALLING << std::endl; 
     if (worm_state == worm_states["DIE"])
         return;
     this->health = health;
@@ -63,6 +65,8 @@ void SdlWorm::render_new(Vect2D position, int state, int health) {
         worm_state = worm_states["DIE"];
         play_animation();
     }
+
+
 
     switch (state)
     {

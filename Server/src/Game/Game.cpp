@@ -47,6 +47,10 @@ std::shared_ptr<Update> Game::execute(std::shared_ptr<Message> event) {
     return event->get_processed_by(*this);
 }
 
+std::shared_ptr<Update> Game::get_box2d_state() {
+    return box2d.get_state();
+}
+
 void Game::broadcast(std::shared_ptr<Update> update) {
     std::lock_guard<std::mutex> lock(this->plmtx);
     for (auto pl = this->players.begin(); pl != this->players.end(); pl++) {
