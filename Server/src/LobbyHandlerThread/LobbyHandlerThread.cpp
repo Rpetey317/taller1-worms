@@ -27,7 +27,7 @@ void LobbyHandlerThread::join_game(JoinRequest& request) {
     std::cout << "Joining player to game " << game_name << std::endl;
 
     handler.join_player(game_name, std::move(player));
-    
+
     _keep_running = false;
 }
 

@@ -1,8 +1,9 @@
 #ifndef WORM_H
 #define WORM_H
 
-#include "Vect2D.h"
 #include <string>
+
+#include "Vect2D.h"
 
 enum _entityCategory {
     BEAM = 0x0001,
@@ -36,7 +37,8 @@ public:
     std::string map_name;
     Worm();
 
-    Worm(Vect2D position, int state, int id, int player_id, int health_points, std::string map_name);
+    Worm(Vect2D position, int state, int id, int player_id, int health_points,
+         std::string map_name);
 
     Worm(Vect2D position, int state, int id, int player_id, int health_points);
 

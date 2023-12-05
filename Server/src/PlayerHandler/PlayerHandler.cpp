@@ -18,9 +18,7 @@ PlayerHandler::PlayerHandler(ServerProtocol&& _peer, Queue<std::shared_ptr<Messa
         recv_th(_eventq, prot, _id),
         id(_id),
         assigned_worms(),
-        last_worm_used(assigned_worms.end()) {
-
-}
+        last_worm_used(assigned_worms.end()) {}
 
 void PlayerHandler::start() {
     std::shared_ptr<PlayerAcknowledge> ack = std::make_shared<PlayerAcknowledge>(this->id);

@@ -98,7 +98,7 @@ std::shared_ptr<Event> ClientProtocol::recv_map_update() {
         return std::make_shared<NullEvent>(0);
     }
     // Receive players positions
-    std::map<int, Worm> worms; 
+    std::map<int, Worm> worms;
 
     for (int i = 0; i < amount_players; i++) {
         playerid_t player_id;
@@ -133,7 +133,7 @@ std::shared_ptr<Event> ClientProtocol::recv_map_update() {
         if (this->isclosed) {
             return std::make_shared<NullEvent>(0);
         }
-        
+
         std::string map_name = this->recv_msg();
 
         Worm worm(position, (int)state, (int)worm_id, (int)player_id, (int)health_points, map_name);
