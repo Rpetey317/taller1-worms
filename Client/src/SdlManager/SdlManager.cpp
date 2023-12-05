@@ -173,9 +173,7 @@ bool SdlManager::event_handler() {
                     outgoing.push(std::make_shared<Shoot>(worms[id_worm_turn]->projectile_id(), worms[id_worm_turn]->attack_power, worms[id_worm_turn]->angle));
                     worms[id_worm_turn]->is_charging = false;
                     worms[id_worm_turn]->already_fired = true;
-                    worms[id_worm_turn]->attack_power = 0; //en vez de worms[0], deberiamos hacer worms[jugador_en_turno], osea voy a necesitar 2 variables mas
-                    // uno es la variable del id jugador de este cliente, otro la variable del id jugador en turno :)
-                    //push de que disparo algo
+                    worms[id_worm_turn]->attack_power = 0; 
                     break;
                 }
                 default: {
@@ -270,7 +268,6 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
                 switch (weapon.id)
                 {
                 case BAZOOKA:
-                    std::cout << "lgbt?" << std::endl;
                     last_projectile_used = "BAZOOKA";
                     break;
                 case MORTAR:
@@ -308,18 +305,26 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
                     projectiles[last_projectile_used]->play_sound();
                     break;
                 default:
+                    last_projectile_x = 0;
+                    last_projectile_y = 0;
+                    last_projectile_angle = 0;
                     is_projectile_flying = false;
                     last_projectile_used = "NULL";
                     break;
+                    
                 }
-                projectiles[last_projectile_used]->render(weapon.position.x, weapon.position.y, weapon.angle);
+
+                last_projectile_x = weapon.position.x;
+                last_projectile_y = weapon.position.y;
+                last_projectile_angle = weapon.angle;
+
             }
-            
         }
-    
+
+        projectiles[last_projectile_used]->render(last_projectile_x, last_projectile_y, last_projectile_angle);   
+
         if (event->get_player_turn() > 0) {
             if (id_worm_turn != event->get_player_turn()) {
-                worms[id_worm_turn]->change_state("STILL");
                 worms[id_worm_turn]->angle = 0;
                 worms[id_worm_turn]->is_charging = false;
                 worms[id_worm_turn]->attack_power = 0;

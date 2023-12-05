@@ -41,7 +41,10 @@ private:
     bool is_projectile_flying;
     int timer;
     SdlResizableRect timer_rect;
-    
+    int last_projectile_x = 0;
+    int last_projectile_y = 0;
+    int last_projectile_angle = 0;
+
     void init_projectiles(SdlSoundManager& sound_manager, SdlProjectilesTextureManager& projectiles_texture_manager, SdlCamera& camera);
     void cheat_set_life_of_all_worms_to(int new_health);
     bool event_handler();
