@@ -20,10 +20,10 @@ BoxManager::BoxManager(std::string file_name): worms(), world(worms), timer_allo
 }
 
 
-void BoxManager::next_turn(int player_id) {
-    std::cout << "Next turn en b2d manager y va al " << std::to_string(player_id) << std::endl;
+void BoxManager::next_turn(int worm_id) {
+    std::cout << "Next turn en b2d manager y va al " << std::to_string(worm_id) << std::endl;
     auto it = worms.begin();
-    std::advance(it, player_id - 1);
+    std::advance(it, worm_id - 1);
     playing_worm = it;
 }
 

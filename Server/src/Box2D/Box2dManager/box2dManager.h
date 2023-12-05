@@ -38,7 +38,7 @@ class BoxManager {
     // float wind;
     // call to function should be implemented in process 
     // but execution in corresponding class
-    void next_turn(int player_id);
+    void next_turn(int worm_id);
     void player_shoot(int angle, int power, int weapon_type);
     void player_special_shoot(Vect2D position, int weapon_type);
 public:
