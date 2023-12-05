@@ -272,6 +272,8 @@ void BoxWorld::step(){
 void BoxWorld::contactSolver(b2Contact* contact, float radius, float power,  b2Fixture* fixture){
     printf("contactSolver\n");
     projectiles_to_remove.push_back(fixture->GetBody());
+    Box2DPlayer* temp = (Box2DPlayer*)(fixture->GetBody()->GetUserData().pointer);
+    temp->set_state(EXPLOSION);
     blastRadius = radius;
     blastPower = power;
     b2WorldManifold worldManifold;
