@@ -290,7 +290,7 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
             }
             timer_rect.set_width(timer * 2);
             timer_rect.set_position(10, camera.get_window_height() - 20);
-            id_of_player_turn = worms[id_worm_turn]->player_id;
+
         }
 
 
