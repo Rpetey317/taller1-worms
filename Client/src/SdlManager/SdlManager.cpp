@@ -262,6 +262,8 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
             worm.second->next_animation();
             worm.second->apply();
         }
+
+        std::list<WeaponDTO> weapons = event->get_weapons();
         
 
         if (event->proyectile_got_exploded()) {
