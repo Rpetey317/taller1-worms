@@ -92,7 +92,7 @@ char ServerProtocol::send_WorldUpdate(const WorldUpdate& upd) {
     for (auto it = upd.begin(); it != upd.end(); ++it) {
 
         // send player id
-        if (!this->send_char((playerid_t)it->first)) {
+        if (!this->send_char((playerid_t)it->second.player_id)) {
             return CLOSED_SKT;
         }
 

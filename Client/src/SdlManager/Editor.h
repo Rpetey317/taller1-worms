@@ -27,4 +27,5 @@ class MapEditor {
                 bool event_handler(SdlMap& sdl_map);
                 bool main_loop(Renderer& renderer, SdlMap& sdl_map);
                 void update_screen(Renderer& renderer, SdlMap& sdl_map);
+                int map_height;
 };

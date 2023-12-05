@@ -61,7 +61,7 @@ void GameProcessing::run() {
     if (id < 0) {
         throw std::runtime_error("Error al recibir el id del jugador");
     }
-    // this->incomingq.push(ack_update);
+    incomingq.push(ack_update);
     std::cout << "Player id: " << this->id << std::endl;
 
     this->receiverTh.start();

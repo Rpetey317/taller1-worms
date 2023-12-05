@@ -3,7 +3,10 @@
 
 
 MapEditor::MapEditor(std::string& map_name) : map_name(map_name) {
+    CommonConfigurationParser common_parser;
+    Box2DConfiguration map_config = common_parser.get_box2D_configuration();
 
+    map_height = map_config.map_height;
 }
 
 bool MapEditor::event_handler(SdlMap& sdl_map) {
@@ -120,7 +123,7 @@ bool MapEditor::event_handler(SdlMap& sdl_map) {
         } else if (event.type == SDL_MOUSEBUTTONUP) {
             switch(event.button.button) {
                 case SDL_BUTTON_LEFT : {
-                    if (new_tile.pos_y > MAP_HEIGHT) {
+                    if (new_tile.pos_y > map_height) {
                         is_choosing = false;
                         break;
                     }

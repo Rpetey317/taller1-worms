@@ -254,7 +254,7 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
 
             if (!server_worms.empty()) {
                 //el id de gusano =/= id de jugador controla al gusano
-                worm.second->render_new(server_worms[worm.second->worm_id].position, server_worms[worm.second->worm_id].state);//deberia obtener el estado aca y se lo paso
+                worm.second->render_new(server_worms[worm.second->worm_id].position, server_worms[worm.second->worm_id].state, server_worms[worm.second->worm_id].health_points);//deberia obtener el estado aca y se lo paso
                 
             } else {
                 worm.second->render_same();
@@ -275,6 +275,7 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
     
         if (event->get_player_turn() > 0) {
             if (id_worm_turn != event->get_player_turn()) {
+                worms[id_worm_turn]->change_state("STILL");
                 worms[id_worm_turn]->angle = 0;
                 worms[id_worm_turn]->is_charging = false;
                 worms[id_worm_turn]->attack_power = 0;
@@ -289,7 +290,7 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
             }
             timer_rect.set_width(timer * 2);
             timer_rect.set_position(10, camera.get_window_height() - 20);
-            id_of_player_turn = worms[id_worm_turn]->player_id;
+
         }
 
 
@@ -337,6 +338,10 @@ void SdlManager::run(std::string selected_map) {
     camera.set_window(&window);
 
     std::shared_ptr<Event> first_event;
+    while(!ingoing.try_pop(first_event)) {
+
+    }
+    id_of_player_turn = first_event->get_id();
     while (!ingoing.try_pop(first_event)) {
 
     }
