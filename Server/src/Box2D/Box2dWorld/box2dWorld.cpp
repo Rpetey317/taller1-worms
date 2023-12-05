@@ -38,7 +38,7 @@ b2Body* BoxWorld::create_worm(float x, float y, int id) {
     b2Body* worm = world->CreateBody(&myBodyDef);
     Box2DPlayer* player = new Box2DPlayer(id, worm, RIGHT, WORM_STILL, configurator.get_worm_configuration().health);
     std::cout << "creamos un gusano y se lo empuja a la lista" << std::endl; 
-    worms.push_back(player);
+    worms.push_back(*player);
     std::cout << "se lo empujo a la lista y tiene tamaño " << std::to_string(worms.size()) << std::endl;
     worm->GetUserData().pointer = ((uintptr_t)player);
     b2Vec2 vertices[6];
