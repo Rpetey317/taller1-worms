@@ -19,20 +19,24 @@ El proyecto se ejecuta en un sistema operativo GNU/Linux y se utilizan distintas
 compilar y ejecutar el juego. Estas son las siguientes:
 
 - SDL2pp
+  
  Esta librerı́a es el motor gráfico del juego, se encarga de todo lo relacionado con la renderización,
  musicalización e interacción con el usuario (Cliente), determinando cada acción del usuario para luego 
  mostrarla en pantalla. Se utiliza tambien para el editor de mapas
 
 - Box2d
+
  Box2D es una biblioteca libre que implementa un motor físico en dos dimensiones. Se utiliza para implementar
- toda la fisica del juego
+ toda la fisica del juego. Utilizamos para aprender fuertemente la documentacion en [box2d.org](https://box2d.org/) y los tutoriales de [iforce2d tutorials](https://www.iforce2d.net/b2dtut/introduction)
 
 - QT
+
  Qt5, es una librerı́a que, utiliza el lenguaje de programacion C++, para trabajar con interfaz gráfica. En este
  proyecto se utiliza el module de Widgets para la creacion de la interfaz mediante el uso de buttons, labels,
  lineEdits, etc. Se utiliza en el Launcher, para que el usuario pueda crear nuevas partidas o unirse a alguna
 
 - YAML-cpp
+
  Se utiliza para parsear archivos YAML, mas especificamente los mapas en los cuales se puede jugar. Cuando el editor
  crea un nuevo mapa, se genera un nuevo archivo YAML que se guarda en la carpeta del proyecto
 
