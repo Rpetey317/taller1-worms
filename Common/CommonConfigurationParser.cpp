@@ -16,7 +16,9 @@ WeaponConfiguration CommonConfigurationParser::load_weapon(std::string weapon_na
     weapon_config.radius_of_fragments = config[weapon_name]["radius_of_fragments"].as<float>();
     weapon_config.damage_of_fragments = config[weapon_name]["damage_of_fragments"].as<int>();
     weapon_config.restitution = config[weapon_name]["restitution"].as<float>();
-
+    weapon_config.wind = config[weapon_name]["wind"].as<bool>();
+    weapon_config.timer = config[weapon_name]["timer"].as<bool>();
+    
     return weapon_config;
 }
 

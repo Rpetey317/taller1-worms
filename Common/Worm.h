@@ -38,7 +38,7 @@ public:
     Worm();
 
     Worm(Vect2D position, int state, int id, int player_id, int health_points,
-         std::string map_name);
+         const std::string& map_name);
 
     Worm(Vect2D position, int state, int id, int player_id, int health_points);
 
