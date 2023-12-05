@@ -95,23 +95,17 @@ std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> updat
     switch (current_command) {
         case COMMAND_LEFT:
             vel.x = -configurator.get_worm_configuration().speed;  // modifico componente en x
-            if (temp) {
                 temp->set_direction(LEFT);
                 temp->set_state(WORM_WALKING);
-            }
             break;
         case COMMAND_RIGHT:
             vel.x = configurator.get_worm_configuration().speed;
-            if (temp) {
-                temp->set_direction(RIGHT);
-                temp->set_state(WORM_WALKING);
-            }
+            temp->set_direction(RIGHT);
+            temp->set_state(WORM_WALKING);
             break;
         case COMMAND_STOP:
             vel.x = 0.0f;
-            if (temp) {
-                temp->set_state(WORM_STILL);
-            }
+            temp->set_state(WORM_STILL);
             break;
         case COMMAND_JUMP_FOWARD:
             if (contacts != nullptr && contacts->contact != nullptr) {

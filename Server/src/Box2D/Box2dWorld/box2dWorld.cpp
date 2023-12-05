@@ -243,14 +243,18 @@ void BoxWorld::execute_checks(){
 void BoxWorld::clean_projectiles(bool full_clean){
     for (auto it = projectiles_to_remove.begin(); it != projectiles_to_remove.end(); ++it) {
         b2Body* projectile = *it;
-        world->DestroyBody(projectile);
-        projectiles_to_remove.erase(it);
+        if(projectile != NULL){
+            world->DestroyBody(projectile);
+            projectiles_to_remove.erase(it);
+        }
     }
     if(full_clean){
         for (auto it = projectiles.begin(); it != projectiles.end(); ++it) {
             b2Body* projectile = *it;
-            world->DestroyBody(projectile);
-            projectiles.erase(it);
+            if(projectile != NULL){
+                world->DestroyBody(projectile);
+                projectiles.erase(it);
+            }   
         }
     }
 }
