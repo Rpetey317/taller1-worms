@@ -20,7 +20,7 @@ struct Box2DConfiguration {
 
 struct WormConfiguration {
     int health;
-    int speed;
+    float speed;
 };
 
 struct WeaponConfiguration {

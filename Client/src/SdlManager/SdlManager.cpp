@@ -1,7 +1,7 @@
 
 #include "SdlManager.h"
-#define FPS 30
-
+#define FPS 45
+#define CONSTANT_WAIT 1000 / FPS
 void SdlManager::cheat_set_life_of_all_worms_to(int new_health) {
     for (auto& worm: worms) {
         worm.second->set_health(new_health);
@@ -26,8 +26,7 @@ SdlManager::SdlManager(Queue<std::shared_ptr<Action>>& outgoing, Queue<std::shar
 }
 
 bool SdlManager::event_handler() {
-//VAMOS A ELEGIR ARMA CON NUMEROS 0 AL 9, YA QUE HAY 10 ARMAS :)
-    
+        
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
@@ -211,6 +210,8 @@ bool SdlManager::event_handler() {
             }
 
         }
+
+        
     }
 
     if (!is_moving_camera) {
@@ -328,7 +329,6 @@ void SdlManager::run(std::string selected_map) {
     //SI ACCION ANTERIOR == LA QUE RECIBO -> EJECUTA PROX ANIMACION. SI ACCION ANTERIOR =/= LA QUE RECIBO, CAMBIO A ESA NUEVA ANIMACION :)
     //EL ID DEL PLAYER QUIZA LO RECIBO POR ACA O POR UNA QUEUE?
 
-    const uint32_t frame_delay = 1000 / FPS;
     bool is_running = true;
     Window window("Worms", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480,
                   SDL_WINDOW_RESIZABLE);
@@ -357,15 +357,20 @@ void SdlManager::run(std::string selected_map) {
         worms[i] = new SdlWorm(camera, renderer, worm_texture_manager, sound_manager, worm.second.position.x, worm.second.position.y, i, worm.second.player_id, worm.second.health_points);
         i++;
     }
-
+    int time_lost = 0;
+	int timer_init; 
+	int timer_finish;
     while (is_running) {
-        uint32_t frame_start;
-        uint32_t frame_time;
-        frame_start = SDL_GetTicks();
+        timer_init = SDL_GetTicks(); 
         is_running = main_loop(renderer, map, sound_manager, worm_texture_manager);
         // sleep(1); conexion super lagueada
-        frame_time = SDL_GetTicks() - frame_start;
-        if (frame_delay > frame_time)
-            SDL_Delay(frame_delay - frame_time);
+        timer_finish = SDL_GetTicks();
+        int to_sleep = CONSTANT_WAIT - (timer_finish-timer_init) - time_lost;
+		if (to_sleep < 0) {
+			time_lost = 0;
+		} else {
+			SDL_Delay(to_sleep);
+			time_lost = SDL_GetTicks() - (timer_finish + to_sleep);
+		}
     }
 }

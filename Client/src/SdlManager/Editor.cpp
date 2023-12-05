@@ -1,5 +1,5 @@
 #include "Editor.h"
-#define FPS 30
+#define EDITOR_FPS 30
 
 
 MapEditor::MapEditor(std::string& map_name) : map_name(map_name) {
@@ -165,7 +165,7 @@ bool MapEditor::main_loop(Renderer& renderer, SdlMap& sdl_map) {
 }
 
 void MapEditor::run() {
-        const uint32_t frame_delay = 1000 / FPS;
+        const uint32_t frame_delay = 1000 / EDITOR_FPS;
         bool is_running = true;
         Window window("Editor", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480,
                   SDL_WINDOW_RESIZABLE);
