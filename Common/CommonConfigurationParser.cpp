@@ -5,6 +5,22 @@
 
 CommonConfigurationParser::CommonConfigurationParser() {}
 
+ServerConfiguration CommonConfigurationParser::get_server_configuration() {
+    ServerConfiguration server_config;
+    YAML::Node config;
+    try {
+        config = YAML::LoadFile("../config/ServerConfig.yaml");
+    } catch (...) {
+        return server_config;
+    }
+
+    server_config.maps_folder_path = config["maps_folder_path"].as<std::string>();
+    server_config.tick_rate = config["tick_rate"].as<float>();
+    server_config.turn_timer = config["turn_timer"].as<int>();
+
+    return server_config;
+}
+
 WeaponConfiguration CommonConfigurationParser::load_weapon(std::string weapon_name,
                                                            YAML::Node& config) {
     WeaponConfiguration weapon_config;
