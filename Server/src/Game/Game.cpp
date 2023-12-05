@@ -74,6 +74,7 @@ void Game::divide_worms() {
         for (auto worm_id: worms) {
             box2d.set_teams(worm_id, it->first);
         }
+        ++it;
     }
 }
 
