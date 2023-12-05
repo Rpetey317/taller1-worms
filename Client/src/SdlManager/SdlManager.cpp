@@ -338,6 +338,10 @@ void SdlManager::run(std::string selected_map) {
     camera.set_window(&window);
 
     std::shared_ptr<Event> first_event;
+    while(!ingoing.try_pop(first_event)) {
+
+    }
+    id_of_player_turn = first_event->get_id();
     while (!ingoing.try_pop(first_event)) {
 
     }
