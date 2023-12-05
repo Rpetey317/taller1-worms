@@ -11,3 +11,7 @@ std::string name("BANANA");
     this->angle = angle;
     projectile_texture_manager.render(name, x_pos, y_pos, angle, 0);
 }
+
+void SdlBananaProjectile::play_sound() {
+    sound_manager.play_sound("BANANA_EXPLODING_SOUND");
+}
