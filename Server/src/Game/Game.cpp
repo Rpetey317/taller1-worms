@@ -33,6 +33,7 @@ void Game::add_player(ServerProtocol&& peer) {
     std::lock_guard<std::mutex> lock(this->plmtx);
     PlayerHandler* new_player = new PlayerHandler(std::move(peer), this->eventq, ++next_free_id);
     this->players.insert(std::make_pair(next_free_id, std::unique_ptr<PlayerHandler>(new_player)));
+    this->plcount++;
 }
 
 void Game::add_host(ServerProtocol&& peer) {
