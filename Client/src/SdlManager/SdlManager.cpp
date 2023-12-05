@@ -8,12 +8,11 @@ void SdlManager::cheat_set_life_of_all_worms_to(int new_health) {
     }
 }
 
-SdlManager::SdlManager(Queue<std::shared_ptr<Action>>& outgoing, Queue<std::shared_ptr<Event>>& ingoing, int id_of_player):
+SdlManager::SdlManager(Queue<std::shared_ptr<Action>>& outgoing, Queue<std::shared_ptr<Event>>& ingoing):
         outgoing(outgoing), ingoing(ingoing) {
     // Initialize SDL library
     // SDL sdl(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
-    this->id_of_player = id_of_player;
     this->id_of_player_turn = 1;
     id_worm_turn = 1;
     is_moving_camera = false;
@@ -34,7 +33,7 @@ bool SdlManager::event_handler() {
         if (event.type == SDL_QUIT) {
             return false;
         } else if (event.type == SDL_KEYDOWN) {
-            if (id_of_player_turn != id_of_player || worms[id_worm_turn]->is_animation_playing)
+            if (id_of_player_turn != worms[id_worm_turn]->player_id || worms[id_worm_turn]->is_animation_playing)
                 return true;
 
             switch (event.key.keysym.sym) {
@@ -90,11 +89,11 @@ bool SdlManager::event_handler() {
             }
 
         } else if (event.type == SDL_KEYUP) {
-            if (id_of_player_turn != id_of_player || worms[id_worm_turn]->is_animation_playing)
+            if (id_of_player_turn != worms[id_worm_turn]->player_id || worms[id_worm_turn]->is_animation_playing)
                 return true;
             switch (event.key.keysym.sym) {
                 case SDLK_RIGHT: {
-                    worms[id_of_player]->change_state("STILL");
+                    worms[id_worm_turn]->change_state("STILL");
                     outgoing.push(std::make_shared<NullAction>());
                     break;
                 }
@@ -105,7 +104,7 @@ bool SdlManager::event_handler() {
                     outgoing.push(std::make_shared<NullAction>());
                     break;
                 }
-                //ESTA EN WIP ESTAS
+                
                 case SDLK_0:{ //BAZOOKA
                     worms[id_worm_turn]->change_state("BAZOOKA");
                     outgoing.push(std::make_shared<ChangeWeapon>(BAZOOKA));
@@ -165,6 +164,8 @@ bool SdlManager::event_handler() {
                     break;
                 }
                 case SDLK_SPACE: {
+                    if (worms[id_worm_turn]->already_fired)
+                        break;
                     if (!worms[id_worm_turn]->has_ammo())
                         break;
                     worms[id_worm_turn]->reduce_ammo();
@@ -172,6 +173,7 @@ bool SdlManager::event_handler() {
                     worms[id_worm_turn]->play_sound();
                     outgoing.push(std::make_shared<Shoot>(worms[id_worm_turn]->projectile_id(), worms[id_worm_turn]->attack_power, worms[id_worm_turn]->angle));
                     worms[id_worm_turn]->is_charging = false;
+                    worms[id_worm_turn]->already_fired = true;
                     worms[id_worm_turn]->attack_power = 0; //en vez de worms[0], deberiamos hacer worms[jugador_en_turno], osea voy a necesitar 2 variables mas
                     // uno es la variable del id jugador de este cliente, otro la variable del id jugador en turno :)
                     //push de que disparo algo
@@ -277,6 +279,7 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
                 worms[id_worm_turn]->attack_power = 0;
             }
             id_worm_turn = event->get_player_turn();
+            worms[id_worm_turn]->already_fired = false;
             timer = event->get_duration();
             if (timer <= 3) {
                 timer_rect.set_color(255, 0, 0);
@@ -341,10 +344,18 @@ void SdlManager::run(std::string selected_map) {
     SdlProjectilesTextureManager projectiles_texture_manager(renderer);
     init_projectiles(sound_manager,  projectiles_texture_manager, camera);
     //aca creo los gusanos, pero deberia recibir como son los equipos y sus id
-    std::vector<Tile> worms_positions = map.get_worms_positions();
+
+    std::shared_ptr<Event> first_event;
+    std::cout << "PINCHE ACA" << std::endl;
+    while (!ingoing.try_pop(first_event)) {
+
+    }
+    std::cout << "lgbt?" << std::endl;
+    std::map<int, Worm> worms_positions = first_event->get_worms();
+    std::cout << "sale un segfault" << std::endl;
     int i = 1;
-    for (auto worm : worms_positions) {//me deberian pasar tambien la vida de los gusanitos
-        worms[i] = new SdlWorm(camera, renderer, worm_texture_manager, sound_manager, worm.pos_x, worm.pos_y, i, i%3, 100);//hago este %2 para probar distintos id de jugadores
+    for (auto worm : worms_positions) {
+        worms[i] = new SdlWorm(camera, renderer, worm_texture_manager, sound_manager, worm.second.position.x, worm.second.position.y, i, worm.second.player_id, worm.second.health_points);
         i++;
     }
 

@@ -38,6 +38,7 @@ public:
     int projectile_id();
     bool is_animation_playing;
     int angle;
+    bool already_fired = false;
 private:
     SdlCamera &camera;
     Renderer &renderer;

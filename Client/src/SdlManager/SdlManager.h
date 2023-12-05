@@ -23,7 +23,7 @@ using namespace SDL2pp;  // NOLINT
 class SdlManager {
 
 public:
-    SdlManager(Queue<std::shared_ptr<Action>>& outgoing, Queue<std::shared_ptr<Event>>& ingoing, int id_of_player);
+    SdlManager(Queue<std::shared_ptr<Action>>& outgoing, Queue<std::shared_ptr<Event>>& ingoing);
     void run(std::string selected_map);
 
 private:
@@ -34,7 +34,6 @@ private:
     std::map<std::string, SdlProjectile*> projectiles;
     int id_of_player_turn;
     int id_worm_turn;
-    int id_of_player;
     bool is_animation_playing;
     SdlCamera camera;
     bool is_moving_camera;
