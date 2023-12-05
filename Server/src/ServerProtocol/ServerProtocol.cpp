@@ -111,6 +111,13 @@ std::shared_ptr<Message> ServerProtocol::recv_update(const int& plid) {
         }
         return std::make_shared<BoxShoot>(plid, weapon_id, power, angle);
 
+    } else if (code == MSGCODE_CHANGE_WEAPON) {
+        uint8_t weapon_id;
+        if (!this->cli.recvall(&weapon_id, sizeof(uint8_t), &this->isclosed)) {
+            return std::make_shared<NullMessage>();
+        }
+        return std::make_shared<BoxChangeWeapon>(plid, weapon_id);
+        
     } else {
         return std::make_shared<NullMessage>();
     }

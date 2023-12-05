@@ -46,7 +46,6 @@ int main(int argc, char* argv[]) {
 
         QString gameName = greeter.gameName;
         if (gameName.toStdString() == "") {
-            std::cout << "Could not join to game" << std::endl;
             return ret;
         }
 

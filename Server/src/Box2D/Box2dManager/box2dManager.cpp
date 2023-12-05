@@ -92,6 +92,7 @@ std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> updat
     std::cout <<  reinterpret_cast<void *>(temp) << std::endl;
     std::shared_ptr<BoxShoot> sh_update;
     std::shared_ptr<BoxSpecialShoot> spsh_update;
+    std::shared_ptr<BoxChangeWeapon> wpupd;
     switch (current_command) {
         case COMMAND_LEFT:
             vel.x = -configurator.get_worm_configuration().speed;  // modifico componente en x
@@ -131,12 +132,14 @@ std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> updat
             spsh_update = std::static_pointer_cast<BoxSpecialShoot>(update);
             this->player_special_shoot(spsh_update->get_position(), spsh_update->get_weapon_id());
             break;
+        case COMMAND_CHANGE_WP:
+            wpupd = std::static_pointer_cast<BoxChangeWeapon>(update);
+            temp->set_state(wpupd->get_weapon_id());
+            break;
         case COMMAND_NULL:
             break;
         default:
             vel.x = 0.0f;
-            std::cout << "comando defaulta -> still" << std::endl;
-            temp->set_state(WORM_STILL);
             break;
     }
     if((this->time_ticker - this->detonation_tick) > 75){

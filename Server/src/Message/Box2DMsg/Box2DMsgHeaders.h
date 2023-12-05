@@ -4,3 +4,4 @@
 #include "BoxShoot/BoxShoot.h"
 #include "BoxSpecialShoot/BoxSpecialShoot.h"
 #include "BoxTurnAdvance/BoxTurnAdvance.h"
+#include "BoxChangeWeapon/BoxChangeWeapon.h"
