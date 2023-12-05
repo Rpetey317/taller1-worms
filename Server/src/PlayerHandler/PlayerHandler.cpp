@@ -19,13 +19,14 @@ PlayerHandler::PlayerHandler(ServerProtocol&& _peer, Queue<std::shared_ptr<Messa
         id(_id),
         assigned_worms(),
         last_worm_used(assigned_worms.end()) {
-    std::shared_ptr<PlayerAcknowledge> ack = std::make_shared<PlayerAcknowledge>(_id);
 
-    this->prot.send_update(ack);
-    _eventq.push(std::make_shared<PlayerConnectedMessage>(_id));
 }
 
 void PlayerHandler::start() {
+    std::shared_ptr<PlayerAcknowledge> ack = std::make_shared<PlayerAcknowledge>(this->id);
+    this->prot.send_update(std::make_shared<StartUpdate>());
+    this->prot.send_update(ack);
+
     this->send_th.start();
     this->recv_th.start();
 }

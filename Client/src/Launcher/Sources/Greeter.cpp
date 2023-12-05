@@ -67,6 +67,8 @@ void Greeter::createGame() {
             this->protocol.send_start_game();  // Brodcastear a los demas clientes conectados
             std::cout << "Game started succesfully with name: " << gameName.toStdString()
                       << " and map name: " << mapName.toStdString() << std::endl;
+            uint8_t cd = this->protocol.recv_start_game();  // Es bloqueante
+            std::cout << "Received start game: " << cd << std::endl;
             close();
         }
     }

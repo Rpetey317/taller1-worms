@@ -340,9 +340,6 @@ void SdlManager::run(std::string selected_map) {
     while (!ingoing.try_pop(first_event)) {
 
     }
-    while (!ingoing.try_pop(first_event)) {
-        
-    }
     std::map<int, Worm> worms_positions = first_event->get_worms();
 
     CommonMapParser parser;
