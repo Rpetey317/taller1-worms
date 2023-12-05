@@ -398,6 +398,7 @@ bool BoxWorld::set_map(std::vector<Tile> map) {
 }
 
 b2Body* BoxWorld::create_projectile(float x, float y, float restitution, float direction, int category, int mask, bool set_timer, int type) {
+    std::cout << "creamos un proyectil" << std::endl;
     this->timer_allows = set_timer;
     b2BodyDef myBodyDef;
     myBodyDef.type = b2_dynamicBody;
