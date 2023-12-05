@@ -34,6 +34,9 @@ bool ServerProtocol::send_Worm(const Worm& pt) {
     if (!this->send_char(pt.health_points)) {
         return false;
     }
+    if (!this->send_str(pt.map_name)) {
+        return false;
+    }
     return true;
 }
 
@@ -123,7 +126,9 @@ std::shared_ptr<Message> ServerProtocol::recv_update(const int& plid) {
 
 std::unique_ptr<Request> ServerProtocol::recv_request() {
     char code;
-    this->cli.recvall(&code, sizeof(char), &this->isclosed);
+    std::cout << "mucho print" << std::endl;
+    this->cli.recvall(&code, sizeof(char), &this->isclosed);    // ACA ETO TA MAL >:(
+    std::cout << "TODO MAL WACHO" << std::endl;
     if (this->isclosed) {
         return std::make_unique<NullRequest>();
     }

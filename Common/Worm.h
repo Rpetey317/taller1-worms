@@ -2,6 +2,7 @@
 #define WORM_H
 
 #include "Vect2D.h"
+#include <string>
 
 enum _entityCategory {
     BEAM = 0x0001,
@@ -32,8 +33,10 @@ public:
     int id;  // Podria tener esto tmb y quizas simplificar el mapa de <int id_player, Worm>
     int player_id;
     int health_points;
-
+    std::string map_name;
     Worm();
+
+    Worm(Vect2D position, int state, int id, int player_id, int health_points, std::string map_name);
 
     Worm(Vect2D position, int state, int id, int player_id, int health_points);
 

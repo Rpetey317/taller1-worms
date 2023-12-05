@@ -34,7 +34,7 @@ class BoxManager {
     CommonConfigurationParser configurator;
     long time_ticker;
     long detonation_tick;
-
+    std::string map_name;
     // call to function should be implemented in process 
     // but execution in corresponding class
     void next_turn(int player_id);

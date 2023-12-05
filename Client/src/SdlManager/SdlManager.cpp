@@ -335,24 +335,23 @@ void SdlManager::run(std::string selected_map) {
 
     Renderer renderer(window, -1, SDL_RENDERER_SOFTWARE);
     camera.set_window(&window);
-    
-    CommonMapParser parser;
-    SdlTexturesManager textures_manager(renderer, window, parser.get_background(selected_map));
-    SdlMap map(camera, parser.get_map(selected_map), textures_manager);
-    SdlSoundManager sound_manager;
-    SdlWormTextureManager worm_texture_manager(renderer);
-    SdlProjectilesTextureManager projectiles_texture_manager(renderer);
-    init_projectiles(sound_manager,  projectiles_texture_manager, camera);
-    //aca creo los gusanos, pero deberia recibir como son los equipos y sus id
 
     std::shared_ptr<Event> first_event;
-    std::cout << "PINCHE ACA" << std::endl;
     while (!ingoing.try_pop(first_event)) {
 
     }
-    std::cout << "lgbt?" << std::endl;
+    while (!ingoing.try_pop(first_event)) {
+        
+    }
     std::map<int, Worm> worms_positions = first_event->get_worms();
-    std::cout << "sale un segfault" << std::endl;
+
+    CommonMapParser parser;
+    SdlTexturesManager textures_manager(renderer, window, parser.get_background(worms_positions[1].map_name));
+    SdlMap map(camera, parser.get_map(worms_positions[1].map_name), textures_manager);
+    SdlSoundManager sound_manager;
+    SdlWormTextureManager worm_texture_manager(renderer);
+    SdlProjectilesTextureManager projectiles_texture_manager(renderer);
+    init_projectiles(sound_manager,  projectiles_texture_manager, camera);    
     int i = 1;
     for (auto worm : worms_positions) {
         worms[i] = new SdlWorm(camera, renderer, worm_texture_manager, sound_manager, worm.second.position.x, worm.second.position.y, i, worm.second.player_id, worm.second.health_points);

@@ -54,6 +54,7 @@ void LobbyHandlerThread::run() {
         std::cout << "Tuki" << std::endl;
         try {
             auto request = player.recv_request();
+            std::cout << "not tuki" << std::endl;
             request->get_processed_by(*this);
         } catch (LibError& e) {  // Socket closed
             _keep_running = false;

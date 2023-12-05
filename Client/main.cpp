@@ -60,10 +60,7 @@ int main(int argc, char* argv[]) {
         client.run();
 
         SdlManager manager(commands, events);
-        std::string map_name("../Maps/");
-        map_name.append(greeter.mapName.toStdString());
-        std::cout << map_name << std::endl;
-        manager.run(map_name);
+        manager.run("tuki");
         std::cout << "CERRANDO SDL" << std::endl;
 
         client.end();
