@@ -36,11 +36,11 @@ b2Body* BoxWorld::create_worm(float x, float y, int id) {
     myBodyDef.position.Set(x, y); 
     myBodyDef.angle = 0; 
     b2Body* worm = world->CreateBody(&myBodyDef);
-    Box2DPlayer player(id, worm, RIGHT, WORM_STILL, configurator.get_worm_configuration().health);
+    Box2DPlayer* player = new Box2DPlayer(id, worm, RIGHT, WORM_STILL, configurator.get_worm_configuration().health);
     std::cout << "creamos un gusano y se lo empuja a la lista" << std::endl; 
     worms.push_back(player);
     std::cout << "se lo empujo a la lista y tiene tamaño " << std::to_string(worms.size()) << std::endl;
-    worm->GetUserData().pointer = ((uintptr_t)&player);
+    worm->GetUserData().pointer = ((uintptr_t)player);
     b2Vec2 vertices[6];
     vertices[0].Set(-0.06f, -0.15f);
     vertices[1].Set(-0.12f, -0.1f);
@@ -175,8 +175,8 @@ void BoxWorld::fragments() {
         fragment->SetBullet(true);
         projectiles.push_back(fragment);
         int type = FRAGMENT;
-        Box2DPlayer bullet(type, fragment);
-        fragment->GetUserData().pointer = ((uintptr_t)&bullet);
+        Box2DPlayer* bullet = new Box2DPlayer(type, fragment);
+        fragment->GetUserData().pointer = ((uintptr_t)bullet);
     }
 }
 
@@ -202,8 +202,8 @@ void BoxWorld::air_missiles(){
         missile->SetBullet(true);
         projectiles.push_back(missile);
         int type = AIR_MISSLE;
-        Box2DPlayer bullet(type, missile);
-        missile->GetUserData().pointer = ((uintptr_t)&bullet);
+        Box2DPlayer* bullet = new Box2DPlayer(type, missile);
+        missile->GetUserData().pointer = ((uintptr_t)bullet);
     }
 }
 
@@ -418,8 +418,7 @@ b2Body* BoxWorld::create_projectile(float x, float y, float restitution, float d
     projectile->CreateFixture(&myFixtureDef); //add a fixture to the body
     projectiles.push_back(projectile);
     std::cout << "pusheamos el proyectil a la cola de proyectiles" << std::endl;
-    Box2DPlayer bullet(type, projectile);
-    projectile->GetUserData().pointer = ((uintptr_t)&bullet);
+    projectile->GetUserData().pointer = ((uintptr_t) new Box2DPlayer(type, projectile));
     return projectile;
 }
 
