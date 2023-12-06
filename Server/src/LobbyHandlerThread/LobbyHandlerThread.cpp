@@ -51,12 +51,9 @@ void LobbyHandlerThread::create_game(CreateRequest& request) {
 void LobbyHandlerThread::process_null_request(NullRequest& request) { _keep_running = false; }
 
 void LobbyHandlerThread::run() {
-    std::cout << "Lobby handler thread started\n";
     while (_keep_running) {
-        std::cout << "Tuki" << std::endl;
         try {
             auto request = player.recv_request();
-            std::cout << "not tuki" << std::endl;
             request->get_processed_by(*this);
         } catch (LibError& e) {  // Socket closed
             _keep_running = false;

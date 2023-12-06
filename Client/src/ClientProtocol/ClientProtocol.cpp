@@ -7,63 +7,6 @@
 #include <arpa/inet.h>
 
 
-bool ClientProtocol::send_short(const uint16_t& num) {
-    uint16_t nnum = htons(num);
-    this->skt.sendall(&nnum, sizeof(uint16_t), &this->isclosed);
-    if (this->isclosed) {
-        return false;
-    }
-    return true;
-}
-
-bool ClientProtocol::send_long(const uint32_t& num) {
-    uint32_t nnum = htonl(num);
-    this->skt.sendall(&nnum, sizeof(uint32_t), &this->isclosed);
-    if (this->isclosed) {
-        return false;
-    }
-    return true;
-}
-
-bool ClientProtocol::send_char(const uint8_t& num) {
-    this->skt.sendall(&num, 1, &this->isclosed);
-    if (this->isclosed) {
-        return false;
-    }
-    return true;
-}
-
-bool ClientProtocol::send_str(const std::string& str) {
-    strlen_t len = htons(str.length());
-    this->skt.sendall(&len, sizeof(strlen_t), &this->isclosed);
-    if (this->isclosed) {
-        return false;
-    }
-    this->skt.sendall(str.data(), str.length(), &this->isclosed);
-    if (this->isclosed) {
-        return false;
-    }
-    return true;
-}
-
-std::string ClientProtocol::recv_msg() {
-    std::string msg = "";
-    strlen_t name_size;
-    this->skt.recvall(&name_size, sizeof(strlen_t), &isclosed);
-    if (this->isclosed) {
-        std::cout << "Falla lectura de tamanio de palabra" << std::endl;
-        return msg;
-    }
-    name_size = ntohs(name_size);
-    std::vector<char> vname(name_size);
-    this->skt.recvall(&vname[0], name_size, &isclosed);
-    if (isclosed) {
-        return msg;
-    }
-    std::string chatmsg(vname.begin(), vname.end());
-    msg = chatmsg;
-    return msg;
-}
 
 std::shared_ptr<Event> ClientProtocol::recv_player_connected() {
     playerid_t player_id = this->recv_player_id();
@@ -72,7 +15,7 @@ std::shared_ptr<Event> ClientProtocol::recv_player_connected() {
 
 std::shared_ptr<Event> ClientProtocol::recv_player_message() {
     playerid_t player_id = this->recv_player_id();
-    std::string msg = this->recv_msg();
+    std::string msg = this->recv_str();
     if (msg == "") {
         return std::make_shared<NullEvent>(player_id);
     }
@@ -134,7 +77,7 @@ std::shared_ptr<Event> ClientProtocol::recv_map_update() {
             return std::make_shared<NullEvent>(0);
         }
 
-        std::string map_name = this->recv_msg();
+        std::string map_name = this->recv_str();
         Worm worm(position, (int)state, (int)worm_id, (int)player_id, (int)health_points, map_name);
         worms[(int)worm_id] = worm;
     }
@@ -201,7 +144,7 @@ std::shared_ptr<Event> ClientProtocol::recv_player_position() {
 
 std::shared_ptr<Event> ClientProtocol::recv_proyectile_update() {
     playerid_t player_id = this->recv_player_id();
-    std::string type_proyectile = this->recv_msg();
+    std::string type_proyectile = this->recv_str();
     uint16_t x;
     this->skt.recvall(&x, sizeof(uint16_t), &this->isclosed);
     if (this->isclosed) {
@@ -328,7 +271,7 @@ std::list<std::string> ClientProtocol::req_map_info() {
     std::list<std::string> maps;
 
     for (int i = 0; i < count; i++) {
-        std::string map_name = this->recv_msg();
+        std::string map_name = this->recv_str();
         if (map_name == "") {
             return maps;
         }
@@ -350,7 +293,7 @@ std::list<std::string> ClientProtocol::req_game_info() {
     std::list<std::string> games;
 
     for (int i = 0; i < count; i++) {
-        std::string game_name = this->recv_msg();
+        std::string game_name = this->recv_str();
         if (game_name == "") {
             return games;
         }
@@ -360,18 +303,15 @@ std::list<std::string> ClientProtocol::req_game_info() {
 }
 
 bool ClientProtocol::req_succeed() {
-    std::cout << "se espera codigo de succes" << std::endl;
     char code;
     this->skt.recvall(&code, sizeof(char), &this->isclosed);
     if (this->isclosed) {
         return false;
     }
-    std::cout << "se recibe codigo de succes" << std::endl;
     return code == SRV_SUCCESS;
 }
 
 char ClientProtocol::create_new_game(std::string& game_name, std::string& map_name) {
-    std::cout << "Envio que se cree partida" << std::endl;
     if (!this->send_char(CLI_REQ_CREATE)) {
         return CLOSED_SKT;
     }
@@ -383,7 +323,6 @@ char ClientProtocol::create_new_game(std::string& game_name, std::string& map_na
     if (!this->send_str(map_name)) {
         return CLOSED_SKT;
     }
-    std::cout << "Se crea partida" << std::endl;
     return SUCCESS;
 }
 

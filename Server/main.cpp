@@ -32,14 +32,13 @@ int main(int argc, const char** argv) {
     Socket acc(argv[1]);
     LobbyHandler hdl;
     Queue<std::shared_ptr<Message>> eventq(10000);
-    // Game game(eventq);
 
     ServerAccepterThread acc_th(std::move(acc), hdl);
-    // GameLoopThread gloop(eventq, game);
 
     // Execution
     acc_th.start();
-    // gloop.start();
+
+    std::cout << "Server online running on port " << argv[1] << std::endl;
 
     char c = 0;
     while (c != 'q') {
@@ -47,11 +46,8 @@ int main(int argc, const char** argv) {
     }
 
     // Destruction
-    // game.close();
     acc_th.end();
     acc_th.join();
-    // gloop.stop();
-    // gloop.join();
 
     return 0;
 }

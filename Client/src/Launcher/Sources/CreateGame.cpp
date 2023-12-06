@@ -16,8 +16,6 @@ CreateGame::CreateGame() {
 
 QString CreateGame::getEnteredGameName() const {
     QLineEdit* inputName = findChild<QLineEdit*>("gameName");
-    // QString name = inputName->text();
-    // std::cout << "New game created: " << name.toStdString() << std::endl;
     return inputName->text();
 }
 
@@ -28,7 +26,6 @@ QString CreateGame::getEnteredMapName() const {
 }
 
 void CreateGame::createNewGame() {
-    // Deberia devolver el puerto para que se cree el cliente. No hace falta nombre de partida o si?
     QDialog::accept();
 }
 

@@ -37,9 +37,7 @@ b2Body* BoxWorld::create_worm(float x, float y, int id) {
     myBodyDef.angle = 0; 
     b2Body* worm = world->CreateBody(&myBodyDef);
     Box2DPlayer* player = new Box2DPlayer(id, worm, RIGHT, WORM_STILL, configurator.get_worm_configuration().health);
-    std::cout << "creamos un gusano y se lo empuja a la lista" << std::endl; 
     worms.push_back(*player);
-    std::cout << "se lo empujo a la lista y tiene tamaño " << std::to_string(worms.size()) << std::endl;
     worm->GetUserData().pointer = ((uintptr_t)player);
     b2Vec2 vertices[6];
     vertices[0].Set(-0.06f, -0.15f);
@@ -130,9 +128,7 @@ void BoxWorld::create_short_beam(b2Vec2 start, float angle){
 void applyBlastImpulse(b2Body* body, b2Vec2 blastCenter, b2Vec2 applyPoint, float blastPower, float blastRadius) {
     b2Vec2 blastDir = applyPoint - blastCenter;
     float distance = blastDir.Normalize();
-    std::cout << "applyBlastImpulse con nlast power de " << std::to_string(blastPower) << " y radio de " << std::to_string(blastRadius) << std::endl;
     float damage = blastPower * ((-distance/blastRadius) + 1);
-    printf("el dano es %f\n", damage);
     if(blastDir.y > 0) {
         blastDir.y = -blastDir.y;
     }
@@ -144,7 +140,6 @@ void applyBlastImpulse(b2Body* body, b2Vec2 blastCenter, b2Vec2 applyPoint, floa
     if(body->GetFixtureList()->GetFilterData().categoryBits == WORM){
         Box2DPlayer* temp = (Box2DPlayer*)(body->GetUserData().pointer);
         temp->get_hurt(damage);
-        printf("aplico una fuerza de (%f, %f) en el cuerpo parado en (%f, %f)\n\n\n\n", (impulseMag * blastDir.x), (impulseMag * blastDir.y), applyPoint.x, applyPoint.y);
         body->ApplyLinearImpulse( impulseMag * blastDir, applyPoint , true);
     }
 }
@@ -209,7 +204,6 @@ void BoxWorld::air_missiles(){
 }
 
 void BoxWorld::blast(){
-    printf("check center at (%f, %f) explota con fuerza: %f y radio: %f\n", contactCenter.x, contactCenter.y, blastPower, blastRadius);
     box2dQueryCallback queryCallback;
     b2AABB aabb;
     aabb.lowerBound = contactCenter - b2Vec2( blastRadius, blastRadius );
@@ -221,7 +215,6 @@ void BoxWorld::blast(){
         b2Vec2 bodyCom = body->GetWorldCenter();
         if ( (bodyCom - contactCenter).Length() >= blastRadius )
             continue;
-        printf("encontro un cuerpo para aplicar la fuerza\n");
         applyBlastImpulse(body, contactCenter, bodyCom, blastPower, blastRadius);
     }
 }
@@ -270,14 +263,12 @@ void BoxWorld::step(){
 }
 
 void BoxWorld::contactSolver(b2Contact* contact, float radius, float power,  b2Fixture* fixture){
-    printf("contactSolver\n");
     projectiles_to_remove.push_back(fixture->GetBody());
     blastRadius = radius;
     blastPower = power;
     b2WorldManifold worldManifold;
     contact->GetWorldManifold(&worldManifold);
     contactCenter = worldManifold.points[0];
-    printf("center at (%f, %f)\n", contactCenter.x, contactCenter.y);
     check_blast = true;    
     this->execute_checks();
     // this->clean_projectiles(false);
@@ -385,15 +376,12 @@ bool BoxWorld::set_map(std::vector<Tile> map) {
         switch(tile.type) {
             case SHORT_BEAM:
                 create_short_beam(pixel_to_meter(position), tile.angle);
-                std::cout << "creamos una corta" << std::endl;
                 break;
             case LONG_BEAM:
                 create_long_beam(pixel_to_meter(position), tile.angle);
-                std::cout << "creamos una larga" << std::endl;
                 break;
             case NEW_WORM:
                 create_worm(pixel_to_meter(position).x, pixel_to_meter(position).y, worms.size() + 1);
-                std::cout << "creamos un gusano" << std::endl;
                 break;
             default:
                 return false;
@@ -403,13 +391,11 @@ bool BoxWorld::set_map(std::vector<Tile> map) {
 }
 
 b2Body* BoxWorld::create_projectile(float x, float y, float restitution, float direction, int category, int mask, bool set_timer, int type) {
-    std::cout << "creamos un proyectil" << std::endl;
     this->timer_allows = set_timer;
     b2BodyDef myBodyDef;
     myBodyDef.type = b2_dynamicBody;
     b2Vec2 pos = b2Vec2(x,y) + b2Vec2(0.16f - 0.32f*direction, 0.15f);
     myBodyDef.position.Set(pos.x, pos.y);
-    std::cout << "posicion del proyectil: " << pos.x << " " << pos.y << std::endl;
     b2Body* projectile = world->CreateBody(&myBodyDef);
     b2CircleShape circleShape;
     circleShape.m_p.Set(0.0f, 0.0f); //position, relative to body position
@@ -422,7 +408,6 @@ b2Body* BoxWorld::create_projectile(float x, float y, float restitution, float d
     myFixtureDef.filter.maskBits = mask;
     projectile->CreateFixture(&myFixtureDef); //add a fixture to the body
     projectiles.push_back(projectile);
-    std::cout << "pusheamos el proyectil a la cola de proyectiles" << std::endl;
     projectile->GetUserData().pointer = ((uintptr_t) new Box2DPlayer(type, projectile));
     return projectile;
 }

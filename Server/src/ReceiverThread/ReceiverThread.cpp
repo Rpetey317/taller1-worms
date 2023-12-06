@@ -27,7 +27,6 @@ void ReceiverThread::run() {
             std::cerr << "Unexpected error in receiver thread" << std::endl;
         }
     }
-    std::cout << "Player disconnected" << std::endl;
     this->eventq.push(std::make_shared<PlayerDisconnectedMessage>(this->plid));
 }
 

@@ -125,7 +125,6 @@ void SdlWorm::render_new(Vect2D position, int state, int health) {
 
     x_pos = position.x;
     y_pos = position.y;
-    std::cout << x_pos << " : " << y_pos << std::endl;
     if (is_animation_playing) {
         texture_manager.render(worm_state, animation_phase, position.x - camera.get_x(), position.y - camera.get_y(), flip);
     } else {
@@ -322,7 +321,6 @@ void SdlWorm::change_state(std::string state) {
 
     animation_phase = 0;
     worm_state = worm_states[state];
-    std::cout << "CAMBIO MI ESTADO" << std::endl;
     worm_state->play_choosen_animation();
     angle = 0;
     attack_power = 0;

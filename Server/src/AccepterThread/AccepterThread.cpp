@@ -26,7 +26,7 @@ void ServerAccepterThread::run() {
             std::unique_ptr<LobbyHandlerThread> player_th(
                     new LobbyHandlerThread(std::move(peer), handler));
             player_th->start();
-            connecting_players.push_back(std::move(player_th));  // is this gonna break???
+            connecting_players.push_back(std::move(player_th)); 
             this->reap_players();
         } catch (LibError& e) {
             // This is a "socket was closed" error

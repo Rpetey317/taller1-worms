@@ -12,8 +12,6 @@ JoinGame::JoinGame() {
 
 QString JoinGame::getEnteredText() const {
     QLineEdit* inputName = findChild<QLineEdit*>("gameName");
-    // QString name = inputName->text();
-    // std::cout << "New game created: " << name.toStdString() << std::endl;
     return inputName->text();
 }
 
