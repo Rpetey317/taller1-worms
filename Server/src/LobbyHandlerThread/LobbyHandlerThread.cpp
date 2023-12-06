@@ -34,12 +34,12 @@ void LobbyHandlerThread::join_game(JoinRequest& request) {
 void LobbyHandlerThread::create_game(CreateRequest& request) {
     std::string& game_name = request.get_game_name();
     std::string& map_name = request.get_map_name();
-    std::cout << "Creating game " << game_name << " with map " << map_name << std::endl;
 
     if (!handler.create_game(game_name, map_name)){
         player.send_fail();
         return;
     }
+    std::cout << "Creating game " << game_name << " with map " << map_name << std::endl;
 
     if (!handler.join_host(game_name, std::move(player))) {
         return;
