@@ -1,0 +1,3 @@
+tick_rate: 0.01
+turn_timer: 30
+maps_folder_path: ../Maps/ 

@@ -33,6 +33,12 @@ struct WeaponConfiguration {
     float restitution;
 };
 
+struct ServerConfiguration {
+    float tick_rate;
+    int turn_timer;
+    std::string maps_folder_path;
+};
+
 struct WeaponsConfiguration {
     WeaponConfiguration bazooka;
     WeaponConfiguration mortar;
@@ -51,6 +57,7 @@ public:
     WeaponsConfiguration get_weapons_configuration();
     WormConfiguration get_worm_configuration();
     Box2DConfiguration get_box2D_configuration();
+    ServerConfiguration get_server_configuration();
 
 private:
     WeaponConfiguration load_weapon(std::string weapon_name, YAML::Node& config);
