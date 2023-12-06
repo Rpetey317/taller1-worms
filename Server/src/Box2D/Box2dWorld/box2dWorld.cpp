@@ -261,6 +261,7 @@ void BoxWorld::step(){
 
 void BoxWorld::contactSolver(b2Contact* contact, float radius, float power,  b2Fixture* fixture){
     projectiles_to_remove.push_back(fixture->GetBody());
+    projectiles.remove(fixture->GetBody());
     Box2DPlayer* temp = (Box2DPlayer*)(fixture->GetBody()->GetUserData().pointer);
     std::cout << "el proyectil que choco es de tipo " << std::to_string(temp->get_id()) << "y ahora es explosion" <<std::endl;
     temp->set_state((int)EXPLOSION);

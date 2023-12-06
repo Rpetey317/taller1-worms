@@ -203,7 +203,8 @@ bool SdlManager::event_handler() {
 
     if (!is_moving_camera) {
         if (is_projectile_flying) {
-            camera.focus_object(projectiles[last_projectile_used]->get_pos_x(), projectiles[last_projectile_used]->get_pos_y());
+            if (last_projectile_used != "NULL")
+                camera.focus_object(projectiles[last_projectile_used]->get_pos_x(), projectiles[last_projectile_used]->get_pos_y());
         } else {
             camera.focus_object(worms[id_worm_turn]->x_pos, worms[id_worm_turn]->y_pos);
 
@@ -289,8 +290,7 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
                 case EXPLOSION:
                     is_projectile_flying = false;
                     is_animation_playing = true;
-                    projectiles[last_projectile_used]->play_sound();
-                    std::cout << "EXPLOTO" << std::endl;
+                    projectiles["BAZOOKA"]->play_sound();
                     last_projectile_used = "NULL";
                     break;
                 default:
@@ -349,6 +349,7 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
 }
 
 void SdlManager::init_projectiles(SdlSoundManager& sound_manager, SdlProjectilesTextureManager& projectiles_texture_manager, SdlCamera& camera) {
+    projectiles["NULL"] = new SdlProjectile(sound_manager, projectiles_texture_manager, camera);
     projectiles["BAZOOKA"] = new SdlBazookaProjectile(sound_manager, projectiles_texture_manager, camera);
     projectiles["DYNAMITE"] = new SdlDynamiteProjectile(sound_manager, projectiles_texture_manager, camera);
     projectiles["HOLY_GRENADE"] = new SdlHolyGrenadeProjectile(sound_manager, projectiles_texture_manager, camera);

@@ -15,7 +15,6 @@ SdlSoundManager::SdlSoundManager() : mixer(44100, MIX_DEFAULT_FORMAT, 2, 2048), 
 
 void SdlSoundManager::play_sound(std::string sound_to_play) {
 try {
-
     mixer.PlayChannel(-1, *sound_map[sound_to_play], 0);
 } catch (Exception& err) {
     mixer.HaltChannel(-1);  //si hay demasiados sonidos -> quitalos todos

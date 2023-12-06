@@ -11,7 +11,7 @@ class SdlProjectile {
 public:
     SdlProjectile(SdlSoundManager& sound_manager, SdlProjectilesTextureManager& projectile_texture_manager, SdlCamera& camera);
     virtual ~SdlProjectile();
-    virtual void render(int x_pos, int y_pos, int angle) = 0;
+    virtual void render(int x_pos, int y_pos, int angle) {return;};
     virtual int get_pos_x() {return x_pos;};
     virtual int get_pos_y() {return y_pos;};
     virtual void play_animation(bool *is_animation_playing);   

@@ -42,7 +42,6 @@ int Box2DPlayer::get_health_points(){
 }
 
 void Box2DPlayer::set_state(int state){
-    std::cout << "set state: " << state << std::endl;
     this->state = state;
     this->walking = false;
     this->still = false;
@@ -50,7 +49,6 @@ void Box2DPlayer::set_state(int state){
 }
 
 int Box2DPlayer::get_state(){
-    std::cout << "get state: " << this->state << std::endl;
     return this->state;
 }
 

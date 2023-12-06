@@ -51,7 +51,7 @@ std::map<int, WeaponDTO>* BoxManager::create_proyectile_map(const std::list<b2Bo
             b2Vec2 pos = projectile->GetPosition();
             int angle = (int)acos(projectile->GetLinearVelocity().x / projectile->GetLinearVelocity().Length()) * configurator.get_box2D_configuration().rad_to_deg;
             Box2DPlayer* temp = (Box2DPlayer*)(projectile->GetUserData().pointer);
-            WeaponDTO weapon(temp->get_id(), meter_to_pixel(pos, 0.12f, 0.245f), angle);
+            WeaponDTO weapon(temp->get_state(), meter_to_pixel(pos, 0.12f, 0.245f), angle);
             positions->insert(std::make_pair(i, weapon));
         }
         i++;
@@ -136,9 +136,6 @@ std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> updat
     }
     current->SetLinearVelocity(vel);  
     world.step();
-    for (auto worm : worms) {
-        std::cout << "ESTADO DEL GUSANARDIUM" << worm.get_state() << std::endl;
-    }
 
 
     return std::make_shared<WorldUpdate>(create_position_map(worms), create_proyectile_map(this->world.projectiles)); // TODO: ver que devolver

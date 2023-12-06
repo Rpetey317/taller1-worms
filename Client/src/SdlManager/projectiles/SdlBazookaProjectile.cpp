@@ -11,3 +11,7 @@ void SdlBazookaProjectile::render(int x_pos, int y_pos, int angle) {
     this->angle = angle;
     projectile_texture_manager.render(name, x_pos - camera.get_x(), y_pos - camera.get_y(), angle, 0);
 }
+
+void SdlBazookaProjectile::play_sound() {
+    sound_manager.play_sound("MISSILE_EXPLODING_SOUND");
+}
