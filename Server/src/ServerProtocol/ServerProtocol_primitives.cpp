@@ -92,3 +92,41 @@ bool ServerProtocol::recv_str(std::string& str) {
     str = std::string(vstr.begin(), vstr.end());
     return true;
 }
+
+bool ServerProtocol::send_Worm(const Worm& pt) {
+    if (!this->send_short(pt.position.x)) {
+        return false;
+    }
+    if (!this->send_short(pt.position.y)) {
+        return false;
+    }
+    if (!this->send_char(pt.state)) {
+        return false;
+    }
+    if (!this->send_char(pt.id)) {
+        return false;
+    }
+    if (!this->send_char(pt.health_points)) {
+        return false;
+    }
+    if (!this->send_str(pt.map_name)) {
+        return false;
+    }
+    return true;
+}
+
+bool ServerProtocol::send_weapon(const WeaponDTO& weapon) {
+    if (!this->send_short(weapon.position.x)) {
+        return false;
+    }
+    if (!this->send_short(weapon.position.y)) {
+        return false;
+    }
+    if (!this->send_char(weapon.angle)) {
+        return false;
+    }
+    if (!this->send_char(weapon.id)) {
+        return false;
+    }
+    return true;
+}
