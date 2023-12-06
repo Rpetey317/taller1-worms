@@ -261,11 +261,15 @@ void BoxWorld::step(){
 
 void BoxWorld::contactSolver(b2Contact* contact, float radius, float power,  b2Fixture* fixture){
     projectiles_to_remove.push_back(fixture->GetBody());
+    Box2DPlayer* temp = (Box2DPlayer*)(fixture->GetBody()->GetUserData().pointer);
+    std::cout << "el proyectil que choco es de tipo " << std::to_string(temp->get_id()) << "y ahora es explosion" <<std::endl;
+    temp->set_state((int)EXPLOSION);
     blastRadius = radius;
     blastPower = power;
     b2WorldManifold worldManifold;
     contact->GetWorldManifold(&worldManifold);
     contactCenter = worldManifold.points[0];
+    printf("center at (%f, %f)\n", contactCenter.x, contactCenter.y);
     check_blast = true;    
     this->execute_checks();
     // this->clean_projectiles(false);

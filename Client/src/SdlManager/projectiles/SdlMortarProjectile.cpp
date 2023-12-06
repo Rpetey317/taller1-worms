@@ -9,5 +9,5 @@ std::string name("MORTAR");
     this->x_pos = x_pos;
     this->y_pos = y_pos;
     this->angle = angle;
-    projectile_texture_manager.render(name, x_pos, y_pos, angle, 0);
+    projectile_texture_manager.render(name, x_pos - camera.get_x(), y_pos - camera.get_y(), angle, 0);
 }

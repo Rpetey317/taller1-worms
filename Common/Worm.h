@@ -25,6 +25,8 @@ enum _entityCategory {
     WORM_FALLING = 0x0016,
     WORM_DEAD = 0x0017,
     WORM_STILL = 0x0018,
+
+    EXPLOSION = 0x0019,
 };
 
 class Worm {

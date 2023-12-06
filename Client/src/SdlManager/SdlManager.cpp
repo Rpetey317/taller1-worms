@@ -21,6 +21,7 @@ SdlManager::SdlManager(Queue<std::shared_ptr<Action>>& outgoing, Queue<std::shar
     timer_rect.set_color(0, 0, 255);
     timer_rect.set_height(10);
     timer_rect.set_width(0);
+    last_projectile_used = "NULL";
     // Initialize SDL_ttf library
     SDLTTF ttf;
 }
@@ -249,11 +250,65 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
             worm.second->apply();
         }
         
+        std::list<WeaponDTO> weapons = event->get_weapons();
+        if (!weapons.empty()) {
+            for (auto weapon : weapons) {
+                is_projectile_flying = true;
+                switch (weapon.id)
+                {
+                case BAZOOKA:
+                    last_projectile_used = "BAZOOKA";
+                    break;
+                case MORTAR:
+                    last_projectile_used = "MORTAR";
+                    break;
+                case GREEN_GRANADE:
+                    last_projectile_used = "GREEN_GRENADE";
+                    break;
+                case RED_GRANADE:
+                    last_projectile_used = "RED_GRENADE";
+                    break;
+                case BANANA:
+                    last_projectile_used = "BANANA";
+                    break;
+                case HOLY_GRANADE:
+                    last_projectile_used = "HOLY_GRENADE";
+                    break;
+                case AIR_STRIKE:
+                    last_projectile_used = "AIR_STRIKE";
+                    break;
+                case BASEBALL_BAT:
+                    last_projectile_used = "BEISBOLL";
+                    break;
+                case DYNAMITE:
+                    last_projectile_used = "DYNAMITE";
+                    break;
+                case TELEPORT:
+                    last_projectile_used = "TELEPORT";
+                    break;
+                case EXPLOSION:
+                    is_projectile_flying = false;
+                    is_animation_playing = true;
+                    projectiles[last_projectile_used]->play_sound();
+                    std::cout << "EXPLOTO" << std::endl;
+                    last_projectile_used = "NULL";
+                    break;
+                default:
+                    last_projectile_x = 0;
+                    last_projectile_y = 0;
+                    last_projectile_angle = 0;
+                    is_projectile_flying = false;
+                    break;
+                    
+                }
 
-        if (event->proyectile_got_exploded()) {
-            is_animation_playing = true;
-            projectiles[last_projectile_used]->play_sound();
+                last_projectile_x = weapon.position.x;
+                last_projectile_y = weapon.position.y;
+                last_projectile_angle = weapon.angle;
+            }
         }
+        if (last_projectile_used != "NULL")
+            projectiles[last_projectile_used]->render(last_projectile_x, last_projectile_y, last_projectile_angle);   
     
         if (event->get_player_turn() > 0) {
             if (id_worm_turn != event->get_player_turn()) {

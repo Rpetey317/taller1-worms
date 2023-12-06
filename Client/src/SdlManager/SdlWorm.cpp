@@ -45,7 +45,7 @@ void SdlWorm::render_same() {
     }
     
     health_bar.render(renderer);
-    worm_state->render_ammo(renderer, gun_ammo[worm_state->get_name()], 0,0);
+    worm_state->render_ammo(renderer, gun_ammo[worm_state->get_name()], 0, 0);
 }
 
 int SdlWorm::projectile_id() {
@@ -63,7 +63,6 @@ void SdlWorm::render_new(Vect2D position, int state, int health) {
         worm_state = worm_states["DIE"];
         play_animation();
     }
-    std::cout << "ESTO ME LLEGA EN STATE:" << state << std::endl;
 
     switch (state)
     {
@@ -146,7 +145,7 @@ void SdlWorm::render_new(Vect2D position, int state, int health) {
     
 
     health_bar.render(renderer);
-    worm_state->render_ammo(renderer, gun_ammo[worm_state->get_name()], camera.get_x(), camera.get_y());
+    worm_state->render_ammo(renderer, gun_ammo[worm_state->get_name()], 0,  0);
 }
 
 void SdlWorm::apply() {
