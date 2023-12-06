@@ -9,6 +9,10 @@
 #include "Socket.h"
 #include "thread.h"
 
+/*
+ * Thread that handles all requests prior to the game and
+ * joins the player to a game
+ */
 class LobbyHandlerThread: public Thread {
     LobbyHandler& handler;
     ServerProtocol player;

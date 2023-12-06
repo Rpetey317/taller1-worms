@@ -23,6 +23,7 @@ std::shared_ptr<Update> Game::process_disconnect(PlayerDisconnectedMessage& even
 }
 
 std::shared_ptr<Update> Game::process_new_connect(PlayerConnectedMessage& event) {
+    // Currently unused
     std::lock_guard<std::mutex> lock(this->plmtx);
     plcount++;
     std::cout << "New player connected. Now online: " << plcount << " players." << std::endl;
@@ -52,7 +53,6 @@ std::shared_ptr<Update> Game::process_TurnAdvance(TurnAdvance& event) {
     auto new_curr_pl = this->players.find(plid);
 
     if (new_curr_pl == this->players.end()) {
-        std::cout << "Can't find id" << std::endl;
         return std::make_shared<NullUpdate>();
     }
     this->curr_pl = new_curr_pl;
@@ -86,7 +86,6 @@ std::shared_ptr<Update> Game::process_timer(RunTimer& event) {
     return std::make_shared<TimerUpdate>(turn_time - elapsed.count(), this->current_worm.first);
 }
 
-// Hay que terminar de implementarla
 std::shared_ptr<Update> Game::process_player_change_weapon(PlayerChangeWeapon& event) {
     return std::shared_ptr<Update>();
 }

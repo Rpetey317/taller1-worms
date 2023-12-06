@@ -12,8 +12,6 @@ void SenderThread::run() {
         try {
             std::shared_ptr<Update> msg = sendq.pop();
 
-            // done here to avoid sending '0 players left'
-            // (won't get received by player but will show up in tiburoncin)
             if (!this->prot.is_connected()) {
                 _keep_running = false;
                 continue;

@@ -18,44 +18,6 @@ ServerProtocol::ServerProtocol(Socket&& _cli): cli(std::move(_cli)), isclosed(fa
 ServerProtocol::ServerProtocol(ServerProtocol&& other):
         cli(std::move(other.cli)), isclosed(other.isclosed) {}
 
-bool ServerProtocol::send_Worm(const Worm& pt) {
-    if (!this->send_short(pt.position.x)) {
-        return false;
-    }
-    if (!this->send_short(pt.position.y)) {
-        return false;
-    }
-    if (!this->send_char(pt.state)) {
-        return false;
-    }
-    if (!this->send_char(pt.id)) {
-        return false;
-    }
-    if (!this->send_char(pt.health_points)) {
-        return false;
-    }
-    if (!this->send_str(pt.map_name)) {
-        return false;
-    }
-    return true;
-}
-
-bool ServerProtocol::send_weapon(const WeaponDTO& weapon) {
-    if (!this->send_short(weapon.position.x)) {
-        return false;
-    }
-    if (!this->send_short(weapon.position.y)) {
-        return false;
-    }
-    if (!this->send_char(weapon.angle)) {
-        return false;
-    }
-    if (!this->send_char(weapon.id)) {
-        return false;
-    }
-    return true;
-}
-
 // DD methods for each update type implemented in ServerProtocol_sendUpdate.cpp
 char ServerProtocol::send_update(std::shared_ptr<Update> msg) { return msg->get_sent_by(*this); }
 
@@ -67,7 +29,6 @@ std::shared_ptr<Message> ServerProtocol::recv_update(const int& plid) {
         return std::make_shared<NullMessage>();
     }
 
-    // TODO: fix this
     if (code == MSGCODE_PLAYER_MESSAGE) {
         strlen_t msg_len;
         this->cli.recvall(&msg_len, sizeof(strlen_t), &this->isclosed);
@@ -121,19 +82,11 @@ std::shared_ptr<Message> ServerProtocol::recv_update(const int& plid) {
     } else {
         return std::make_shared<NullMessage>();
     }
-    // else if (code == MSGCODE_CHANGE_WEAPON) { // Habria que luego broadcastear el cambio de arma,
-    // para que en sdl se actualice
-    //     uint8_t weapon_id;
-    //     if (!this->cli.recvall(&weapon_id, sizeof(uint8_t), &this->isclosed)) {
-    //         return std::make_shared<NullMessage>();
-    //     }
-    //     return std::make_shared<PlayerChangeWeapon>(plid, weapon_id);
-    // }
 }
 
 std::unique_ptr<Request> ServerProtocol::recv_request() {
     char code;
-    this->cli.recvall(&code, sizeof(char), &this->isclosed);  // ACA ETO TA MAL >:(
+    this->cli.recvall(&code, sizeof(char), &this->isclosed); 
     if (this->isclosed) {
         return std::make_unique<NullRequest>();
     }

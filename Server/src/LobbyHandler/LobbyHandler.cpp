@@ -64,11 +64,11 @@ std::list<std::string> LobbyHandler::get_game_names() {
     return names;
 }
 
-std::list<std::string> LobbyHandler::get_map_names() { return dummyList; }
+std::list<std::string> LobbyHandler::get_map_names() { return this->maps; }
 
 
 LobbyHandler::~LobbyHandler() {
     for (auto& game: games) {
         game.second->~GameWrapper();
-    }  // I trust copilot with my life (and my ram)
+    } 
 }

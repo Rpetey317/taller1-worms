@@ -9,11 +9,14 @@
 
 #include "GameWrapper.h"
 
+/*
+ * Class that handles the server lobbies and the process
+ * of assigning players to games
+ */
 class LobbyHandler {
 private:
     std::map<std::string, std::unique_ptr<GameWrapper>> games;
     const std::list<std::string> maps;
-    std::list<std::string> dummyList = {"a", "b", "c", "d", "e"};
 
 public:
     LobbyHandler();

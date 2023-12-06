@@ -23,15 +23,12 @@ class PlayerHandler {
 
 public:
     /*
-     * Creates new player connected to given socket. plcount and recvers should belong to a lobby
-     * Creates (but doesn't start) 2 threads: one for receiving and one for sending
-     * New player will be added to recvers, and a message notifying this will be sent
-     * plcount is incremented, and when player disconnects, will be decremented
+     * Creates a new player
      */
     PlayerHandler(ServerProtocol&& peer, Queue<std::shared_ptr<Message>>& eventq, int& id);
 
     /*
-     * Starts to run associated threads
+     * Sends start and acknowledge signals and starts to run associated threads
      */
     void start();
 
