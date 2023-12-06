@@ -10,8 +10,6 @@
 #include <vector>
 #include <memory>
 
-// #include "libs/box2d/include/box2d/box2d.h"
-
 #include "../../../libs/box2d/include/box2d/box2d.h"
 #include "../../../Common/queue.h"
 #include "../../../Common/thread.h"
@@ -35,8 +33,7 @@ class BoxManager {
     long time_ticker;
     long detonation_tick;
     std::string map_name;
-    // call to function should be implemented in process 
-    // but execution in corresponding class
+
     void next_turn(int player_id);
     void player_shoot(int angle, int power, int weapon_type);
     void player_special_shoot(Vect2D position, int weapon_type);

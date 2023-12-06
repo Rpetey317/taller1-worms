@@ -14,4 +14,4 @@ public:
 
 };
 
-#endif // _MORTAR_H_
+#endif

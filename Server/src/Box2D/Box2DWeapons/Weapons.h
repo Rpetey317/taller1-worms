@@ -4,7 +4,6 @@
 #include "../../../../libs/box2d/include/box2d/box2d.h"
 #include "../Box2dManager/box2dManager.h"
 
-
 class B2dWeapon {
 public:
     B2dWeapon() = default;
@@ -23,5 +22,4 @@ public:
     virtual ~B2dWeaponSpecial() = default;
 };
 
-
-#endif  // !_Weapons_H_
+#endif 

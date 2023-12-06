@@ -11,4 +11,4 @@ public:
     bool ReportFixture(b2Fixture* fixture) override;
 };
 
-#endif // BOX2D_QUERY_CALLBACK_H
+#endif

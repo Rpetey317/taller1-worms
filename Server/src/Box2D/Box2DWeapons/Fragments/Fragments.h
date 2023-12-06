@@ -14,4 +14,4 @@ public:
 
 };
 
-#endif // _FRAGMENTS_H_
+#endif

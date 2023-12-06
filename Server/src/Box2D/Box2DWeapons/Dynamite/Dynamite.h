@@ -14,4 +14,4 @@ public:
 
 };
 
-#endif // _DYNAMITE_H_
+#endif

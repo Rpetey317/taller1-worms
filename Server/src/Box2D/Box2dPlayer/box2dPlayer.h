@@ -11,6 +11,9 @@ class Box2DPlayer {
     int direction;
     int state;
     int team_id;
+    bool walking;
+    bool still;
+    bool falling;
     
     public:
     Box2DPlayer(int id, b2Body* body, int direction, int state, int health_points);
@@ -29,6 +32,11 @@ class Box2DPlayer {
     int get_team_id();
     bool is_alive();
     bool is_falling();
+    void set_falling();
+    bool is_walking();
+    void set_walking();
+    bool is_still();
+    void set_still();
 };
 
 #endif

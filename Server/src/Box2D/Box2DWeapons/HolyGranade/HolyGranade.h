@@ -14,4 +14,4 @@ public:
 
 };
 
-#endif // _HOLY_GRANADE_H
+#endif

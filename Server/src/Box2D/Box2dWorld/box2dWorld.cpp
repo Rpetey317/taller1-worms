@@ -19,8 +19,7 @@ BoxWorld::BoxWorld(std::list<Box2DPlayer>& worm) : configurator(), worms(worm), 
 }
 
 void BoxWorld::initialize_world() {
-    // creo el mundo
-    b2Vec2 gravity(0.0f, configurator.get_box2D_configuration().gravity);  // se le da el valor de gravedad que querramos
+    b2Vec2 gravity(0.0f, configurator.get_box2D_configuration().gravity);  
     world = new b2World(gravity);
     float height = configurator.get_box2D_configuration().map_height;
     float width = configurator.get_box2D_configuration().map_width;
@@ -76,11 +75,9 @@ void BoxWorld::create_wall(b2Vec2 start, b2Vec2 end){
 }
 
 void BoxWorld::create_ground(b2Vec2 lower_l, b2Vec2 lower_r, b2Vec2 upper_l, b2Vec2 upper_r){
-    // creo el mundo
     b2PolygonShape boxShape;
     b2BodyDef myBodyDef;
 
-    // Crear muros y piso
     create_wall(lower_l, lower_r);
     create_wall(upper_l, upper_r);
     create_wall(lower_l, upper_l);
@@ -92,18 +89,18 @@ void BoxWorld::create_long_beam(b2Vec2 start, float angle){
     b2FixtureDef beamFixtureDef;
     b2BodyDef myBodyDef;
 
-    beamShape.SetAsBox(0.64f,0.095f); // forma de caja de 2x2
-    beamFixtureDef.shape = &beamShape; // le doy la forma de la forma creada
+    beamShape.SetAsBox(0.64f,0.095f);
+    beamFixtureDef.shape = &beamShape;
     beamFixtureDef.filter.categoryBits = BEAM;
     beamFixtureDef.filter.maskBits = WORM;
     if(angle < 45.0f)
         beamFixtureDef.friction = 2.5f;
 
-    myBodyDef.type = b2_staticBody; //this will be a static body
-    myBodyDef.position.Set(start.x + 0.64f, start.y - 0.095f); //slightly lower position
-    myBodyDef.angle = angle * configurator.get_box2D_configuration().deg_to_rad; //set the starting angle
-    b2Body* staticBody = world->CreateBody(&myBodyDef); //add body to world
-    staticBody->CreateFixture(&beamFixtureDef); //add fixture to body
+    myBodyDef.type = b2_staticBody; 
+    myBodyDef.position.Set(start.x + 0.64f, start.y - 0.095f); 
+    myBodyDef.angle = angle * configurator.get_box2D_configuration().deg_to_rad; 
+    b2Body* staticBody = world->CreateBody(&myBodyDef); 
+    staticBody->CreateFixture(&beamFixtureDef); 
 }
 
 void BoxWorld::create_short_beam(b2Vec2 start, float angle){
@@ -111,18 +108,18 @@ void BoxWorld::create_short_beam(b2Vec2 start, float angle){
     b2FixtureDef beamFixtureDef;
     b2BodyDef myBodyDef;
 
-    beamShape.SetAsBox(0.32f,0.095f); // forma de caja de 2x2
-    beamFixtureDef.shape = &beamShape; // le doy la forma de la forma creada
+    beamShape.SetAsBox(0.32f,0.095f); 
+    beamFixtureDef.shape = &beamShape; 
     beamFixtureDef.filter.categoryBits = BEAM;
     beamFixtureDef.filter.maskBits = WORM;
     if(angle < 45.0f)
             beamFixtureDef.friction = 2.5f;
 
-    myBodyDef.type = b2_staticBody; //this will be a static body
-    myBodyDef.position.Set(start.x + 0.64f, start.y - 0.095f); //slightly lower position
-    myBodyDef.angle = angle * configurator.get_box2D_configuration().deg_to_rad; //set the starting angle
-    b2Body* staticBody = world->CreateBody(&myBodyDef); //add body to world
-    staticBody->CreateFixture(&beamFixtureDef); //add fixture to body
+    myBodyDef.type = b2_staticBody; 
+    myBodyDef.position.Set(start.x + 0.64f, start.y - 0.095f); 
+    myBodyDef.angle = angle * configurator.get_box2D_configuration().deg_to_rad; 
+    b2Body* staticBody = world->CreateBody(&myBodyDef); 
+    staticBody->CreateFixture(&beamFixtureDef); 
 }
 
 void applyBlastImpulse(b2Body* body, b2Vec2 blastCenter, b2Vec2 applyPoint, float blastPower, float blastRadius) {
@@ -157,15 +154,15 @@ void BoxWorld::fragments() {
         myBodyDef.position.Set(pos.x, pos.y);
         b2Body* fragment = world->CreateBody(&myBodyDef);
         b2CircleShape circleShape;
-        circleShape.m_p.Set(0.0f, 0.0f); //position, relative to body position
-        circleShape.m_radius = 0.01f; //radius
+        circleShape.m_p.Set(0.0f, 0.0f); 
+        circleShape.m_radius = 0.01f; 
         b2FixtureDef myFixtureDef;
-        myFixtureDef.shape = &circleShape; //this is a pointer to the shape above
+        myFixtureDef.shape = &circleShape; 
         myFixtureDef.density = 0.1f;
         myFixtureDef.restitution = 0.0f;
         myFixtureDef.filter.categoryBits = FRAGMENT;
         myFixtureDef.filter.maskBits = WORM | BEAM;
-        fragment->CreateFixture(&myFixtureDef); //add a fixture to the body
+        fragment->CreateFixture(&myFixtureDef); 
         b2Vec2 Vector = b2Vec2( 0.000001f*cosf(angle), 0.000001f*sinf(angle) );
         fragment->ApplyLinearImpulseToCenter( Vector , true );
         fragment->SetBullet(true);
@@ -186,15 +183,15 @@ void BoxWorld::air_missiles(){
         myBodyDef.position.Set(pos.x, pos.y);
         b2Body* missile = world->CreateBody(&myBodyDef);
         b2CircleShape circleShape;
-        circleShape.m_p.Set(0.0f, 0.0f); //position, relative to body position
-        circleShape.m_radius = 0.05f; //radius
+        circleShape.m_p.Set(0.0f, 0.0f); 
+        circleShape.m_radius = 0.05f; 
         b2FixtureDef myFixtureDef;
-        myFixtureDef.shape = &circleShape; //this is a pointer to the shape above
+        myFixtureDef.shape = &circleShape; 
         myFixtureDef.density = 0.1f;
         myFixtureDef.restitution = configurator.get_weapons_configuration().air_strike.restitution;
         myFixtureDef.filter.categoryBits = AIR_MISSLE;
         myFixtureDef.filter.maskBits = WORM | BEAM;
-        missile->CreateFixture(&myFixtureDef); //add a fixture to the body
+        missile->CreateFixture(&myFixtureDef); 
         missile->SetBullet(true);
         projectiles.push_back(missile);
         int type = AIR_MISSLE;
@@ -255,7 +252,7 @@ void BoxWorld::clean_projectiles(bool full_clean){
 
 
 void BoxWorld::step(){
-    float timeStep = 1.0f / configurator.get_box2D_configuration().time_step;  // Paso de tiempo para la simulación (60 FPS)
+    float timeStep = 1.0f / configurator.get_box2D_configuration().time_step;  
     int32 velocityIterations = configurator.get_box2D_configuration().velocity_iterations;
     int32 positionIterations = configurator.get_box2D_configuration().position_iterations;
     world->Step(timeStep, velocityIterations, positionIterations);
@@ -398,15 +395,15 @@ b2Body* BoxWorld::create_projectile(float x, float y, float restitution, float d
     myBodyDef.position.Set(pos.x, pos.y);
     b2Body* projectile = world->CreateBody(&myBodyDef);
     b2CircleShape circleShape;
-    circleShape.m_p.Set(0.0f, 0.0f); //position, relative to body position
-    circleShape.m_radius = 0.05f; //radius
+    circleShape.m_p.Set(0.0f, 0.0f); 
+    circleShape.m_radius = 0.05f; 
     b2FixtureDef myFixtureDef;
-    myFixtureDef.shape = &circleShape; //this is a pointer to the shape above
+    myFixtureDef.shape = &circleShape; 
     myFixtureDef.density = 0.002f;
     myFixtureDef.restitution = restitution;
     myFixtureDef.filter.categoryBits = category;
     myFixtureDef.filter.maskBits = mask;
-    projectile->CreateFixture(&myFixtureDef); //add a fixture to the body
+    projectile->CreateFixture(&myFixtureDef); 
     projectiles.push_back(projectile);
     projectile->GetUserData().pointer = ((uintptr_t) new Box2DPlayer(type, projectile));
     return projectile;

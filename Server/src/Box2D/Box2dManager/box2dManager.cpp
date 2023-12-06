@@ -3,13 +3,12 @@
 #include <iostream>
 #include "../Box2DWeapons/WeaponsHeaders.h"
 #include "../../../src/Message/Box2DMsg/Box2DMsgHeaders.h"
-#include <yaml-cpp/yaml.h> // Add this line to include the yaml-cpp header
+#include <yaml-cpp/yaml.h> 
 
 #define LEFT 1
 #define RIGHT 0
 
 Vect2D BoxManager::meter_to_pixel(b2Vec2 meter, float offset_x, float offset_y) { 
-    // return Vect2D(static_cast<int>((meter.x-0.12f) * configurator.get_box2D_configuration().meters_to_pixel), static_cast<int>(5000.00f - ((0.245+meter.y) * configurator.get_box2D_configuration().meters_to_pixel)));
     return Vect2D(static_cast<int>((meter.x-offset_x) * configurator.get_box2D_configuration().meters_to_pixel), static_cast<int>(5000.00f - ((offset_y+meter.y) * configurator.get_box2D_configuration().meters_to_pixel)));
 }
 
@@ -18,14 +17,12 @@ BoxManager::BoxManager(std::string file_name): worms(), world(worms), timer_allo
     playing_worm = worms.begin();
 }
 
-
 void BoxManager::next_turn(int player_id) {
     auto it = worms.begin();
     std::advance(it, player_id - 1);
     playing_worm = it;
 }
 
-// should later introduce to recive the map position automatically
 bool BoxManager::set_map(std::string file_name) {
     CommonMapParser parser;
     map_name = file_name;
@@ -35,12 +32,15 @@ bool BoxManager::set_map(std::string file_name) {
 std::map<int, Worm>* BoxManager::create_position_map(const std::list<Box2DPlayer>& worms) {
     std::map<int, Worm>* worms_position = new std::map<int, Worm>();
     for (auto worm : worms) {
-        b2Body* body = worm.get_body(); // Obtener el cuerpo
-        if (body) { // Verificar si el cuerpo es válido
+        b2Body* body = worm.get_body();
+        if (body) {
             b2Vec2 pos = body->GetPosition();
             if(worm.is_falling() && worm.get_state() != WORM_DEAD)
                 worm.set_state(WORM_FALLING);
-            
+            if(worm.is_walking() && worm.get_state() != WORM_DEAD)
+                worm.set_state(WORM_WALKING);
+            if(worm.is_still() && worm.get_state() != WORM_DEAD)
+                worm.set_state(WORM_STILL);
             Worm worm_class( meter_to_pixel(pos, 0.12f, 0.245f), worm.get_state(), worm.get_id(), worm.get_team_id(), worm.get_health_points(), map_name);
             worms_position->insert(std::make_pair(worm.get_id(), worm_class));
             
@@ -48,7 +48,6 @@ std::map<int, Worm>* BoxManager::create_position_map(const std::list<Box2DPlayer
     }
     return worms_position;
 }
-
 
 std::map<int, WeaponDTO>* BoxManager::create_proyectile_map(const std::list<b2Body*>& projectiles) {
     std::map<int, WeaponDTO>* positions = new std::map<int, WeaponDTO>();
@@ -88,16 +87,19 @@ std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> updat
         case COMMAND_LEFT:
             vel.x = -configurator.get_worm_configuration().speed;  // modifico componente en x
             temp->set_direction(LEFT);
-            temp->set_state(WORM_WALKING);
+            // temp->set_state(WORM_WALKING);
+            temp->set_walking();
             break;
         case COMMAND_RIGHT:
             vel.x = configurator.get_worm_configuration().speed;
             temp->set_direction(RIGHT);
-            temp->set_state(WORM_WALKING);
+            // temp->set_state(WORM_WALKING);
+            temp->set_walking();
             break;
         case COMMAND_STOP:
             vel.x = 0.0f;
-            temp->set_state(WORM_STILL);
+            // temp->set_state(WORM_STILL);
+            temp->set_still();
             break;
         case COMMAND_JUMP_FOWARD:
             if (contacts != nullptr && contacts->contact != nullptr) {
@@ -130,22 +132,17 @@ std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> updat
             break;
         default:
             vel.x = 0.0f;
+            temp->set_still();
             break;
     }
     if((this->time_ticker - this->detonation_tick) > 75){
         this->world.timer_allows = true;
     }
-    current->SetLinearVelocity(vel);  // seteo la nueva velocidad
+    current->SetLinearVelocity(vel);  
     world.step();
-    // this->create_proyectile_map(this->world.projectiles);
     return std::make_shared<WorldUpdate>(create_position_map(worms), create_proyectile_map(this->world.projectiles)); // TODO: ver que devolver
 }
 
-/*  
-  Power should be a float that goes from 0 to 1 to represent the proportion of power induced
-  by the player to the shot. Angle represents the angle in degrees relative to the floor the 
-  player aims.
-*/
 void BoxManager::fire_projectile(float angle, float power, float restitution, int category, int mask, bool set_timer, int type) {
     Box2DPlayer* temp = (Box2DPlayer*)(playing_worm->get_body()->GetUserData().pointer);
     b2Body* projectile = world.create_projectile(playing_worm->get_body()->GetPosition().x, playing_worm->get_body()->GetPosition().y, restitution, temp->get_direction(), category, mask, set_timer, type);

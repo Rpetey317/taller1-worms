@@ -14,4 +14,4 @@ public:
 
 };
 
-#endif // _BASEBALL_BAT_H_
+#endif

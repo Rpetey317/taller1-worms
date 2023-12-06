@@ -2,7 +2,6 @@
 #define BOX2D_CONTACTLISTENER_H
 
 #include "../../../libs/box2d/include/box2d/box2d.h"
-// #include "../../Box2DWeapons/WeaponsHeaders.h"
 #include "../../../Common/queue.h"
 #include <vector>
 
@@ -16,4 +15,4 @@ class box2dContactListener : public b2ContactListener {
     bool ReportFixture(b2Fixture* fixture);
 };
 
-#endif // BOX2D_CONTACTLISTENER_H
+#endif

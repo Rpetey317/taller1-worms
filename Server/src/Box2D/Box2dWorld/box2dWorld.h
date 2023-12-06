@@ -7,7 +7,6 @@
 #include "../../../Common/queue.h"
 #include "../../../Common/Worm.h"
 #include "../../../Common/CommonConfigurationParser.h"
-// #include "../Box2DWeapons/WeaponsHeaders.h"
 #include "ContactListener/box2dContactListener.h"
 #include "QueryCallback/box2dQueryCallback.h"
 #include "RayCastCallback/box2dRayCastCallback.h"

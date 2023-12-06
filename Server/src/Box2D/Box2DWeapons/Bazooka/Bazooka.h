@@ -14,4 +14,4 @@ public:
 
 };
 
-#endif // _BAZOOKA_H_
+#endif

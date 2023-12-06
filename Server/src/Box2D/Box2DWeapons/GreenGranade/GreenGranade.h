@@ -14,4 +14,4 @@ public:
 
 };
 
-#endif // _GREEN_GRANADE_H_
+#endif

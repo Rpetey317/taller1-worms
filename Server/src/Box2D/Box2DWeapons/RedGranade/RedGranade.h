@@ -14,4 +14,4 @@ public:
 
 };
 
-#endif // _RED_GRANADE_H_
+#endif 
