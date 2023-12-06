@@ -18,6 +18,7 @@ class BoxManager;
 #define COMMAND_SPECIAL_SHOOT 7
 #define COMMAND_NULL 8
 #define COMMAND_CHANGE_WP 9
+#define COMMAND_STOP_MOVING 10
 
 class Box2DMsg: public Message, public std::enable_shared_from_this<Box2DMsg> {
 

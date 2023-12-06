@@ -35,12 +35,6 @@ std::map<int, Worm>* BoxManager::create_position_map(const std::list<Box2DPlayer
         b2Body* body = worm.get_body();
         if (body) {
             b2Vec2 pos = body->GetPosition();
-            if(worm.is_falling() && worm.get_state() != WORM_DEAD)
-                worm.set_state(WORM_FALLING);
-            if(worm.is_walking() && worm.get_state() != WORM_DEAD)
-                worm.set_state(WORM_WALKING);
-            if(worm.is_still() && worm.get_state() != WORM_DEAD)
-                worm.set_state(WORM_STILL);
             Worm worm_class( meter_to_pixel(pos, 0.12f, 0.245f), worm.get_state(), worm.get_id(), worm.get_team_id(), worm.get_health_points(), map_name);
             worms_position->insert(std::make_pair(worm.get_id(), worm_class));
             
@@ -79,27 +73,29 @@ std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> updat
     b2Vec2 vel = current->GetLinearVelocity();  // vector vel del gusano
     b2ContactEdge* contacts = current->GetContactList();
 
-    Box2DPlayer* temp = (Box2DPlayer*)(current->GetUserData().pointer);
+    //Box2DPlayer* temp = (Box2DPlayer*)(current->GetUserData().pointer);
     std::shared_ptr<BoxShoot> sh_update;
     std::shared_ptr<BoxSpecialShoot> spsh_update;
     std::shared_ptr<BoxChangeWeapon> wpupd;
     switch (current_command) {
         case COMMAND_LEFT:
             vel.x = -configurator.get_worm_configuration().speed;  // modifico componente en x
-            temp->set_direction(LEFT);
-            // temp->set_state(WORM_WALKING);
-            temp->set_walking();
+            playing_worm->set_direction(LEFT);
+            
+            playing_worm->set_state(WORM_WALKING);
+            std::cout << "CAMINANDO" << std::endl;
+            //temp->set_walking();
             break;
         case COMMAND_RIGHT:
             vel.x = configurator.get_worm_configuration().speed;
-            temp->set_direction(RIGHT);
-            // temp->set_state(WORM_WALKING);
-            temp->set_walking();
+            playing_worm->set_direction(RIGHT);
+            playing_worm->set_state(WORM_WALKING);
+
+            //temp->set_walking();
             break;
-        case COMMAND_STOP:
+        case COMMAND_STOP_MOVING:
             vel.x = 0.0f;
-            // temp->set_state(WORM_STILL);
-            temp->set_still();
+            playing_worm->set_state(WORM_STILL);
             break;
         case COMMAND_JUMP_FOWARD:
             if (contacts != nullptr && contacts->contact != nullptr) {
@@ -126,13 +122,13 @@ std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> updat
             break;
         case COMMAND_CHANGE_WP:
             wpupd = std::static_pointer_cast<BoxChangeWeapon>(update);
-            temp->set_state(wpupd->get_weapon_id());
+            std::cout << "CAMBIO MI ARMA" << std::endl;
+            playing_worm->set_state(wpupd->get_weapon_id());
             break;
         case COMMAND_NULL:
             break;
         default:
             vel.x = 0.0f;
-            temp->set_still();
             break;
     }
     if((this->time_ticker - this->detonation_tick) > 75){
@@ -140,6 +136,11 @@ std::shared_ptr<WorldUpdate> BoxManager::process(std::shared_ptr<Box2DMsg> updat
     }
     current->SetLinearVelocity(vel);  
     world.step();
+    for (auto worm : worms) {
+        std::cout << "ESTADO DEL GUSANARDIUM" << worm.get_state() << std::endl;
+    }
+
+
     return std::make_shared<WorldUpdate>(create_position_map(worms), create_proyectile_map(this->world.projectiles)); // TODO: ver que devolver
 }
 

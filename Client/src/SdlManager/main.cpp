@@ -1,5 +1,6 @@
 
 #include "../Action/Null/NullAction.cpp"
+#include "../Action/Stop/Stop.cpp"
 #include "../../../Common/CommonMapParser/CommonMapParser.cpp"
 #include "../../../Common/CommonConfigurationParser.cpp"
 #include "SdlManager.cpp"
@@ -36,3 +37,4 @@
 #include "Editor.cpp"
 #include "SdlResizableRect.cpp"
 #include "states/SdlWormStateDie.cpp"
+

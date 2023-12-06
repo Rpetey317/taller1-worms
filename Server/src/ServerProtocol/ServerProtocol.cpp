@@ -118,7 +118,10 @@ std::shared_ptr<Message> ServerProtocol::recv_update(const int& plid) {
         }
         return std::make_shared<BoxChangeWeapon>(plid, weapon_id);
         
-    } else {
+    } else if (code == MSGCODE_PLAYER_STOP) {
+        return std::make_shared<BoxStop>(plid);
+    } 
+    else {
         return std::make_shared<NullMessage>();
     }
     // else if (code == MSGCODE_CHANGE_WEAPON) { // Habria que luego broadcastear el cambio de arma,

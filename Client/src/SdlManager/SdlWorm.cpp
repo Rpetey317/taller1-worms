@@ -63,6 +63,7 @@ void SdlWorm::render_new(Vect2D position, int state, int health) {
         worm_state = worm_states["DIE"];
         play_animation();
     }
+    std::cout << "ESTO ME LLEGA EN STATE:" << state << std::endl;
 
     switch (state)
     {

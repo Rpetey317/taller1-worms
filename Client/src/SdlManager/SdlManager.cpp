@@ -40,13 +40,11 @@ bool SdlManager::event_handler() {
                     return false;
                 }
                 case SDLK_RIGHT: {
-                    worms[id_worm_turn]->change_state("WALK");
                     worms[id_worm_turn]->flip = SDL_FLIP_HORIZONTAL;
                     outgoing.push(std::make_shared<Move>(true));
                     break;
                 }
                 case SDLK_LEFT: {
-                    worms[id_worm_turn]->change_state("WALK");
                     worms[id_worm_turn]->flip = SDL_FLIP_NONE;
                     outgoing.push(std::make_shared<Move>(false));
                     break;
@@ -92,65 +90,53 @@ bool SdlManager::event_handler() {
                 return true;
             switch (event.key.keysym.sym) {
                 case SDLK_RIGHT: {
-                    worms[id_worm_turn]->change_state("STILL");
-                    outgoing.push(std::make_shared<NullAction>());
+                    outgoing.push(std::make_shared<StopAction>());
                     break;
                 }
                 case SDLK_LEFT: {
-                    worms[id_worm_turn]->change_state("STILL");
                     //EL CAMBIO DE ESTADOS POSIBLEMENTE LO TENGA QUE CAMBIAR A CUANDO RECIBA DE LA QUEUE
                     // YA QUE AHI HARIA UN FOR CAMBIANDOLE EL ESTADO A TODOS LOS BICHOS
-                    outgoing.push(std::make_shared<NullAction>());
+                    outgoing.push(std::make_shared<StopAction>());
                     break;
                 }
                 
                 case SDLK_0:{ //BAZOOKA
-                    worms[id_worm_turn]->change_state("BAZOOKA");
                     outgoing.push(std::make_shared<ChangeWeapon>(BAZOOKA));
                     break;
                 }
                 case SDLK_1:{//MORTERO
-                    worms[id_worm_turn]->change_state("MORTAR");
                     outgoing.push(std::make_shared<ChangeWeapon>(MORTAR));
                     break;
                 }
                 case SDLK_2:{//GRANDA ROJA
-                    worms[id_worm_turn]->change_state("RED_GRENADE");
                     outgoing.push(std::make_shared<ChangeWeapon>(RED_GRANADE));
                     break;
                 }
                 case SDLK_3:{//GRANADA VERDE
-                    worms[id_worm_turn]->change_state("GREEN_GRENADE");
                     outgoing.push(std::make_shared<ChangeWeapon>(GREEN_GRANADE));
                     break;
                 }
                 case SDLK_4:{//BANANA
-                    worms[id_worm_turn]->change_state("BANANA");
                     outgoing.push(std::make_shared<ChangeWeapon>(BANANA));
                     break;
                 }
                 case SDLK_5:{//GRANADA SANTA
-                    worms[id_worm_turn]->change_state("HOLY_GRENADE");
                     outgoing.push(std::make_shared<ChangeWeapon>(HOLY_GRANADE));
                     break;
                 }
                 case SDLK_6:{//ATAQUE AEREO
-                    worms[id_worm_turn]->change_state("AIR_STRIKE");
                     outgoing.push(std::make_shared<ChangeWeapon>(AIR_STRIKE));
                     break;
                 }
                 case SDLK_7:{//DINAMITA
-                    worms[id_worm_turn]->change_state("DYNAMITE");
                     outgoing.push(std::make_shared<ChangeWeapon>(DYNAMITE));
                     break;
                 }
                 case SDLK_8:{//BATE DE BEISBOL
-                    worms[id_worm_turn]->change_state("BEISBOLL");
                     outgoing.push(std::make_shared<ChangeWeapon>(BASEBALL_BAT));
                     break;
                 }
                 case SDLK_9:{//TELETRANSPORTACION
-                    worms[id_worm_turn]->change_state("TELEPORT");
                     outgoing.push(std::make_shared<ChangeWeapon>(TELEPORT));
                     break;
                 }
@@ -271,7 +257,6 @@ void SdlManager::update_screen(Renderer& renderer, SdlMap& map, SdlSoundManager&
     
         if (event->get_player_turn() > 0) {
             if (id_worm_turn != event->get_player_turn()) {
-                worms[id_worm_turn]->change_state("STILL");
                 worms[id_worm_turn]->angle = 0;
                 worms[id_worm_turn]->is_charging = false;
                 worms[id_worm_turn]->attack_power = 0;

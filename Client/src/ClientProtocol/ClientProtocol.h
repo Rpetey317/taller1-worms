@@ -62,6 +62,7 @@ public:
     char send_NullAction(NullAction action);
     char send_Shoot(Shoot action);
     char send_ChangeWeapon(ChangeWeapon action);
+    char send_Stop(StopAction action);
 
     std::list<std::string> req_map_info();
     std::list<std::string> req_game_info();

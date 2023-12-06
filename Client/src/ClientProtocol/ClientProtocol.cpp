@@ -267,6 +267,13 @@ char ClientProtocol::send_Message(Message action) {
     return SUCCESS;
 }
 
+char ClientProtocol::send_Stop(StopAction action) {
+    if (!this->send_char(MSGCODE_PLAYER_STOP)) {
+        return CLOSED_SKT;
+    }
+    return SUCCESS;
+}
+
 char ClientProtocol::send_Movement(Move action) {
     // Send code
     if (action.is_right()) {
