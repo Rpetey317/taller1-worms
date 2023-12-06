@@ -19,13 +19,17 @@ using namespace NetworkProtocol;  // NOLINT
 #define CLOSED_SKT -1
 #define SUCCESS 0
 
+/*
+ * Wrapper class for client socket
+ * Handles serialization and deserialization of messages
+ */
 class ClientProtocol {
 private:
     Socket skt;
     bool isclosed;
     /*
-        Primitive type send methods, to simplify update-specific send methods
-        On successful send returns true, false if socket closed
+     *  Primitive type send methods, to simplify update-specific send methods
+     *  On successful send returns true, false if socket closed
      */
     bool send_short(const uint16_t& num);
     bool send_long(const uint32_t& num);
@@ -33,13 +37,18 @@ private:
     bool send_str(const std::string& str);
 
     /*
-        Receive methods of the diferent type of Events
+     * Primitive type recv methods, to simplify update-specific recv methods
+     * Receiving status can be checked with this->isclosed
      */
-    std::string recv_msg();
+    std::string recv_str();
 
     /*
         Receive methods of the diferent type of Events
-    */
+     */
+
+    /*
+     *  Receive methods of the diferent type of Events
+     */
     std::shared_ptr<Event> recv_player_connected();
     std::shared_ptr<Event> recv_player_message();
     std::shared_ptr<Event> recv_player_disconnected();
