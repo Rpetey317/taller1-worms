@@ -101,5 +101,10 @@ En la siguiente imagen se puede ver el flujo general de los threads del cliente:
 La clase principal del cliente es el GameProccessing, cuyo diagrama de clase es el siguiente:
 ![Alt text](clientProtocolDiagram.png)
 
+Esta clase tiene una referencia del protocolo, el cual se los envia a las clases Sender y Receiver, Tiene una queue de acciones y
+una queue de eventos, las cuales son las mismas que tiene el SdlManager. Tiene tambien un sender y un receiver, los cuales son 
+threads que ejecuta en el run del cliente. Tambien se guarda su id, el cual es recibido cuando se conecta correctamente a la
+partida.
+
 # Modulo servidor
 
