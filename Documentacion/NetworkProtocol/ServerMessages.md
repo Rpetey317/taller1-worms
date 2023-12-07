@@ -1,25 +1,37 @@
 # Server packet structures
 
-The general structure for a server packet is `<cd> <data...>`, where `cd` is a single byte identifying the type of message and `data` is all relevant packet info.
+The general structure for a server packet is `<cd> <data...>`, where `cd` is a single byte identifying the type of message and `data` is all relevant packet info. The sole exception is the game start signal, which is just a single byte.
 
 The possible values for such code and their semantic meaning are defined in `Common/NetworkProtocol.h` and further explained here. Unless specified otherwise, all types and constants referenced are defined in that file.
 
 The structure of such data is defined by each packet type, and are explained in this file.
 
-## Connection acknowledge
+## Game Start
 
-The first packet all clients receive upon successfully connecting to a server. It contains a single number representing the player's assigned ID. ID's are unique to each player and never change for the duration of a game, and the server always makes reference to players via their ID's.
-
-The packet structure is
+The first message all clients receive upon successfully connecting to a server. It signals that the game has started sending a single byte. So the (pretty simple structure) of the message is:
 
 ```
-<cd> <id>
+<cd>
 ```
 
 Where:
 
 - `<cd>` is the associated code
-- `<id>` is a `playerid_t` number representing the receiving player's assigned id.
+
+## Connection acknowledge
+
+The second packet all clients receive upon successfully connecting to a server and starting a game. It contains a single number representing the player's assigned ID. ID's are unique to each player and never change for the duration of a game, and the server always makes reference to players via their ID's.
+
+The packet structure is
+
+```
+<cd> <pid>
+```
+
+Where:
+
+- `<cd>` is the associated code
+- `<pid>` is a `playerid_t` number representing the receiving player's assigned id.
 
 ## Player connected
 
@@ -28,11 +40,11 @@ Message sent when a new player connects, containing this new player's ID.
 The packet structure is
 
 ```
-<cd> <id>
+<cd> <pid>
 ```
 
 - `<cd>` is the associated code
-- `<id>` is a `playerid_t` number representing the new player's id.
+- `<pid>` is a `playerid_t` number representing the new player's id.
 
 ## Player disconnected
 
@@ -41,11 +53,11 @@ Message sent when a player disconnects from the game, containing this new player
 The packet structure is
 
 ```
-<cd> <id>
+<cd> <pid>
 ```
 
 - `<cd>` is the associated code
-- `<id>` is a `playerid_t` number representing the disconnected player's id.
+- `<pid>` is a `playerid_t` number representing the disconnected player's id.
 
 ## Turn update
 
@@ -58,7 +70,7 @@ The packet structure is
 ```
 
 - `<cd>` is the associated code
-- `<id>` is a `playerid_t` number representing the player whose turn is now.
+- `<id>` is a `playerid_t` number representing the worm whose turn is now.
 
 ## Chat message
 
@@ -67,62 +79,54 @@ A packet with a message sent to the lobby chat. It contains the owner's ID and t
 The packet structure is
 
 ```
-<cd> <id> <ln> <msg...>
+<cd> <pid> <ln> <msg...>
 ```
 
 - `<cd>` is the associated code
-- `<id>` is a `playerid_t` number representing the author of the message.
+- `<pid>` is a `playerid_t` number representing the author of the message.
 - `<ln>` is a `strlen_t` representing the total length in bytes of the message.
 - `<msg...>` is a (non-null termiated) string of `<ln>` bytes with the message.
 
 ## World Update
 
-A packet containing all relevant world updates, meant to be sent every tick. It contains updated positions for all players [Will add more stuff in the near future]
+A packet containing all relevant world updates, meant to be sent at least once every tick. It contains updated positions for all players
 
 The packet structure is:
 
 ```
 <cd>
     <plcount>
-        <id> <x> <y>
-        <id> <x> <y>
+        <id> <x> <y> <state> <pid> <hp> <ln> <map...>
+        <id> <x> <y> <state> <pid> <hp> <ln> <map...>
+        ...
+    <wpcount>
+        <id> <x> <y> <angle> <wid>
+        <id> <x> <y> <angle> <wid>
         ...
 ```
 
 - `<cd>` is the associated code
 - `<plcount>` is a `amount_players_t` number with the amount of player positions to receive
-- `<id>` is a player's id in `playerid_t`
-- `<x> <y>` are the x and y coordinates in `point_t` of a player
+- `<id>` is a worms's id in `playerid_t`
+- `<x> <y>` are the x and y coordinates in `point_t` of a player/weapon
+- `<pid>` is the respective player's id in `playerid_t`
+- `<hp>` are the worm's current hitpoints left
+- `<ln>` is the length of...
+- `<map>`, which a string representing the map's name
+- `<wpcount>` is the number of weapons (projectiles) to receive
+- `<angle>` is the weapon's current facing angle
+- `<wid>` is the respective weapon id
 
+## Timer update
 
-## Player Position
+An update sent at least once every server tick to inform players of time left on current turn.
 
-A packet with the player position.
-
-The packet structure is
-
-```
-<cd> <id> <x> <y>
-```
-
-- `<cd>` is the associated code
-- `<id>` is a player's id in `playerid_t`
-- `<x> <y>` are the x and y coordinates in `point_t` of a player
-
-
-## Proyectile update
-
-A packet with the proyectile position, type and angle
-
-The packet structure is
+The packet structure is:
 
 ```
-<cd> <id> <type_proyectile> <x> <y> <angle> <exploded>
+<cd> <t> <id>
 ```
 
 - `<cd>` is the associated code
-- `<id>` is a player's id in `playerid_t`
-- `<type_proyectile>` is a string of the type of proyectile
-- `<x> <y>` are the x and y coordinates in `point_t` of a player
-- `<angle>` is an int of the angle of the shooting
-- `<exploded>` is an int that defines if the proyectile exploded (being the int = 1) or if it did not exploded (being the int = 0)
+- `<t>` is the time left (in seconds).
+- `<id>` is a `playerid_t` number representing the worm whose turn is currently.
