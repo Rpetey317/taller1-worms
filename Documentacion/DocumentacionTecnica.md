@@ -100,3 +100,14 @@ En la siguiente imagen se puede ver el flujo general de los threads del cliente:
 
 # Modulo servidor
 
+
+### Box2D
+- En Box2D el mundo gira en torno a un objeto llamado b2World que es la representacion del mundo fisico que estamos manipulando. En nuestro codigo el b2World es propiedad de la clase Box2dWorld. Box2dWorld esta principalmente encargado de la posesion del mundo. Sin embargo, quien interactua con el main del Server es Box2dManager.
+  
+- Box2dManager es una abstraccion superior al mundo. Principalmente se ocupa de permitir la comunicacion entre el servido con sus comandos entrantes con el Box2dWorld que es el encargado de luego ejectuarlo. Del mismo modo, permite una abstraccion mas simple de obtener los estados de mundo para comunicar en devolucion al Cliente. Se podria decir que Box2dManager es principalmente una API y abstraccion para Box2dWorld. De todos modos, tambien tiene algunas propiedades propias que permiten ejectuar cierta logica de juego.
+
+- Box2dWorld es el objeto principal en toda la ejecucion de Box2D. Principalmente es dueña de b2World y es el unico que puede pedirle cosas. Todos sus metodos son privados, pero Box2dManager es una friend class por lo que la unica clase autorizada a interactuar con Box2dWorld es el Manager. De este modo protegemos a que solo el Manager pueda solicitar informacion y cambios. Particularmente box2dWorld tiene toda la creacion del escenario fisico, utilizando el CommonMapParser que al crearse le entrega toda la informacion. Luego estan todos los metodos que permiten implementar la logica de juego. Desafortunadamente, por falta de tiempo, no logramos emprolijar de la mejor manera todos estos metodos. 
+
+    - Cabe destacar que hay tres clases auxiliares para el world que permiten la correcta simulacion fisica del los contactos y explosiones que son ContactListener, QueryCallback y RayCastaCallback. Su existencia no tiene nada muy particular mas que necesidades de logica de Box2D que no vale la pena indagar.
+
+-  Por ultimo, existe box2dPlayer, que es la abstraccion de cada jugador. Estas incluyen el b2Body que es el cuerpo fisico dentro de la simulacion (nos permite moverlo, saber donde esta, su velocidad, etc). Ambos su id de worm y el id de a que equipo pertenecen. Booleanos representando su estado, no es la implementacion ideal, pero es la implementacion mas rudimentaria que logre hacer. Por ultimo tiene los puntos de vida, ya que es la clase encargada de conocerlos. Toda esta informacion es fundamental que este aqui ya que es la clase que contiene toda la informacion que sera enviada al Client. Permite conocer toda la informacion necesaria para el renderizado. Hay un constructor especifico, el de 2 paramentros, que es utilizado por los proyectiles. No llegue a crear una clase especifica, pero ese constructor solo asigna que tipo de arma es y el b2Body asociado al proyectil para, nuevamente, conocer su posicion, velocidad, etc.
