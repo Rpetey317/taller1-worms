@@ -160,9 +160,11 @@ Box2D funciona de manera bastante independiente al objeto `Game` en sí. La inte
 
 - Box2dWorld es el objeto principal en toda la ejecucion de Box2D. Principalmente es dueña de b2World y es el unico que puede pedirle cosas. Todos sus metodos son privados, pero Box2dManager es una friend class por lo que la unica clase autorizada a interactuar con Box2dWorld es el Manager. De este modo protegemos a que solo el Manager pueda solicitar informacion y cambios. Particularmente box2dWorld tiene toda la creacion del escenario fisico, utilizando el CommonMapParser que al crearse le entrega toda la informacion. Luego estan todos los metodos que permiten implementar la logica de juego. Desafortunadamente, por falta de tiempo, no logramos emprolijar de la mejor manera todos estos metodos. 
 
-    - Cabe destacar que hay tres clases auxiliares para el world que permiten la correcta simulacion fisica del los contactos y explosiones que son ContactListener, QueryCallback y RayCastaCallback. Su existencia no tiene nada muy particular mas que necesidades de logica de Box2D que no vale la pena indagar.
+    - Cabe destacar que hay tres clases auxiliares para el world que permiten la correcta simulacion fisica del los contactos y explosiones que son ContactListener, QueryCallback y RayCastCallback. Su existencia no tiene nada muy particular mas que necesidades de logica de Box2D que no vale la pena indagar.
 
 -  Por ultimo, existe box2dPlayer, que es la abstraccion de cada jugador. Estas incluyen el b2Body que es el cuerpo fisico dentro de la simulacion (nos permite moverlo, saber donde esta, su velocidad, etc). Ambos su id de worm y el id de a que equipo pertenecen. Booleanos representando su estado, no es la implementacion ideal, pero es la implementacion mas rudimentaria que logre hacer. Por ultimo tiene los puntos de vida, ya que es la clase encargada de conocerlos. Toda esta informacion es fundamental que este aqui ya que es la clase que contiene toda la informacion que sera enviada al Client. Permite conocer toda la informacion necesaria para el renderizado. Hay un constructor especifico, el de 2 paramentros, que es utilizado por los proyectiles. No llegue a crear una clase especifica, pero ese constructor solo asigna que tipo de arma es y el b2Body asociado al proyectil para, nuevamente, conocer su posicion, velocidad, etc.
+
+![box2dFlow](box2dFlow.png)
 
 ## Protocolo de comunicación
 
