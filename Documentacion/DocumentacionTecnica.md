@@ -91,12 +91,15 @@ acciones generadas por el jugador en el cliente y enviarlas al servidor para que
 En el contexto del juego, las acciones pueden incluir movimientos del jugador, disparos, etc. Estas acciones son capturadas 
 por el cliente y se encolan en una cola bloqueante específica para el envío de acciones al servidor.
 
-El thread Sender se encarga de tomar las acciones de esta cola bloqueante y enviarlas al servidor a través del protocolo de 
+- el thread Sender se encarga de tomar las acciones de esta cola bloqueante y enviarlas al servidor a través del protocolo de 
 comunicación establecido. Utiliza el clientProtocol, que es el encargado de recibir los mensajes y crear los eventos 
 correspondientes para el servidor.
 
 En la siguiente imagen se puede ver el flujo general de los threads del cliente:
 ![Alt text](threadsClient.png)
+
+La clase principal del cliente es el GameProccessing, cuyo diagrama de clase es el siguiente:
+![Alt text](clientProtocolDiagram.png)
 
 # Modulo servidor
 
