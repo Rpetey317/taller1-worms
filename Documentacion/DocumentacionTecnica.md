@@ -97,12 +97,20 @@ El cliente esta compuesto por tres threads:
   En el contexto del juego, las acciones pueden incluir movimientos del jugador, disparos, etc. Estas acciones son capturadas
   por el cliente y se encolan en una cola bloqueante específica para el envío de acciones al servidor.
 
-El thread Sender se encarga de tomar las acciones de esta cola bloqueante y enviarlas al servidor a través del protocolo de
-comunicación establecido. Utiliza el clientProtocol, que es el encargado de recibir los mensajes y crear los eventos
-correspondientes para el servidor.
+- el thread Sender se encarga de tomar las acciones de esta cola bloqueante y enviarlas al servidor a través del protocolo de
+  comunicación establecido. Utiliza el clientProtocol, que es el encargado de recibir los mensajes y crear los eventos
+  correspondientes para el servidor.
 
 En la siguiente imagen se puede ver el flujo general de los threads del cliente:
 ![Alt text](threadsClient.png)
+
+La clase principal del cliente es el GameProccessing, cuyo diagrama de clase es el siguiente:
+![Alt text](clientProtocolDiagram.png)
+
+Esta clase tiene una referencia del protocolo, el cual se los envia a las clases Sender y Receiver, Tiene una queue de acciones y
+una queue de eventos, las cuales son las mismas que tiene el SdlManager. Tiene tambien un sender y un receiver, los cuales son
+threads que ejecuta en el run del cliente. Tambien se guarda su id, el cual es recibido cuando se conecta correctamente a la
+partida.
 
 # Modulo servidor
 
