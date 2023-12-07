@@ -76,6 +76,9 @@ renderización de los elementos visuales en la pantalla.
 En resumen, el SdlManager es responsable de proporcionar una interfaz gráfica interactiva y visualmente atractiva
 para que el usuario pueda interactuar con el juego.
 
+Ademas, el SdlManager recibe eventos del servidor para actualizar todas las posiciones y estados de los distintos gusanos
+para que sean renderizados correctamente para cada uno de los jugadores que esten en la partida
+
 El cliente tiene dos queues bloqueantes, una para enviar Acciones al servidor, y otra para recibir eventos de parte
 del servidor. Para el manejo de la coneccion entre cliente-servidor, se utiliza el clientProtocol, el cual es el
 encargado de recibir los mensajes y crear los eventos correspondientes, como tambien enviar las acciones como corresponda.
